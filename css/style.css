@@ -201,6 +201,7 @@ a:hover { text-decoration: underline; }
 .faq-question .arrow { transition: transform 0.2s; font-size: 0.85rem; }
 .faq-item.open .faq-question .arrow { transform: rotate(180deg); }
 .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.faq-item.open .faq-answer { max-height: 500px; }
 .faq-answer-inner { padding: 0 0 14px; color: #6b7280; font-size: 0.9rem; line-height: 1.6; }
 
 /* ===== INFO PAGES ===== */
