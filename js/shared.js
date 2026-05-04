@@ -29,16 +29,25 @@ function hideResult(id) {
 }
 
 // FAQ Accordion
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.faq-question').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const item = this.closest('.faq-item');
-      const isOpen = item.classList.contains('open');
-      // Close all
-      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    });
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.faq-question');
+  if (!btn) return;
+  const item = btn.closest('.faq-item');
+  if (!item) return;
+  const answer = item.querySelector('.faq-answer');
+  if (!answer) return;
+  const isOpen = item.classList.contains('open');
+  // Close all open FAQs
+  document.querySelectorAll('.faq-item.open').forEach(function(i) {
+    i.classList.remove('open');
+    var a = i.querySelector('.faq-answer');
+    if (a) a.style.maxHeight = '0';
   });
+  // Open clicked one if it was closed
+  if (!isOpen) {
+    item.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
 });
 
 // AdSense placeholder (remove in production)
