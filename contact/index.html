@@ -8,8 +8,9 @@
 <link rel="canonical" href="https://freeonlinetoolkit.org/contact/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css?v=2">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/css/style.css?v=3">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -22,6 +23,7 @@
       <a href="/guides/">Guides</a>
       <a href="/about/">About</a>
       <a href="/contact/">Contact</a>
+      <a href="/mortgage-calculator/" class="nav-cta">Try a Tool</a>
     </nav>
   </div>
 </header>
@@ -31,7 +33,7 @@
   <p>Have a suggestion for a new tool, found a bug, or just want to say hello? We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.</p>
 
   <div class="calc-card" style="max-width:600px;">
-    <h2>Send Us a Message</h2>
+    <h2><i class="fa-regular fa-paper-plane" style="color:var(--color-primary);margin-right:8px;"></i> Send Us a Message</h2>
     <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
       <div class="form-group">
         <label for="name">Name</label>
@@ -47,7 +49,7 @@
       </div>
       <div class="form-group">
         <label for="message">Message</label>
-        <textarea id="message" name="message" rows="6" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;font-size:0.95rem;resize:vertical;" required></textarea>
+        <textarea id="message" name="message" rows="6" class="form-group" style="width:100%;padding:10px 14px;border:1.5px solid var(--color-border);border-radius:var(--radius-sm);font-family:inherit;font-size:0.95rem;resize:vertical;" required></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Send Message</button>
     </form>
@@ -57,11 +59,43 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-grid">
-      <div><h3>Tools</h3><ul><li><a href="/mortgage-calculator/">Mortgage Calculator</a></li><li><a href="/bmi-calculator/">BMI Calculator</a></li><li><a href="/currency-converter/">Currency Converter</a></li><li><a href="/password-generator/">Password Generator</a></li></ul></div>
-      <div><h3>Guides</h3><ul><li><a href="/guides/mortgage-calculator-guide/">Mortgage Guide</a></li><li><a href="/guides/bmi-health-guide/">BMI Guide</a></li><li><a href="/guides/compound-interest-guide/">Compound Interest Guide</a></li><li><a href="/guides/password-security-guide/">Password Security Guide</a></li></ul></div>
-      <div><h3>Company</h3><ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy-policy/">Privacy Policy</a></li><li><a href="/terms/">Terms of Service</a></li></ul></div>
+      <div class="footer-brand">
+        <a href="/" class="logo" style="color:#f1f5f9;font-size:1.1rem;"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+        <p>Fast, accurate, and completely free online tools for everyday calculations and tasks. No signup required.</p>
+      </div>
+      <div>
+        <h3>Tools</h3>
+        <ul>
+          <li><a href="/mortgage-calculator/">Mortgage Calculator</a></li>
+          <li><a href="/bmi-calculator/">BMI Calculator</a></li>
+          <li><a href="/currency-converter/">Currency Converter</a></li>
+          <li><a href="/password-generator/">Password Generator</a></li>
+          <li><a href="/qr-code-generator/">QR Code Generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="/guides/mortgage-calculator-guide/">Mortgage Guide</a></li>
+          <li><a href="/guides/bmi-health-guide/">BMI Guide</a></li>
+          <li><a href="/guides/compound-interest-guide/">Compound Interest Guide</a></li>
+          <li><a href="/guides/password-security-guide/">Password Security Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-bottom">&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</span>
+      <span>Free online tools and calculators</span>
+    </div>
   </div>
 </footer>
 
