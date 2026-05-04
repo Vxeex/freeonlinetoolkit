@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Word Counter - Count Words & Characters Online</title>
+<meta name="description" content="Count words, characters, sentences, and paragraphs in real time. Free online word counter tool for writers, students, and professionals. No signup needed.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/word-counter/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Count Words",
+  "description": "Count words, characters, and other text statistics in real time.",
+  "step": [
+    {"@type": "HowToStep", "text": "Type or paste your text into the input area"},
+    {"@type": "HowToStep", "text": "View real-time statistics: word count, character count, sentences, and paragraphs"},
+    {"@type": "HowToStep", "text": "Use the Clear button to reset and start over"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+    <nav class="nav"><a href="/">Home</a><a href="/about/">About</a><a href="/contact/">Contact</a></nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb"><a href="/">Home</a> <span>??/span> Word Counter</div>
+  <h1>Free Word Counter</h1>
+  <p class="tool-intro">Count words, characters, sentences, and paragraphs in real time. Perfect for writers, students, SEO professionals, and anyone who needs to track text length.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="calc-card">
+        <h2>Word Counter</h2>
+        <div class="form-group">
+          <label for="wordText">Type or paste your text below</label>
+          <textarea id="wordText" style="width:100%;min-height:200px;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;font-size:0.95rem;line-height:1.6;resize:vertical;" placeholder="Start typing or paste your text here..." oninput="countWords()">The quick brown fox jumps over the lazy dog. This is a sample text to demonstrate the word counter tool. It counts words, characters, and more in real time.</textarea>
+        </div>
+        <button class="btn btn-secondary" onclick="clearText()">Clear</button>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:16px;">
+          <div style="background:#eff6ff;padding:14px;border-radius:8px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:700;color:#2563eb;" id="wcCount">24</div>
+            <div style="font-size:0.8rem;color:#6b7280;">Words</div>
+          </div>
+          <div style="background:#f0fdf4;padding:14px;border-radius:8px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:700;color:#059669;" id="wcChars">154</div>
+            <div style="font-size:0.8rem;color:#6b7280;">Characters</div>
+          </div>
+          <div style="background:#fef3c7;padding:14px;border-radius:8px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:700;color:#d97706;" id="wcCharsNoSpace">128</div>
+            <div style="font-size:0.8rem;color:#6b7280;">Characters (no spaces)</div>
+          </div>
+          <div style="background:#fdf2f8;padding:14px;border-radius:8px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:700;color:#db2777;" id="wcSentences">3</div>
+            <div style="font-size:0.8rem;color:#6b7280;">Sentences</div>
+          </div>
+          <div style="background:#f5f3ff;padding:14px;border-radius:8px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:700;color:#7c3aed;" id="wcParagraphs">1</div>
+            <div style="font-size:0.8rem;color:#6b7280;">Paragraphs</div>
+          </div>
+          <div style="background:#fff7ed;padding:14px;border-radius:8px;text-align:center;">
+            <div style="font-size:1.5rem;font-weight:700;color:#ea580c;" id="wcReadingTime">0.1</div>
+            <div style="font-size:0.8rem;color:#6b7280;">Reading Time (min)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-placeholder"><!-- AdSense Ad Unit --></div>
+
+      <div class="content-section">
+        <h2>How to Use the Word Counter</h2>
+        <p>Using this word counter is straightforward. Simply <strong>type</strong> or <strong>paste</strong> your text into the text area, and the statistics update automatically in real time. There's no button to press ??the counts update as you type.</p>
+        <p>The tool shows you: <strong>word count</strong> (total number of words), <strong>character count</strong> (with and without spaces), <strong>sentence count</strong>, <strong>paragraph count</strong>, and estimated <strong>reading time</strong>. The reading time estimate is based on an average reading speed of 200 words per minute.</p>
+        <p>This is particularly useful for students meeting essay word counts, writers tracking their progress, SEO professionals optimizing meta descriptions, and social media managers staying within character limits.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Writing Tips for Word Counts</h2>
+        <ul>
+          <li><strong>Essays & assignments:</strong> Most academic papers have specific word count requirements. Use this tool to stay within limits.</li>
+          <li><strong>Blog posts:</strong> Aim for 1,500-2,500 words for SEO-optimized blog content.</li>
+          <li><strong>Meta descriptions:</strong> Keep between 150-160 characters for optimal search engine display.</li>
+          <li><strong>Social media:</strong> Twitter/X has a 280-character limit. LinkedIn posts perform best at 1,200-1,500 characters.</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What counts as a word? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">A word is defined as any sequence of characters separated by spaces or line breaks. Hyphenated words (like "well-known") count as one word. Numbers are also counted as words.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How is reading time calculated? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Reading time is calculated by dividing the total word count by 200 (the average adult reading speed of 200 words per minute). The result is rounded to one decimal place.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is my text saved or stored anywhere? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">No. All text processing happens entirely in your browser. Your text is never sent to any server, stored, or logged. You can verify this by using the tool while disconnected from the internet.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="ad-placeholder" style="min-height:600px;"><!-- AdSense Ad Unit --></div>
+      <div class="content-section">
+        <h3>Related Tools</h3>
+        <ul>
+          <li><a href="/json-formatter/">JSON Formatter</a></li>
+          <li><a href="/password-generator/">Password Generator</a></li>
+          <li><a href="/age-calculator/">Age Calculator</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><h3>Tools</h3><ul><li><a href="/mortgage-calculator/">Mortgage Calculator</a></li><li><a href="/bmi-calculator/">BMI Calculator</a></li><li><a href="/currency-converter/">Currency Converter</a></li><li><a href="/password-generator/">Password Generator</a></li></ul></div>
+      <div><h3>Utilities</h3><ul><li><a href="/password-generator/">Password Generator</a></li><li><a href="/qr-code-generator/">QR Code Generator</a></li><li><a href="/word-counter/">Word Counter</a></li><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/json-formatter/">JSON Formatter</a></li></ul></div>
+      <div><h3>Company</h3><ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy-policy/">Privacy Policy</a></li><li><a href="/terms/">Terms of Service</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function countWords() {
+  const text = document.getElementById('wordText').value;
+  const trimmed = text.trim();
+
+  const words = trimmed ? trimmed.split(/\s+/).length : 0;
+  const chars = text.length;
+  const charsNoSpace = text.replace(/\s/g, '').length;
+  const sentences = trimmed ? (trimmed.match(/[.!?]+/g) || []).length : 0;
+  const paragraphs = trimmed ? text.split(/\n\s*\n/).filter(p => p.trim()).length : 0;
+  if (!trimmed) { document.getElementById('wcParagraphs').textContent = '0'; }
+  const readingTime = Math.max(0.1, words / 200);
+
+  document.getElementById('wcCount').textContent = words;
+  document.getElementById('wcChars').textContent = chars;
+  document.getElementById('wcCharsNoSpace').textContent = charsNoSpace;
+  document.getElementById('wcSentences').textContent = sentences || (trimmed ? 1 : 0);
+  if (trimmed) document.getElementById('wcParagraphs').textContent = paragraphs || 1;
+  document.getElementById('wcReadingTime').textContent = readingTime.toFixed(1);
+}
+
+function clearText() {
+  document.getElementById('wordText').value = '';
+  countWords();
+}
+
+document.addEventListener('DOMContentLoaded', countWords);
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Tip Calculator - Tip Amount & Bill Splitter</title>
+<meta name="description" content="Calculate tips easily with our free tip calculator. Split bills among any number of people. Choose your tip percentage or customize it. Perfect for restaurants and group dining.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/tip-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate a Tip",
+  "description": "Calculate the tip amount and split the bill among multiple people.",
+  "step": [
+    {"@type": "HowToStep", "text": "Enter the total bill amount"},
+    {"@type": "HowToStep", "text": "Enter the number of people splitting the bill"},
+    {"@type": "HowToStep", "text": "Choose a tip percentage or enter a custom amount"},
+    {"@type": "HowToStep", "text": "Click Calculate to see the total per person"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+    <nav class="nav"><a href="/">Home</a><a href="/about/">About</a><a href="/contact/">Contact</a></nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb"><a href="/">Home</a> <span>??/span> Tip Calculator</div>
+  <h1>Free Tip Calculator & Bill Splitter</h1>
+  <p class="tool-intro">Calculate the perfect tip and split bills evenly among friends. Whether you're dining out, ordering delivery, or splitting a group bill, this calculator makes it fast and fair.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="calc-card">
+        <h2>Tip & Bill Split Calculator</h2>
+        <div class="form-group">
+          <label for="billAmount">Bill Amount ($)</label>
+          <input type="number" id="billAmount" value="85.50" min="0" step="0.5">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tipPercent">Tip Percentage (%)</label>
+            <input type="number" id="tipPercent" value="15" min="0" max="100" step="0.5">
+          </div>
+          <div class="form-group">
+            <label for="numPeople">Number of People</label>
+            <input type="number" id="numPeople" value="2" min="1" max="100">
+          </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="font-size:0.88rem;font-weight:500;color:#374151;margin-bottom:4px;display:block;">Quick Tip %</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-secondary" style="padding:6px 14px;font-size:0.85rem;" onclick="setTip(10)">10%</button>
+            <button class="btn btn-secondary" style="padding:6px 14px;font-size:0.85rem;" onclick="setTip(15)">15%</button>
+            <button class="btn btn-secondary" style="padding:6px 14px;font-size:0.85rem;" onclick="setTip(18)">18%</button>
+            <button class="btn btn-secondary" style="padding:6px 14px;font-size:0.85rem;" onclick="setTip(20)">20%</button>
+            <button class="btn btn-secondary" style="padding:6px 14px;font-size:0.85rem;" onclick="setTip(25)">25%</button>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="calcTip()">Calculate</button>
+          <button class="btn btn-secondary" onclick="resetTip()">Reset</button>
+        </div>
+
+        <div class="result-box" id="tipResult">
+          <div class="result-value" id="tipPerPerson">$0.00</div>
+          <div class="result-label">Per Person (total including tip)</div>
+          <div class="result-details">
+            <div><span class="label">Tip Amount</span><span class="value" id="tipAmount">$0.00</span></div>
+            <div><span class="label">Tip Per Person</span><span class="value" id="tipAmountPerPerson">$0.00</span></div>
+            <div><span class="label">Total Bill (with tip)</span><span class="value" id="tipTotal">$0.00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-placeholder"><!-- AdSense Ad Unit --></div>
+
+      <div class="content-section">
+        <h2>How to Use the Tip Calculator</h2>
+        <p>Using this tip calculator is quick and straightforward. Enter your <strong>bill amount</strong> (pre-tax or post-tax ??whichever you prefer to tip on), the <strong>tip percentage</strong> you'd like to leave, and how many <strong>people</strong> are splitting the bill.</p>
+        <p>Use the quick-tip buttons for standard tipping percentages (10%, 15%, 18%, 20%, 25%), or enter a custom percentage in the input field. The calculator instantly shows the <strong>tip amount</strong>, the <strong>total bill</strong> with tip, and the <strong>per-person breakdown</strong>.</p>
+        <p>This is especially useful for group dinners where you want to split everything evenly. No more awkward math at the table ??just enter the numbers and see exactly what each person owes.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Standard Tipping Guidelines</h2>
+        <ul>
+          <li><strong>Restaurants / Dining:</strong> 15-20% of the pre-tax bill</li>
+          <li><strong>Delivery Drivers:</strong> 10-15% or $3-5 minimum</li>
+          <li><strong>Bar / Bartenders:</strong> $1-2 per drink or 15-20% of the tab</li>
+          <li><strong>Hair Salon / Spa:</strong> 15-25% of the service cost</li>
+          <li><strong>Hotel Staff:</strong> $2-5 per night for housekeeping</li>
+          <li><strong>Taxi / Rideshare:</strong> 10-15% of the fare</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Should I tip on the pre-tax or post-tax amount? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Standard etiquette suggests tipping on the pre-tax amount. However, many people tip on the total bill (post-tax) for simplicity. Either is generally acceptable ??the difference is usually small.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What if I had bad service? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">While tipping is customary for good service, you can adjust the percentage down for poor service. Many people leave 10% for below-average service. If service was truly unacceptable, speak to the manager rather than just leaving no tip.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How do I split a bill unevenly? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">This calculator splits the total evenly. For uneven splits (e.g., when some people ordered more expensive items), calculate each person's share individually by entering their portion as the "bill amount" and setting "number of people" to 1.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="ad-placeholder" style="min-height:600px;"><!-- AdSense Ad Unit --></div>
+      <div class="content-section">
+        <h3>Related Tools</h3>
+        <ul>
+          <li><a href="/vat-calculator/">VAT Calculator</a></li>
+          <li><a href="/currency-converter/">Currency Converter</a></li>
+          <li><a href="/fuel-cost-calculator/">Fuel Cost Calculator</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><h3>Tools</h3><ul><li><a href="/mortgage-calculator/">Mortgage Calculator</a></li><li><a href="/bmi-calculator/">BMI Calculator</a></li><li><a href="/currency-converter/">Currency Converter</a></li><li><a href="/password-generator/">Password Generator</a></li></ul></div>
+      <div><h3>Financial</h3><ul><li><a href="/compound-interest-calculator/">Compound Interest Calculator</a></li><li><a href="/car-loan-calculator/">Car Loan Calculator</a></li><li><a href="/vat-calculator/">VAT Calculator</a></li><li><a href="/tip-calculator/">Tip Calculator</a></li></ul></div>
+      <div><h3>Company</h3><ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy-policy/">Privacy Policy</a></li><li><a href="/terms/">Terms of Service</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function calcTip() {
+  const bill = getNum('billAmount');
+  const pct = getNum('tipPercent');
+  const people = getNum('numPeople');
+
+  if (!bill || !pct || !people) return;
+
+  const tip = bill * pct / 100;
+  const total = bill + tip;
+  const perPerson = total / people;
+  const tipPerPerson = tip / people;
+
+  document.getElementById('tipPerPerson').textContent = formatCurrency(perPerson);
+  document.getElementById('tipAmount').textContent = formatCurrency(tip);
+  document.getElementById('tipAmountPerPerson').textContent = formatCurrency(tipPerPerson);
+  document.getElementById('tipTotal').textContent = formatCurrency(total);
+  showResult('tipResult');
+}
+
+function setTip(pct) {
+  document.getElementById('tipPercent').value = pct;
+  calcTip();
+}
+
+function resetTip() {
+  document.getElementById('billAmount').value = 85.50;
+  document.getElementById('tipPercent').value = 15;
+  document.getElementById('numPeople').value = 2;
+  hideResult('tipResult');
+}
+
+document.addEventListener('DOMContentLoaded', calcTip);
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Mortgage Payment Calculator - Monthly Loan Payments</title>
+<meta name="description" content="Use our free mortgage calculator to estimate monthly payments, view amortization schedules, and compare loan terms. Calculate principal, interest, taxes, and insurance.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/mortgage-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Mortgage Payments",
+  "description": "Calculate your monthly mortgage payment using loan amount, interest rate, and term.",
+  "step": [
+    {"@type": "HowToStep", "text": "Enter the total loan amount you wish to borrow"},
+    {"@type": "HowToStep", "text": "Input the annual interest rate as a percentage"},
+    {"@type": "HowToStep", "text": "Select the loan term in years"},
+    {"@type": "HowToStep", "text": "Click Calculate to see your monthly payment"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>??/span> Mortgage Calculator
+  </div>
+
+  <h1>Free Mortgage Payment Calculator</h1>
+  <p class="tool-intro">Calculate your monthly mortgage payments instantly. This free mortgage calculator shows you the total payment including principal and interest, with a full amortization schedule for any loan term.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+
+      <div class="calc-card">
+        <h2>Mortgage Calculator</h2>
+        <div class="form-group">
+          <label for="loanAmount">Loan Amount</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="loanAmount" class="prefixed" value="300000" min="0" step="1000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="interestRate">Annual Interest Rate (%)</label>
+            <input type="number" id="interestRate" value="6.5" min="0" step="0.1">
+          </div>
+          <div class="form-group">
+            <label for="loanTerm">Loan Term (Years)</label>
+            <input type="number" id="loanTerm" value="30" min="1" max="50">
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="calcMortgage()">Calculate</button>
+          <button class="btn btn-secondary" onclick="resetMortgage()">Reset</button>
+        </div>
+
+        <div class="result-box" id="mortgageResult">
+          <div class="result-value" id="monthlyPayment">$0.00</div>
+          <div class="result-label">Monthly Payment (Principal & Interest)</div>
+          <div class="result-details">
+            <div><span class="label">Total Payment (over term)</span><span class="value" id="totalPayment">$0</span></div>
+            <div><span class="label">Total Interest</span><span class="value" id="totalInterest">$0</span></div>
+            <div><span class="label">Number of Payments</span><span class="value" id="numPayments">0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-placeholder"><!-- AdSense Ad Unit --></div>
+
+      <div class="content-section">
+        <h2>How to Use the Mortgage Calculator</h2>
+        <p>Using this mortgage calculator is simple. Start by entering the total <strong>loan amount</strong> you plan to borrow ??this is the purchase price minus your down payment. Next, input the <strong>annual interest rate</strong> your lender has quoted (or a current market rate if you're shopping around). Finally, choose your <strong>loan term</strong> in years ??typically 15, 20, or 30 years for most home loans.</p>
+        <p>Click "Calculate" and you'll instantly see your <strong>monthly payment</strong> (principal and interest only). The calculator also shows the total amount you'll pay over the full loan term and the total interest you'll pay over the life of the loan.</p>
+        <p>Try adjusting the interest rate or loan term to see how even small changes affect your monthly payment. A lower rate or shorter term means less interest paid overall.</p>
+        <p>Looking to pay off your mortgage faster? Check out our <a href="/home-loan-prepayment-calculator/">Home Loan Prepayment Calculator</a> to see how extra payments save on interest.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Mortgage Payment Formula</h2>
+        <p>The monthly payment is calculated using the standard amortization formula:</p>
+        <div class="formula-box">
+          M = P ? [r(1+r)?瓢 / [(1+r)????1]
+        </div>
+        <p>Where: <strong>M</strong> = monthly payment, <strong>P</strong> = loan principal, <strong>r</strong> = monthly interest rate (annual rate 繩 12), and <strong>n</strong> = total number of monthly payments (term ? 12).</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What is a good interest rate for a mortgage? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Mortgage rates vary based on market conditions, your credit score, and loan type. Compare rates from multiple lenders to find the best deal for your situation.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Does this include property taxes and insurance? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">This calculator shows principal and interest only. Your actual monthly payment may also include property taxes, homeowner's insurance, and PMI if your down payment is less than 20%.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Should I choose a 15-year or 30-year mortgage? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">A 15-year mortgage has higher monthly payments but much less total interest. A 30-year mortgage has lower monthly payments but costs more in interest over time. Choose based on your budget and financial goals.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How much can I borrow for a mortgage? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Most lenders approve mortgages where the monthly payment is no more than 28-31% of your gross monthly income. Your credit score, debt-to-income ratio, and down payment also affect how much you can borrow.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="ad-placeholder" style="min-height:600px;"><!-- AdSense Ad Unit --></div>
+      <div class="content-section">
+        <h3>Related Tools</h3>
+        <ul>
+          <li><a href="/home-loan-prepayment-calculator/">Home Loan Prepayment Calculator</a></li>
+          <li><a href="/compound-interest-calculator/">Compound Interest Calculator</a></li>
+          <li><a href="/car-loan-calculator/">Car Loan Calculator</a></li>
+          <li><a href="/fuel-cost-calculator/">Fuel Cost Calculator</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <h3>Tools</h3>
+        <ul>
+          <li><a href="/mortgage-calculator/">Mortgage Calculator</a></li>
+          <li><a href="/bmi-calculator/">BMI Calculator</a></li>
+          <li><a href="/currency-converter/">Currency Converter</a></li>
+          <li><a href="/password-generator/">Password Generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Financial</h3>
+        <ul>
+          <li><a href="/compound-interest-calculator/">Compound Interest Calculator</a></li>
+          <li><a href="/car-loan-calculator/">Car Loan Calculator</a></li>
+          <li><a href="/vat-calculator/">VAT Calculator</a></li>
+          <li><a href="/tip-calculator/">Tip Calculator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 FreeOnlineToolkit.org. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+function calcMortgage() {
+  const P = getNum('loanAmount');
+  const annualRate = getNum('interestRate');
+  const years = getNum('loanTerm');
+  if (!P || !annualRate || !years) return;
+
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+  const M = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+
+  document.getElementById('monthlyPayment').textContent = formatCurrency(M);
+  document.getElementById('totalPayment').textContent = formatCurrency(M * n);
+  document.getElementById('totalInterest').textContent = formatCurrency(M * n - P);
+  document.getElementById('numPayments').textContent = n;
+  showResult('mortgageResult');
+}
+
+function resetMortgage() {
+  document.getElementById('loanAmount').value = 300000;
+  document.getElementById('interestRate').value = 6.5;
+  document.getElementById('loanTerm').value = 30;
+  hideResult('mortgageResult');
+}
+
+document.addEventListener('DOMContentLoaded', calcMortgage);
+</script>
+
+</body>
+</html>
+

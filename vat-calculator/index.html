@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free VAT Calculator - Add or Remove VAT Online</title>
+<meta name="description" content="Quick VAT calculator: add or remove VAT from any amount. Supports all standard VAT rates. Perfect for UK, EU, and international VAT calculations.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/vat-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate VAT",
+  "description": "Add or remove VAT from any amount with this simple calculator.",
+  "step": [
+    {"@type": "HowToStep", "text": "Enter the amount you want to calculate VAT on"},
+    {"@type": "HowToStep", "text": "Select the VAT rate percentage"},
+    {"@type": "HowToStep", "text": "Choose Add VAT or Remove VAT"},
+    {"@type": "HowToStep", "text": "Click Calculate to see the result"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+    <nav class="nav"><a href="/">Home</a><a href="/about/">About</a><a href="/contact/">Contact</a></nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb"><a href="/">Home</a> <span>??/span> VAT Calculator</div>
+  <h1>Free VAT Calculator</h1>
+  <p class="tool-intro">Quickly add or remove VAT from any amount. Supports all standard VAT rates including 20% (UK), 19% (Germany/France), and custom rates for any country.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="calc-card">
+        <h2>VAT Calculator</h2>
+        <div class="form-group">
+          <label for="vatAmount">Amount ($)</label>
+          <input type="number" id="vatAmount" value="100" min="0" step="0.01">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="vatRate">VAT Rate (%)</label>
+            <select id="vatRate">
+              <option value="5">5% (Reduced rate)</option>
+              <option value="10">10% (Some EU countries)</option>
+              <option value="13">13% (Canada HST)</option>
+              <option value="19" selected>19% (Germany / EU standard)</option>
+              <option value="20">20% (UK / EU standard)</option>
+              <option value="21">21% (Spain / Netherlands)</option>
+              <option value="22">22% (Italy / Poland)</option>
+              <option value="25">25% (Sweden / Denmark / Norway)</option>
+              <option value="27">27% (Hungary)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="vatMode">Mode</label>
+            <select id="vatMode">
+              <option value="add">Add VAT to amount</option>
+              <option value="remove">Remove VAT from amount</option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="calcVAT()">Calculate</button>
+          <button class="btn btn-secondary" onclick="resetVAT()">Reset</button>
+        </div>
+
+        <div class="result-box" id="vatResult">
+          <div class="result-value" id="vatTotal">$0.00</div>
+          <div class="result-label" id="vatTotalLabel">Total (including VAT)</div>
+          <div class="result-details">
+            <div><span class="label">Net Amount</span><span class="value" id="vatNet">$0.00</span></div>
+            <div><span class="label">VAT Amount</span><span class="value" id="vatAmountDisplay">$0.00</span></div>
+            <div><span class="label">VAT Rate</span><span class="value" id="vatRateDisplay">20%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-placeholder"><!-- AdSense Ad Unit --></div>
+
+      <div class="content-section">
+        <h2>How to Use the VAT Calculator</h2>
+        <p>This VAT calculator handles both adding and removing VAT from any amount. Enter the <strong>amount</strong> you're working with, select the applicable <strong>VAT rate</strong> for your country (or enter a custom one), and choose whether you want to <strong>add</strong> VAT (calculate the gross amount including tax) or <strong>remove</strong> VAT (extract the net amount before tax from a gross figure).</p>
+        <p>For example, if you have a 瞿100 net price and want to add 20% VAT, the calculator shows 瞿120 including VAT. If you have a 瞿120 gross amount and want to remove 20% VAT, it shows the 瞿100 net amount and the 瞿20 VAT portion.</p>
+        <p>This is particularly useful for businesses, freelancers, and contractors who need to calculate VAT for invoices, expenses, and tax returns.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>VAT Calculation Formula</h2>
+        <div class="formula-box">
+          <strong>Add VAT:</strong> Total = Net ? (1 + Rate/100)<br>
+          <strong>Remove VAT:</strong> Net = Gross / (1 + Rate/100)
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">What is VAT? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Value Added Tax (VAT) is a consumption tax placed on products and services at each stage of the supply chain. It's used in over 160 countries, including all EU member states, the UK, Canada (GST/HST), Australia (GST), and many others.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How do I know which VAT rate to use? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Standard VAT rates vary by country and product type. Most goods and services use the standard rate (19-27% depending on country). Reduced rates apply to essentials like food, children's clothing, and books. Check your country's tax authority website for specific rates.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is VAT the same as sales tax? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">VAT and sales tax are different. Sales tax is collected only at the final point of sale to the consumer. VAT is collected at each stage of production and distribution. Both achieve similar economic results but through different mechanisms.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="ad-placeholder" style="min-height:600px;"><!-- AdSense Ad Unit --></div>
+      <div class="content-section">
+        <h3>Related Tools</h3>
+        <ul>
+          <li><a href="/tip-calculator/">Tip Calculator</a></li>
+          <li><a href="/currency-converter/">Currency Converter</a></li>
+          <li><a href="/fuel-cost-calculator/">Fuel Cost Calculator</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><h3>Tools</h3><ul><li><a href="/mortgage-calculator/">Mortgage Calculator</a></li><li><a href="/bmi-calculator/">BMI Calculator</a></li><li><a href="/currency-converter/">Currency Converter</a></li><li><a href="/password-generator/">Password Generator</a></li></ul></div>
+      <div><h3>Financial</h3><ul><li><a href="/compound-interest-calculator/">Compound Interest Calculator</a></li><li><a href="/car-loan-calculator/">Car Loan Calculator</a></li><li><a href="/vat-calculator/">VAT Calculator</a></li><li><a href="/tip-calculator/">Tip Calculator</a></li></ul></div>
+      <div><h3>Company</h3><ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy-policy/">Privacy Policy</a></li><li><a href="/terms/">Terms of Service</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function calcVAT() {
+  const amount = getNum('vatAmount');
+  const rate = parseFloat(document.getElementById('vatRate').value);
+  const mode = document.getElementById('vatMode').value;
+
+  if (!amount) return;
+
+  let net, vat, total, totalLabel;
+  if (mode === 'add') {
+    net = amount;
+    vat = amount * rate / 100;
+    total = amount + vat;
+    totalLabel = 'Total (including VAT)';
+  } else {
+    net = amount / (1 + rate / 100);
+    vat = amount - net;
+    total = amount;
+    totalLabel = 'Original Amount (excluding VAT)';
+  }
+
+  document.getElementById('vatTotal').textContent = formatCurrency(total);
+  document.getElementById('vatTotalLabel').textContent = totalLabel;
+  document.getElementById('vatNet').textContent = formatCurrency(net);
+  document.getElementById('vatAmountDisplay').textContent = formatCurrency(vat);
+  document.getElementById('vatRateDisplay').textContent = rate + '%';
+  showResult('vatResult');
+}
+
+function resetVAT() {
+  document.getElementById('vatAmount').value = 100;
+  document.getElementById('vatRate').value = 20;
+  document.getElementById('vatMode').value = 'add';
+  hideResult('vatResult');
+}
+
+document.addEventListener('DOMContentLoaded', calcVAT);
+</script>
+
+</body>
+</html>
+

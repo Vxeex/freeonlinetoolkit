@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Password Generator - Strong Secure Passwords</title>
+<meta name="description" content="Generate strong, secure passwords instantly. Customize length, include uppercase, lowercase, numbers, and symbols. Free password generator with copy to clipboard.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/password-generator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Generate a Strong Password",
+  "description": "Create a secure password with customizable options for maximum protection.",
+  "step": [
+    {"@type": "HowToStep", "text": "Choose your desired password length (8-64 characters)"},
+    {"@type": "HowToStep", "text": "Select which character types to include (uppercase, lowercase, numbers, symbols)"},
+    {"@type": "HowToStep", "text": "Click Generate to create a random password"},
+    {"@type": "HowToStep", "text": "Copy the generated password using the Copy button"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+    <nav class="nav"><a href="/">Home</a><a href="/about/">About</a><a href="/contact/">Contact</a></nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb"><a href="/">Home</a> <span>??/span> Password Generator</div>
+  <h1>Free Password Generator</h1>
+  <p class="tool-intro">Create strong, secure passwords that protect your accounts from hackers. Customize length and character types, then copy your new password instantly.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="calc-card">
+        <h2>Password Generator</h2>
+        <div class="form-group">
+          <label for="pwLength">Password Length (8-128)</label>
+          <input type="number" id="pwLength" value="16" min="8" max="128">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="font-size:0.88rem;font-weight:500;color:#374151;margin-bottom:6px;display:block;">Character Types</label>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" id="pwUpper" checked> Uppercase (A-Z)</label>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" id="pwLower" checked> Lowercase (a-z)</label>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" id="pwNumbers" checked> Numbers (0-9)</label>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" id="pwSymbols" checked> Symbols (!@#$%^&amp;*)</label>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label for="pwOutput" style="font-size:0.88rem;font-weight:500;color:#374151;margin-bottom:4px;display:block;">Generated Password</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="pwOutput" readonly style="flex:1;font-family:'Courier New',monospace;font-size:1rem;background:#f8f9fc;" value="P@ssw0rd!XyZ9">
+            <button class="btn btn-secondary" onclick="copyPassword()" style="white-space:nowrap;">Copy</button>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:0.88rem;font-weight:500;color:#374151;">Password Strength:</span>
+            <span id="pwStrength" style="font-weight:600;padding:2px 10px;border-radius:4px;font-size:0.85rem;">Strong</span>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="generatePassword()">Generate New Password</button>
+        </div>
+      </div>
+
+      <div class="ad-placeholder"><!-- AdSense Ad Unit --></div>
+
+      <div class="content-section">
+        <h2>How to Use the Password Generator</h2>
+        <p>Creating strong passwords is essential for online security. Use this tool to generate random passwords that are virtually impossible to crack. Start by setting your desired <strong>password length</strong> ??we recommend at least 12-16 characters for good security.</p>
+        <p>Choose which <strong>character types</strong> to include: uppercase letters, lowercase letters, numbers, and symbols. Including all four types creates the strongest passwords. The generator uses a cryptographically random algorithm to ensure true randomness.</p>
+        <p>Click <strong>Generate</strong> to create a new password instantly. Use the <strong>Copy</strong> button to copy it to your clipboard. Each password is generated locally in your browser ??nothing is sent to any server or saved anywhere.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Password Security Tips</h2>
+        <ul>
+          <li><strong>Use unique passwords</strong> for every account ??never reuse passwords across sites</li>
+          <li><strong>Length matters most:</strong> A 16-character password with mixed characters is exponentially stronger than an 8-character one</li>
+          <li><strong>Use a password manager</strong> like Bitwarden, 1Password, or LastPass to store your passwords securely</li>
+          <li><strong>Enable two-factor authentication</strong> (2FA) wherever possible for an extra layer of security</li>
+          <li><strong>Avoid personal information</strong> like birthdays, names, or common words in your passwords</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How long should my password be? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">We recommend at least 12 characters for general use, and 16+ characters for important accounts like email, banking, and social media. Each additional character exponentially increases the time needed to crack the password.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Are these passwords truly random? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes, the generator uses your browser's built-in cryptographic random number generator (crypto.getRandomValues) to ensure each password is truly random and unpredictable. No patterns or pseudo-random algorithms are used.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is it safe to use an online password generator? <span class="arrow">??/span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes ??this generator runs entirely in your browser. No passwords are transmitted over the internet, stored, or logged. You can verify this by disconnecting from the internet after the page loads ??it will still work.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="ad-placeholder" style="min-height:600px;"><!-- AdSense Ad Unit --></div>
+      <div class="content-section">
+        <h3>Related Tools</h3>
+        <ul>
+          <li><a href="/qr-code-generator/">QR Code Generator</a></li>
+          <li><a href="/word-counter/">Word Counter</a></li>
+          <li><a href="/json-formatter/">JSON Formatter</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div><h3>Tools</h3><ul><li><a href="/mortgage-calculator/">Mortgage Calculator</a></li><li><a href="/bmi-calculator/">BMI Calculator</a></li><li><a href="/currency-converter/">Currency Converter</a></li><li><a href="/password-generator/">Password Generator</a></li></ul></div>
+      <div><h3>Utilities</h3><ul><li><a href="/password-generator/">Password Generator</a></li><li><a href="/qr-code-generator/">QR Code Generator</a></li><li><a href="/word-counter/">Word Counter</a></li><li><a href="/age-calculator/">Age Calculator</a></li><li><a href="/json-formatter/">JSON Formatter</a></li></ul></div>
+      <div><h3>Company</h3><ul><li><a href="/about/">About</a></li><li><a href="/contact/">Contact</a></li><li><a href="/privacy-policy/">Privacy Policy</a></li><li><a href="/terms/">Terms of Service</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+const numberChars = '0123456789';
+const symbolChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+function generatePassword() {
+  const length = parseInt(document.getElementById('pwLength').value) || 16;
+  const useUpper = document.getElementById('pwUpper').checked;
+  const useLower = document.getElementById('pwLower').checked;
+  const useNumbers = document.getElementById('pwNumbers').checked;
+  const useSymbols = document.getElementById('pwSymbols').checked;
+
+  if (!useUpper && !useLower && !useNumbers && !useSymbols) return;
+
+  let chars = '';
+  if (useUpper) chars += upperChars;
+  if (useLower) chars += lowerChars;
+  if (useNumbers) chars += numberChars;
+  if (useSymbols) chars += symbolChars;
+
+  // Ensure at least one of each selected type
+  let password = '';
+  const array = new Uint32Array(length);
+  crypto.getRandomValues(array);
+
+  const selections = [];
+  if (useUpper) selections.push(upperChars[crypto.getRandomValues(new Uint32Array(1))[0] % upperChars.length]);
+  if (useLower) selections.push(lowerChars[crypto.getRandomValues(new Uint32Array(1))[0] % lowerChars.length]);
+  if (useNumbers) selections.push(numberChars[crypto.getRandomValues(new Uint32Array(1))[0] % numberChars.length]);
+  if (useSymbols) selections.push(symbolChars[crypto.getRandomValues(new Uint32Array(1))[0] % symbolChars.length]);
+
+  for (let i = selections.length; i < length; i++) {
+    selections.push(chars[array[i] % chars.length]);
+  }
+
+  // Shuffle using Fisher-Yates
+  for (let i = selections.length - 1; i > 0; i--) {
+    const j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1);
+    [selections[i], selections[j]] = [selections[j], selections[i]];
+  }
+
+  password = selections.join('');
+  document.getElementById('pwOutput').value = password;
+  updateStrength(length, useUpper, useLower, useNumbers, useSymbols);
+}
+
+function updateStrength(length, useUpper, useLower, useNumbers, useSymbols) {
+  const types = [useUpper, useLower, useNumbers, useSymbols].filter(Boolean).length;
+  const el = document.getElementById('pwStrength');
+
+  let score = 0;
+  if (length >= 8) score++;
+  if (length >= 12) score++;
+  if (length >= 16) score++;
+  if (types >= 3) score++;
+  if (types >= 4) score++;
+  if (length >= 20) score++;
+
+  if (score >= 5) { el.textContent = 'Very Strong'; el.style.color = '#059669'; el.style.background = '#f0fdf4'; }
+  else if (score >= 3) { el.textContent = 'Strong'; el.style.color = '#2563eb'; el.style.background = '#eff6ff'; }
+  else { el.textContent = 'Weak'; el.style.color = '#dc2626'; el.style.background = '#fef2f2'; }
+}
+
+function copyPassword() {
+  const input = document.getElementById('pwOutput');
+  input.select();
+  navigator.clipboard.writeText(input.value).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', generatePassword);
+</script>
+
+</body>
+</html>
+
