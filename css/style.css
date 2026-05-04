@@ -166,12 +166,6 @@ a:hover { text-decoration: underline; }
 .result-details .label { color: #6b7280; }
 .result-details .value { font-weight: 600; color: #1a1a2e; }
 
-.ad-placeholder {
-  background: #f3f4f6; border-radius: 8px; min-height: 250px;
-  display: flex; align-items: center; justify-content: center;
-  color: #9ca3af; font-size: 0.85rem; margin-bottom: 20px;
-  border: 1px dashed #d1d5db;
-}
 
 /* ===== CONTENT SECTIONS ===== */
 .content-section {
@@ -200,8 +194,8 @@ a:hover { text-decoration: underline; }
 .faq-question:hover { color: #2563eb; }
 .faq-question .arrow { transition: transform 0.2s; font-size: 0.85rem; }
 .faq-item.open .faq-question .arrow { transform: rotate(180deg); }
-.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-.faq-item.open .faq-answer { max-height: 500px; }
+.faq-answer { display: none; }
+.faq-item.open .faq-answer { display: block; }
 .faq-answer-inner { padding: 0 0 14px; color: #6b7280; font-size: 0.9rem; line-height: 1.6; }
 
 /* ===== INFO PAGES ===== */
