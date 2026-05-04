@@ -20,4 +20,11 @@
   <url><loc>https://freeonlinetoolkit.org/contact/</loc><priority>0.4</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://freeonlinetoolkit.org/privacy-policy/</loc><priority>0.3</priority><changefreq>yearly</changefreq></url>
   <url><loc>https://freeonlinetoolkit.org/terms/</loc><priority>0.3</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://freeonlinetoolkit.org/guides/</loc><priority>0.6</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://freeonlinetoolkit.org/guides/mortgage-calculator-guide/</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://freeonlinetoolkit.org/guides/bmi-health-guide/</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://freeonlinetoolkit.org/guides/compound-interest-guide/</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://freeonlinetoolkit.org/guides/password-security-guide/</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://freeonlinetoolkit.org/guides/currency-conversion-guide/</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://freeonlinetoolkit.org/guides/calorie-counting-guide/</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>
 </urlset>
