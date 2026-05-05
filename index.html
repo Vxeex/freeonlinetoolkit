@@ -1,70 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Free Online Toolkit - Free Calculators & Online Tools for Everyday Use</title>
+<title>Free Online Toolkit ??Free Calculators & Online Tools for Everyday Use</title>
 <meta name="description" content="Free online tools and calculators for everyday use. Mortgage calculator, BMI calculator, currency converter, password generator, age calculator, and more. 100% free, no signup required.">
 <link rel="canonical" href="https://freeonlinetoolkit.org/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="Free Online Toolkit - Free Calculators & Online Tools">
-<meta property="og:description" content="Free online tools and calculators for everyday use. Mortgage calculator, BMI calculator, currency converter, and more. 100% free, no signup.">
+<meta property="og:title" content="Free Online Toolkit ??Free Calculators & Online Tools">
+<meta property="og:description" content="19+ free online tools and calculators for everyday use. Mortgage calculator, BMI calculator, currency converter, and more. 100% free, no signup.">
 <meta property="og:url" content="https://freeonlinetoolkit.org/">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="/css/style.css?v=3">
+<link rel="stylesheet" href="/css/style.css?v=6">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
-<script src="/js/shared.js"></script>
-<script>
-(function() {
-  // Tool search filtering
-  var searchInput = document.getElementById('toolSearch');
-  var clearBtn = document.getElementById('searchClear');
-  if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      var query = this.value.toLowerCase().trim();
-      clearBtn.classList.toggle('visible', query.length > 0);
-      var sections = document.querySelectorAll('.cat-section');
-      sections.forEach(function(section) {
-        var cards = section.querySelectorAll('.tool-card');
-        var hasVisible = false;
-        cards.forEach(function(card) {
-          var title = card.querySelector('h3');
-          var match = !query || (title && title.textContent.toLowerCase().indexOf(query) !== -1);
-          card.style.display = match ? '' : 'none';
-          if (match) hasVisible = true;
-        });
-        section.style.display = hasVisible ? '' : 'none';
-      });
-    });
-    clearBtn.addEventListener('click', function() {
-      searchInput.value = '';
-      searchInput.dispatchEvent(new Event('input'));
-      searchInput.focus();
-    });
-  }
-
-  // Recently used display
-  var recentContainer = document.getElementById('recentlyUsed');
-  var recentList = document.getElementById('recentToolsList');
-  if (recentContainer && recentList) {
-    try {
-      var tools = JSON.parse(localStorage.getItem('recentTools') || '[]');
-      if (tools.length > 0) {
-        recentContainer.style.display = 'block';
-        recentList.innerHTML = tools.slice(0, 3).map(function(t) {
-          return '<a href="' + t.path + '" class="recent-tool-item">' +
-            '<i class="fa-solid ' + t.icon + '" style="color:' + t.color + ';"></i> ' +
-            t.title + '</a>';
-        }).join('');
-      }
-    } catch(e) {}
-  }
-})();
-</script>
+<script src="/js/shared.js?v=6"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -84,9 +37,15 @@
 </head>
 <body>
 
+<!-- ===== HEADER ===== -->
 <header class="header">
   <div class="header-inner">
-    <a href="/" class="logo"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+    <a href="/" class="logo"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
     <nav class="nav">
       <a href="/">Home</a>
       <a href="/guides/">Guides</a>
@@ -101,11 +60,11 @@
 <section class="home-hero">
   <div class="home-hero-content animate-in">
     <div class="home-hero-badge">
-      <i class="fa-solid fa-bolt" style="font-size:0.7rem;"></i>
-      15+ Free Tools &mdash; No Signup Required
+      <i class="fa-solid fa-bolt"></i>
+      19+ Free Tools &mdash; No Signup Required
     </div>
     <h1>Tools that make <span>life simpler</span></h1>
-    <p>Fast, accurate, and completely free online calculators and utilities for everyday tasks. From mortgages to passwords &mdash; everything you need, nothing you don't.</p>
+    <p>Fast, accurate, and completely free online calculators and utilities for everyday tasks. From mortgages to passwords &mdash; everything you need, nothing you don&rsquo;t.</p>
     <div class="home-hero-actions">
       <a href="#tools" class="btn btn-primary"><i class="fa-solid fa-magnifying-glass"></i> Explore Tools</a>
       <a href="/guides/" class="btn btn-secondary"><i class="fa-regular fa-compass"></i> Read Guides</a>
@@ -115,12 +74,12 @@
     <svg class="hero-illustration" viewBox="0 0 520 440" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="heroGrad1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#0f766e" stop-opacity="0.12"/>
-          <stop offset="100%" stop-color="#0f766e" stop-opacity="0.04"/>
+          <stop offset="0%" stop-color="#0d7377" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#0d7377" stop-opacity="0.04"/>
         </linearGradient>
         <linearGradient id="heroGrad2" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#ea580c" stop-opacity="0.08"/>
-          <stop offset="100%" stop-color="#ea580c" stop-opacity="0.02"/>
+          <stop offset="0%" stop-color="#d97706" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="#d97706" stop-opacity="0.02"/>
         </linearGradient>
       </defs>
 
@@ -129,68 +88,68 @@
       <ellipse cx="260" cy="60" rx="180" ry="40" fill="url(#heroGrad2)"/>
 
       <!-- Main card frame -->
-      <rect x="70" y="55" width="380" height="290" rx="18" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+      <rect x="70" y="55" width="380" height="290" rx="18"/>
 
       <!-- Card header dots -->
-      <circle cx="92" cy="78" r="4" fill="#ef4444" opacity="0.5"/>
-      <circle cx="110" cy="78" r="4" fill="#fbbf24" opacity="0.5"/>
-      <circle cx="128" cy="78" r="4" fill="#22c55e" opacity="0.5"/>
+      <circle cx="92" cy="78" r="4" fill="#ef4444" opacity="0.4"/>
+      <circle cx="110" cy="78" r="4" fill="#f59e0b" opacity="0.4"/>
+      <circle cx="128" cy="78" r="4" fill="#10b981" opacity="0.4"/>
 
       <!-- Chart title -->
-      <text x="92" y="116" font-family="Sora, sans-serif" font-size="11" fill="#64748b" font-weight="600" letter-spacing="1">MONTHLY OVERVIEW</text>
+      <text x="92" y="116" font-family="Sora, sans-serif" font-size="11" letter-spacing="1" font-weight="600">MONTHLY OVERVIEW</text>
 
       <!-- Bars -->
-      <rect x="95" y="240" width="32" height="-70" rx="4" fill="#0f766e" opacity="0.85"/>
-      <rect x="142" y="240" width="32" height="-110" rx="4" fill="#0f766e" opacity="0.6"/>
-      <rect x="189" y="240" width="32" height="-50" rx="4" fill="#ea580c" opacity="0.85"/>
-      <rect x="236" y="240" width="32" height="-130" rx="4" fill="#0f766e" opacity="0.4"/>
-      <rect x="283" y="240" width="32" height="-90" rx="4" fill="#ea580c" opacity="0.55"/>
-      <rect x="330" y="240" width="32" height="-60" rx="4" fill="#0f766e" opacity="0.7"/>
+      <rect x="95" y="240" width="32" height="-70" rx="4" fill="#0d7377" opacity="0.85"/>
+      <rect x="142" y="240" width="32" height="-110" rx="4" fill="#0d7377" opacity="0.6"/>
+      <rect x="189" y="240" width="32" height="-50" rx="4" fill="#d97706" opacity="0.85"/>
+      <rect x="236" y="240" width="32" height="-130" rx="4" fill="#0d7377" opacity="0.4"/>
+      <rect x="283" y="240" width="32" height="-90" rx="4" fill="#d97706" opacity="0.55"/>
+      <rect x="330" y="240" width="32" height="-60" rx="4" fill="#0d7377" opacity="0.7"/>
 
       <!-- X-axis labels -->
-      <text x="99" y="272" font-family="Sora, sans-serif" font-size="8" fill="#94a3b8">Jan</text>
-      <text x="146" y="272" font-family="Sora, sans-serif" font-size="8" fill="#94a3b8">Feb</text>
-      <text x="193" y="272" font-family="Sora, sans-serif" font-size="8" fill="#94a3b8">Mar</text>
-      <text x="240" y="272" font-family="Sora, sans-serif" font-size="8" fill="#94a3b8">Apr</text>
-      <text x="287" y="272" font-family="Sora, sans-serif" font-size="8" fill="#94a3b8">May</text>
-      <text x="334" y="272" font-family="Sora, sans-serif" font-size="8" fill="#94a3b8">Jun</text>
+      <text x="99" y="272" font-size="8">Jan</text>
+      <text x="146" y="272" font-size="8">Feb</text>
+      <text x="193" y="272" font-size="8">Mar</text>
+      <text x="240" y="272" font-size="8">Apr</text>
+      <text x="287" y="272" font-size="8">May</text>
+      <text x="334" y="272" font-size="8">Jun</text>
 
       <!-- Y-axis line -->
-      <line x1="85" y1="245" x2="85" y2="115" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="85" y1="245" x2="85" y2="115" stroke-dasharray="3,3" stroke-width="1"/>
 
-      <!-- Calculator floating element (right) -->
+      <!-- Calculator floating element -->
       <g transform="translate(350, 85)">
-        <rect x="0" y="0" width="85" height="95" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1"/>
-        <rect x="0" y="0" width="85" height="24" rx="10" fill="#0f766e" opacity="0.08"/>
-        <text x="42" y="16" font-family="Sora, sans-serif" font-size="7" fill="#64748b" text-anchor="middle" font-weight="600">CALC</text>
-        <line x1="14" y1="38" x2="70" y2="38" stroke="#e2e8f0" stroke-width="2"/>
-        <line x1="14" y1="50" x2="55" y2="50" stroke="#e2e8f0" stroke-width="2"/>
-        <line x1="14" y1="62" x2="60" y2="62" stroke="#e2e8f0" stroke-width="2"/>
-        <line x1="14" y1="74" x2="50" y2="74" stroke="#e2e8f0" stroke-width="2"/>
+        <rect x="0" y="0" width="85" height="95" rx="10"/>
+        <rect x="0" y="0" width="85" height="24" rx="10" fill="#0d7377" opacity="0.08"/>
+        <text x="42" y="16" font-family="Sora, sans-serif" font-size="7" text-anchor="middle" font-weight="600">CALC</text>
+        <line x1="14" y1="38" x2="70" y2="38" stroke-width="2"/>
+        <line x1="14" y1="50" x2="55" y2="50" stroke-width="2"/>
+        <line x1="14" y1="62" x2="60" y2="62" stroke-width="2"/>
+        <line x1="14" y1="74" x2="50" y2="74" stroke-width="2"/>
       </g>
 
       <!-- Floating stat: interest -->
       <g transform="translate(75, 280)">
-        <circle cx="18" cy="18" r="18" fill="#0f766e" opacity="0.08"/>
-        <text x="18" y="23" font-family="Sora, sans-serif" font-size="13" fill="#0f766e" text-anchor="middle" font-weight="700">%</text>
+        <circle cx="18" cy="18" r="18" fill="#0d7377" opacity="0.08"/>
+        <text x="18" y="23" font-family="Sora, sans-serif" font-size="13" fill="#0d7377" text-anchor="middle" font-weight="700">%</text>
       </g>
 
       <!-- Floating stat: currency -->
       <g transform="translate(410, 155)">
-        <circle cx="18" cy="18" r="18" fill="#ea580c" opacity="0.08"/>
-        <text x="18" y="23" font-family="Sora, sans-serif" font-size="14" fill="#ea580c" text-anchor="middle" font-weight="700">$</text>
+        <circle cx="18" cy="18" r="18" fill="#d97706" opacity="0.08"/>
+        <text x="18" y="23" font-family="Sora, sans-serif" font-size="14" fill="#d97706" text-anchor="middle" font-weight="700">$</text>
       </g>
 
-      <!-- Bottom decorative line chart -->
-      <polyline points="95,310 160,290 220,300 280,275 340,285 395,260" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
-      <circle cx="160" cy="290" r="3" fill="#0f766e" opacity="0.4"/>
-      <circle cx="280" cy="275" r="3" fill="#0f766e" opacity="0.4"/>
+      <!-- Bottom trend line -->
+      <polyline points="95,310 160,290 220,300 280,275 340,285 395,260" fill="none" stroke="#0d7377" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.3"/>
+      <circle cx="160" cy="290" r="3" fill="#0d7377" opacity="0.4"/>
+      <circle cx="280" cy="275" r="3" fill="#0d7377" opacity="0.4"/>
 
       <!-- Decorative dots -->
-      <circle cx="30" cy="390" r="5" fill="#0f766e" opacity="0.1"/>
-      <circle cx="490" cy="380" r="7" fill="#ea580c" opacity="0.08"/>
-      <circle cx="500" cy="70" r="4" fill="#0f766e" opacity="0.12"/>
-      <circle cx="40" cy="120" r="6" fill="#ea580c" opacity="0.06"/>
+      <circle cx="30" cy="390" r="5" fill="#0d7377" opacity="0.08"/>
+      <circle cx="490" cy="380" r="7" fill="#d97706" opacity="0.06"/>
+      <circle cx="500" cy="70" r="4" fill="#0d7377" opacity="0.1"/>
+      <circle cx="40" cy="120" r="6" fill="#d97706" opacity="0.05"/>
     </svg>
 
     <!-- Floating stat badges -->
@@ -198,7 +157,7 @@
       <div class="hero-stat-icon" style="background:var(--color-primary-bg);color:var(--color-primary);">
         <i class="fa-solid fa-calculator"></i>
       </div>
-      <div><strong>15+</strong> Tools</div>
+      <div><strong>19+</strong> Tools</div>
     </div>
     <div class="hero-stat hero-stat-2">
       <div class="hero-stat-icon" style="background:var(--color-accent-bg);color:var(--color-accent);">
@@ -207,7 +166,7 @@
       <div><strong>100%</strong> Free</div>
     </div>
     <div class="hero-stat hero-stat-3">
-      <div class="hero-stat-icon" style="background:#f0f4ff;color:#6366f1;">
+      <div class="hero-stat-icon" style="background:#eef2ff;color:#6366f1;">
         <i class="fa-solid fa-shield-halved"></i>
       </div>
       <div><strong>No</strong> Signup</div>
@@ -219,7 +178,7 @@
 <div class="trust-bar">
   <div class="trust-bar-inner">
     <div class="animate-in animate-in-delay-1">
-      <div class="trust-stat-number">15+</div>
+      <div class="trust-stat-number">19+</div>
       <div class="trust-stat-label">Free Online Tools</div>
     </div>
     <div class="animate-in animate-in-delay-2">
@@ -307,7 +266,7 @@
         <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
       </a>
       <a href="/currency-converter/" class="tool-card">
-        <div class="tool-card-icon" style="background:#fff7ed;color:#ea580c;"><i class="fa-solid fa-money-bill-transfer"></i></div>
+        <div class="tool-card-icon" style="background:#fff7ed;color:#d97706;"><i class="fa-solid fa-money-bill-transfer"></i></div>
         <h3>Currency Converter</h3>
         <p>Convert between 160+ world currencies with live exchange rates. Fast and accurate conversions.</p>
         <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
@@ -327,20 +286,44 @@
   <div class="cat-section-inner">
     <div class="home-section-header animate-in">
       <div class="home-section-label"><i class="fa-solid fa-heart-pulse"></i> Category</div>
-      <h2>Health &amp; Fitness</h2>
-      <p>Track your health metrics with evidence-based calculators designed for wellness goals.</p>
+      <h2>Health &amp; Wellness</h2>
+      <p>Track your health, body composition, and reproductive wellness with specialized calculators.</p>
     </div>
-    <div class="tool-grid-home animate-in animate-in-delay-1" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));max-width:600px;margin:0 auto;">
+    <div class="tool-grid-home animate-in animate-in-delay-1">
       <a href="/bmi-calculator/" class="tool-card">
         <div class="tool-card-icon" style="background:#ecfdf5;color:#10b981;"><i class="fa-solid fa-weight-scale"></i></div>
         <h3>BMI Calculator</h3>
         <p>Calculate your Body Mass Index instantly. See your BMI category and healthy weight range.</p>
         <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
       </a>
+      <a href="/body-fat-calculator/" class="tool-card">
+        <div class="tool-card-icon" style="background:#fef2e8;color:#d97706;"><i class="fa-solid fa-person"></i></div>
+        <h3>Body Fat Calculator</h3>
+        <p>Estimate your body fat percentage using the U.S. Navy circumference method. No special equipment needed.</p>
+        <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+      <a href="/ideal-weight-calculator/" class="tool-card">
+        <div class="tool-card-icon" style="background:#f0fdfa;color:#0d9488;"><i class="fa-solid fa-weight-scale"></i></div>
+        <h3>Ideal Weight Calculator</h3>
+        <p>Find your ideal weight using Devine, Robinson, Miller, and Hamwi formulas. See your consensus range.</p>
+        <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
+      </a>
       <a href="/calorie-calculator/" class="tool-card">
         <div class="tool-card-icon" style="background:#fdf2f8;color:#db2777;"><i class="fa-solid fa-fire"></i></div>
         <h3>Calorie Calculator</h3>
         <p>Find your daily calorie needs based on age, height, weight, activity level, and fitness goals.</p>
+        <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+      <a href="/pregnancy-due-date-calculator/" class="tool-card">
+        <div class="tool-card-icon" style="background:#f0f4ff;color:#6366f1;"><i class="fa-solid fa-baby"></i></div>
+        <h3>Pregnancy Due Date Calculator</h3>
+        <p>Calculate your due date using Naegele's rule. See current week, trimester, and key milestones.</p>
+        <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+      <a href="/ovulation-calculator/" class="tool-card">
+        <div class="tool-card-icon" style="background:#fef3c7;color:#d97706;"><i class="fa-solid fa-calendar-check"></i></div>
+        <h3>Ovulation &amp; Fertility Calculator</h3>
+        <p>Find your fertile window and ovulation day. Plan for pregnancy with cycle-based tracking.</p>
         <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
       </a>
     </div>
@@ -425,7 +408,7 @@
       <p>No page reloads, no waiting. All tools run instantly in your browser with real-time updates as you type.</p>
     </div>
     <div class="why-card animate-in animate-in-delay-3">
-      <div class="why-icon" style="background:#f0f4ff;color:#6366f1;">
+      <div class="why-icon" style="background:#eef2ff;color:#6366f1;">
         <i class="fa-solid fa-shield-halved"></i>
       </div>
       <h3>100% Private &amp; Secure</h3>
@@ -439,17 +422,17 @@
   <div class="seo-content-inner">
     <div class="seo-content-text animate-in">
       <h2>Your complete toolkit for everyday calculations</h2>
-      <p>FreeOnlineToolkit.org brings together 15+ powerful tools in one place &mdash; from mortgage calculators to password generators &mdash; all completely free and accessible from any device.</p>
-      <p>Whether you're planning a home purchase, tracking your health metrics, or debugging JSON data, our tools are designed to give you accurate results instantly. No account creation. No hidden fees. No limitations.</p>
+      <p>FreeOnlineToolkit.org brings together 19+ powerful tools in one place &mdash; from mortgage calculators to password generators &mdash; all completely free and accessible from any device.</p>
+      <p>Whether you&rsquo;re planning a home purchase, tracking your health metrics, or debugging JSON data, our tools are designed to give you accurate results instantly. No account creation. No hidden fees. No limitations.</p>
       <ul>
-        <li><i class="fa-solid fa-check"></i> 15+ professional-grade calculators and utilities</li>
+        <li><i class="fa-solid fa-check"></i> 19+ professional-grade calculators and utilities</li>
         <li><i class="fa-solid fa-check"></i> Works on desktop, tablet, and mobile</li>
         <li><i class="fa-solid fa-check"></i> Real-time results as you type</li>
         <li><i class="fa-solid fa-check"></i> Free guides and resources for every tool</li>
       </ul>
       <div class="seo-stats">
         <div class="seo-stat">
-          <div class="seo-stat-number">15+</div>
+          <div class="seo-stat-number">19+</div>
           <div class="seo-stat-label">Tools</div>
         </div>
         <div class="seo-stat">
@@ -473,12 +456,12 @@
   <div class="home-section-header animate-in">
     <div class="home-section-label"><i class="fa-regular fa-comment-dots"></i> Testimonials</div>
     <h2>Loved by thousands of users</h2>
-    <p>Here's what people are saying about our free online tools.</p>
+    <p>Here&rsquo;s what people are saying about our free online tools.</p>
   </div>
   <div class="testimonials-grid">
     <div class="testimonial-card animate-in animate-in-delay-1">
       <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-      <p class="testimonial-text">"I used the mortgage calculator while house-hunting. It helped me understand exactly what I could afford. So much easier than spreadsheets!"</p>
+      <p class="testimonial-text">&ldquo;I used the mortgage calculator while house-hunting. It helped me understand exactly what I could afford. So much easier than spreadsheets!&rdquo;</p>
       <div class="testimonial-author">
         <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=80&h=80&fit=crop&crop=face&auto=format&q=80" alt="Sarah Mitchell" loading="lazy" width="40" height="40">
         <div>
@@ -489,7 +472,7 @@
     </div>
     <div class="testimonial-card animate-in animate-in-delay-2">
       <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-      <p class="testimonial-text">"I track my fitness goals weekly and the BMI and calorie calculators are spot-on. Clean interface, no clutter, just works."</p>
+      <p class="testimonial-text">&ldquo;I track my fitness goals weekly and the BMI and calorie calculators are spot-on. Clean interface, no clutter, just works.&rdquo;</p>
       <div class="testimonial-author">
         <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=80&h=80&fit=crop&crop=face&auto=format&q=80" alt="James Chen" loading="lazy" width="40" height="40">
         <div>
@@ -500,7 +483,7 @@
     </div>
     <div class="testimonial-card animate-in animate-in-delay-3">
       <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-      <p class="testimonial-text">"The JSON formatter and password generator are in my daily workflow. No signup, no nonsense &mdash; exactly what a developer needs."</p>
+      <p class="testimonial-text">&ldquo;The JSON formatter and password generator are in my daily workflow. No signup, no nonsense &mdash; exactly what a developer needs.&rdquo;</p>
       <div class="testimonial-author">
         <img class="testimonial-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face&auto=format&q=80" alt="Priya Patel" loading="lazy" width="40" height="40">
         <div>
@@ -512,7 +495,7 @@
   </div>
 </section>
 
-<!-- ===== CTA / CONTACT ===== -->
+<!-- ===== CTA ===== -->
 <section class="cta-section">
   <div class="cta-section-inner animate-in">
     <h2>Ready to simplify your day?</h2>
@@ -530,7 +513,7 @@
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="logo" style="color:#f1f5f9;font-size:1.1rem;"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+        <a href="/" class="logo" style="color:#f5f0eb;font-size:1.1rem;"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
         <p>Fast, accurate, and completely free online tools for everyday calculations and tasks. No signup required.</p>
       </div>
       <div>
@@ -538,9 +521,9 @@
         <ul>
           <li><a href="/mortgage-calculator/">Mortgage Calculator</a></li>
           <li><a href="/bmi-calculator/">BMI Calculator</a></li>
-          <li><a href="/currency-converter/">Currency Converter</a></li>
+          <li><a href="/body-fat-calculator/">Body Fat Calculator</a></li>
+          <li><a href="/pregnancy-due-date-calculator/">Due Date Calculator</a></li>
           <li><a href="/password-generator/">Password Generator</a></li>
-          <li><a href="/qr-code-generator/">QR Code Generator</a></li>
         </ul>
       </div>
       <div>
@@ -569,5 +552,52 @@
   </div>
 </footer>
 
+<script>
+(function() {
+  // Tool search filtering (homepage only)
+  var searchInput = document.getElementById('toolSearch');
+  var clearBtn = document.getElementById('searchClear');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      var query = this.value.toLowerCase().trim();
+      clearBtn.classList.toggle('visible', query.length > 0);
+      var sections = document.querySelectorAll('.cat-section');
+      sections.forEach(function(section) {
+        var cards = section.querySelectorAll('.tool-card');
+        var hasVisible = false;
+        cards.forEach(function(card) {
+          var title = card.querySelector('h3');
+          var match = !query || (title && title.textContent.toLowerCase().indexOf(query) !== -1);
+          card.style.display = match ? '' : 'none';
+          if (match) hasVisible = true;
+        });
+        section.style.display = hasVisible ? '' : 'none';
+      });
+    });
+    clearBtn.addEventListener('click', function() {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+      searchInput.focus();
+    });
+  }
+
+  // Recently used display
+  var recentContainer = document.getElementById('recentlyUsed');
+  var recentList = document.getElementById('recentToolsList');
+  if (recentContainer && recentList) {
+    try {
+      var tools = JSON.parse(localStorage.getItem('recentTools') || '[]');
+      if (tools.length > 0) {
+        recentContainer.style.display = 'block';
+        recentList.innerHTML = tools.slice(0, 3).map(function(t) {
+          return '<a href="' + t.path + '" class="recent-tool-item">' +
+            '<i class="fa-solid ' + t.icon + '" style="color:' + t.color + ';"></i> ' +
+            t.title + '</a>';
+        }).join('');
+      }
+    } catch(e) {}
+  }
+})();
+</script>
 </body>
 </html>

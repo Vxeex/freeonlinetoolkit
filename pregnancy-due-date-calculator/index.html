@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pregnancy Due Date Calculator — Free Due Date Estimator</title>
+<meta name="description" content="Calculate your estimated due date using Naegele's rule. Free pregnancy due date calculator tells you how many weeks pregnant you are, your trimester, and key milestones.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/pregnancy-due-date-calculator/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Pregnancy Due Date Calculator — Free Due Date Estimator">
+<meta property="og:description" content="Calculate your estimated due date, current pregnancy week, and trimester. Free online due date calculator using Naegele's rule.">
+<meta property="og:url" content="https://freeonlinetoolkit.org/pregnancy-due-date-calculator/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/css/style.css?v=6">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js?v=6"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Your Pregnancy Due Date",
+  "description": "Calculate your estimated due date using the first day of your last menstrual period.",
+  "step": [
+    {"@type": "HowToStep", "text": "Enter the first day of your last menstrual period (LMP)"},
+    {"@type": "HowToStep", "text": "Enter your average cycle length (default 28 days)"},
+    {"@type": "HowToStep", "text": "Click Calculate to see your estimated due date and pregnancy timeline"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/guides/">Guides</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/mortgage-calculator/" class="nav-cta">Try a Tool</a>
+    </nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>&#9662;</span> Pregnancy Due Date Calculator
+  </div>
+
+  <h1>Pregnancy Due Date Calculator</h1>
+  <p class="tool-intro">Estimate your due date based on your last menstrual period or conception date. See your current pregnancy week, trimester, and key milestones — fast and free.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="calc-card">
+        <h2>Due Date Calculator</h2>
+
+        <div class="form-group">
+          <label>Calculate based on</label>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="calcMethod" value="lmp" checked onchange="toggleMethod()"> Last Menstrual Period (LMP)
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="calcMethod" value="conception" onchange="toggleMethod()"> Conception Date
+            </label>
+          </div>
+        </div>
+
+        <div id="lmpGroup">
+          <div class="form-group">
+            <label for="lmpDate">First day of last menstrual period</label>
+            <input type="date" id="lmpDate">
+          </div>
+          <div class="form-group">
+            <label for="cycleLength">Average cycle length (days)</label>
+            <input type="number" id="cycleLength" value="28" min="20" max="45">
+            <div style="font-size:0.78rem;color:var(--color-text-muted);margin-top:4px;">Typical range: 21–35 days. Default is 28.</div>
+          </div>
+        </div>
+
+        <div id="conceptionGroup" style="display:none;">
+          <div class="form-group">
+            <label for="conceptionDate">Conception date (if known)</label>
+            <input type="date" id="conceptionDate">
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="calcDueDate()">Calculate</button>
+          <button class="btn btn-secondary" onclick="resetDueDate()">Reset</button>
+        </div>
+
+        <div class="result-box" id="dueDateResult">
+          <div class="result-value" id="dueDateDisplay">—</div>
+          <div class="result-label">Estimated Due Date</div>
+          <div class="result-details">
+            <div><span class="label">Current Week</span><span class="value" id="currentWeek">—</span></div>
+            <div><span class="label">Trimester</span><span class="value" id="trimester">—</span></div>
+            <div><span class="label">Weeks Remaining</span><span class="value" id="weeksRemaining">—</span></div>
+            <div><span class="label">Conception Date (estimated)</span><span class="value" id="estConception">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h2>How to Use</h2>
+        <p>Select whether you want to calculate based on your <strong>last menstrual period (LMP)</strong> or <strong>conception date</strong>. If using LMP, enter the first day of your last period and your average cycle length. If using conception, enter the date of conception. Click Calculate to see your due date, current pregnancy week, trimester, and more.</p>
+        <p>The calculator uses <strong>Naegele's rule</strong>: 280 days (40 weeks) from the first day of your LMP, adjusted for cycle length. For conception dates, it adds 266 days (38 weeks).</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How accurate is the due date calculation? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Only about 5% of babies arrive on their exact due date. The due date is an estimate — most babies arrive between 38 and 42 weeks. Use this as a planning guide, not a precise prediction.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What is Naegele's rule? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Naegele's rule is the standard method for estimating due dates. It adds 280 days (40 weeks) to the first day of your last menstrual period, then adjusts for cycle length. For a 28-day cycle, due date = LMP + 280 days.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How are trimesters divided? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">First trimester: weeks 1-12. Second trimester: weeks 13-27. Third trimester: week 28 until birth. Each trimester brings different developmental milestones for the baby and changes for the mother.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Does cycle length affect the due date? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes. If your cycle is longer than 28 days, ovulation happens later, so the due date shifts forward. If shorter, it shifts backward. The adjustment is: due date change = cycle length - 28 days.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="calc-card">
+        <h2>Related Tools</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="/ovulation-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-calendar-check" style="color:#d97706;"></i> Ovulation Calculator
+          </a>
+          <a href="/bmi-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-weight-scale" style="color:#10b981;"></i> BMI Calculator
+          </a>
+          <a href="/calorie-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-fire" style="color:#db2777;"></i> Calorie Calculator
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo" style="color:#f5f0eb;font-size:1.1rem;"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
+        <p>Fast, accurate, and completely free online tools for everyday calculations and tasks. No signup required.</p>
+      </div>
+      <div>
+        <h3>Tools</h3>
+        <ul>
+                    <li><a href="/mortgage-calculator/">Mortgage Calculator</a></li>
+          <li><a href="/bmi-calculator/">BMI Calculator</a></li>
+          <li><a href="/body-fat-calculator/">Body Fat Calculator</a></li>
+          <li><a href="/pregnancy-due-date-calculator/">Due Date Calculator</a></li>
+          <li><a href="/password-generator/">Password Generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="/guides/mortgage-calculator-guide/">Mortgage Guide</a></li>
+          <li><a href="/guides/bmi-health-guide/">BMI Guide</a></li>
+          <li><a href="/guides/compound-interest-guide/">Compound Interest Guide</a></li>
+          <li><a href="/guides/password-security-guide/">Password Security Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</span>
+      <span>Free online tools and calculators</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMethod() {
+  var method = document.querySelector('input[name="calcMethod"]:checked').value;
+  document.getElementById('lmpGroup').style.display = method === 'lmp' ? '' : 'none';
+  document.getElementById('conceptionGroup').style.display = method === 'conception' ? '' : 'none';
+}
+
+function calcDueDate() {
+  var method = document.querySelector('input[name="calcMethod"]:checked').value;
+  var dueDate, conceptionDate, lmpDateObj;
+
+  if (method === 'lmp') {
+    var lmp = document.getElementById('lmpDate').value;
+    if (!lmp) { alert('Please enter the date of your last menstrual period.'); return; }
+    var cycle = parseInt(document.getElementById('cycleLength').value) || 28;
+    lmpDateObj = new Date(lmp + 'T12:00:00');
+    var cycleAdjust = cycle - 28;
+    dueDate = new Date(lmpDateObj);
+    dueDate.setDate(dueDate.getDate() + 280 + cycleAdjust);
+    conceptionDate = new Date(lmpDateObj);
+    conceptionDate.setDate(conceptionDate.getDate() + 14 + cycleAdjust);
+  } else {
+    var conc = document.getElementById('conceptionDate').value;
+    if (!conc) { alert('Please enter the conception date.'); return; }
+    dueDate = new Date(conc + 'T12:00:00');
+    dueDate.setDate(dueDate.getDate() + 266);
+    conceptionDate = new Date(conc + 'T12:00:00');
+    lmpDateObj = new Date(conc + 'T12:00:00');
+    lmpDateObj.setDate(lmpDateObj.getDate() - 14);
+  }
+
+  // Format dates
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('dueDateDisplay').textContent = dueDate.toLocaleDateString('en-US', options);
+  document.getElementById('estConception').textContent = conceptionDate.toLocaleDateString('en-US', options);
+
+  // Current pregnancy week
+  var today = new Date();
+  var startDate = method === 'lmp' ? lmpDateObj : new Date(conceptionDate);
+  startDate.setDate(startDate.getDate() - 14); // conception - 14 days = approximate LMP start
+  var diffMs = today - startDate;
+  var totalDaysPregnant = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+
+  if (totalDaysPregnant > 294) {
+    document.getElementById('currentWeek').textContent = totalDaysPregnant >= 294 ? '42+ (past due date)' : totalDaysPregnant + ' days';
+    document.getElementById('trimester').textContent = 'Post-term';
+    document.getElementById('weeksRemaining').textContent = '0 — baby may arrive any day';
+  } else {
+    var weeks = Math.floor(totalDaysPregnant / 7);
+    var days = totalDaysPregnant % 7;
+    document.getElementById('currentWeek').textContent = weeks + ' weeks, ' + days + ' days';
+
+    if (totalDaysPregnant < 84) {
+      document.getElementById('trimester').textContent = 'First Trimester (weeks 1–12)';
+    } else if (totalDaysPregnant < 196) {
+      document.getElementById('trimester').textContent = 'Second Trimester (weeks 13–27)';
+    } else {
+      document.getElementById('trimester').textContent = 'Third Trimester (weeks 28–40)';
+    }
+
+    var remaining = 280 - totalDaysPregnant;
+    var remWeeks = Math.floor(remaining / 7);
+    var remDays = remaining % 7;
+    document.getElementById('weeksRemaining').textContent = remWeeks + ' weeks, ' + remDays + ' days';
+  }
+
+  showResult('dueDateResult');
+}
+
+function resetDueDate() {
+  document.getElementById('lmpDate').value = '';
+  document.getElementById('cycleLength').value = '28';
+  document.getElementById('conceptionDate').value = '';
+  hideResult('dueDateResult');
+}
+</script>
+
+</body>
+</html>

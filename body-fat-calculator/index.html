@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Body Fat Percentage Calculator — U.S. Navy Method</title>
+<meta name="description" content="Calculate your body fat percentage using the U.S. Navy method. Free body fat calculator using neck, waist, and hip measurements. See your fitness category.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/body-fat-calculator/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Body Fat Percentage Calculator — U.S. Navy Method">
+<meta property="og:description" content="Calculate your body fat percentage using the U.S. Navy circumference method. Free, no signup.">
+<meta property="og:url" content="https://freeonlinetoolkit.org/body-fat-calculator/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/css/style.css?v=6">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js?v=6"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Body Fat Percentage",
+  "description": "Calculate your body fat percentage using circumference measurements.",
+  "step": [
+    {"@type": "HowToStep", "text": "Select your gender"},
+    {"@type": "HowToStep", "text": "Enter your height"},
+    {"@type": "HowToStep", "text": "Enter your neck and waist (and hip for women) measurements"},
+    {"@type": "HowToStep", "text": "Click Calculate to see your body fat percentage"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/guides/">Guides</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/mortgage-calculator/" class="nav-cta">Try a Tool</a>
+    </nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>&#9662;</span> Body Fat Percentage Calculator
+  </div>
+
+  <h1>Body Fat Percentage Calculator</h1>
+  <p class="tool-intro">Estimate your body fat percentage using the proven U.S. Navy circumference method. Just take a few simple measurements with a tape measure — no special equipment needed.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="calc-card">
+        <h2>Body Fat Calculator</h2>
+
+        <div class="form-group">
+          <label for="bfGender">Gender</label>
+          <select id="bfGender" onchange="toggleBFGender()">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bfHeight">Height</label>
+            <div class="input-wrap">
+              <input type="number" id="bfHeight" value="175" min="100" max="250" step="0.5">
+            </div>
+            <div style="font-size:0.78rem;color:var(--color-text-muted);margin-top:4px;">cm</div>
+          </div>
+          <div class="form-group">
+            <label for="bfNeck">Neck circumference</label>
+            <div class="input-wrap">
+              <input type="number" id="bfNeck" value="38" min="20" max="60" step="0.5">
+            </div>
+            <div style="font-size:0.78rem;color:var(--color-text-muted);margin-top:4px;">cm — measure just below the larynx</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bfWaist">Waist circumference</label>
+            <div class="input-wrap">
+              <input type="number" id="bfWaist" value="85" min="50" max="180" step="0.5">
+            </div>
+            <div style="font-size:0.78rem;color:var(--color-text-muted);margin-top:4px;">cm — at navel level</div>
+          </div>
+          <div class="form-group" id="bfHipGroup">
+            <label for="bfHip">Hip circumference</label>
+            <div class="input-wrap">
+              <input type="number" id="bfHip" value="95" min="50" max="180" step="0.5">
+            </div>
+            <div style="font-size:0.78rem;color:var(--color-text-muted);margin-top:4px;">cm — at widest point (women only)</div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="calcBodyFat()">Calculate</button>
+          <button class="btn btn-secondary" onclick="resetBodyFat()">Reset</button>
+        </div>
+
+        <div class="result-box" id="bfResult">
+          <div class="result-value" id="bfPercentage">0.0%</div>
+          <div class="result-label">Estimated Body Fat</div>
+          <div class="result-details">
+            <div><span class="label">Category</span><span class="value" id="bfCategory">—</span></div>
+            <div><span class="label">Body Fat Mass</span><span class="value" id="bfMass">—</span></div>
+            <div><span class="label">Lean Body Mass</span><span class="value" id="leanMass">—</span></div>
+            <div><span class="label">Method</span><span class="value">U.S. Navy Circumference</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h2>How to Use</h2>
+        <p>Select your gender, then enter your height and circumference measurements. Measure your <strong>neck</strong> just below the larynx, your <strong>waist</strong> at navel level, and your <strong>hips</strong> at the widest point (women only). Use a flexible tape measure and keep it snug but not tight.</p>
+        <p>This calculator uses the <strong>U.S. Navy circumference method</strong>, one of the most widely used body fat estimation formulas. It has an accuracy of about ±2–3% compared to hydrostatic weighing.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Body Fat Categories</h2>
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Category</th><th>Men (% body fat)</th><th>Women (% body fat)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Essential Fat</td><td>2–5%</td><td>10–13%</td></tr>
+            <tr><td>Athletes</td><td>6–13%</td><td>14–20%</td></tr>
+            <tr><td>Fitness</td><td>14–17%</td><td>21–24%</td></tr>
+            <tr><td>Average</td><td>18–24%</td><td>25–31%</td></tr>
+            <tr><td>Obese</td><td>25% +</td><td>32% +</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">How accurate is the U.S. Navy method? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">The U.S. Navy method has a margin of error of about ±2–3% compared to hydrostatic weighing. It's more accurate than BMI for assessing body composition and is widely used by military and fitness professionals.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What is the difference between body fat % and BMI? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">BMI uses only height and weight, so it can misclassify muscular people as overweight. Body fat percentage directly measures how much of your weight is fat vs. lean mass, giving a more accurate picture of your fitness level.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="calc-card">
+        <h2>Related Tools</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="/bmi-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-weight-scale" style="color:#10b981;"></i> BMI Calculator
+          </a>
+          <a href="/ideal-weight-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-person" style="color:#0d7377;"></i> Ideal Weight Calculator
+          </a>
+          <a href="/calorie-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-fire" style="color:#db2777;"></i> Calorie Calculator
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo" style="color:#f5f0eb;font-size:1.1rem;"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
+        <p>Fast, accurate, and completely free online tools for everyday calculations and tasks. No signup required.</p>
+      </div>
+      <div>
+        <h3>Tools</h3>
+        <ul>
+                    <li><a href="/mortgage-calculator/">Mortgage Calculator</a></li>
+          <li><a href="/bmi-calculator/">BMI Calculator</a></li>
+          <li><a href="/body-fat-calculator/">Body Fat Calculator</a></li>
+          <li><a href="/pregnancy-due-date-calculator/">Due Date Calculator</a></li>
+          <li><a href="/password-generator/">Password Generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="/guides/mortgage-calculator-guide/">Mortgage Guide</a></li>
+          <li><a href="/guides/bmi-health-guide/">BMI Guide</a></li>
+          <li><a href="/guides/compound-interest-guide/">Compound Interest Guide</a></li>
+          <li><a href="/guides/password-security-guide/">Password Security Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</span>
+      <span>Free online tools and calculators</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleBFGender() {
+  var gender = document.getElementById('bfGender').value;
+  document.getElementById('bfHipGroup').style.display = gender === 'female' ? '' : 'none';
+}
+
+function calcBodyFat() {
+  var gender = document.getElementById('bfGender').value;
+  var height = parseFloat(document.getElementById('bfHeight').value);
+  var neck = parseFloat(document.getElementById('bfNeck').value);
+  var waist = parseFloat(document.getElementById('bfWaist').value);
+  var hip = gender === 'female' ? parseFloat(document.getElementById('bfHip').value) : 0;
+
+  if (!height || !neck || !waist) { alert('Please fill in all required fields.'); return; }
+  if (gender === 'female' && !hip) { alert('Please enter your hip measurement.'); return; }
+
+  // Navy circumference formula (metric)
+  var bf;
+  if (gender === 'male') {
+    bf = 86.010 * Math.log10(waist - neck) - 70.041 * Math.log10(height) + 36.76;
+  } else {
+    bf = 163.205 * Math.log10(waist + hip - neck) - 97.684 * Math.log10(height) - 78.387;
+  }
+
+  bf = Math.max(2, Math.min(bf, 70));
+  document.getElementById('bfPercentage').textContent = bf.toFixed(1) + '%';
+
+  // Category based on ACSM guidelines
+  var category = '';
+  if (gender === 'male') {
+    if (bf < 6) category = 'Essential Fat (2–5%)';
+    else if (bf < 14) category = 'Athletes (6–13%)';
+    else if (bf < 18) category = 'Fitness (14–17%)';
+    else if (bf < 25) category = 'Average (18–24%)';
+    else category = 'Obese (25%+)';
+  } else {
+    if (bf < 14) category = 'Essential Fat (10–13%)';
+    else if (bf < 21) category = 'Athletes (14–20%)';
+    else if (bf < 25) category = 'Fitness (21–24%)';
+    else if (bf < 32) category = 'Average (25–31%)';
+    else category = 'Obese (32%+)';
+  }
+  document.getElementById('bfCategory').textContent = category;
+
+  // Estimate total weight from height (rough BMI 22)
+  var estWeight = 22 * Math.pow(height / 100, 2);
+  var fatMass = estWeight * bf / 100;
+  var leanMass = estWeight - fatMass;
+
+  document.getElementById('bfMass').textContent = fatMass.toFixed(1) + ' kg (estimated)';
+  document.getElementById('leanMass').textContent = leanMass.toFixed(1) + ' kg (estimated)';
+
+  showResult('bfResult');
+}
+
+function resetBodyFat() {
+  document.getElementById('bfHeight').value = '175';
+  document.getElementById('bfNeck').value = '38';
+  document.getElementById('bfWaist').value = '85';
+  document.getElementById('bfHip').value = '95';
+  hideResult('bfResult');
+}
+</script>
+
+</body>
+</html>

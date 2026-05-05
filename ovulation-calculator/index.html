@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ovulation & Fertility Calculator — Free Ovulation Calendar</title>
+<meta name="description" content="Calculate your fertile window and ovulation day. Free ovulation calculator tells you the best days to conceive based on your cycle length and LMP.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/ovulation-calculator/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Ovulation & Fertility Calculator — Free Ovulation Calendar">
+<meta property="og:description" content="Calculate your fertile window and ovulation day. Free ovulation calculator for planning pregnancy.">
+<meta property="og:url" content="https://freeonlinetoolkit.org/ovulation-calculator/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/css/style.css?v=6">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js?v=6"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Calculate Ovulation and Fertile Window",
+  "description": "Find your most fertile days using cycle tracking.",
+  "step": [
+    {"@type": "HowToStep", "text": "Enter the first day of your last period"},
+    {"@type": "HowToStep", "text": "Enter your average cycle length in days"},
+    {"@type": "HowToStep", "text": "Click Calculate to see your ovulation day and fertile window"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/guides/">Guides</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/mortgage-calculator/" class="nav-cta">Try a Tool</a>
+    </nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>&#9662;</span> Ovulation & Fertility Calculator
+  </div>
+
+  <h1>Ovulation & Fertility Calculator</h1>
+  <p class="tool-intro">Find your fertile window and ovulation day to plan for pregnancy. This free calculator uses your cycle data to identify the best days to conceive.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="calc-card">
+        <h2>Ovulation Calculator</h2>
+
+        <div class="form-group">
+          <label for="ovLmpDate">First day of your last period</label>
+          <input type="date" id="ovLmpDate">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ovCycleLength">Average cycle length (days)</label>
+            <input type="number" id="ovCycleLength" value="28" min="20" max="45">
+          </div>
+          <div class="form-group">
+            <label for="ovLutealPhase">Luteal phase length (days)</label>
+            <input type="number" id="ovLutealPhase" value="14" min="10" max="16">
+            <div style="font-size:0.78rem;color:var(--color-text-muted);margin-top:4px;">Default 14 days. Range: 10–16.</div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="calcOvulation()">Calculate</button>
+          <button class="btn btn-secondary" onclick="resetOvulation()">Reset</button>
+        </div>
+
+        <div class="result-box" id="ovResult">
+          <div class="result-value" id="ovOvulationDay" style="font-size:1.3rem;">—</div>
+          <div class="result-label" style="font-size:0.9rem;font-weight:500;">Ovulation Day</div>
+          <div class="result-details">
+            <div><span class="label">Fertile Window</span><span class="value" id="fertileWindow">—</span></div>
+            <div><span class="label">Next Period Est.</span><span class="value" id="nextPeriod">—</span></div>
+            <div><span class="label">Cycle Day of Ovulation</span><span class="value" id="ovCycleDay">—</span></div>
+            <div><span class="label">Days Past Ovulation</span><span class="value" id="dpo">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h2>How to Use</h2>
+        <p>Enter the first day of your last period, your average cycle length, and your typical luteal phase length (default 14 days). The calculator will determine your <strong>ovulation day</strong> and <strong>fertile window</strong> — the 6-day period when conception is most likely.</p>
+        <p>Ovulation typically occurs <strong>14 days before your next period</strong>. The fertile window includes the 5 days before ovulation plus ovulation day itself.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">When am I most fertile? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">You are most fertile during the 6-day fertile window ending on ovulation day. The highest chance of conception occurs in the 2-3 days leading up to ovulation. Sperm can survive up to 5 days in the reproductive tract.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What is the luteal phase? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">The luteal phase is the time between ovulation and your next period. It typically lasts 14 days (range 10–16 days). Unlike the follicular phase, the luteal phase length is relatively consistent from cycle to cycle.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I get pregnant outside my fertile window? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">No. Pregnancy can only occur if sperm meets an egg during ovulation. The egg survives only 12–24 hours after release. Tracking your fertile window helps you focus on the days when conception is actually possible.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How accurate is this calculator? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">This calculator provides an estimate based on average cycle data. Actual ovulation can vary. For best results, track your cycle over several months and consider using ovulation predictor kits or tracking basal body temperature.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="calc-card">
+        <h2>Related Tools</h2>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="/pregnancy-due-date-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-baby" style="color:#0d7377;"></i> Due Date Calculator
+          </a>
+          <a href="/bmi-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-weight-scale" style="color:#10b981;"></i> BMI Calculator
+          </a>
+          <a href="/calorie-calculator/" class="recent-tool-item" style="justify-content:center;">
+            <i class="fa-solid fa-fire" style="color:#db2777;"></i> Calorie Calculator
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo" style="color:#f5f0eb;font-size:1.1rem;"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
+        <p>Fast, accurate, and completely free online tools for everyday calculations and tasks. No signup required.</p>
+      </div>
+      <div>
+        <h3>Tools</h3>
+        <ul>
+                    <li><a href="/mortgage-calculator/">Mortgage Calculator</a></li>
+          <li><a href="/bmi-calculator/">BMI Calculator</a></li>
+          <li><a href="/body-fat-calculator/">Body Fat Calculator</a></li>
+          <li><a href="/pregnancy-due-date-calculator/">Due Date Calculator</a></li>
+          <li><a href="/password-generator/">Password Generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="/guides/mortgage-calculator-guide/">Mortgage Guide</a></li>
+          <li><a href="/guides/bmi-health-guide/">BMI Guide</a></li>
+          <li><a href="/guides/compound-interest-guide/">Compound Interest Guide</a></li>
+          <li><a href="/guides/password-security-guide/">Password Security Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</span>
+      <span>Free online tools and calculators</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function calcOvulation() {
+  var lmp = document.getElementById('ovLmpDate').value;
+  if (!lmp) { alert('Please enter the first day of your last period.'); return; }
+
+  var cycleLen = parseInt(document.getElementById('ovCycleLength').value) || 28;
+  var luteal = parseInt(document.getElementById('ovLutealPhase').value) || 14;
+
+  var lmpDate = new Date(lmp + 'T12:00:00');
+
+  // Ovulation = LMP + (cycle length - luteal phase)
+  var ovulationDay = new Date(lmpDate);
+  ovulationDay.setDate(lmpDate.getDate() + (cycleLen - luteal));
+
+  // Fertile window: 5 days before ovulation through ovulation day
+  var fertileStart = new Date(ovulationDay);
+  fertileStart.setDate(ovulationDay.getDate() - 5);
+
+  // Next period = LMP + cycle length
+  var nextPeriod = new Date(lmpDate);
+  nextPeriod.setDate(lmpDate.getDate() + cycleLen);
+
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('ovOvulationDay').textContent = ovulationDay.toLocaleDateString('en-US', options);
+
+  var fStartStr = fertileStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  var fEndStr = ovulationDay.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  document.getElementById('fertileWindow').textContent = fStartStr + ' — ' + fEndStr;
+
+  document.getElementById('nextPeriod').textContent = nextPeriod.toLocaleDateString('en-US', options);
+  document.getElementById('ovCycleDay').textContent = 'Day ' + (cycleLen - luteal);
+
+  // Days past ovulation
+  var today = new Date();
+  today.setHours(12, 0, 0, 0);
+  var diffDays = Math.floor((today - ovulationDay) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0) {
+    document.getElementById('dpo').textContent = 'Ovulation hasn\'t occurred yet this cycle';
+  } else {
+    document.getElementById('dpo').textContent = diffDays + ' day' + (diffDays === 1 ? '' : 's') + ' past ovulation';
+  }
+
+  showResult('ovResult');
+}
+
+function resetOvulation() {
+  document.getElementById('ovLmpDate').value = '';
+  document.getElementById('ovCycleLength').value = '28';
+  document.getElementById('ovLutealPhase').value = '14';
+  hideResult('ovResult');
+}
+</script>
+
+</body>
+</html>
