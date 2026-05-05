@@ -6,12 +6,65 @@
 <title>Free Online Toolkit - Free Calculators & Online Tools for Everyday Use</title>
 <meta name="description" content="Free online tools and calculators for everyday use. Mortgage calculator, BMI calculator, currency converter, password generator, age calculator, and more. 100% free, no signup required.">
 <link rel="canonical" href="https://freeonlinetoolkit.org/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Free Online Toolkit - Free Calculators & Online Tools">
+<meta property="og:description" content="Free online tools and calculators for everyday use. Mortgage calculator, BMI calculator, currency converter, and more. 100% free, no signup.">
+<meta property="og:url" content="https://freeonlinetoolkit.org/">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="/css/style.css?v=3">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js"></script>
+<script>
+(function() {
+  // Tool search filtering
+  var searchInput = document.getElementById('toolSearch');
+  var clearBtn = document.getElementById('searchClear');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      var query = this.value.toLowerCase().trim();
+      clearBtn.classList.toggle('visible', query.length > 0);
+      var sections = document.querySelectorAll('.cat-section');
+      sections.forEach(function(section) {
+        var cards = section.querySelectorAll('.tool-card');
+        var hasVisible = false;
+        cards.forEach(function(card) {
+          var title = card.querySelector('h3');
+          var match = !query || (title && title.textContent.toLowerCase().indexOf(query) !== -1);
+          card.style.display = match ? '' : 'none';
+          if (match) hasVisible = true;
+        });
+        section.style.display = hasVisible ? '' : 'none';
+      });
+    });
+    clearBtn.addEventListener('click', function() {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+      searchInput.focus();
+    });
+  }
+
+  // Recently used display
+  var recentContainer = document.getElementById('recentlyUsed');
+  var recentList = document.getElementById('recentToolsList');
+  if (recentContainer && recentList) {
+    try {
+      var tools = JSON.parse(localStorage.getItem('recentTools') || '[]');
+      if (tools.length > 0) {
+        recentContainer.style.display = 'block';
+        recentList.innerHTML = tools.slice(0, 3).map(function(t) {
+          return '<a href="' + t.path + '" class="recent-tool-item">' +
+            '<i class="fa-solid ' + t.icon + '" style="color:' + t.color + ';"></i> ' +
+            t.title + '</a>';
+        }).join('');
+      }
+    } catch(e) {}
+  }
+})();
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -183,6 +236,19 @@
 <!-- ===== TOOLS SECTION ===== -->
 <div id="tools"></div>
 
+<!-- Tool Search + Recently Used -->
+<div class="tool-search-section">
+  <div class="tool-search-bar">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="toolSearch" placeholder="Search tools..." autocomplete="off">
+    <span id="searchClear" class="search-clear"><i class="fa-solid fa-xmark"></i></span>
+  </div>
+  <div id="recentlyUsed" class="recently-used" style="display:none;">
+    <div class="recently-used-label"><i class="fa-regular fa-clock"></i> Recently Used</div>
+    <div id="recentToolsList" class="recent-tools-list"></div>
+  </div>
+</div>
+
 <!-- Financial Calculators -->
 <section class="cat-section">
   <div class="cat-section-inner">
@@ -202,6 +268,12 @@
         <div class="tool-card-icon" style="background:#fef3c7;color:#d97706;"><i class="fa-solid fa-chart-simple"></i></div>
         <h3>Compound Interest Calculator</h3>
         <p>See how your investments grow with compound interest. Daily, monthly, and yearly compounding options.</p>
+        <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+      <a href="/savings-calculator/" class="tool-card">
+        <div class="tool-card-icon" style="background:#ecfeff;color:#0891b2;"><i class="fa-solid fa-piggy-bank"></i></div>
+        <h3>Savings Calculator</h3>
+        <p>Project your savings growth with regular contributions and compound interest. Plan for any financial goal.</p>
         <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
       </a>
       <a href="/car-loan-calculator/" class="tool-card">
@@ -238,6 +310,12 @@
         <div class="tool-card-icon" style="background:#fff7ed;color:#ea580c;"><i class="fa-solid fa-money-bill-transfer"></i></div>
         <h3>Currency Converter</h3>
         <p>Convert between 160+ world currencies with live exchange rates. Fast and accurate conversions.</p>
+        <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+      <a href="/percentage-calculator/" class="tool-card">
+        <div class="tool-card-icon" style="background:#f5f3ff;color:#8b5cf6;"><i class="fa-solid fa-percent"></i></div>
+        <h3>Percentage Calculator</h3>
+        <p>Calculate percentages, percentage changes, and ratios. Perfect for discounts, data analysis, and math.</p>
         <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
       </a>
     </div>
@@ -306,6 +384,18 @@
         <div class="tool-card-icon" style="background:#e0f2fe;color:#2563eb;"><i class="fa-solid fa-code"></i></div>
         <h3>JSON Formatter</h3>
         <p>Format, validate, and beautify JSON data. Perfect for developers working with APIs and data.</p>
+        <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+      <a href="/unit-converter/" class="tool-card">
+        <div class="tool-card-icon" style="background:#f0f4ff;color:#7c3aed;"><i class="fa-solid fa-ruler-combined"></i></div>
+        <h3>Unit Converter</h3>
+        <p>Convert between hundreds of units across length, weight, volume, temperature, area, and speed.</p>
+        <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
+      </a>
+      <a href="/time-zone-converter/" class="tool-card">
+        <div class="tool-card-icon" style="background:#eef2ff;color:#4f46e5;"><i class="fa-solid fa-globe"></i></div>
+        <h3>Time Zone Converter</h3>
+        <p>Convert times between world time zones. Plan international calls and meetings across time zones.</p>
         <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
       </a>
     </div>

@@ -6,9 +6,14 @@
 <title>Free Password Generator - Strong Secure Passwords</title>
 <meta name="description" content="Generate strong, secure passwords instantly. Customize length, include uppercase, lowercase, numbers, and symbols. Free password generator with copy to clipboard.">
 <link rel="canonical" href="https://freeonlinetoolkit.org/password-generator/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Free Online Toolkit - Free Calculators & Online Tools">
+<meta property="og:description" content="Free online tools and calculators for everyday use. Mortgage calculator, BMI calculator, currency converter, and more. 100% free, no signup.">
+<meta property="og:url" content="https://freeonlinetoolkit.org/">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="/css/style.css?v=3">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
@@ -44,7 +49,7 @@
 </header>
 
 <div class="tool-page">
-  <div class="breadcrumb"><a href="/">Home</a> <span>›</span> Password Generator</div>
+  <div class="breadcrumb"><a href="/">Home</a> <span>&#8250;</span> Password Generator</div>
   <h1>Free Password Generator</h1>
   <p class="tool-intro">Create strong, secure passwords that protect your accounts from hackers. Customize length and character types, then copy your new password instantly.</p>
 
@@ -57,7 +62,7 @@
           <input type="number" id="pwLength" value="16" min="8" max="128">
         </div>
         <div style="margin-bottom:16px;">
-          <label style="font-size:0.88rem;font-weight:500;color:#374151;margin-bottom:6px;display:block;">Character Types</label>
+          <label style="font-size:0.88rem;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px;display:block;">Character Types</label>
           <div style="display:flex;flex-wrap:wrap;gap:12px;">
             <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" id="pwUpper" checked> Uppercase (A-Z)</label>
             <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" id="pwLower" checked> Lowercase (a-z)</label>
@@ -66,15 +71,15 @@
           </div>
         </div>
         <div style="margin-bottom:16px;">
-          <label for="pwOutput" style="font-size:0.88rem;font-weight:500;color:#374151;margin-bottom:4px;display:block;">Generated Password</label>
+          <label for="pwOutput" style="font-size:0.88rem;font-weight:500;color:var(--color-text-secondary);margin-bottom:4px;display:block;">Generated Password</label>
           <div style="display:flex;gap:8px;">
-            <input type="text" id="pwOutput" readonly style="flex:1;font-family:'Courier New',monospace;font-size:1rem;background:#f8f9fc;" value="P@ssw0rd!XyZ9">
+            <input type="text" id="pwOutput" readonly style="flex:1;font-family:'Courier New',monospace;font-size:1rem;background:var(--color-bg);" value="P@ssw0rd!XyZ9">
             <button class="btn btn-secondary" onclick="copyPassword()" style="white-space:nowrap;">Copy</button>
           </div>
         </div>
         <div style="margin-bottom:16px;">
           <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:0.88rem;font-weight:500;color:#374151;">Password Strength:</span>
+            <span style="font-size:0.88rem;font-weight:500;color:var(--color-text-secondary);">Password Strength:</span>
             <span id="pwStrength" style="font-weight:600;padding:2px 10px;border-radius:4px;font-size:0.85rem;">Strong</span>
           </div>
         </div>
@@ -105,15 +110,15 @@
       <div class="content-section">
         <h2>Frequently Asked Questions</h2>
         <div class="faq-item">
-          <button class="faq-question">How long should my password be? <span class="arrow">▾</span></button>
+          <button class="faq-question">How long should my password be? <span class="arrow">&#9662;</span></button>
           <div class="faq-answer"><div class="faq-answer-inner">We recommend at least 12 characters for general use, and 16+ characters for important accounts like email, banking, and social media. Each additional character exponentially increases the time needed to crack the password.</div></div>
         </div>
         <div class="faq-item">
-          <button class="faq-question">Are these passwords truly random? <span class="arrow">▾</span></button>
+          <button class="faq-question">Are these passwords truly random? <span class="arrow">&#9662;</span></button>
           <div class="faq-answer"><div class="faq-answer-inner">Yes, the generator uses your browser's built-in cryptographic random number generator (crypto.getRandomValues) to ensure each password is truly random and unpredictable. No patterns or pseudo-random algorithms are used.</div></div>
         </div>
         <div class="faq-item">
-          <button class="faq-question">Is it safe to use an online password generator? <span class="arrow">▾</span></button>
+          <button class="faq-question">Is it safe to use an online password generator? <span class="arrow">&#9662;</span></button>
           <div class="faq-answer"><div class="faq-answer-inner">Yes — this generator runs entirely in your browser. No passwords are transmitted over the internet, stored, or logged. You can verify this by disconnecting from the internet after the page loads — it will still work.</div></div>
         </div>
       </div>

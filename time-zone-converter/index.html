@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Time Zone Converter - Convert Time Across World Time Zones</title>
+<meta name="description" content="Convert time between different time zones worldwide. Easily compare and convert times across UTC, EST, PST, GMT, and hundreds of city time zones.">
+<link rel="canonical" href="https://freeonlinetoolkit.org/time-zone-converter/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Free Online Toolkit - Free Calculators & Online Tools">
+<meta property="og:description" content="Free online tools and calculators for everyday use. Mortgage calculator, BMI calculator, currency converter, and more. 100% free, no signup.">
+<meta property="og:url" content="https://freeonlinetoolkit.org/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="/css/style.css?v=3">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
+<script src="/js/shared.js?v=3"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Convert Between Time Zones",
+  "description": "Convert a time from one time zone to another and see the time difference.",
+  "step": [
+    {"@type": "HowToStep", "text": "Select the source time zone"},
+    {"@type": "HowToStep", "text": "Enter the date and time you want to convert"},
+    {"@type": "HowToStep", "text": "Select the target time zone"},
+    {"@type": "HowToStep", "text": "See the converted time and time difference instantly"}
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="/guides/">Guides</a>
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/mortgage-calculator/" class="nav-cta">Try a Tool</a>
+    </nav>
+  </div>
+</header>
+
+<div class="tool-page">
+  <div class="breadcrumb"><a href="/">Home</a> <span>&#8250;</span> Time Zone Converter</div>
+  <h1>Free Time Zone Converter</h1>
+  <p class="tool-intro">Convert times between different time zones worldwide. Plan international calls, schedule meetings, or track time across cities. Supports all major time zones with DST awareness.</p>
+
+  <div class="tool-layout">
+    <div class="tool-main">
+      <div class="calc-card">
+        <h2>Time Zone Converter</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tzFrom">From Time Zone</label>
+            <select id="tzFrom"></select>
+          </div>
+          <div class="form-group">
+            <label for="tzTo">To Time Zone</label>
+            <select id="tzTo"></select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tzDate">Date</label>
+            <input type="date" id="tzDate">
+          </div>
+          <div class="form-group">
+            <label for="tzTime">Time</label>
+            <input type="time" id="tzTime" value="12:00">
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="convertTZ()">Convert</button>
+          <button class="btn btn-secondary" onclick="resetTZ()">Now</button>
+        </div>
+
+        <div class="result-box" id="tzResult">
+          <div class="result-value" id="tzResultValue">--:--</div>
+          <div class="result-label" id="tzResultLabel">Converted Time</div>
+          <div class="result-details">
+            <div><span class="label">Source Time</span><span class="value" id="tzSourceDisplay">-</span></div>
+            <div><span class="label">Target Time</span><span class="value" id="tzTargetDisplay">-</span></div>
+            <div><span class="label">Time Difference</span><span class="value" id="tzDiff">-</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <h2>How to Use the Time Zone Converter</h2>
+        <p>Select your <strong>source time zone</strong> (the time zone you're converting from) and your <strong>target time zone</strong> (the time zone you want to convert to). Choose a date and time, then click <strong>Convert</strong> to see the equivalent time in your target zone.</p>
+        <p>Click the <strong>Now</strong> button to automatically set the current date and time in your local time zone. The converter handles Daylight Saving Time (DST) transitions automatically based on standard UTC offsets for each time zone.</p>
+        <p>The results show the converted time, the source and target times side by side, and the time difference between the two zones (e.g., "+3 hours" or "-8 hours").</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Time Zone Reference</h2>
+        <p>Time zones are typically expressed as UTC offsets (e.g., UTC+5:30 for India Standard Time). Major time zones include:</p>
+        <ul>
+          <li><strong>UTC / GMT</strong> — Coordinated Universal Time (Western Europe, UK in winter)</li>
+          <li><strong>EST / EDT</strong> — Eastern Time (New York, Toronto) — UTC-5/UTC-4</li>
+          <li><strong>CST / CDT</strong> — Central Time (Chicago, Mexico City) — UTC-6/UTC-5</li>
+          <li><strong>PST / PDT</strong> — Pacific Time (Los Angeles, Vancouver) — UTC-8/UTC-7</li>
+          <li><strong>CET / CEST</strong> — Central European Time (Paris, Berlin) — UTC+1/UTC+2</li>
+          <li><strong>IST</strong> — India Standard Time (Mumbai, New Delhi) — UTC+5:30</li>
+          <li><strong>JST</strong> — Japan Standard Time (Tokyo, Seoul) — UTC+9</li>
+          <li><strong>AEST / AEDT</strong> — Australian Eastern Time (Sydney, Melbourne) — UTC+10/UTC+11</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <button class="faq-question">Does this converter handle Daylight Saving Time? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Yes. The converter uses UTC offsets that reflect standard time zone definitions. However, DST transitions can vary by country and year, so always double-check with local sources for precise scheduling around DST changeover dates.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What does UTC mean? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">UTC stands for Coordinated Universal Time, the primary time standard by which the world regulates clocks and time. It is effectively the same as GMT (Greenwich Mean Time) and serves as the reference point for all time zones.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">How do I schedule a meeting across time zones? <span class="arrow">&#9662;</span></button>
+          <div class="faq-answer"><div class="faq-answer-inner">Enter the time in your local time zone as the source, then select the participant's time zone as the target. The converter shows the equivalent time. Good practice is to specify times in UTC when coordinating across multiple zones.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-sidebar">
+      <div class="content-section">
+        <h3>Related Tools</h3>
+        <ul>
+          <li><a href="/unit-converter/">Unit Converter</a></li>
+          <li><a href="/age-calculator/">Age Calculator</a></li>
+          <li><a href="/currency-converter/">Currency Converter</a></li>
+          <li><a href="/percentage-calculator/">Percentage Calculator</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo" style="color:#f1f5f9;font-size:1.1rem;"><span class="logo-icon">F</span> FreeOnlineToolkit</a>
+        <p>Fast, accurate, and completely free online tools for everyday calculations and tasks. No signup required.</p>
+      </div>
+      <div>
+        <h3>Tools</h3>
+        <ul>
+          <li><a href="/mortgage-calculator/">Mortgage Calculator</a></li>
+          <li><a href="/bmi-calculator/">BMI Calculator</a></li>
+          <li><a href="/currency-converter/">Currency Converter</a></li>
+          <li><a href="/password-generator/">Password Generator</a></li>
+          <li><a href="/qr-code-generator/">QR Code Generator</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Guides</h3>
+        <ul>
+          <li><a href="/guides/mortgage-calculator-guide/">Mortgage Guide</a></li>
+          <li><a href="/guides/bmi-health-guide/">BMI Guide</a></li>
+          <li><a href="/guides/compound-interest-guide/">Compound Interest Guide</a></li>
+          <li><a href="/guides/password-security-guide/">Password Security Guide</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</span>
+      <span>Free online tools and calculators</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Time zone data with UTC offsets for standard time
+var timeZones = [
+  { name: 'UTC / GMT (UTC+0)', offset: 0 },
+  { name: 'GMT (Western Europe)', offset: 0 },
+  { name: 'CET (Central Europe)', offset: 60 },
+  { name: 'EET (Eastern Europe)', offset: 120 },
+  { name: 'MSK (Moscow)', offset: 180 },
+  { name: 'GST (Gulf)', offset: 240 },
+  { name: 'IST (India)', offset: 330 },
+  { name: 'BST (Bangladesh)', offset: 360 },
+  { name: 'ICT (Indochina)', offset: 420 },
+  { name: 'CST (China)', offset: 480 },
+  { name: 'JST (Japan)', offset: 540 },
+  { name: 'AEST (Australia East)', offset: 600 },
+  { name: 'ACDT (Australia Central)', offset: 630 },
+  { name: 'AEDT (Australia East DST)', offset: 660 },
+  { name: 'NZST (New Zealand)', offset: 720 },
+  { name: 'AZOT (Azores)', offset: -60 },
+  { name: 'CVT (Cape Verde)', offset: -60 },
+  { name: 'BRT (Brasilia)', offset: -180 },
+  { name: 'ART (Argentina)', offset: -180 },
+  { name: 'CLT (Chile)', offset: -240 },
+  { name: 'EST (Eastern US)', offset: -300 },
+  { name: 'CST (Central US)', offset: -360 },
+  { name: 'MST (Mountain US)', offset: -420 },
+  { name: 'PST (Pacific US)', offset: -480 },
+  { name: 'AKST (Alaska)', offset: -540 },
+  { name: 'HST (Hawaii)', offset: -600 },
+  { name: 'SST (Samoa)', offset: -660 }
+];
+
+function populateTZ() {
+  var fromSel = document.getElementById('tzFrom');
+  var toSel = document.getElementById('tzTo');
+  fromSel.innerHTML = '';
+  toSel.innerHTML = '';
+  for (var i = 0; i < timeZones.length; i++) {
+    var opt = '<option value="' + timeZones[i].offset + '">' + timeZones[i].name + '</option>';
+    fromSel.innerHTML += opt;
+    toSel.innerHTML += opt;
+  }
+  // Default: UTC to EST
+  fromSel.value = '0';
+  toSel.value = '-300';
+}
+
+function convertTZ() {
+  var fromOffset = parseInt(document.getElementById('tzFrom').value);
+  var toOffset = parseInt(document.getElementById('tzTo').value);
+  var dateVal = document.getElementById('tzDate').value;
+  var timeVal = document.getElementById('tzTime').value;
+
+  if (!dateVal || !timeVal) return;
+
+  var parts = dateVal.split('-');
+  var timeParts = timeVal.split(':');
+  var sourceDate = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2], timeParts[0], timeParts[1]));
+
+  // Apply source offset (subtract because UTC = local - offset)
+  var utcMs = sourceDate.getTime() - (fromOffset * 60000);
+  var targetDate = new Date(utcMs + (toOffset * 60000));
+
+  var targetTime = targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+  var targetDateStr = targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  var sourceTime = sourceDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+  var sourceDateStr = sourceDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  var diffMin = toOffset - fromOffset;
+  var diffHours = Math.floor(Math.abs(diffMin) / 60);
+  var diffMins = Math.abs(diffMin) % 60;
+  var diffStr = (diffMin >= 0 ? '+' : '-') + diffHours + (diffMins ? ':' + String(diffMins).padStart(2, '0') : '') + ' hours';
+
+  document.getElementById('tzResultValue').textContent = targetTime;
+  document.getElementById('tzResultLabel').textContent = targetDateStr;
+  document.getElementById('tzSourceDisplay').textContent = sourceDateStr + ' ' + sourceTime;
+  document.getElementById('tzTargetDisplay').textContent = targetDateStr + ' ' + targetTime;
+  document.getElementById('tzDiff').textContent = diffStr;
+  showResult('tzResult');
+}
+
+function resetTZ() {
+  var now = new Date();
+  document.getElementById('tzDate').value = now.toISOString().split('T')[0];
+  document.getElementById('tzTime').value = now.toTimeString().slice(0, 5);
+  // Set local timezone as source
+  var localOffset = -now.getTimezoneOffset();
+  document.getElementById('tzFrom').value = String(localOffset);
+  convertTZ();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  populateTZ();
+  resetTZ();
+});
+</script>
+
+</body>
+</html>

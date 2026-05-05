@@ -6,9 +6,14 @@
 <title>Free JSON Formatter - Format & Validate JSON Online</title>
 <meta name="description" content="Format, validate, and beautify JSON data online. Free JSON formatter for developers. Pretty-print JSON with syntax highlighting. Minify and validate JSON.">
 <link rel="canonical" href="https://freeonlinetoolkit.org/json-formatter/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Free Online Toolkit - Free Calculators & Online Tools">
+<meta property="og:description" content="Free online tools and calculators for everyday use. Mortgage calculator, BMI calculator, currency converter, and more. 100% free, no signup.">
+<meta property="og:url" content="https://freeonlinetoolkit.org/">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="/css/style.css?v=3">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4482389932723468" crossorigin="anonymous"></script>
@@ -43,7 +48,7 @@
 </header>
 
 <div class="tool-page">
-  <div class="breadcrumb"><a href="/">Home</a> <span>›</span> JSON Formatter</div>
+  <div class="breadcrumb"><a href="/">Home</a> <span>&#8250;</span> JSON Formatter</div>
   <h1>Free JSON Formatter & Validator</h1>
   <p class="tool-intro">Format, validate, and beautify JSON data instantly. Perfect for developers debugging APIs, configuration files, or any JSON data. Syntax highlighting and clear error messages included.</p>
 
@@ -51,12 +56,12 @@
     <h2>JSON Formatter</h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
       <div>
-        <label style="font-size:0.88rem;font-weight:500;color:#374151;margin-bottom:4px;display:block;">Input JSON</label>
-        <textarea id="jsonInput" style="width:100%;min-height:350px;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.5;resize:vertical;" placeholder='Paste your JSON here...'>{"users":[{"id":1,"name":"John Doe","email":"john@example.com","active":true},{"id":2,"name":"Jane Smith","email":"jane@example.com","active":false}],"total":2}</textarea>
+        <label style="font-size:0.88rem;font-weight:500;color:var(--color-text-secondary);margin-bottom:4px;display:block;">Input JSON</label>
+        <textarea id="jsonInput" style="width:100%;min-height:350px;padding:12px;border:1px solid var(--color-border);border-radius:8px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.5;resize:vertical;background:var(--color-surface);color:var(--color-text);" placeholder='Paste your JSON here...'></textarea>{"users":[{"id":1,"name":"John Doe","email":"john@example.com","active":true},{"id":2,"name":"Jane Smith","email":"jane@example.com","active":false}],"total":2}</textarea>
       </div>
       <div>
-        <label style="font-size:0.88rem;font-weight:500;color:#374151;margin-bottom:4px;display:block;">Formatted Output</label>
-        <textarea id="jsonOutput" style="width:100%;min-height:350px;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.5;resize:vertical;background:#f8f9fc;" readonly placeholder="Formatted JSON will appear here..."></textarea>
+        <label style="font-size:0.88rem;font-weight:500;color:var(--color-text-secondary);margin-bottom:4px;display:block;">Formatted Output</label>
+        <textarea id="jsonOutput" style="width:100%;min-height:350px;padding:12px;border:1px solid var(--color-border);border-radius:8px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.5;resize:vertical;background:var(--color-bg);color:var(--color-text);" readonly placeholder="Formatted JSON will appear here..."></textarea>
       </div>
     </div>
     <div id="jsonError" style="color:#dc2626;font-size:0.88rem;margin-top:8px;display:none;"></div>
@@ -83,17 +88,39 @@
   </div>
 
   <div class="content-section">
+    <h2>Related Tools</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+      <a href="/password-generator/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--color-primary)'" onmouseout="this.style.borderColor=''">
+        <div style="width:36px;height:36px;border-radius:8px;background:#f0fdfa;color:#0d9488;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-key" style="font-size:1rem;"></i></div>
+        <div><div style="font-weight:600;font-size:0.88rem;color:var(--color-text);">Password Generator</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Secure passwords</div></div>
+      </a>
+      <a href="/word-counter/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--color-primary)'" onmouseout="this.style.borderColor=''">
+        <div style="width:36px;height:36px;border-radius:8px;background:#fef9c3;color:#a16207;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-file-lines" style="font-size:1rem;"></i></div>
+        <div><div style="font-weight:600;font-size:0.88rem;color:var(--color-text);">Word Counter</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Count words &amp; characters</div></div>
+      </a>
+      <a href="/qr-code-generator/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--color-primary)'" onmouseout="this.style.borderColor=''">
+        <div style="width:36px;height:36px;border-radius:8px;background:#faf5ff;color:#9333ea;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-qrcode" style="font-size:1rem;"></i></div>
+        <div><div style="font-weight:600;font-size:0.88rem;color:var(--color-text);">QR Code Generator</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Create QR codes</div></div>
+      </a>
+      <a href="/age-calculator/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;transition:all 0.2s ease;" onmouseover="this.style.borderColor='var(--color-primary)'" onmouseout="this.style.borderColor=''">
+        <div style="width:36px;height:36px;border-radius:8px;background:#ede9fe;color:#6d28d9;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-cake-candles" style="font-size:1rem;"></i></div>
+        <div><div style="font-weight:600;font-size:0.88rem;color:var(--color-text);">Age Calculator</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Calculate exact age</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="content-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item">
-      <button class="faq-question">What makes JSON invalid? <span class="arrow">▾</span></button>
+      <button class="faq-question">What makes JSON invalid? <span class="arrow">&#9662;</span></button>
       <div class="faq-answer"><div class="faq-answer-inner">Common JSON errors include: trailing commas, using single quotes instead of double quotes, missing quotes around keys, extra commas, unescaped special characters, and mismatched brackets or braces.</div></div>
     </div>
     <div class="faq-item">
-      <button class="faq-question">What's the difference between Format and Minify? <span class="arrow">▾</span></button>
+      <button class="faq-question">What's the difference between Format and Minify? <span class="arrow">&#9662;</span></button>
       <div class="faq-answer"><div class="faq-answer-inner">Format (beautify/pretty-print) adds proper indentation and line breaks to make JSON human-readable. Minify removes all whitespace and compresses the JSON into the smallest possible form for faster transmission over the network.</div></div>
     </div>
     <div class="faq-item">
-      <button class="faq-question">Is my JSON data sent to any server? <span class="arrow">▾</span></button>
+      <button class="faq-question">Is my JSON data sent to any server? <span class="arrow">&#9662;</span></button>
       <div class="faq-answer"><div class="faq-answer-inner">No. All processing happens in your browser. Your JSON data is never transmitted to any server. This is especially important when working with sensitive or proprietary data.</div></div>
     </div>
   </div>
