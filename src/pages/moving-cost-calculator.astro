@@ -224,7 +224,7 @@ const jsonLd = [
   }
   .comparison-card.full-service {
     background: var(--color-primary-bg);
-    border-color: rgba(194, 65, 12, 0.15);
+    border-color: color-mix(in oklch, var(--color-primary) 15%, transparent);
   }
   .comparison-card h4 {
     font-family: var(--font-display);
@@ -570,7 +570,7 @@ function calculateMove() {
   html += '    <div><span>Packing Service</span><span>' + formatCurrency(fsPacking) + '</span></div>';
   html += '    <div><span>Insurance</span><span>' + formatCurrency(fsIns) + '</span></div>';
   html += '    <div><span>Extra Items</span><span>' + formatCurrency(extrasTotal) + '</span></div>';
-  html += '    <div style="font-weight:700;color:var(--color-primary);border-top:1px solid rgba(194,65,12,0.15);padding-top:6px;margin-top:6px;"><span>Your Cost</span><span>' + formatCurrency(fsTotal) + '</span></div>';
+  html += '    <div style="font-weight:700;color:var(--color-primary);border-top:1px solid color-mix(in oklch, var(--color-primary) 15%, transparent);padding-top:6px;margin-top:6px;"><span>Your Cost</span><span>' + formatCurrency(fsTotal) + '</span></div>';
   html += '  </div>';
   html += '</div>';
 
