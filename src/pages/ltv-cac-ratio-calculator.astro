@@ -1,0 +1,189 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['ltv-cac-ratio-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate LTV:CAC Ratio",
+    "description": "Calculate your customer lifetime value, customer acquisition cost, and the LTV:CAC ratio for your business.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your average revenue per user per month" },
+      { "@type": "HowToStep", "text": "Enter your gross margin percentage" },
+      { "@type": "HowToStep", "text": "Enter your monthly churn rate to calculate customer lifetime" },
+      { "@type": "HowToStep", "text": "Enter your customer acquisition cost" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your LTV:CAC ratio and payback period" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is a good LTV:CAC ratio?", "acceptedAnswer": { "@type": "Answer", "text": "A good LTV:CAC ratio is above 3:1. A ratio of 1:1 means you break even on each customer. Below 1:1 means you lose money on every customer you acquire. Industry benchmarks: 3:1 is considered good, 5:1 is excellent, and above 10:1 suggests you may be under-investing in growth." } },
+      { "@type": "Question", "name": "What is a healthy payback period?", "acceptedAnswer": { "@type": "Answer", "text": "A healthy payback period (time to recover CAC) is under 12 months for most SaaS businesses. For high-value enterprise SaaS, 12-18 months is acceptable. For low-cost consumer SaaS, under 6 months is ideal." } },
+      { "@type": "Question", "name": "How do I lower my CAC?", "acceptedAnswer": { "@type": "Answer", "text": "To lower your CAC, focus on content marketing and SEO for organic traffic, improve your website conversion rate, optimize your ad campaigns, implement referral programs, and reduce sales cycle friction. The most effective approach is usually improving organic channels." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Calculate your customer lifetime value (LTV), customer acquisition cost (CAC), and the critical LTV:CAC ratio. Understand whether your customer acquisition efforts are sustainable and profitable.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>LTV:CAC Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ltvArpu">Avg Revenue Per User/Month ($)</label>
+          <input type="number" id="ltvArpu" value="50" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="ltvMargin">Gross Margin (%)</label>
+          <input type="number" id="ltvMargin" value="80" min="0" step="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="ltvChurn">Monthly Churn Rate (%)</label>
+        <input type="number" id="ltvChurn" value="4" min="0.1" step="0.1">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ltvCac">Customer Acquisition Cost ($)</label>
+          <input type="number" id="ltvCac" value="500" min="0" step="10">
+        </div>
+        <div class="form-group">
+          <label for="ltvCustomers">Number of Customers Acquired</label>
+          <input type="number" id="ltvCustomers" value="100" min="1">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="ltvResult">
+        <div style="font-weight:600;font-size:1.05rem;margin-bottom:10px;color:var(--color-text);">LTV & CAC Analysis</div>
+        <div class="result-details">
+          <div><span class="label">Customer Lifetime</span><span class="value" id="ltvLifetime">0 months</span></div>
+          <div><span class="label">LTV (per customer)</span><span class="value" id="ltvLTV">$0.00</span></div>
+          <div><span class="label">CAC (per customer)</span><span class="value" id="ltvCAC">$0.00</span></div>
+          <div><span class="label">LTV:CAC Ratio</span><span class="value" id="ltvRatio" style="font-weight:700;">0.00</span></div>
+          <div><span class="label">Total LTV (all customers)</span><span class="value" id="ltvTotalLTV">$0.00</span></div>
+          <div><span class="label">Total CAC Spent</span><span class="value" id="ltvTotalCAC">$0.00</span></div>
+          <div><span class="label">Payback Period</span><span class="value" id="ltvPayback">0 months</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This LTV:CAC ratio calculator helps you evaluate the efficiency of your customer acquisition strategy. Start by entering your <strong>average revenue per user per month</strong> (ARPU) and your <strong>gross margin</strong> — the percentage of revenue you keep after direct costs like hosting and payment processing.</p>
+      <p>Enter your <strong>monthly churn rate</strong> to automatically calculate customer lifetime (1 divided by churn rate). Then provide your <strong>customer acquisition cost</strong> and the <strong>number of customers acquired</strong> to see total figures.</p>
+      <p>The results show your LTV:CAC ratio (aim for at least 3:1), the payback period (how long it takes to recover your acquisition costs), and total values across all customers.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>What Is a Good LTV:CAC Ratio?</h2>
+      <ul>
+        <li><strong>Below 1:1</strong> — Unsustainable. You spend more to acquire a customer than they generate in profit.</li>
+        <li><strong>1:1 to 3:1</strong> — Breaking even or minimally profitable. Work on reducing churn or CAC.</li>
+        <li><strong>3:1 to 5:1</strong> — Good. This is the benchmark for healthy SaaS businesses.</li>
+        <li><strong>Above 5:1</strong> — Excellent. Strong unit economics. Consider investing more in growth.</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>LTV:CAC Formulas</h2>
+      <div class="formula-box">
+        <strong>Customer Lifetime</strong> = 1 / (Churn Rate / 100) months<br>
+        <strong>LTV</strong> = ARPU &times; Gross Margin% &times; Lifetime<br>
+        <strong>CAC</strong> = Given value (total marketing & sales spend / customers acquired)<br>
+        <strong>LTV:CAC Ratio</strong> = LTV / CAC<br>
+        <strong>Payback Period</strong> = CAC / (ARPU &times; Gross Margin%) months<br>
+        <strong>Total LTV</strong> = LTV &times; Number of Customers<br>
+        <strong>Total CAC</strong> = CAC &times; Number of Customers
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a good LTV:CAC ratio?", answer: "A good LTV:CAC ratio is above 3:1. A ratio of 1:1 means you break even on each customer. Below 1:1 means you lose money on every customer you acquire. Industry benchmarks: 3:1 is considered good, 5:1 is excellent, and above 10:1 suggests you may be under-investing in growth." },
+      { question: "What is a healthy payback period?", answer: "A healthy payback period is under 12 months for most SaaS businesses. For high-value enterprise SaaS, 12-18 months is acceptable. For low-cost consumer SaaS, under 6 months is ideal." },
+      { question: "How do I lower my CAC?", answer: "To lower your CAC, focus on content marketing and SEO for organic traffic, improve your website conversion rate, optimize ad campaigns, implement referral programs, and reduce sales cycle friction." },
+      { question: "How do I increase my LTV?", answer: "To increase LTV, reduce churn by improving your product and customer support, implement expansion revenue through upsells and cross-sells, introduce annual plans, and consider price optimization. Even a small reduction in churn can significantly boost LTV." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="ltv-cac-ratio-calculator" category="saas" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcLTV() {
+  const arpu = getNum('ltvArpu');
+  const margin = getNum('ltvMargin');
+  const churn = getNum('ltvChurn');
+  const cac = getNum('ltvCac');
+  const customers = getNum('ltvCustomers');
+
+  if (!arpu || arpu <= 0) return;
+  if (margin === null) return;
+  if (!churn || churn <= 0) return;
+  if (!cac || cac <= 0) return;
+  if (!customers || customers <= 0) return;
+
+  const marginDecimal = margin / 100;
+  const churnDecimal = churn / 100;
+  const lifetime = 1 / churnDecimal;
+  const ltv = arpu * marginDecimal * lifetime;
+  const ratio = ltv / cac;
+  const totalLTV = ltv * customers;
+  const totalCAC = cac * customers;
+  const payback = cac / (arpu * marginDecimal);
+
+  document.getElementById('ltvLifetime').textContent = lifetime.toFixed(1) + ' months';
+  document.getElementById('ltvLTV').textContent = formatCurrency(ltv);
+  document.getElementById('ltvCAC').textContent = formatCurrency(cac);
+  document.getElementById('ltvTotalLTV').textContent = formatCurrency(totalLTV);
+  document.getElementById('ltvTotalCAC').textContent = formatCurrency(totalCAC);
+  document.getElementById('ltvPayback').textContent = payback.toFixed(1) + ' months';
+
+  const ratioEl = document.getElementById('ltvRatio');
+  ratioEl.textContent = ratio.toFixed(2);
+  if (ratio < 1) {
+    (ratioEl as HTMLElement).style.color = '#dc2626';
+  } else if (ratio < 3) {
+    (ratioEl as HTMLElement).style.color = '#d97706';
+  } else {
+    (ratioEl as HTMLElement).style.color = '#059669';
+  }
+
+  showResult('ltvResult');
+}
+
+function resetLTV() {
+  (document.getElementById('ltvArpu') as HTMLInputElement).value = '50';
+  (document.getElementById('ltvMargin') as HTMLInputElement).value = '80';
+  (document.getElementById('ltvChurn') as HTMLInputElement).value = '4';
+  (document.getElementById('ltvCac') as HTMLInputElement).value = '500';
+  (document.getElementById('ltvCustomers') as HTMLInputElement).value = '100';
+  hideResult('ltvResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcLTV);
+document.getElementById('resetBtn')!.addEventListener('click', resetLTV);
+document.addEventListener('DOMContentLoaded', calcLTV);
+</script>

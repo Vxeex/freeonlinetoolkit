@@ -1,0 +1,207 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['ev-charging-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate EV Charging Costs",
+    "description": "Calculate electric vehicle charging costs and compare with gasoline vehicle costs.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your EV battery capacity in kWh and current charge percentage" },
+      { "@type": "HowToStep", "text": "Enter your target charge percentage and electricity rate" },
+      { "@type": "HowToStep", "text": "Select charging speed and enter your EV efficiency" },
+      { "@type": "HowToStep", "text": "Enter gas car details for savings comparison and click Calculate" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Calculate the cost of charging your electric vehicle and compare it with gasoline costs. See how much you can save per month, per year, and over 5 years by driving electric.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>EV Charging Cost &amp; Savings Estimator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="batteryCapacity">Battery Capacity (kWh)</label>
+          <input type="number" id="batteryCapacity" value="75" min="10" max="250" step="1">
+        </div>
+        <div class="form-group">
+          <label for="evEfficiency">Miles per kWh (efficiency)</label>
+          <input type="number" id="evEfficiency" value="3.5" min="1" max="10" step="0.1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="currentCharge">Current Charge (%)</label>
+          <input type="number" id="currentCharge" value="20" min="0" max="100" step="5">
+        </div>
+        <div class="form-group">
+          <label for="targetCharge">Target Charge (%)</label>
+          <input type="number" id="targetCharge" value="80" min="0" max="100" step="5">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="elecRate">Electricity Rate ($/kWh)</label>
+          <input type="number" id="elecRate" value="0.14" min="0.01" step="0.01">
+        </div>
+        <div class="form-group">
+          <label for="chargingSpeed">Charging Speed</label>
+          <select id="chargingSpeed">
+            <option value="1.4">Level 1 (1.4 kW)</option>
+            <option value="7.2" selected>Level 2 (7.2 kW)</option>
+            <option value="50">Level 3 DC Fast (50 kW)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="gasMPG">Gas Car MPG</label>
+          <input type="number" id="gasMPG" value="30" min="10" max="100" step="1">
+        </div>
+        <div class="form-group">
+          <label for="gasPrice">Local Gas Price ($/gallon)</label>
+          <input type="number" id="gasPrice" value="3.50" min="1" max="10" step="0.10">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="monthlyMiles">Monthly Miles Driven</label>
+        <input type="number" id="monthlyMiles" value="1000" min="100" max="10000" step="100">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="evResult">
+        <div class="result-value" id="chargeCost">$0.00</div>
+        <div class="result-label">Cost for This Charging Session</div>
+        <div class="result-details">
+          <div><span class="label">Energy Needed</span><span class="value" id="energyNeeded">0 kWh</span></div>
+          <div><span class="label">Charging Time</span><span class="value" id="chargeTime">0 hrs</span></div>
+          <div><span class="label">Monthly EV Cost</span><span class="value" id="monthlyEVCost">$0</span></div>
+          <div><span class="label">Monthly Gas Equivalent</span><span class="value" id="monthlyGasCost">$0</span></div>
+          <div><span class="label">Monthly Savings</span><span class="value" id="monthlySavings">$0</span></div>
+          <div><span class="label">Annual Savings</span><span class="value" id="annualSavings">$0</span></div>
+          <div><span class="label">5-Year Projected Savings</span><span class="value" id="fiveYearSavings">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the EV Charging Calculator</h2>
+      <p>Start by entering your EV's <strong>battery capacity</strong> in kWh (typically 40-100 kWh for most electric cars) and your <strong>miles per kWh efficiency</strong> (most EVs average 3-4 miles per kWh). Enter your <strong>current charge percentage</strong> and <strong>target charge percentage</strong> to calculate how much energy you need to add.</p>
+      <p>Enter your <strong>electricity rate</strong> in $/kWh (the US average is about $0.14/kWh) and select your <strong>charging speed</strong>. For the gas comparison, enter your gas car's <strong>MPG</strong>, your <strong>local gas price</strong>, and your <strong>monthly miles driven</strong>.</p>
+      <p>Click "Calculate" to see the cost for a single charging session, plus your monthly and annual savings compared to gasoline. The 5-year projection shows the long-term financial benefit of owning an EV.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>EV Charging Cost Formula</h2>
+      <p>The calculation follows these formulas:</p>
+      <div class="formula-box">
+        Energy Needed = Capacity &times; (Target &minus; Current) / 100<br>
+        Charging Time = Energy Needed / Charger Speed<br>
+        Session Cost = Energy Needed &times; Electricity Rate
+      </div>
+      <div class="formula-box">
+        Monthly EV Cost = (Monthly Miles / Efficiency) &times; Rate<br>
+        Monthly Gas Cost = (Monthly Miles / MPG) &times; Gas Price<br>
+        Monthly Savings = Gas Cost &minus; EV Cost
+      </div>
+      <p>Charging speeds: <strong>Level 1</strong> = 1.4 kW (standard household outlet), <strong>Level 2</strong> = 7.2 kW (home wall charger), <strong>Level 3 DC Fast</strong> = 50 kW (public fast charger). Actual charging speeds may vary based on your vehicle's maximum acceptance rate and battery temperature.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "Is charging an EV cheaper than gas?", answer: "Yes, in almost all cases. The average cost to drive an EV is about 4-5 cents per mile, compared to 10-12 cents per mile for a gasoline car. Even with recent electricity rate increases, EV charging remains significantly cheaper than gasoline. The savings are largest if you charge at home, especially during off-peak hours when electricity rates are lowest." },
+      { question: "How long does it take to charge an EV?", answer: "Charging time depends on the battery size, charger power, and current charge level. Level 1 adds about 3-5 miles of range per hour. Level 2 adds 20-30 miles per hour and can fully charge most EVs overnight. Level 3 DC fast chargers can add 150-200 miles of range in about 30 minutes." },
+      { question: "What is a good miles per kWh efficiency?", answer: "Most modern EVs achieve between 3.0 and 4.5 miles per kWh in mixed driving. Smaller EVs like the Tesla Model 3 can achieve 4.0-4.5 miles/kWh, while larger EVs like SUVs and trucks typically get 2.5-3.5 miles/kWh." },
+      { question: "How much can I save by switching from gas to an EV?", answer: "The average driver saves $800-$1,500 per year on fuel costs by switching from a gas car to an EV. At current average rates, driving 12,000 miles per year in an EV costs about $480 in electricity versus $1,400 in gas for a 30 MPG car." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="ev-charging-calculator" category="automotive" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, formatNumber, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcEV() {
+  const capacity = getNum('batteryCapacity');
+  const currentCharge = getNum('currentCharge');
+  const targetCharge = getNum('targetCharge');
+  const elecRate = getNum('elecRate');
+  const efficiency = getNum('evEfficiency');
+  const mpg = getNum('gasMPG');
+  const gasPrice = getNum('gasPrice');
+  const monthlyMiles = getNum('monthlyMiles');
+  const chargerSpeed = parseFloat((document.getElementById('chargingSpeed') as HTMLSelectElement).value);
+
+  if (!capacity || currentCharge === null || targetCharge === null || !elecRate || !efficiency || !mpg || !gasPrice || !monthlyMiles) return;
+  if (currentCharge >= targetCharge) return;
+
+  const pctToCharge = (targetCharge - currentCharge) / 100;
+  const energyNeeded = capacity * pctToCharge;
+  const chargeTimeHours = energyNeeded / chargerSpeed;
+  const sessionCost = energyNeeded * elecRate;
+
+  const monthlyEnergy = monthlyMiles / efficiency;
+  const monthlyEVCost = monthlyEnergy * elecRate;
+  let monthlyGasCost = monthlyMiles / mpg * gasPrice;
+  let monthlySavings = monthlyGasCost - monthlyEVCost;
+  if (monthlySavings < 0) monthlySavings = 0;
+
+  const annualSavings = monthlySavings * 12;
+  const fiveYearSavings = annualSavings * 5;
+
+  let timeStr;
+  if (chargeTimeHours >= 1) {
+    const hours = Math.floor(chargeTimeHours);
+    const mins = Math.round((chargeTimeHours - hours) * 60);
+    timeStr = hours + ' hr ' + mins + ' min';
+  } else {
+    timeStr = Math.round(chargeTimeHours * 60) + ' min';
+  }
+
+  document.getElementById('chargeCost')!.textContent = formatCurrency(sessionCost);
+  document.getElementById('energyNeeded')!.textContent = formatNumber(energyNeeded, 1) + ' kWh';
+  document.getElementById('chargeTime')!.textContent = timeStr;
+  document.getElementById('monthlyEVCost')!.textContent = formatCurrency(monthlyEVCost);
+  document.getElementById('monthlyGasCost')!.textContent = formatCurrency(monthlyGasCost);
+  document.getElementById('monthlySavings')!.textContent = formatCurrency(monthlySavings);
+  document.getElementById('annualSavings')!.textContent = formatCurrency(annualSavings);
+  document.getElementById('fiveYearSavings')!.textContent = formatCurrency(fiveYearSavings);
+  showResult('evResult');
+}
+
+function resetEV() {
+  (document.getElementById('batteryCapacity') as HTMLInputElement).value = '75';
+  (document.getElementById('evEfficiency') as HTMLInputElement).value = '3.5';
+  (document.getElementById('currentCharge') as HTMLInputElement).value = '20';
+  (document.getElementById('targetCharge') as HTMLInputElement).value = '80';
+  (document.getElementById('elecRate') as HTMLInputElement).value = '0.14';
+  (document.getElementById('chargingSpeed') as HTMLSelectElement).value = '7.2';
+  (document.getElementById('gasMPG') as HTMLInputElement).value = '30';
+  (document.getElementById('gasPrice') as HTMLInputElement).value = '3.50';
+  (document.getElementById('monthlyMiles') as HTMLInputElement).value = '1000';
+  hideResult('evResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcEV);
+document.getElementById('resetBtn')!.addEventListener('click', resetEV);
+document.addEventListener('DOMContentLoaded', calcEV);
+</script>

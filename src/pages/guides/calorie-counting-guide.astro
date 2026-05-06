@@ -1,0 +1,66 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Calorie Counting Guide' },
+];
+---
+
+<GuideLayout
+  title="Calorie Counting: A Beginner Guide to Managing Your Diet | FreeOnlineToolkit"
+  description="Learn the basics of calorie counting, how to track your intake, understand macros, and set realistic nutrition goals."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Calorie Counting: A Beginner Guide to Managing Your Diet</h1>
+  </fragment>
+
+  <h2>What Is Calorie Counting?</h2>
+  <p>Calorie counting is the practice of tracking the energy content of the food and drinks you consume. By understanding how many calories you need versus how many you consume, you can manage your weight effectively — whether your goal is to lose, maintain, or gain weight.</p>
+
+  <h2>Understanding Your Calorie Needs</h2>
+  <p>Your total daily energy expenditure (TDEE) consists of several components:</p>
+  <ul>
+    <li><strong>Basal Metabolic Rate (BMR):</strong> Calories burned at rest for basic functions like breathing and circulation.</li>
+    <li><strong>Physical activity:</strong> Calories burned through exercise and movement.</li>
+    <li><strong>Thermic effect of food:</strong> Calories burned digesting and processing food (about 10% of total).</li>
+  </ul>
+
+  <p>Use our <a href="/calorie-calculator/">Calorie Calculator</a> to find your daily needs based on your age, height, weight, and activity level.</p>
+
+  <h2>Calorie Guidelines by Goal</h2>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Goal</th>
+        <th>Calorie Adjustment</th>
+        <th>Weekly Change</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Weight loss</td><td>TDEE — 300 to 500 calories</td><td>0.5-1 lb (0.2-0.5 kg)</td></tr>
+      <tr><td>Weight maintenance</td><td>Eat at TDEE</td><td>No change</td></tr>
+      <tr><td>Weight gain (muscle)</td><td>TDEE + 200 to 300 calories</td><td>0.25-0.5 lb (0.1-0.2 kg)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Macronutrients Explained</h2>
+  <ul>
+    <li><strong>Protein:</strong> 4 calories per gram. Essential for muscle repair and satiety. Aim for 20-30% of daily calories.</li>
+    <li><strong>Carbohydrates:</strong> 4 calories per gram. Your body's primary energy source. Aim for 45-55% of daily calories.</li>
+    <li><strong>Fats:</strong> 9 calories per gram. Important for hormone function and nutrient absorption. Aim for 20-30% of daily calories.</li>
+  </ul>
+
+  <h2>Tips for Successful Calorie Tracking</h2>
+  <ul>
+    <li><strong>Use a food scale</strong> for accuracy — estimates are often wrong.</li>
+    <li><strong>Track everything</strong> including cooking oils, sauces, and drinks.</li>
+    <li><strong>Be consistent</strong> — track the same way every day for best results.</li>
+    <li><strong>Don't stress about perfection</strong> — consistency over time matters more than daily accuracy.</li>
+    <li><strong>Reassess regularly</strong> — your calorie needs change as your weight changes.</li>
+  </ul>
+
+  <p>Start tracking with our free <a href="/calorie-calculator/">Calorie Calculator</a>.</p>
+</GuideLayout>

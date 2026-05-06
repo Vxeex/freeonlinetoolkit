@@ -1,0 +1,204 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['patent-cost-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Patent Costs",
+    "description": "Estimate the total cost of filing and maintaining a patent including USPTO fees, attorney costs, and maintenance fees.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select the type of patent application you plan to file" },
+      { "@type": "HowToStep", "text": "Choose your filing method and enter your attorney's hourly rate" },
+      { "@type": "HowToStep", "text": "Select your entity size to determine USPTO fee reductions" },
+      { "@type": "HowToStep", "text": "Specify how many years you plan to maintain the patent" },
+      { "@type": "HowToStep", "text": "Click Calculate to see first-year costs and lifetime patent maintenance expenses" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Plan your intellectual property budget with confidence. This patent cost calculator estimates USPTO filing fees, attorney costs, and maintenance fees for provisional, non-provisional, and PCT patent applications.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Patent Cost Calculator</h2>
+      <div class="form-group">
+        <label for="patentType">Patent Type</label>
+        <select id="patentType">
+          <option value="provisional" selected>Provisional Patent Application</option>
+          <option value="nonprovisional">Non-Provisional Utility Patent</option>
+          <option value="pct">PCT International Application</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="filingMethod">Filing Method</label>
+          <select id="filingMethod">
+            <option value="prose" selected>Pro Se (File Yourself)</option>
+            <option value="attorney">With Attorney</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="entitySize">Entity Size</label>
+          <select id="entitySize">
+            <option value="micro" selected>Micro Entity</option>
+            <option value="small">Small Entity</option>
+            <option value="large">Large Entity (Undiscounted)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="attorneyRate">Attorney Hourly Rate ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="attorneyRate" class="prefixed" value="350" min="0" step="25">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="attorneyHours">Estimated Attorney Hours</label>
+          <input type="number" id="attorneyHours" value="40" min="0" step="5">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="maintainYears">Maintenance Years <span class="optional">4 to 20</span></label>
+        <input type="number" id="maintainYears" value="20" min="4" max="20" step="1">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="patentResult">
+        <div class="result-value" id="patentFirstYear">$0.00</div>
+        <div class="result-label">Total First-Year Cost</div>
+        <div class="result-details">
+          <div><span class="label">Filing Fees</span><span class="value" id="patentFilingFees">$0</span></div>
+          <div><span class="label">Attorney Cost Estimate</span><span class="value" id="patentAttorneyCost">$0</span></div>
+          <div><span class="label">Total 5-Year Cost</span><span class="value" id="patent5Year">$0</span></div>
+          <div><span class="label">Total 20-Year Cost</span><span class="value" id="patent20Year">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Patent Cost Calculator</h2>
+      <p>Start by selecting the <strong>type of patent</strong> you want to file. A provisional patent application is cheaper and gives you 12 months to file a non-provisional application. Non-provisional utility patents are the standard patent with full examination. PCT applications are international filings under the Patent Cooperation Treaty.</p>
+      <p>Choose your <strong>filing method</strong> &mdash;filing pro se (yourself) saves on attorney fees but requires careful preparation. If using an attorney, enter their <strong>hourly rate</strong> and <strong>estimated hours</strong>. Attorneys typically spend 20-60 hours on a non-provisional application depending on complexity.</p>
+      <p>Select your <strong>entity size</strong> to apply the correct USPTO fee reductions. Micro entities receive a 60% discount, small entities get a 50% discount, and large entities pay full fees.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Patent Cost Formula</h2>
+      <div class="formula-box">
+        Filing Fees = Base Filing Fee + Search Fee + Examination Fee
+      </div>
+      <div class="formula-box">
+        Attorney Cost = Hourly Rate &times; Estimated Hours
+      </div>
+      <div class="formula-box">
+        Total First Year = Filing Fees + Attorney Cost
+      </div>
+      <div class="formula-box">
+        Total 20-Year Cost = First Year + Maintenance Fees (3.5, 7.5, 11.5 yrs)
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the difference between a provisional and non-provisional patent?", answer: "A provisional patent application is a simpler, lower-cost filing that establishes an early filing date and gives you 12 months to file a non-provisional application. It is never examined and expires after 12 months. A non-provisional patent application undergoes full USPTO examination and can result in an issued patent." },
+      { question: "What entity size qualifies for USPTO fee reductions?", answer: "Micro entity status requires you to have a gross income under $250,000 and have filed fewer than 4 non-provisional applications, or be employed by a nonprofit or university. Small entity includes independent inventors, small businesses (under 500 employees), and nonprofits. Large entities pay full fees with no discounts." },
+      { question: "When are patent maintenance fees due?", answer: "Maintenance fees for utility patents are due at 3.5 years, 7.5 years, and 11.5 years after the patent grant date. Failure to pay results in patent expiration. Fees increase significantly at each stage. Design and plant patents do not have maintenance fees." },
+      { question: "Can I file a patent application without an attorney?", answer: "Yes, you can file a patent application pro se (on your own behalf). The USPTO provides resources and the EFS-Web system for self-filing. However, patent prosecution is complex and technically demanding. Consulting a patent attorney or agent is strongly recommended for valuable inventions." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="patent-cost-calculator" category="legal" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+const USPTO_FEES: Record<string, Record<string, Record<string, number>>> = {
+  provisional: {
+    filing: { micro: 75, small: 150, large: 300 },
+    search: { micro: 0, small: 0, large: 0 },
+    exam: { micro: 0, small: 0, large: 0 }
+  },
+  nonprovisional: {
+    filing: { micro: 280, small: 560, large: 1120 },
+    search: { micro: 280, small: 560, large: 1120 },
+    exam: { micro: 320, small: 640, large: 1280 }
+  },
+  pct: {
+    filing: { micro: 520, small: 1040, large: 2080 },
+    search: { micro: 840, small: 1680, large: 3360 },
+    exam: { micro: 320, small: 640, large: 1280 }
+  }
+};
+
+const MAINTENANCE_FEES: Record<string, Record<string, number>> = {
+  '3.5': { micro: 400, small: 800, large: 2000 },
+  '7.5': { micro: 900, small: 1800, large: 3760 },
+  '11.5': { micro: 1380, small: 2760, large: 7700 }
+};
+
+function calcPatent(): void {
+  const patentType = (document.getElementById('patentType') as HTMLSelectElement).value;
+  const filingMethod = (document.getElementById('filingMethod') as HTMLSelectElement).value;
+  const entitySize = (document.getElementById('entitySize') as HTMLSelectElement).value;
+  const rate = parseFloat((document.getElementById('attorneyRate') as HTMLInputElement).value) || 0;
+  const hours = parseFloat((document.getElementById('attorneyHours') as HTMLInputElement).value) || 0;
+  const years = parseFloat((document.getElementById('maintainYears') as HTMLInputElement).value) || 20;
+
+  const fees = USPTO_FEES[patentType];
+  const filingFees = fees.filing[entitySize] + fees.search[entitySize] + fees.exam[entitySize];
+  const attorneyCost = (filingMethod === 'attorney') ? (rate * hours) : 0;
+  const firstYearCost = filingFees + attorneyCost;
+
+  let maintenanceTotal = 0;
+  if (patentType !== 'provisional' && years > 3.5) {
+    if (years > 3.5) maintenanceTotal += MAINTENANCE_FEES['3.5'][entitySize];
+    if (years > 7.5) maintenanceTotal += MAINTENANCE_FEES['7.5'][entitySize];
+    if (years > 11.5) maintenanceTotal += MAINTENANCE_FEES['11.5'][entitySize];
+  }
+
+  const total5Year = firstYearCost + (years > 3.5 ? MAINTENANCE_FEES['3.5'][entitySize] : 0);
+  const total20Year = filingFees + attorneyCost + maintenanceTotal;
+
+  document.getElementById('patentFirstYear')!.textContent = '$' + firstYearCost.toFixed(2);
+  document.getElementById('patentFilingFees')!.textContent = '$' + filingFees.toFixed(2);
+  document.getElementById('patentAttorneyCost')!.textContent = '$' + attorneyCost.toFixed(2);
+  document.getElementById('patent5Year')!.textContent = '$' + total5Year.toFixed(2);
+  document.getElementById('patent20Year')!.textContent = '$' + total20Year.toFixed(2);
+
+  showResult('patentResult');
+}
+
+function resetPatent(): void {
+  (document.getElementById('patentType') as HTMLSelectElement).value = 'provisional';
+  (document.getElementById('filingMethod') as HTMLSelectElement).value = 'prose';
+  (document.getElementById('entitySize') as HTMLSelectElement).value = 'micro';
+  (document.getElementById('attorneyRate') as HTMLInputElement).value = '350';
+  (document.getElementById('attorneyHours') as HTMLInputElement).value = '40';
+  (document.getElementById('maintainYears') as HTMLInputElement).value = '20';
+  hideResult('patentResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcPatent);
+document.getElementById('resetBtn')!.addEventListener('click', resetPatent);
+document.addEventListener('DOMContentLoaded', calcPatent);
+</script>

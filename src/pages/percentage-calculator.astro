@@ -1,0 +1,191 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['percentage-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Percentages",
+    "description": "Find what percent one number is of another, calculate percentage increases and decreases.",
+    "step": [
+      { "@type": "HowToStep", "text": "Choose the type of percentage calculation you need" },
+      { "@type": "HowToStep", "text": "Enter the required numbers" },
+      { "@type": "HowToStep", "text": "Click Calculate to see the result instantly" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Quickly calculate percentages, percentage changes, and more. Whether you're figuring out discounts, tips, or data analysis, this calculator handles all common percentage problems.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Percentage Calculator</h2>
+
+      <div class="form-group">
+        <label>Calculation Type</label>
+        <select id="pctType">
+          <option value="find">What is X% of Y?</option>
+          <option value="percent">X is what % of Y?</option>
+          <option value="change">Percentage increase/decrease</option>
+        </select>
+      </div>
+
+      <div id="pctFind">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pctFindRate">Percentage (%)</label>
+            <input type="number" id="pctFindRate" value="20" min="0" max="10000">
+          </div>
+          <div class="form-group">
+            <label for="pctFindOf">Of Number</label>
+            <input type="number" id="pctFindOf" value="200" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div id="pctPercent" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pctPart">X (part)</label>
+            <input type="number" id="pctPart" value="30" min="0">
+          </div>
+          <div class="form-group">
+            <label for="pctWhole">Y (whole)</label>
+            <input type="number" id="pctWhole" value="150" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div id="pctChange" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pctOld">Original Value</label>
+            <input type="number" id="pctOld" value="100" min="0">
+          </div>
+          <div class="form-group">
+            <label for="pctNew">New Value</label>
+            <input type="number" id="pctNew" value="150" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="pctResult">
+        <div class="result-value" id="pctResultValue">0</div>
+        <div class="result-label" id="pctResultLabel">Result</div>
+        <div class="result-details" id="pctResultDetails"></div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Percentage Calculator</h2>
+      <p>Choose the type of calculation you need from the dropdown menu:</p>
+      <ul>
+        <li><strong>What is X% of Y?</strong> — Find a percentage of a number (e.g., 20% of 200 = 40)</li>
+        <li><strong>X is what % of Y?</strong> — Find what percent one number is of another</li>
+        <li><strong>Percentage increase/decrease</strong> — Calculate the percentage change between two values</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Percentage Formulas</h2>
+      <p><strong>Find X% of Y:</strong></p>
+      <div class="formula-box">Result = (X ÷ 100) × Y</div>
+      <p><strong>X is what % of Y:</strong></p>
+      <div class="formula-box">Percentage = (X ÷ Y) × 100</div>
+      <p><strong>Percentage change:</strong></p>
+      <div class="formula-box">Change = ((New - Original) ÷ Original) × 100</div>
+    </div>
+
+    <FAQ items={[
+      { question: "How do I calculate a percentage discount?", answer: 'Use the "What is X% of Y?" mode. Enter the discount percentage as X and the original price as Y. The result is the amount you save.' },
+      { question: "How do I calculate a tip percentage?", answer: 'Use the "What is X% of Y?" mode. Enter 15 or 20 as X and your bill total as Y. The result is the tip amount. For splitting, use our Tip Calculator.' },
+      { question: "What is percentage change used for?", answer: "Percentage change measures how much a value has increased or decreased relative to its original value. It's commonly used in finance, business, and data analysis." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="percentage-calculator" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { formatNumber, showResult, hideResult } from '../utils/calculator-utils';
+
+function togglePctMode() {
+  const mode = (document.getElementById('pctType') as HTMLSelectElement).value;
+  (document.getElementById('pctFind') as HTMLElement).style.display = mode === 'find' ? 'block' : 'none';
+  (document.getElementById('pctPercent') as HTMLElement).style.display = mode === 'percent' ? 'block' : 'none';
+  (document.getElementById('pctChange') as HTMLElement).style.display = mode === 'change' ? 'block' : 'none';
+  hideResult('pctResult');
+}
+
+function calcPercentage() {
+  const mode = (document.getElementById('pctType') as HTMLSelectElement).value;
+  let val: number, label: string, detailsHtml = '';
+
+  if (mode === 'find') {
+    const rate = parseFloat((document.getElementById('pctFindRate') as HTMLInputElement).value);
+    const of = parseFloat((document.getElementById('pctFindOf') as HTMLInputElement).value);
+    if (isNaN(rate) || isNaN(of)) return;
+    val = (rate / 100) * of;
+    label = rate + '% of ' + formatNumber(of, 0) + ' =';
+    detailsHtml = '<div><span class="label">Formula</span><span class="value">(' + rate + ' / 100) × ' + formatNumber(of, 0) + '</span></div>';
+  } else if (mode === 'percent') {
+    const part = parseFloat((document.getElementById('pctPart') as HTMLInputElement).value);
+    const whole = parseFloat((document.getElementById('pctWhole') as HTMLInputElement).value);
+    if (isNaN(part) || isNaN(whole) || whole === 0) return;
+    val = (part / whole) * 100;
+    label = formatNumber(part, 0) + ' is what % of ' + formatNumber(whole, 0) + ':';
+    detailsHtml = '<div><span class="label">Formula</span><span class="value">(' + formatNumber(part, 0) + ' / ' + formatNumber(whole, 0) + ') × 100</span></div>';
+  } else {
+    const oldVal = parseFloat((document.getElementById('pctOld') as HTMLInputElement).value);
+    const newVal = parseFloat((document.getElementById('pctNew') as HTMLInputElement).value);
+    if (isNaN(oldVal) || isNaN(newVal) || oldVal === 0) return;
+    val = ((newVal - oldVal) / oldVal) * 100;
+    const direction = val >= 0 ? 'Increase' : 'Decrease';
+    label = 'Percentage ' + direction + ':';
+    detailsHtml = '<div><span class="label">From</span><span class="value">' + formatNumber(oldVal, 0) + '</span></div>' +
+                  '<div><span class="label">To</span><span class="value">' + formatNumber(newVal, 0) + '</span></div>' +
+                  '<div><span class="label">Change</span><span class="value">' + (val >= 0 ? '+' : '') + val.toFixed(2) + '%</span></div>';
+  }
+
+  document.getElementById('pctResultValue')!.textContent = val % 1 === 0 ? formatNumber(val, 0) : formatNumber(val, 2);
+  document.getElementById('pctResultLabel')!.textContent = label;
+  document.getElementById('pctResultDetails')!.innerHTML = detailsHtml;
+  showResult('pctResult');
+}
+
+function resetPct() {
+  (document.getElementById('pctType') as HTMLSelectElement).value = 'find';
+  (document.getElementById('pctFindRate') as HTMLInputElement).value = '20';
+  (document.getElementById('pctFindOf') as HTMLInputElement).value = '200';
+  (document.getElementById('pctPart') as HTMLInputElement).value = '30';
+  (document.getElementById('pctWhole') as HTMLInputElement).value = '150';
+  (document.getElementById('pctOld') as HTMLInputElement).value = '100';
+  (document.getElementById('pctNew') as HTMLInputElement).value = '150';
+  togglePctMode();
+  hideResult('pctResult');
+}
+
+document.getElementById('pctType')!.addEventListener('change', togglePctMode);
+document.getElementById('calcBtn')!.addEventListener('click', calcPercentage);
+document.getElementById('resetBtn')!.addEventListener('click', resetPct);
+document.addEventListener('DOMContentLoaded', () => { togglePctMode(); calcPercentage(); });
+</script>

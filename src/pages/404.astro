@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { toolBySlug } from '../data/tools';
+import type { Tool } from '../data/tools';
+
+const quickLinks: Tool[] = [
+  toolBySlug['mortgage-calculator'],
+  toolBySlug['bmi-calculator'],
+  toolBySlug['currency-converter'],
+  toolBySlug['password-generator'],
+].filter(Boolean) as Tool[];
+---
+
+<BaseLayout title="404 - Page Not Found | FreeOnlineToolkit" description="Page not found. Browse our free calculators and tools." noIndex>
+  <Header />
+
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;">
+    <div style="font-family:var(--font-display);font-size:clamp(4rem,8vw,7rem);font-weight:900;line-height:1;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">404</div>
+    <div style="width:60px;height:3px;background:var(--gradient-primary);border-radius:2px;margin:12px 0 20px;"></div>
+    <h1 style="font-family:var(--font-display);font-size:clamp(1.3rem,2.5vw,1.7rem);font-weight:700;margin-bottom:10px;color:var(--color-text);">Page not found</h1>
+    <p style="color:var(--color-text-secondary);max-width:420px;margin-bottom:32px;font-size:0.95rem;line-height:1.7;">
+      The page you are looking for might have been moved or no longer exists.
+    </p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+      <a href="/" class="btn btn-primary"><i class="fa-solid fa-house"></i> Go Home</a>
+      <a href="/guides/" class="btn btn-secondary"><i class="fa-regular fa-compass"></i> Browse Guides</a>
+    </div>
+    <div style="margin-top:40px;max-width:480px;width:100%;">
+      <p style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:14px;">Try one of these popular tools:</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        {quickLinks.map(t => (
+          <a href={`/${t.slug}/`} style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--color-surface);border:1px solid var(--color-border-light);border-radius:8px;text-decoration:none;color:var(--color-text-secondary);font-size:0.85rem;transition:all 0.2s ease;"
+            onMouseOver="this.style.borderColor='var(--color-primary)';this.style.boxShadow='var(--shadow-sm)';"
+            onMouseOut="this.style.borderColor='';this.style.boxShadow='';">
+            <span style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;background:var(--color-primary-bg);color:var(--color-primary);flex-shrink:0;">
+              <i class={`fa-solid ${t.icon}`}></i>
+            </span>
+            {t.title}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+</BaseLayout>

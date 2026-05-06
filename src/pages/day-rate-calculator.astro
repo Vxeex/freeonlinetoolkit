@@ -1,0 +1,190 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['day-rate-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Your Freelance Day Rate",
+    "description": "Calculate your freelance day rate based on salary target, business overhead, billable days, and taxes.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your desired annual salary or income target" },
+      { "@type": "HowToStep", "text": "Input your annual business overhead costs" },
+      { "@type": "HowToStep", "text": "Set your billable days per year and non-billable time percentage" },
+      { "@type": "HowToStep", "text": "Enter your tax rate and desired profit margin" },
+      { "@type": "HowToStep", "text": "Review your day rate, effective hourly rate, and annual profit" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How many billable days should a freelancer expect per year?", "acceptedAnswer": { "@type": "Answer", "text": "A typical full-time freelancer bills 180-220 days per year. The calculation starts at 260 weekdays (52 weeks x 5 days), subtracts 20-30 days for vacation and holidays, and accounts for 15-25% non-billable time." } },
+      { "@type": "Question", "name": "What overhead costs should I include in my day rate?", "acceptedAnswer": { "@type": "Answer", "text": "Include all business expenses: software subscriptions, hardware depreciation, insurance, office space or coworking, internet and phone, marketing costs, professional development, and legal/accounting fees." } },
+      { "@type": "Question", "name": "How do taxes affect my day rate calculation?", "acceptedAnswer": { "@type": "Answer", "text": "Taxes significantly impact your required day rate. Revenue needed = (Salary + Overhead) / (1 - Tax Rate). At a 30% tax rate, you need to earn roughly 43% more than your target income just to cover taxes." } },
+      { "@type": "Question", "name": "Should I charge a day rate or an hourly rate?", "acceptedAnswer": { "@type": "Answer", "text": "Day rates are preferred for creative and consulting work where the output matters more than the hours. Hourly rates work better for ongoing maintenance and support. Many freelancers use both." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Set a sustainable freelance day rate that covers your salary, overhead, taxes, and profit. This calculator is widely used by UK and US freelancers to go from salary target to daily rate in seconds.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Day Rate Estimator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="annualSalary">Desired Annual Salary ($/£)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="annualSalary" class="prefixed" value="80000" min="0" step="1000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="overheadCost">Business Overhead ($/£ per year)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="overheadCost" class="prefixed" value="10000" min="0" step="500">
+          </div>
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Software, insurance, equipment, etc.</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="billableDays">Billable Days Per Year</label>
+          <input type="number" id="billableDays" value="220" min="50" max="365" step="1">
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Default: 220 (365 - weekends - holidays - vacation)</span>
+        </div>
+        <div class="form-group">
+          <label for="nonBillablePct">Non-Billable Time (%)</label>
+          <input type="number" id="nonBillablePct" value="20" min="0" max="90" step="1">
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Admin, marketing, proposals</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="taxRateDr">Tax Rate (%)</label>
+          <input type="number" id="taxRateDr" value="30" min="0" max="60" step="0.5">
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Combined income + self-employment tax</span>
+        </div>
+        <div class="form-group">
+          <label for="profitMarginDr">Desired Profit Margin (%)</label>
+          <input type="number" id="profitMarginDr" value="15" min="0" max="100" step="1">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn"><i class="fa-solid fa-calculator"></i> Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="dayRateResult">
+        <div class="result-value" id="dayRatePrimary">$0</div>
+        <div class="result-label">Day Rate (incl. profit margin)</div>
+        <div class="result-details">
+          <div><span class="label">Revenue Needed</span><span class="value" id="drRevenueNeeded">$0</span></div>
+          <div><span class="label">Total Days Needed</span><span class="value" id="drTotalDays">0 days</span></div>
+          <div><span class="label">Base Day Rate</span><span class="value" id="drBaseRate">$0</span></div>
+          <div><span class="label">Effective Hourly Rate (8hr day)</span><span class="value" id="drHourlyRate">$0.00</span></div>
+          <div><span class="label">Annual Profit</span><span class="value" id="drAnnualProfit">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This calculator works backward from your target income to find the day rate you need to charge. Here is what each input means:</p>
+      <ol>
+        <li><strong>Desired Annual Salary</strong> — how much you want to take home after all expenses and taxes.</li>
+        <li><strong>Business Overhead</strong> — your total annual business costs including software, insurance, and office space.</li>
+        <li><strong>Billable Days Per Year</strong> — the number of days you can actually charge clients. Start with 260 weekdays, subtract vacation, holidays, and sick days.</li>
+        <li><strong>Non-Billable Time</strong> — the percentage of your working time spent on admin, marketing, and proposals. 20% is typical.</li>
+        <li><strong>Tax Rate</strong> — your combined tax burden. For US freelancers, 25-35% is typical.</li>
+        <li><strong>Profit Margin</strong> — a buffer for growth, savings, and unexpected costs. 10-20% is healthy.</li>
+      </ol>
+    </div>
+
+    <div class="content-section">
+      <h2>Day Rate Formula</h2>
+      <div class="formula-box">
+        Revenue Needed = (Salary + Overhead) / (1 - Tax Rate)<br>
+        Total Billable Days = Billable Days &times; (1 - Non-Billable%)<br>
+        Base Day Rate = Revenue Needed / Total Billable Days<br>
+        Day Rate with Profit = Base Day Rate &times; (1 + Profit Margin)<br>
+        Hourly Rate = Day Rate with Profit / 8
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "How many billable days should a freelancer expect per year?", answer: "A typical full-time freelancer bills 180-220 days per year. The calculation starts at 260 weekdays (52 weeks x 5 days), subtracts 20-30 days for vacation and holidays, and accounts for 15-25% non-billable time." },
+      { question: "What overhead costs should I include in my day rate?", answer: "Include all business expenses: software subscriptions, hardware depreciation, insurance, office space or coworking, internet and phone, marketing costs, professional development, and legal/accounting fees." },
+      { question: "How do taxes affect my day rate calculation?", answer: "Taxes significantly impact your required day rate. Revenue needed = (Salary + Overhead) / (1 - Tax Rate). At a 30% tax rate, you need to earn roughly 43% more than your target income just to cover taxes." },
+      { question: "Should I charge a day rate or an hourly rate?", answer: "Day rates are preferred for creative and consulting work where the output matters more than the hours. Hourly rates work better for ongoing maintenance and support. Many freelancers use both." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="day-rate-calculator" category="freelancing" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcDayRate() {
+  var salary = getNum('annualSalary');
+  var overhead = getNum('overheadCost');
+  var bDays = getNum('billableDays');
+  var nonBillPct = getNum('nonBillablePct');
+  var taxPct = getNum('taxRateDr');
+  var profitPct = getNum('profitMarginDr');
+
+  if (!salary || salary <= 0) { salary = 80000; (document.getElementById('annualSalary') as HTMLInputElement).value = '80000'; }
+  if (!overhead || overhead < 0) { overhead = 0; (document.getElementById('overheadCost') as HTMLInputElement).value = '0'; }
+  if (!bDays || bDays < 50) { bDays = 220; (document.getElementById('billableDays') as HTMLInputElement).value = '220'; }
+  if (nonBillPct === null || nonBillPct < 0) { nonBillPct = 20; (document.getElementById('nonBillablePct') as HTMLInputElement).value = '20'; }
+  if (!taxPct || taxPct < 0) { taxPct = 30; (document.getElementById('taxRateDr') as HTMLInputElement).value = '30'; }
+  if (!profitPct || profitPct < 0) { profitPct = 15; (document.getElementById('profitMarginDr') as HTMLInputElement).value = '15'; }
+
+  var revenueNeeded = (salary + overhead) / (1 - taxPct / 100);
+  var totalBillableDays = bDays * (1 - nonBillPct / 100);
+  var baseRate = revenueNeeded / totalBillableDays;
+  var rateWithProfit = baseRate * (1 + profitPct / 100);
+  var hourlyRate = rateWithProfit / 8;
+  var annualProfit = (rateWithProfit - baseRate) * totalBillableDays;
+
+  document.getElementById('dayRatePrimary').textContent = formatCurrency(rateWithProfit);
+  document.getElementById('drRevenueNeeded').textContent = formatCurrency(revenueNeeded);
+  document.getElementById('drTotalDays').textContent = Math.round(totalBillableDays) + ' days';
+  document.getElementById('drBaseRate').textContent = formatCurrency(baseRate);
+  document.getElementById('drHourlyRate').textContent = formatCurrency(hourlyRate);
+  document.getElementById('drAnnualProfit').textContent = formatCurrency(annualProfit);
+
+  showResult('dayRateResult');
+}
+
+function resetDayRate() {
+  (document.getElementById('annualSalary') as HTMLInputElement).value = '80000';
+  (document.getElementById('overheadCost') as HTMLInputElement).value = '10000';
+  (document.getElementById('billableDays') as HTMLInputElement).value = '220';
+  (document.getElementById('nonBillablePct') as HTMLInputElement).value = '20';
+  (document.getElementById('taxRateDr') as HTMLInputElement).value = '30';
+  (document.getElementById('profitMarginDr') as HTMLInputElement).value = '15';
+  hideResult('dayRateResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcDayRate);
+document.getElementById('resetBtn')!.addEventListener('click', resetDayRate);
+document.addEventListener('DOMContentLoaded', calcDayRate);
+</script>

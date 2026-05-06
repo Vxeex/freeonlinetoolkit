@@ -1,0 +1,199 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['solar-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Solar Panel Savings",
+    "description": "Calculate solar panel payback period and savings based on your location, electricity usage, and system size.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select your sunlight region based on location" },
+      { "@type": "HowToStep", "text": "Enter your monthly electric bill and electricity rate" },
+      { "@type": "HowToStep", "text": "Choose your system size and cost per watt" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your payback period and 25-year savings" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your solar panel payback period, total savings, and return on investment. Enter your electricity usage and location for a personalized solar savings analysis.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Solar Panel Savings Calculator</h2>
+
+      <div class="form-group">
+        <label for="sunRegion">Your Sunlight Region</label>
+        <select id="sunRegion">
+          <option value="4">Pacific Northwest (low sun &mdash; e.g., Seattle)</option>
+          <option value="5">Northeast / Midwest (moderate &mdash; e.g., New York, Chicago)</option>
+          <option value="5.5">Mid-Atlantic (e.g., Washington DC, Philadelphia)</option>
+          <option value="6" selected>Southwest / Sun Belt (good &mdash; e.g., Texas, Atlanta)</option>
+          <option value="6.5">Desert Southwest (very good &mdash; e.g., Arizona, Nevada)</option>
+          <option value="7">Southern California / Hawaii (excellent)</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="monthlyBill">Monthly Electric Bill ($)</label>
+          <input type="number" id="monthlyBill" value="150" min="20" max="2000" step="10">
+        </div>
+        <div class="form-group">
+          <label for="elecRate">Electricity Rate (&cent;/kWh)</label>
+          <select id="elecRate">
+            <option value="10">10&cent; (low)</option>
+            <option value="12">12&cent; (average low)</option>
+            <option value="14">14&cent; (national average)</option>
+            <option value="17" selected>17&cent; (above average)</option>
+            <option value="22">22&cent; (high &mdash; NE, CA)</option>
+            <option value="30">30&cent; (very high &mdash; HI, MA)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="systemSize">System Size</label>
+          <select id="systemSize">
+            <option value="4">4 kW (small &mdash; 10-12 panels)</option>
+            <option value="6">6 kW (medium &mdash; 15-18 panels)</option>
+            <option value="8" selected>8 kW (large &mdash; 20-24 panels, recommended)</option>
+            <option value="10">10 kW (XL &mdash; 25-30 panels)</option>
+            <option value="12">12 kW (XXL &mdash; 30+ panels)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="solarCost">Cost per Watt ($)</label>
+          <select id="solarCost">
+            <option value="2.50">$2.50 (very cheap)</option>
+            <option value="2.75">$2.75 (cheap)</option>
+            <option value="3.00" selected>$3.00 (average)</option>
+            <option value="3.25">$3.25 (above average)</option>
+            <option value="3.50">$3.50 (expensive)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate Savings</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="solarResult">
+        <div class="result-value" id="solarResultValue">$0</div>
+        <div class="result-label" id="solarResultLabel">Total estimated savings</div>
+        <div class="result-details" id="solarResultDetails"></div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How Solar Savings Are Calculated</h2>
+      <p>This calculator estimates solar savings based on:</p>
+      <ul>
+        <li><strong>Sun hours:</strong> Varies by region from 4 (Seattle) to 7 (Arizona)</li>
+        <li><strong>System size:</strong> Larger systems generate more power but cost more upfront</li>
+        <li><strong>Electricity rate:</strong> Higher rates mean more savings from solar generation</li>
+        <li><strong>Federal tax credit:</strong> Currently 30% of total system cost (assumed included)</li>
+        <li><strong>Degradation:</strong> Panels lose ~0.5% efficiency per year</li>
+        <li><strong>Electricity inflation:</strong> Rates assumed to rise 3% annually</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Key Solar Formulas</h2>
+      <div class="formula-box">Annual Generation (kWh) = System Size (kW) &times; Sun Hours &times; 365 &times; 0.75<br><br>Annual Savings = kWh Generated &times; Electric Rate<br><br>Payback Period = Net Cost &divide; Annual Savings</div>
+      <p>The 0.75 factor accounts for real-world conditions: panel angle, shading, inverter efficiency, and weather variability.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How long do solar panels last?", answer: "Most solar panels come with a 25-year performance warranty. They typically produce at 85-90% of rated capacity after 25 years. Actual lifespan is often 30-40+ years with minimal degradation." },
+      { question: "Is solar worth it in my state?", answer: "Solar is worthwhile in most US states, but payback periods vary. States with high electricity rates (CA, MA, HI, NY) and good sun have the fastest payback. Use the calculator above for a personalized estimate." },
+      { question: "Does net metering still exist?", answer: "Many states still offer net metering, but policies are changing. Net metering lets you sell excess power back to the grid for credits. Check your state's current policy — it significantly affects solar ROI." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="solar-calculator" category="homeowner" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { formatNumber, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcSolar() {
+  const sunHours = parseFloat((document.getElementById('sunRegion') as HTMLSelectElement).value);
+  const monthlyBill = parseFloat((document.getElementById('monthlyBill') as HTMLInputElement).value);
+  const rateCents = parseFloat((document.getElementById('elecRate') as HTMLSelectElement).value);
+  const systemKw = parseFloat((document.getElementById('systemSize') as HTMLSelectElement).value);
+  const costPerWatt = parseFloat((document.getElementById('solarCost') as HTMLSelectElement).value);
+
+  if (isNaN(monthlyBill) || monthlyBill <= 0) return;
+
+  const ratePerKwh = rateCents / 100;
+  const systemCost = systemKw * 1000 * costPerWatt;
+  const taxCredit = systemCost * 0.30;
+  const netCost = systemCost - taxCredit;
+  const annualKwh = systemKw * sunHours * 365 * 0.75;
+  const annualSavings = annualKwh * ratePerKwh;
+
+  const monthlyKwh = monthlyBill / ratePerKwh;
+  const offsetPct = Math.min(100, (annualKwh / (monthlyKwh * 12)) * 100);
+
+  const paybackYears = netCost / annualSavings;
+  let year25Value = 0;
+  let year5Savings = 0;
+  let year10Savings = 0;
+  const rateInflation = 1.03;
+  const degRate = 0.005;
+
+  for (let y = 1; y <= 25; y++) {
+    const yearGen = annualKwh * Math.pow(1 - degRate, y - 1);
+    const yearRate = ratePerKwh * Math.pow(rateInflation, y - 1);
+    const yearSave = yearGen * yearRate;
+    year25Value += yearSave;
+    if (y <= 5) year5Savings += yearSave;
+    if (y <= 10) year10Savings += yearSave;
+  }
+  year25Value = Math.round(year25Value);
+
+  document.getElementById('solarResultValue')!.innerHTML = '$' + formatNumber(year25Value, 0);
+  document.getElementById('solarResultLabel')!.textContent = 'Estimated 25-year total savings';
+  document.getElementById('solarResultDetails')!.innerHTML =
+    '<div><span class="label">System cost (before credit)</span><span class="value">$' + formatNumber(systemCost, 0) + '</span></div>' +
+    '<div><span class="label">Federal tax credit (30%)</span><span class="value">-$' + formatNumber(taxCredit, 0) + '</span></div>' +
+    '<div><span class="label">Net cost after credit</span><span class="value">$' + formatNumber(netCost, 0) + '</span></div>' +
+    '<div><span class="label">Annual electricity offset</span><span class="value">' + offsetPct.toFixed(0) + '%</span></div>' +
+    '<div><span class="label">Annual savings</span><span class="value">$' + formatNumber(annualSavings, 0) + '/yr</span></div>' +
+    '<div><span class="label">Payback period</span><span class="value">' + paybackYears.toFixed(1) + ' years</span></div>' +
+    '<div><span class="label">5-year cumulative savings</span><span class="value">$' + formatNumber(year5Savings, 0) + '</span></div>' +
+    '<div><span class="label">10-year cumulative savings</span><span class="value">$' + formatNumber(year10Savings, 0) + '</span></div>' +
+    '<div><span class="label">25-year cumulative savings</span><span class="value">$' + formatNumber(year25Value, 0) + '</span></div>';
+  showResult('solarResult');
+}
+
+function resetSolar() {
+  (document.getElementById('sunRegion') as HTMLSelectElement).value = '6';
+  (document.getElementById('monthlyBill') as HTMLInputElement).value = '150';
+  (document.getElementById('elecRate') as HTMLSelectElement).value = '17';
+  (document.getElementById('systemSize') as HTMLSelectElement).value = '8';
+  (document.getElementById('solarCost') as HTMLSelectElement).value = '3.00';
+  hideResult('solarResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcSolar);
+document.getElementById('resetBtn')!.addEventListener('click', resetSolar);
+document.addEventListener('DOMContentLoaded', calcSolar);
+</script>

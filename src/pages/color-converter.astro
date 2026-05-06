@@ -1,0 +1,371 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['color-converter'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Convert Colors Between HEX and RGB",
+    "description": "Pick any color and instantly convert between HEX, RGB, and HSL formats.",
+    "step": [
+      { "@type": "HowToStep", "text": "Pick a color using the color input or enter a HEX value" },
+      { "@type": "HowToStep", "text": "View the RGB and HSL equivalents instantly" },
+      { "@type": "HowToStep", "text": "Copy any color code with one click" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Pick any color and instantly get its HEX, RGB, and HSL values. Adjust colors visually with sliders, copy codes with one click, and explore complementary harmonies.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Color Converter</h2>
+
+      <div class="color-preview-large" id="colorPreview" style="background:#6366f1;"></div>
+
+      <div class="color-input-row">
+        <input type="color" id="colorPicker" value="#6366f1">
+        <input type="text" id="hexInput" value="#6366f1" placeholder="#HEX" maxlength="7">
+        <button class="btn btn-primary" id="applyHexBtn" style="padding:12px 20px;">Apply</button>
+      </div>
+
+      <div class="color-value-row">
+        <span class="label">HEX</span>
+        <span class="value" id="hexDisplay">#6366f1</span>
+        <button class="copy-btn" id="copyHex">Copy</button>
+      </div>
+      <div class="color-value-row">
+        <span class="label">RGB</span>
+        <span class="value" id="rgbDisplay">rgb(99, 102, 241)</span>
+        <button class="copy-btn" id="copyRgb">Copy</button>
+      </div>
+      <div class="color-value-row">
+        <span class="label">HSL</span>
+        <span class="value" id="hslDisplay">hsl(239, 84%, 67%)</span>
+        <button class="copy-btn" id="copyHsl">Copy</button>
+      </div>
+
+      <div class="color-sliders">
+        <div class="slider-group">
+          <label>Red <span id="redValue">99</span></label>
+          <input type="range" id="redSlider" min="0" max="255" value="99" style="background:linear-gradient(to right,#000,#f00);">
+        </div>
+        <div class="slider-group">
+          <label>Green <span id="greenValue">102</span></label>
+          <input type="range" id="greenSlider" min="0" max="255" value="102" style="background:linear-gradient(to right,#000,#0f0);">
+        </div>
+        <div class="slider-group">
+          <label>Blue <span id="blueValue">241</span></label>
+          <input type="range" id="blueSlider" min="0" max="255" value="241" style="background:linear-gradient(to right,#000,#00f);">
+        </div>
+      </div>
+
+      <div id="colorHistory" class="color-history"></div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Pick a color using the <strong>color picker</strong>, type a <strong>HEX value</strong> directly, or adjust the <strong>RGB sliders</strong> to fine-tune. All color formats update in real time. Click the <strong>Copy</strong> button next to any format to copy it to your clipboard.</p>
+      <p>Your recently picked colors appear as swatches below the sliders for easy reuse.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Color Format Reference</h2>
+      <div class="formula-box">
+        HEX: #RRGGBB &mdash; 6-digit hexadecimal<br>
+        RGB: rgb(0&ndash;255, 0&ndash;255, 0&ndash;255)<br>
+        HSL: hsl(hue&ndash;360&deg;, saturation&ndash;100%, lightness&ndash;100%)
+      </div>
+      <p>HEX is widely used in web design. RGB is the standard for screens. HSL makes it intuitive to adjust hue, saturation, and lightness independently &mdash; great for creating color palettes.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the difference between HEX and RGB?", answer: "HEX is a 6-digit hexadecimal representation of RGB values (#FF0000 = red). RGB uses decimal values (255, 0, 0). They represent the same color space &mdash; just different notations. HEX is more compact for CSS, while RGB is more intuitive for programmatic manipulation." },
+      { question: "How do I use HSL colors?", answer: "HSL stands for Hue, Saturation, Lightness. Hue is the color angle (0-360), saturation is the intensity (0-100%), and lightness is the brightness (0-100%). HSL is often easier for creating harmonious color schemes because you can keep hue constant and adjust saturation/lightness for variations." },
+      { question: "What is a color hex code?", answer: "A hex code is a 6-digit hexadecimal number that represents a color. The format is #RRGGBB where RR is the red value, GG is green, and BB is blue. Each pair ranges from 00 (minimum) to FF (maximum). For example, #FF0000 is pure red, #00FF00 is green, and #0000FF is blue." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="color-converter" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+var colorHistory: string[] = [];
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
+  r /= 255; g /= 255; b /= 255;
+  var max = Math.max(r, g, b), min = Math.min(r, g, b);
+  var h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    var d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100)
+  };
+}
+
+function rgbToHex(r: number, g: number, b: number): string {
+  return '#' + [r, g, b].map(function(x) {
+    var hex = Math.round(x).toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  }).join('');
+}
+
+function updateDisplay(hex: string): void {
+  var preview = document.getElementById('colorPreview') as HTMLElement;
+  var picker = document.getElementById('colorPicker') as HTMLInputElement;
+  var hexInput = document.getElementById('hexInput') as HTMLInputElement;
+  var hexDisplay = document.getElementById('hexDisplay') as HTMLElement;
+  var rgbDisplay = document.getElementById('rgbDisplay') as HTMLElement;
+  var hslDisplay = document.getElementById('hslDisplay') as HTMLElement;
+
+  preview.style.background = hex;
+  picker.value = hex;
+  hexInput.value = hex;
+  hexDisplay.textContent = hex;
+
+  var rgb = hexToRgb(hex);
+  if (!rgb) return;
+
+  rgbDisplay.textContent = 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
+
+  var hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  hslDisplay.textContent = 'hsl(' + hsl.h + ', ' + hsl.s + '%, ' + hsl.l + '%)';
+
+  (document.getElementById('redSlider') as HTMLInputElement).value = rgb.r;
+  (document.getElementById('greenSlider') as HTMLInputElement).value = rgb.g;
+  (document.getElementById('blueSlider') as HTMLInputElement).value = rgb.b;
+  document.getElementById('redValue')!.textContent = rgb.r.toString();
+  document.getElementById('greenValue')!.textContent = rgb.g.toString();
+  document.getElementById('blueValue')!.textContent = rgb.b.toString();
+}
+
+function applyHex(): void {
+  var input = (document.getElementById('hexInput') as HTMLInputElement).value.trim();
+  if (input.charAt(0) !== '#') input = '#' + input;
+  if (/^#[a-f\d]{6}$/i.test(input)) {
+    updateDisplay(input);
+    addToHistory(input);
+  }
+}
+
+function updateFromSliders(): void {
+  var r = parseInt((document.getElementById('redSlider') as HTMLInputElement).value);
+  var g = parseInt((document.getElementById('greenSlider') as HTMLInputElement).value);
+  var b = parseInt((document.getElementById('blueSlider') as HTMLInputElement).value);
+  var hex = rgbToHex(r, g, b);
+  updateDisplay(hex);
+  addToHistory(hex);
+}
+
+function copyText(id: string, btn: HTMLElement): void {
+  var text = document.getElementById(id)!.textContent || '';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Copied!';
+      setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+    });
+  }
+}
+
+function addToHistory(hex: string): void {
+  if (colorHistory.indexOf(hex) > -1) return;
+  colorHistory.unshift(hex);
+  if (colorHistory.length > 12) colorHistory.pop();
+  renderHistory();
+}
+
+function renderHistory(): void {
+  var container = document.getElementById('colorHistory') as HTMLElement;
+  container.innerHTML = '';
+  colorHistory.forEach(function(hex) {
+    var swatch = document.createElement('div');
+    swatch.className = 'color-swatch';
+    swatch.style.background = hex;
+    swatch.title = hex;
+    swatch.addEventListener('click', function() { updateDisplay(hex); });
+    container.appendChild(swatch);
+  });
+}
+
+document.getElementById('applyHexBtn')!.addEventListener('click', applyHex);
+document.getElementById('hexInput')!.addEventListener('keydown', function(e: KeyboardEvent) {
+  if (e.key === 'Enter') applyHex();
+});
+document.getElementById('colorPicker')!.addEventListener('input', function() {
+  var hex = (this as HTMLInputElement).value;
+  updateDisplay(hex);
+  addToHistory(hex);
+});
+document.getElementById('redSlider')!.addEventListener('input', updateFromSliders);
+document.getElementById('greenSlider')!.addEventListener('input', updateFromSliders);
+document.getElementById('blueSlider')!.addEventListener('input', updateFromSliders);
+document.getElementById('copyHex')!.addEventListener('click', function(e) { copyText('hexDisplay', e.currentTarget as HTMLElement); });
+document.getElementById('copyRgb')!.addEventListener('click', function(e) { copyText('rgbDisplay', e.currentTarget as HTMLElement); });
+document.getElementById('copyHsl')!.addEventListener('click', function(e) { copyText('hslDisplay', e.currentTarget as HTMLElement); });
+
+document.addEventListener('DOMContentLoaded', function() {
+  addToHistory('#6366f1');
+});
+</script>
+
+<style>
+.color-preview-large {
+  width: 100%;
+  height: 160px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  margin-bottom: 20px;
+  transition: background 0.15s ease;
+}
+.color-input-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.color-input-row input[type="color"] {
+  width: 64px;
+  height: 48px;
+  padding: 0;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: none;
+}
+.color-input-row input[type="text"] {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+.color-value-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-light);
+}
+.color-value-row .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  min-width: 42px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.color-value-row .value {
+  flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+.color-value-row .copy-btn {
+  background: none;
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: all 0.2s;
+}
+.color-value-row .copy-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+}
+.color-sliders { margin-top: 20px; }
+.slider-group { margin-bottom: 14px; }
+.slider-group label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.slider-group label span { font-family: 'JetBrains Mono', monospace; font-weight: 400; color: var(--color-text-secondary); }
+.slider-group input[type="range"] {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+.slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.slider-group input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+}
+.color-history {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.color-swatch:hover { transform: scale(1.15); }
+</style>

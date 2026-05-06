@@ -1,0 +1,283 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['pet-cost-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Pet Ownership Costs",
+    "description": "Estimate the total cost of owning a pet including food, vet care, supplies, insurance, and one-time expenses.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select your pet type (dog or cat) and size" },
+      { "@type": "HowToStep", "text": "Enter your pet's current age and expected lifespan" },
+      { "@type": "HowToStep", "text": "Enter the adoption or purchase cost and initial setup expenses" },
+      { "@type": "HowToStep", "text": "Fill in monthly and annual costs, then click Calculate" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Know what you are signing up for before bringing a pet home. This pet cost calculator estimates first-year, annual, and lifetime costs for dogs and cats, broken down by food, vet care, supplies, insurance, and one-time expenses.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Pet Ownership Cost Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="petType">Pet Type</label>
+          <select id="petType">
+            <option value="dog" selected>Dog</option>
+            <option value="cat">Cat</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="petSize">Pet Size</label>
+          <select id="petSize">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="petAge">Current Pet Age (Years)</label>
+          <input type="number" id="petAge" value="2" min="0" max="50" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="lifespan">Expected Lifespan (Years)</label>
+          <input type="number" id="lifespan" value="13" min="1" max="50" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="adoptionCost">Adoption / Purchase Cost ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="adoptionCost" class="prefixed" value="300" min="0" step="50">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="setupCost">Initial Setup Cost ($) <span class="optional">bed, crate, bowls</span></label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="setupCost" class="prefixed" value="250" min="0" step="25">
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--color-primary);margin:1rem 0 0.75rem;">Monthly &amp; Annual Costs</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="foodCost">Monthly Food Cost ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="foodCost" class="prefixed" value="60" min="0" step="5">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="suppliesCost">Monthly Supplies ($) <span class="optional">toys, litter</span></label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="suppliesCost" class="prefixed" value="25" min="0" step="5">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="vetCost">Annual Vet Visits ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="vetCost" class="prefixed" value="200" min="0" step="25">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="vaccinations">Annual Vaccinations ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="vaccinations" class="prefixed" value="100" min="0" step="10">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="groomingCost">Grooming per Year ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="groomingCost" class="prefixed" value="300" min="0" step="25">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="insurance">Pet Insurance Monthly ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="insurance" class="prefixed" value="40" min="0" step="5">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="otherCost">Other Monthly Costs ($) <span class="optional">boarding, training, meds</span></label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="otherCost" class="prefixed" value="20" min="0" step="5">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="petCostResult">
+        <div class="result-value" id="petFirstYear">$0.00</div>
+        <div class="result-label">First Year Total Cost</div>
+        <div class="result-details">
+          <div><span class="label">Annual Recurring Cost</span><span class="value" id="petAnnualRecurring">$0</span></div>
+          <div><span class="label">Monthly Average Cost</span><span class="value" id="petMonthlyAvg">$0</span></div>
+          <div><span class="label">Lifetime Cost Projection</span><span class="value" id="petLifetimeCost">$0</span></div>
+          <div><span class="label">One-Time Costs</span><span class="value" id="petOneTime">$0</span></div>
+          <div><span class="label">Low-End Monthly Estimate</span><span class="value" id="petLowEstimate">$0</span></div>
+          <div><span class="label">High-End Monthly Estimate</span><span class="value" id="petHighEstimate">$0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section" id="petBreakdownSection" style="display:none;">
+      <h2>Cost Breakdown by Category</h2>
+      <div class="table-wrap">
+        <table class="amort-table">
+          <thead>
+            <tr><th>Category</th><th>Annual Cost</th><th>Percentage of Total</th></tr>
+          </thead>
+          <tbody id="petBreakdownBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Pet Cost Calculator</h2>
+      <p>Select your <strong>pet type</strong> (dog or cat) and <strong>size</strong> to set baseline cost estimates. Enter your pet's <strong>current age</strong> and <strong>expected lifespan</strong> to calculate the lifetime cost projection. Include <strong>adoption or purchase cost</strong> and <strong>initial setup</strong> expenses.</p>
+      <p>Adjust monthly food, supplies, vet visits, vaccinations, grooming, insurance, and other costs to match your actual spending. Click "Calculate" to see first-year costs, annual recurring expenses, monthly averages, and a lifetime projection.</p>
+      <p>Pro tip: Pet insurance costs $30-60 per month but can save thousands in emergency vet bills.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Pet Cost Formula</h2>
+      <div class="formula-box">
+        One-Time Costs = Adoption + Setup<br>
+        Yearly Recurring = Food &times; 12 + Supplies &times; 12 + Vet + Vaccinations + Grooming + Insurance &times; 12 + Other &times; 12<br>
+        First Year = One-Time + Yearly Recurring<br>
+        Lifetime = One-Time + Yearly Recurring &times; Remaining Years
+      </div>
+      <p>Low and high estimates are approximately 80% and 130% of your entered costs to give you a realistic range.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How much does a dog cost per year on average?", answer: "According to the ASPCA, the average annual cost for a small dog is around $1,500-$2,500, medium dogs $1,800-$3,000, and large dogs $2,200-$4,000. First-year costs are significantly higher due to adoption fees and initial supplies." },
+      { question: "Are cats cheaper than dogs?", answer: "Generally, yes. Cats typically cost 20-30% less per year than dogs of equivalent size. Cat food is less expensive, they do not require professional grooming, and their supplies are cheaper." },
+      { question: "Is pet insurance worth the cost?", answer: "Pet insurance is most valuable for unexpected accidents and illnesses, which can cost $1,000-$5,000 or more. For routine care, you may come out ahead by self-insuring in a dedicated savings account." },
+      { question: "What are the hidden costs of pet ownership?", answer: "Commonly overlooked costs include: pet deposits and monthly pet rent, boarding or pet-sitting, dental cleanings ($200-600), emergency vet visits, and replacing damaged items." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="pet-cost-calculator" category="lifestyle" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcPetCost() {
+  const petType = (document.getElementById('petType') as HTMLSelectElement).value;
+  const petSize = (document.getElementById('petSize') as HTMLSelectElement).value;
+  const age = getNum('petAge') || 0;
+  const lifespan = getNum('lifespan') || 1;
+  const adoption = getNum('adoptionCost') || 0;
+  const setup = getNum('setupCost') || 0;
+  const food = getNum('foodCost') || 0;
+  const supplies = getNum('suppliesCost') || 0;
+  const vet = getNum('vetCost') || 0;
+  const vaccinations = getNum('vaccinations') || 0;
+  const grooming = getNum('groomingCost') || 0;
+  const insurance = getNum('insurance') || 0;
+  const other = getNum('otherCost') || 0;
+
+  if (age >= lifespan) return;
+
+  const oneTime = adoption + setup;
+  const yearlyRecurring = food * 12 + supplies * 12 + vet + vaccinations + grooming + insurance * 12 + other * 12;
+  const firstYear = oneTime + yearlyRecurring;
+  const remainingYears = lifespan - age;
+  const lifetimeCost = oneTime + yearlyRecurring * (remainingYears + 1);
+  const monthlyAvg = yearlyRecurring / 12;
+  const lowEstimate = yearlyRecurring * 0.8 / 12;
+  const highEstimate = yearlyRecurring * 1.3 / 12;
+
+  document.getElementById('petFirstYear')!.textContent = formatCurrency(firstYear);
+  document.getElementById('petAnnualRecurring')!.textContent = formatCurrency(yearlyRecurring);
+  document.getElementById('petMonthlyAvg')!.textContent = formatCurrency(monthlyAvg);
+  document.getElementById('petLifetimeCost')!.textContent = formatCurrency(lifetimeCost);
+  document.getElementById('petOneTime')!.textContent = formatCurrency(oneTime);
+  document.getElementById('petLowEstimate')!.textContent = formatCurrency(lowEstimate) + ' / mo';
+  document.getElementById('petHighEstimate')!.textContent = formatCurrency(highEstimate) + ' / mo';
+
+  showResult('petCostResult');
+
+  const totalAnnual = yearlyRecurring + oneTime;
+  const breakdownItems = [
+    { name: 'Food', annual: food * 12 },
+    { name: 'Supplies', annual: supplies * 12 },
+    { name: 'Vet Visits', annual: vet },
+    { name: 'Vaccinations', annual: vaccinations },
+    { name: 'Grooming', annual: grooming },
+    { name: 'Pet Insurance', annual: insurance * 12 },
+    { name: 'Other Costs', annual: other * 12 },
+    { name: 'One-Time (adoption + setup)', annual: oneTime }
+  ];
+
+  const body = document.getElementById('petBreakdownBody')!;
+  body.innerHTML = '';
+  breakdownItems.forEach(item => {
+    const pct = totalAnnual > 0 ? (item.annual / totalAnnual * 100).toFixed(1) : '0.0';
+    const row = document.createElement('tr');
+    row.innerHTML = '<td>' + item.name + '</td><td>' + formatCurrency(item.annual) + '</td><td>' + pct + '%</td>';
+    body.appendChild(row);
+  });
+
+  document.getElementById('petBreakdownSection')!.style.display = 'block';
+}
+
+function resetPetCost() {
+  (document.getElementById('petType') as HTMLSelectElement).value = 'dog';
+  (document.getElementById('petSize') as HTMLSelectElement).value = 'medium';
+  (document.getElementById('petAge') as HTMLInputElement).value = '2';
+  (document.getElementById('lifespan') as HTMLInputElement).value = '13';
+  (document.getElementById('adoptionCost') as HTMLInputElement).value = '300';
+  (document.getElementById('setupCost') as HTMLInputElement).value = '250';
+  (document.getElementById('foodCost') as HTMLInputElement).value = '60';
+  (document.getElementById('suppliesCost') as HTMLInputElement).value = '25';
+  (document.getElementById('vetCost') as HTMLInputElement).value = '200';
+  (document.getElementById('vaccinations') as HTMLInputElement).value = '100';
+  (document.getElementById('groomingCost') as HTMLInputElement).value = '300';
+  (document.getElementById('insurance') as HTMLInputElement).value = '40';
+  (document.getElementById('otherCost') as HTMLInputElement).value = '20';
+  document.getElementById('petBreakdownSection')!.style.display = 'none';
+  hideResult('petCostResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcPetCost);
+document.getElementById('resetBtn')!.addEventListener('click', resetPetCost);
+document.addEventListener('DOMContentLoaded', calcPetCost);
+</script>

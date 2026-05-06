@@ -1,0 +1,156 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['air-fryer-converter'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Convert Oven Recipes for Air Fryer",
+    "description": "Convert any oven recipe to air fryer settings instantly by adjusting temperature and time.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select a preset food type or enter custom oven temperature and time" },
+      { "@type": "HowToStep", "text": "The calculator reduces temperature by 25°F and time by 20%" },
+      { "@type": "HowToStep", "text": "View the recommended air fryer temperature and cooking time" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Convert any oven recipe for your air fryer. Enter the conventional oven temperature and time to get the optimal air fryer settings.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Oven to Air Fryer Converter</h2>
+
+      <div class="form-group">
+        <label for="foodType">What are you cooking?</label>
+        <select id="foodType">
+          <option value="">Custom (manual entry)</option>
+          <option value="frozen_fries">Frozen French Fries</option>
+          <option value="chicken_wings">Chicken Wings</option>
+          <option value="frozen_chicken">Frozen Chicken Nuggets/Tenders</option>
+          <option value="fish">Fish Fillets</option>
+          <option value="steak">Steak (medium)</option>
+          <option value="frozen_veggies">Frozen Vegetables</option>
+          <option value="potato_wedges">Potato Wedges</option>
+          <option value="sausages">Sausages</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ovenTemp">Conventional Oven Temp (&deg;F)</label>
+          <input type="number" id="ovenTemp" value="400" min="200" max="500" step="5">
+        </div>
+        <div class="form-group">
+          <label for="ovenTime">Conventional Time (minutes)</label>
+          <input type="number" id="ovenTime" value="20" min="1" max="180" step="1">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Convert</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="afResult">
+        <div class="result-value" id="afResultValue">0</div>
+        <div class="result-label" id="afResultLabel">Air fryer settings</div>
+        <div class="result-details" id="afResultDetails"></div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How Air Fryer Conversion Works</h2>
+      <p>Air fryers cook faster than conventional ovens because the hot air circulates directly around the food. The general rule: <strong>reduce the temperature by 25&deg;F and cut the cooking time by 20%</strong>.</p>
+      <ul>
+        <li><strong>Temperature:</strong> Reduce by 25&deg;F (or ~15&deg;C)</li>
+        <li><strong>Time:</strong> Reduce by 20% (multiply by 0.8)</li>
+        <li><strong>Basket:</strong> Don't overcrowd &mdash; food needs air circulation</li>
+        <li><strong>Shake:</strong> Shake the basket halfway through for even cooking</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Air Fryer Tips by Food Type</h2>
+      <p><strong>Frozen foods</strong> are ideal for air fryers —they come out crispier than in an oven. <strong>Fresh breaded items</strong> benefit from a light oil spray. <strong>Vegetables</strong> cook faster and caramelize beautifully. Always preheat your air fryer for 3-5 minutes for best results.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "Can I put aluminum foil in an air fryer?", answer: "Yes, but don't cover the entire basket — air needs to circulate. Never put foil on the bottom where it can block airflow or touch the heating element." },
+      { question: "Do I need to preheat my air fryer?", answer: "Preheating for 3-5 minutes gives the best results, especially for crispy foods. Some models don't require it, but preheating ensures even cooking and the right texture." },
+      { question: "Why is my food burning on the outside but raw inside?", answer: "Temperature is too high or basket is too full. Lower the temperature by 10-15°F and cook longer. Also try cutting food into smaller, uniform pieces." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="air-fryer-converter" category="food" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+const presets: Record<string, { temp: number; time: number }> = {
+  frozen_fries: { temp: 425, time: 18 },
+  chicken_wings: { temp: 400, time: 22 },
+  frozen_chicken: { temp: 400, time: 12 },
+  fish: { temp: 375, time: 12 },
+  steak: { temp: 400, time: 10 },
+  frozen_veggies: { temp: 375, time: 12 },
+  potato_wedges: { temp: 400, time: 20 },
+  sausages: { temp: 380, time: 12 }
+};
+
+function updatePreset() {
+  const foodType = (document.getElementById('foodType') as HTMLSelectElement).value;
+  if (foodType && presets[foodType]) {
+    (document.getElementById('ovenTemp') as HTMLInputElement).value = String(presets[foodType].temp);
+    (document.getElementById('ovenTime') as HTMLInputElement).value = String(presets[foodType].time);
+  }
+}
+
+function calcAirFryer() {
+  const ovenTemp = parseFloat((document.getElementById('ovenTemp') as HTMLInputElement).value);
+  const ovenTime = parseFloat((document.getElementById('ovenTime') as HTMLInputElement).value);
+
+  if (isNaN(ovenTemp) || isNaN(ovenTime) || ovenTemp < 200 || ovenTime < 1) return;
+
+  const afTemp = ovenTemp - 25;
+  let afTime = Math.round(ovenTime * 0.8);
+  if (afTime < 1) afTime = 1;
+
+  const cTemp = Math.round((afTemp - 32) * 5 / 9);
+
+  document.getElementById('afResultValue')!.textContent = afTemp + '°F / ' + afTime + ' min';
+  document.getElementById('afResultLabel')!.textContent = 'Recommended air fryer settings';
+  document.getElementById('afResultDetails')!.innerHTML =
+    '<div><span class="label">Air fryer temp</span><span class="value">' + afTemp + '°F (' + cTemp + '°C)</span></div>' +
+    '<div><span class="label">Cooking time</span><span class="value">' + afTime + ' minutes</span></div>' +
+    '<div><span class="label">Check at</span><span class="value">' + Math.max(1, afTime - 3) + ' minutes</span></div>';
+  showResult('afResult');
+}
+
+function resetAirFryer() {
+  (document.getElementById('foodType') as HTMLSelectElement).value = '';
+  (document.getElementById('ovenTemp') as HTMLInputElement).value = '400';
+  (document.getElementById('ovenTime') as HTMLInputElement).value = '20';
+  hideResult('afResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcAirFryer);
+document.getElementById('resetBtn')!.addEventListener('click', resetAirFryer);
+document.getElementById('foodType')!.addEventListener('change', updatePreset);
+document.addEventListener('DOMContentLoaded', calcAirFryer);
+</script>

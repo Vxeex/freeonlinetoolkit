@@ -1,0 +1,66 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'BMI Health Guide' },
+];
+---
+
+<GuideLayout
+  title="Understanding Your BMI: A Complete Health Guide | FreeOnlineToolkit"
+  description="Learn what your BMI means, its limitations, and how to use it alongside other health metrics for a complete picture of your health."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Understanding Your BMI: A Complete Health Guide</h1>
+  </fragment>
+
+  <h2>What Is BMI?</h2>
+  <p>Body Mass Index (BMI) is a simple calculation using your height and weight. It's used as a screening tool to categorize weight status and assess potential health risks associated with being underweight, overweight, or obese.</p>
+
+  <h2>How BMI Is Calculated</h2>
+  <div class="formula-box">
+    BMI = weight (kg) / height² (m²)
+  </div>
+  <p>For imperial measurements: BMI = (weight in lbs × 703) / height² (in inches)</p>
+
+  <h2>BMI Categories</h2>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>BMI Range</th>
+        <th>Health Risk</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Underweight</td><td>Below 18.5</td><td>Increased risk of nutritional deficiencies</td></tr>
+      <tr><td>Normal weight</td><td>18.5 — 24.9</td><td>Lowest risk</td></tr>
+      <tr><td>Overweight</td><td>25.0 — 29.9</td><td>Moderate risk</td></tr>
+      <tr><td>Obese Class I</td><td>30.0 — 34.9</td><td>High risk</td></tr>
+      <tr><td>Obese Class II</td><td>35.0 — 39.9</td><td>Very high risk</td></tr>
+      <tr><td>Obese Class III</td><td>40.0 and above</td><td>Extremely high risk</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Limitations of BMI</h2>
+  <p>While BMI is a useful screening tool, it has important limitations:</p>
+  <ul>
+    <li><strong>Muscle vs. fat:</strong> BMI doesn't distinguish between muscle and fat mass. Athletes may have a high BMI but low body fat.</li>
+    <li><strong>Age and gender:</strong> BMI doesn't account for age-related changes in body composition or differences between genders.</li>
+    <li><strong>Distribution matters:</strong> Where your body fat is stored (belly fat vs. hip fat) affects health risks differently.</li>
+    <li><strong>Ethnic differences:</strong> Some ethnic groups have different health risks at the same BMI levels.</li>
+  </ul>
+
+  <h2>Using BMI Alongside Other Metrics</h2>
+  <p>For a more complete health picture, consider using BMI alongside:</p>
+  <ul>
+    <li><strong>Waist circumference:</strong> Indicates abdominal fat, a key health risk factor.</li>
+    <li><strong>Body fat percentage:</strong> Use our <a href="/body-fat-calculator/">Body Fat Calculator</a> for a detailed estimate.</li>
+    <li><strong>Blood pressure, cholesterol, and blood sugar:</strong> Clinical markers that provide context to your BMI.</li>
+  </ul>
+
+  <p>Check your BMI now with our free <a href="/bmi-calculator/">BMI Calculator</a>.</p>
+</GuideLayout>

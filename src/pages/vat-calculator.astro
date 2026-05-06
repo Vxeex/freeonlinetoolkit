@@ -1,0 +1,139 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['vat-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate VAT",
+    "description": "Add or remove VAT from any amount with customizable VAT rates.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the amount (net or gross)" },
+      { "@type": "HowToStep", "text": "Select the VAT rate percentage" },
+      { "@type": "HowToStep", "text": "Choose whether to add or remove VAT" },
+      { "@type": "HowToStep", "text": "Click Calculate to see the result" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Quickly add or remove VAT from any amount. Supports all standard VAT rates for any country — perfect for invoices, receipts, and pricing calculations.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>VAT Calculator</h2>
+      <div class="form-group">
+        <label for="vatAmount">Amount ($)</label>
+        <input type="number" id="vatAmount" value="100" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label for="vatRate">VAT Rate (%)</label>
+        <input type="number" id="vatRate" value="20" min="0" max="100" step="0.5">
+      </div>
+      <div class="form-group">
+        <label>Calculation Type</label>
+        <div style="display:flex;gap:14px;">
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="vatType" value="add" checked> Add VAT</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="vatType" value="remove"> Remove VAT</label>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="vatResult">
+        <div class="result-value" id="vatTotal">$0.00</div>
+        <div class="result-label" id="vatTotalLabel">Gross Amount (including VAT)</div>
+        <div class="result-details">
+          <div><span class="label">Net Amount</span><span class="value" id="vatNet">$0.00</span></div>
+          <div><span class="label">VAT Amount</span><span class="value" id="vatAmountDisplay">$0.00</span></div>
+          <div><span class="label">VAT Rate</span><span class="value" id="vatRateDisplay">0%</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the VAT Calculator</h2>
+      <p>Enter an <strong>amount</strong> and the <strong>VAT rate</strong> (default 20%). Choose <strong>Add VAT</strong> to calculate the gross amount including tax, or <strong>Remove VAT</strong> to find the net amount before tax.</p>
+      <p>This is useful for businesses creating invoices, checking VAT on receipts, or pricing products and services.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Common VAT Rates by Country</h2>
+      <ul>
+        <li><strong>United Kingdom:</strong> 20% standard, 5% reduced</li>
+        <li><strong>Germany:</strong> 19% standard, 7% reduced</li>
+        <li><strong>France:</strong> 20% standard, 10% reduced</li>
+        <li><strong>Australia (GST):</strong> 10%</li>
+        <li><strong>Singapore (GST):</strong> 9%</li>
+        <li><strong>UAE:</strong> 5%</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "What is VAT?", answer: "VAT (Value Added Tax) is a consumption tax added to the price of goods and services. It is collected at each stage of the supply chain and ultimately paid by the end consumer." },
+      { question: "How do I calculate VAT manually?", answer: "To add VAT: multiply the net amount by (1 + VAT rate). To remove VAT: divide the gross amount by (1 + VAT rate)." },
+      { question: "Is VAT the same as sales tax?", answer: "VAT and sales tax are similar but work differently. VAT is collected at each stage of production, while sales tax is collected only at the point of sale to the consumer." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="vat-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcVAT() {
+  const amount = getNum('vatAmount')!;
+  const rate = getNum('vatRate')!;
+  const isAdd = (document.querySelector('input[name="vatType"]:checked') as HTMLInputElement).value === 'add';
+
+  if (!amount || rate === null) return;
+
+  let net: number, vatAmt: number, total: number, label: string;
+
+  if (isAdd) {
+    net = amount;
+    vatAmt = amount * (rate / 100);
+    total = amount + vatAmt;
+    label = 'Gross Amount (including VAT)';
+  } else {
+    total = amount;
+    net = amount / (1 + rate / 100);
+    vatAmt = amount - net;
+    label = 'Net Amount (excluding VAT)';
+  }
+
+  document.getElementById('vatTotal')!.textContent = formatCurrency(total);
+  document.getElementById('vatTotalLabel')!.textContent = label;
+  document.getElementById('vatNet')!.textContent = formatCurrency(net);
+  document.getElementById('vatAmountDisplay')!.textContent = formatCurrency(vatAmt);
+  document.getElementById('vatRateDisplay')!.textContent = rate + '%';
+  showResult('vatResult');
+}
+
+function resetVAT() {
+  (document.getElementById('vatAmount') as HTMLInputElement).value = '100';
+  (document.getElementById('vatRate') as HTMLInputElement).value = '20';
+  (document.querySelector('input[name="vatType"][value="add"]') as HTMLInputElement).checked = true;
+  hideResult('vatResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcVAT);
+document.getElementById('resetBtn')!.addEventListener('click', resetVAT);
+document.addEventListener('DOMContentLoaded', calcVAT);
+</script>

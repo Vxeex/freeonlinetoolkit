@@ -1,0 +1,195 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['saas-conversion-simulator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Simulate Your SaaS Conversion Funnel",
+    "description": "Model your SaaS conversion funnel from site visitors to paying customers.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your monthly site visitors" },
+      { "@type": "HowToStep", "text": "Enter your signup rate (visitors who start free trial)" },
+      { "@type": "HowToStep", "text": "Enter your activation rate (trial users who activate)" },
+      { "@type": "HowToStep", "text": "Enter your free trial to paid conversion rate" },
+      { "@type": "HowToStep", "text": "Enter your average MRR per customer and monthly churn rate" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your projected growth over 12 months" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is a good signup rate for a SaaS website?", "acceptedAnswer": { "@type": "Answer", "text": "A typical signup rate (visitor to free trial) ranges from 2% to 10%. Top-performing SaaS landing pages achieve 10-15% signup rates. Industry benchmarks vary: B2B SaaS averages around 5-7%, while B2C SaaS tends to be higher at 8-15%." } },
+      { "@type": "Question", "name": "What is a healthy free trial to paid conversion rate?", "acceptedAnswer": { "@type": "Answer", "text": "A healthy free trial to paid conversion rate is typically 10-20% for self-serve SaaS products. For products with sales-assisted trials, 20-40% is common. If your conversion rate is below 5%, consider improving your onboarding or adjusting your pricing." } },
+      { "@type": "Question", "name": "How can I improve my activation rate?", "acceptedAnswer": { "@type": "Answer", "text": "Improving activation rate starts with understanding your 'aha moment' — the key action that leads to retention. Provide interactive onboarding, in-app guides, email sequences, and templates to help users reach that moment faster. A good activation rate is 50-70% for most SaaS products." } },
+      { "@type": "Question", "name": "What is the difference between signup rate and activation rate?", "acceptedAnswer": { "@type": "Answer", "text": "Signup rate measures the percentage of visitors who create an account or start a free trial. Activation rate measures the percentage of those signups who take a key action (like completing setup or using a core feature). Both matter: signups bring people in, but activation determines whether they experience value." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Model your entire SaaS conversion funnel — from site visitors to paying customers — and see your projected revenue growth over 12 months. Optimize each stage to maximize your MRR.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Conversion Simulator</h2>
+      <div class="form-group">
+        <label for="convVisitors">Monthly Site Visitors</label>
+        <input type="number" id="convVisitors" value="10000" min="0">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="convSignupRate">Signup Rate (%)</label>
+          <input type="number" id="convSignupRate" value="5" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="convActRate">Activation Rate (%)</label>
+          <input type="number" id="convActRate" value="60" min="0" step="0.1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="convTrialPaid">Free Trial to Paid (%)</label>
+          <input type="number" id="convTrialPaid" value="10" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="convMRR">Avg MRR Per Customer ($)</label>
+          <input type="number" id="convMRR" value="49" min="0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="convChurn">Monthly Churn Rate (%)</label>
+        <input type="number" id="convChurn" value="5" min="0" step="0.1">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="convResult">
+        <div style="font-weight:600;font-size:1.05rem;margin-bottom:10px;color:var(--color-text);">12-Month Projection</div>
+        <div class="result-details">
+          <div><span class="label">Monthly Signups</span><span class="value" id="convSignups">0</span></div>
+          <div><span class="label">Monthly Active Trials</span><span class="value" id="convActive">0</span></div>
+          <div><span class="label">Monthly New Customers</span><span class="value" id="convNewCust">0</span></div>
+          <div><span class="label">Monthly Revenue from New</span><span class="value" id="convNewRev">$0</span></div>
+          <div><span class="label">Total Active Customers (12mo)</span><span class="value" id="convTotalCust" style="font-weight:700;">0</span></div>
+          <div><span class="label">Projected MRR (12mo)</span><span class="value" id="convMRRResult" style="font-weight:700;">$0</span></div>
+          <div><span class="label">Projected ARR (12mo)</span><span class="value" id="convARRResult">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This SaaS conversion simulator models your customer acquisition funnel from top to bottom. Start by entering your <strong>monthly site visitors</strong> — the total number of people who visit your website each month.</p>
+      <p>Then define each stage of your funnel: what percentage of visitors <strong>sign up</strong> for a free trial, what percentage <strong>activate</strong> (complete onboarding and experience value), and what percentage <strong>convert to paid</strong> customers after their trial ends.</p>
+      <p>Finally, enter your <strong>average MRR per customer</strong> and <strong>monthly churn rate</strong>. The simulator projects 12 months of growth, accounting for both new customers and churn. Use this to set realistic growth targets and identify which funnel stage needs the most improvement.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Funnel Stages Explained</h2>
+      <ul>
+        <li><strong>Visitor to Signup:</strong> The percentage of website visitors who start a free trial or create an account. This measures your landing page and value proposition effectiveness.</li>
+        <li><strong>Signup to Activation:</strong> The percentage of signups who reach the "aha moment" and experience core value. This measures your onboarding quality.</li>
+        <li><strong>Activation to Paid:</strong> The percentage of activated users who become paying customers. This measures your pricing, trial length, and perceived value.</li>
+        <li><strong>Retention (1 - Churn):</strong> How many customers stay each month. This measures product-market fit and customer satisfaction.</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Conversion Formulas</h2>
+      <div class="formula-box">
+        <strong>Signups</strong> = Visitors &times; (Signup Rate / 100)<br>
+        <strong>Activations</strong> = Signups &times; (Activation Rate / 100)<br>
+        <strong>New Customers</strong> = Activations &times; (Trial to Paid / 100)<br>
+        <strong>New Revenue</strong> = New Customers &times; MRR Per Customer<br>
+        <strong>Total Customers (12mo)</strong> = Monthly New &times; ((1 &minus; (1 &minus; churn/100)<sup>12</sup>) / (churn/100))<br>
+        <strong>Projected MRR</strong> = Total Customers &times; MRR Per Customer<br>
+        <strong>Projected ARR</strong> = Projected MRR &times; 12
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a good signup rate for a SaaS website?", answer: "A typical signup rate (visitor to free trial) ranges from 2% to 10%. Top-performing SaaS landing pages achieve 10-15% signup rates. Industry benchmarks vary: B2B SaaS averages around 5-7%, while B2C SaaS tends to be higher at 8-15%." },
+      { question: "What is a healthy free trial to paid conversion rate?", answer: "A healthy free trial to paid conversion rate is typically 10-20% for self-serve SaaS products. For products with sales-assisted trials, 20-40% is common. If your conversion rate is below 5%, consider improving your onboarding or adjusting your pricing." },
+      { question: "How can I improve my activation rate?", answer: "Improving activation rate starts with understanding your 'aha moment.' Provide interactive onboarding, in-app guides, email sequences, and templates to help users reach that moment faster. A good activation rate is 50-70% for most SaaS products." },
+      { question: "What is the difference between signup rate and activation rate?", answer: "Signup rate measures the percentage of visitors who create an account or start a free trial. Activation rate measures the percentage of those signups who take a key action (like completing setup or using a core feature). Both matter: signups bring people in, but activation determines whether they experience value." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="saas-conversion-simulator" category="saas" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcConv() {
+  const visitors = getNum('convVisitors');
+  const signupRate = getNum('convSignupRate');
+  const actRate = getNum('convActRate');
+  const trialPaid = getNum('convTrialPaid');
+  const mrr = getNum('convMRR');
+  const churn = getNum('convChurn');
+
+  if (!visitors || visitors <= 0) return;
+  if (signupRate === null && signupRate !== 0) return;
+  if (actRate === null && actRate !== 0) return;
+  if (trialPaid === null && trialPaid !== 0) return;
+  if (!mrr || mrr <= 0) return;
+  if (churn === null && churn !== 0) return;
+
+  const signups = visitors * (signupRate / 100);
+  const activations = signups * (actRate / 100);
+  const newCustomers = activations * (trialPaid / 100);
+  const newRev = newCustomers * mrr;
+
+  const churnDecimal = churn / 100;
+  let totalCust;
+  if (churnDecimal === 0) {
+    totalCust = newCustomers * 12;
+  } else {
+    totalCust = newCustomers * ((1 - Math.pow(1 - churnDecimal, 12)) / churnDecimal);
+  }
+
+  const projectedMRR = totalCust * mrr;
+  const projectedARR = projectedMRR * 12;
+
+  document.getElementById('convSignups').textContent = Math.round(signups).toString();
+  document.getElementById('convActive').textContent = Math.round(activations).toString();
+  document.getElementById('convNewCust').textContent = Math.round(newCustomers).toString();
+  document.getElementById('convNewRev').textContent = formatCurrency(newRev);
+  document.getElementById('convTotalCust').textContent = Math.round(totalCust).toString();
+  document.getElementById('convMRRResult').textContent = formatCurrency(projectedMRR);
+  document.getElementById('convARRResult').textContent = formatCurrency(projectedARR);
+  showResult('convResult');
+}
+
+function resetConv() {
+  (document.getElementById('convVisitors') as HTMLInputElement).value = '10000';
+  (document.getElementById('convSignupRate') as HTMLInputElement).value = '5';
+  (document.getElementById('convActRate') as HTMLInputElement).value = '60';
+  (document.getElementById('convTrialPaid') as HTMLInputElement).value = '10';
+  (document.getElementById('convMRR') as HTMLInputElement).value = '49';
+  (document.getElementById('convChurn') as HTMLInputElement).value = '5';
+  hideResult('convResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcConv);
+document.getElementById('resetBtn')!.addEventListener('click', resetConv);
+document.addEventListener('DOMContentLoaded', calcConv);
+</script>

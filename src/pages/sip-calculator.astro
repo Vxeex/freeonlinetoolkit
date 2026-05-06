@@ -1,0 +1,135 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['sip-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate SIP Returns",
+    "description": "Calculate your Systematic Investment Plan maturity amount and returns.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your monthly investment amount" },
+      { "@type": "HowToStep", "text": "Input the expected annual return rate" },
+      { "@type": "HowToStep", "text": "Enter the investment period in years" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your maturity value and returns" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>SIP Calculator &mdash; Systematic Investment Plan</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Calculate how your monthly investments grow over time. This SIP calculator uses the future value of annuity formula to show your estimated maturity amount, total invested, and projected returns.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>SIP Calculator</h2>
+      <div class="form-group">
+        <label for="sipMonthly">Monthly Investment</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="sipMonthly" class="prefixed" value="5000" min="100" step="500">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="sipReturn">Expected Return Rate (%)</label>
+          <input type="number" id="sipReturn" value="12" min="0" max="50" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="sipYears">Investment Period (Years)</label>
+          <input type="number" id="sipYears" value="10" min="1" max="50">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="sipResult">
+        <div class="result-value" id="sipMaturity">$0</div>
+        <div class="result-label">Estimated Maturity Value</div>
+        <div class="result-details">
+          <div><span class="label">Total Invested</span><span class="value" id="sipInvested">$0</span></div>
+          <div><span class="label">Estimated Returns</span><span class="value" id="sipReturns">$0</span></div>
+          <div><span class="label">X-Factor (Returns / Invested)</span><span class="value" id="sipXFactor">0x</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Enter your <strong>monthly investment</strong> amount, the <strong>expected annual return rate</strong>, and the <strong>investment period</strong> in years. The calculator uses the future value of annuity formula assuming monthly compounding.</p>
+      <p>Historical equity market returns in the US have averaged around 7-10% annually, while debt instruments typically return 5-8%.</p>
+      <p><strong>Note:</strong> Past performance does not guarantee future returns. This calculator provides estimates only.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>SIP Formula</h2>
+      <div class="formula-box">M = P &times; ((1 + r)<sup>n</sup> &minus; 1) / r &times; (1 + r)</div>
+      <p>Where <strong>M</strong> = maturity value, <strong>P</strong> = monthly investment, <strong>r</strong> = monthly rate, and <strong>n</strong> = total months. The final (1 + r) factor accounts for investing at the beginning of each month.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a good return rate for SIP?", answer: "Historically, equity markets have returned 7-10% annually over long periods. A 12% return is optimistic but achievable with a well-diversified portfolio. Use conservative estimates (8-10%) for planning." },
+      { question: "SIP vs lump sum &mdash; which is better?", answer: "SIP reduces risk through rupee cost averaging — you buy more units when prices are low and fewer when prices are high. Lump sum can perform better in rising markets but carries more timing risk." },
+      { question: "How does compounding work in SIP?", answer: "Each monthly installment starts earning returns immediately. Those returns then earn their own returns (compounding). Over long periods, the compounding effect dominates — in a 20-year SIP at 12%, over 70% of the final value comes from returns." },
+      { question: "Can I change my SIP amount later?", answer: "Yes. You can increase or decrease your SIP amount at any time. Starting with a lower amount and stepping up over time is a popular strategy." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="sip-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcSIP() {
+  const monthly = getNum('sipMonthly')!;
+  const annualRate = getNum('sipReturn')!;
+  const years = getNum('sipYears')!;
+  if (!monthly || !annualRate || !years) return;
+
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+  let maturity;
+
+  if (annualRate === 0) {
+    maturity = monthly * n;
+  } else {
+    maturity = monthly * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+  }
+
+  const totalInvested = monthly * n;
+  const estimatedReturns = maturity - totalInvested;
+  const xFactor = totalInvested > 0 ? (maturity / totalInvested) : 0;
+
+  document.getElementById('sipMaturity')!.textContent = formatCurrency(maturity);
+  document.getElementById('sipInvested')!.textContent = formatCurrency(totalInvested);
+  document.getElementById('sipReturns')!.textContent = formatCurrency(estimatedReturns);
+  document.getElementById('sipXFactor')!.textContent = xFactor.toFixed(2) + 'x';
+  showResult('sipResult');
+}
+
+function resetSIP() {
+  (document.getElementById('sipMonthly') as HTMLInputElement).value = '5000';
+  (document.getElementById('sipReturn') as HTMLInputElement).value = '12';
+  (document.getElementById('sipYears') as HTMLInputElement).value = '10';
+  hideResult('sipResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcSIP);
+document.getElementById('resetBtn')!.addEventListener('click', resetSIP);
+document.addEventListener('DOMContentLoaded', calcSIP);
+</script>

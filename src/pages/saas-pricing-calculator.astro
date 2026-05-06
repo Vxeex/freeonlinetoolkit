@@ -1,0 +1,228 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['saas-pricing-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate SaaS Pricing and Unit Economics",
+    "description": "Calculate MRR, ARR, LTV, CAC payback, and gross margin for your SaaS business.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your monthly price per user and current customer count" },
+      { "@type": "HowToStep", "text": "Input monthly new customers and churn rate" },
+      { "@type": "HowToStep", "text": "Add your COGS per customer and fixed monthly costs" },
+      { "@type": "HowToStep", "text": "Enter your sales & marketing spend and CAC" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your MRR, ARR, LTV, and full unit economics" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is a good LTV:CAC ratio for a SaaS business?", "acceptedAnswer": { "@type": "Answer", "text": "A ratio above 3:1 is considered healthy and indicates your business generates sufficient value from each customer relative to what it costs to acquire them. Below 1:1 means you are spending more to acquire customers than they will generate in revenue." } },
+      { "@type": "Question", "name": "How do I reduce my CAC payback period?", "acceptedAnswer": { "@type": "Answer", "text": "To shorten CAC payback, you can: increase your price, reduce churn, improve sales efficiency, optimize marketing channels, implement self-serve onboarding, or increase average contract value. Most investors want to see a payback period under 12 months." } },
+      { "@type": "Question", "name": "What is a reasonable churn rate for SaaS?", "acceptedAnswer": { "@type": "Answer", "text": "Monthly churn rates vary by segment: enterprise SaaS averages 1-2%, SMB SaaS averages 3-7%, and B2C subscription apps can see 5-10% monthly churn. Reducing churn by even 1% can significantly improve LTV." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Understand your SaaS unit economics at a glance. This free calculator shows MRR, ARR, LTV, CAC payback period, gross margin, and net monthly profit — essential metrics for any subscription business.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>SaaS Unit Economics Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="monthlyPrice">Monthly Price per User ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="monthlyPrice" class="prefixed" value="49" min="0" step="1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="customers">Current Customers</label>
+          <input type="number" id="customers" value="500" min="0" step="10">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="newCustomers">Monthly New Customers</label>
+          <input type="number" id="newCustomers" value="30" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="churnRate">Monthly Churn Rate (%)</label>
+          <input type="number" id="churnRate" value="5" min="0" max="100" step="0.1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cogs">COGS per Customer/Month ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="cogs" class="prefixed" value="10" min="0" step="1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fixedCosts">Fixed Monthly Costs ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="fixedCosts" class="prefixed" value="8000" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="salesMarketing">Sales & Marketing / Month ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="salesMarketing" class="prefixed" value="5000" min="0" step="500">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cac">Customer Acquisition Cost (CAC) ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="cac" class="prefixed" value="300" min="0" step="10">
+          </div>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="saasResult">
+        <div class="result-value" id="saasMRR">$0.00</div>
+        <div class="result-label">Monthly Recurring Revenue (MRR)</div>
+        <div class="result-details">
+          <div><span class="label">ARR (Annualized)</span><span class="value" id="saasARR">$0</span></div>
+          <div><span class="label">Active Customers</span><span class="value" id="saasActiveCustomers">0</span></div>
+          <div><span class="label">Customer Lifetime (Months)</span><span class="value" id="saasLifetime">0</span></div>
+          <div><span class="label">LTV (Lifetime Value)</span><span class="value" id="saasLTV">$0</span></div>
+          <div><span class="label">Gross Margin</span><span class="value" id="saasGrossMargin">0%</span></div>
+          <div><span class="label">Net Monthly Profit</span><span class="value" id="saasNetProfit">$0</span></div>
+          <div><span class="label">CAC Payback Period</span><span class="value" id="saasCACPayback">--</span></div>
+          <div><span class="label">LTV:CAC Ratio</span><span class="value" id="saasLTVCAC">--</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Start by entering your <strong>monthly price per user</strong> and the number of <strong>current customers</strong>. Then input how many <strong>new customers</strong> you add each month and your <strong>monthly churn rate</strong> (the percentage of customers who cancel each month).</p>
+      <p>Enter your <strong>COGS</strong> (cost of goods sold) per customer each month — this includes hosting, support, and infrastructure costs. Add your <strong>fixed monthly costs</strong> (salaries, office, software) and <strong>sales & marketing spend</strong>. Finally, enter your <strong>CAC</strong> (customer acquisition cost).</p>
+      <p>A healthy SaaS business typically has an LTV:CAC ratio above 3:1, a CAC payback period under 12 months, and gross margins above 70%.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>SaaS Metrics Formulas</h2>
+      <div class="formula-box">
+        MRR = (Price &times; Customers) + (New Customers &times; Price)<br>
+        ARR = MRR &times; 12<br>
+        Customer Lifetime = 1 / Churn Rate<br>
+        LTV = ARPU &times; Customer Lifetime<br>
+        Gross Margin = (ARPU &minus; COGS) / ARPU &times; 100<br>
+        CAC Payback = CAC / (ARPU &minus; COGS)<br>
+        LTV:CAC = LTV / CAC
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a good LTV:CAC ratio for a SaaS business?", answer: "A ratio above 3:1 is considered healthy and indicates your business generates sufficient value from each customer relative to what it costs to acquire them. Below 1:1 means you are spending more to acquire customers than they will generate in revenue." },
+      { question: "How do I reduce my CAC payback period?", answer: "To shorten CAC payback, you can: increase your price, reduce churn, improve sales efficiency, optimize marketing channels, implement self-serve onboarding, or increase average contract value. Most investors want to see a payback period under 12 months." },
+      { question: "What is a reasonable churn rate for SaaS?", answer: "Monthly churn rates vary by segment: enterprise SaaS averages 1-2%, SMB SaaS averages 3-7%, and B2C subscription apps can see 5-10% monthly churn. Reducing churn by even 1% can significantly improve LTV." },
+      { question: "Should I include salaries in fixed monthly costs?", answer: "Yes, fixed monthly costs should include all operational expenses that do not vary directly with the number of customers: salaries, rent, software subscriptions, insurance, and administrative costs. COGS should only include costs that scale with each additional customer." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="saas-pricing-calculator" category="saas" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcSaaS() {
+  const price = getNum('monthlyPrice') || 0;
+  const customers = getNum('customers') || 0;
+  const newCust = getNum('newCustomers') || 0;
+  const churnRate = (getNum('churnRate') || 0) / 100;
+  const cogs = getNum('cogs') || 0;
+  const fixedCosts = getNum('fixedCosts') || 0;
+  const salesMarketing = getNum('salesMarketing') || 0;
+  const cac = getNum('cac') || 0;
+
+  if (!price || !customers) return;
+
+  const mrr = price * customers + newCust * price;
+  const arr = mrr * 12;
+
+  const churned = customers * churnRate;
+  const netNew = newCust - churned;
+  const activeCustomers = customers + netNew;
+  const customerLifetime = churnRate > 0 ? (1 / churnRate) : 999;
+
+  const arpu = price;
+  const ltv = churnRate > 0 ? (arpu / churnRate) : 999;
+
+  const totalCOGS = (customers + newCust) * cogs;
+  const totalCosts = totalCOGS + fixedCosts + salesMarketing;
+
+  const totalRevenue = mrr;
+  const grossMargin = totalRevenue > 0 ? ((totalRevenue - totalCOGS) / totalRevenue) * 100 : 0;
+
+  const netProfit = totalRevenue - totalCosts;
+
+  const arpuMinusCogs = arpu - cogs;
+  const cacPayback = arpuMinusCogs > 0 ? (cac / arpuMinusCogs) : Infinity;
+
+  const ltvCac = cac > 0 ? (ltv / cac) : 0;
+
+  document.getElementById('saasMRR').textContent = formatCurrency(mrr);
+  document.getElementById('saasARR').textContent = formatCurrency(arr);
+  document.getElementById('saasActiveCustomers').textContent = Math.round(activeCustomers).toString();
+  document.getElementById('saasLifetime').textContent = customerLifetime.toFixed(1) + ' mo';
+  document.getElementById('saasLTV').textContent = ltv === 999 ? '$999,999' : formatCurrency(ltv);
+  document.getElementById('saasGrossMargin').textContent = grossMargin.toFixed(1) + '%';
+  document.getElementById('saasNetProfit').textContent = formatCurrency(netProfit);
+
+  if (cacPayback === Infinity) {
+    document.getElementById('saasCACPayback').textContent = '--';
+  } else {
+    document.getElementById('saasCACPayback').textContent = cacPayback.toFixed(1) + ' mo';
+  }
+
+  document.getElementById('saasLTVCAC').textContent = ltvCac === 999 ? '--' : ltvCac.toFixed(1) + ':1';
+
+  showResult('saasResult');
+}
+
+function resetSaaS() {
+  (document.getElementById('monthlyPrice') as HTMLInputElement).value = '49';
+  (document.getElementById('customers') as HTMLInputElement).value = '500';
+  (document.getElementById('newCustomers') as HTMLInputElement).value = '30';
+  (document.getElementById('churnRate') as HTMLInputElement).value = '5';
+  (document.getElementById('cogs') as HTMLInputElement).value = '10';
+  (document.getElementById('fixedCosts') as HTMLInputElement).value = '8000';
+  (document.getElementById('salesMarketing') as HTMLInputElement).value = '5000';
+  (document.getElementById('cac') as HTMLInputElement).value = '300';
+  hideResult('saasResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcSaaS);
+document.getElementById('resetBtn')!.addEventListener('click', resetSaaS);
+document.addEventListener('DOMContentLoaded', calcSaaS);
+</script>

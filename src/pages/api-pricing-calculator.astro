@@ -1,0 +1,145 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['api-pricing-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate OpenAI API Costs",
+    "description": "Calculate token usage and pricing for OpenAI API models.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select the OpenAI model you are using" },
+      { "@type": "HowToStep", "text": "Enter estimated input and output tokens" },
+      { "@type": "HowToStep", "text": "Adjust volume for monthly API calls" },
+      { "@type": "HowToStep", "text": "View your total monthly API cost estimate" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your OpenAI API costs before you build. Calculate token usage for GPT-4, GPT-4o, GPT-3.5-Turbo, and more. Perfect for developers budgeting AI features and SaaS products.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>OpenAI Token Cost Estimator</h2>
+      <div class="form-group">
+        <label for="apiModel">Model</label>
+        <select id="apiModel">
+          <option value='{"input":10,"output":30}'>GPT-4o (8K) &mdash; $10/$30 per 1M tokens</option>
+          <option value='{"input":2.5,"output":10}'>GPT-4o-mini &mdash; $2.50/$10 per 1M tokens</option>
+          <option value='{"input":15,"output":60}'>GPT-4-Turbo &mdash; $15/$60 per 1M tokens</option>
+          <option value='{"input":0.5,"output":1.5}'>GPT-3.5-Turbo &mdash; $0.50/$1.50 per 1M tokens</option>
+          <option value='{"input":15,"output":60}'>o1-preview &mdash; $15/$60 per 1M tokens</option>
+          <option value='{"input":3,"output":12}'>o1-mini &mdash; $3/$12 per 1M tokens</option>
+          <option value='{"input":100,"output":200}'>DALL-E 3 (HD) &mdash; $0.080/image</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="apiInputTokens">Input Tokens per Request</label>
+          <input type="number" id="apiInputTokens" value="2000" min="0" step="100">
+        </div>
+        <div class="form-group">
+          <label for="apiOutputTokens">Output Tokens per Request</label>
+          <input type="number" id="apiOutputTokens" value="500" min="0" step="100">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="apiMonthlyCalls">Monthly API Calls</label>
+          <input type="number" id="apiMonthlyCalls" value="10000" min="1" step="1000">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="apiResult">
+        <div class="result-value" id="apiMonthlyCost" style="font-size:1.5rem;">$0.00</div>
+        <div class="result-label">Estimated Monthly Cost</div>
+        <div class="result-details">
+          <div><span class="label">Input Cost per Month</span><span class="value" id="apiInputCost">$0</span></div>
+          <div><span class="label">Output Cost per Month</span><span class="value" id="apiOutputCost">$0</span></div>
+          <div><span class="label">Cost per 1K Requests</span><span class="value" id="apiPerThousand">$0</span></div>
+          <div><span class="label">Total Monthly Tokens</span><span class="value" id="apiTotalTokens">0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Select your <strong>AI model</strong>, enter the average <strong>input tokens</strong> (your prompt) and <strong>output tokens</strong> (the response) per request, and your estimated <strong>monthly API call volume</strong>. The calculator shows total monthly cost broken down by input and output.</p>
+      <p>Token counts vary by language. As a rule of thumb, 1 token is roughly 0.75 words in English, so a 2,000-token prompt is about 1,500 words.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How Costs Are Calculated</h2>
+      <div class="formula-box">
+        Monthly Cost = ((Input Tokens &times; Input Price) + (Output Tokens &times; Output Price)) &times; Monthly Calls / 1,000,000
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a token in AI models?", answer: "A token is the basic unit of text that AI models process. One token is roughly 0.75 words or 4 characters in English. Different languages have different token-to-word ratios." },
+      { question: "How can I reduce API costs?", answer: "Use shorter, focused prompts (fewer input tokens). Set max_tokens limits to cap output length. Use GPT-3.5-Turbo or GPT-4o-mini for simpler tasks. Cache common responses. Batch requests where possible." },
+      { question: "Do I pay for failed requests?", answer: "Yes, you pay for tokens sent in the request even if the API call fails or errors out. Tokens are counted as soon as they're processed by the model. However, if your request is rejected by the content filter or rate limiter before processing, you won't be charged." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="api-pricing-calculator" category="developer" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcAPI(): void {
+  var modelData = JSON.parse((document.getElementById('apiModel') as HTMLSelectElement).value);
+  var inputPrice = modelData.input;
+  var outputPrice = modelData.output;
+
+  var inputTokens = parseInt((document.getElementById('apiInputTokens') as HTMLInputElement).value) || 0;
+  var outputTokens = parseInt((document.getElementById('apiOutputTokens') as HTMLInputElement).value) || 0;
+  var monthlyCalls = parseInt((document.getElementById('apiMonthlyCalls') as HTMLInputElement).value) || 0;
+
+  if (monthlyCalls === 0) return;
+
+  var inputCost = (inputTokens / 1000000) * inputPrice * monthlyCalls;
+  var outputCost = (outputTokens / 1000000) * outputPrice * monthlyCalls;
+  var totalCost = inputCost + outputCost;
+  var perThousand = totalCost / (monthlyCalls / 1000);
+  var totalTokens = (inputTokens + outputTokens) * monthlyCalls;
+
+  document.getElementById('apiInputCost')!.textContent = '$' + inputCost.toFixed(2);
+  document.getElementById('apiOutputCost')!.textContent = '$' + outputCost.toFixed(2);
+  document.getElementById('apiMonthlyCost')!.textContent = '$' + totalCost.toFixed(2);
+  document.getElementById('apiPerThousand')!.textContent = '$' + perThousand.toFixed(4);
+  document.getElementById('apiTotalTokens')!.textContent = totalTokens.toLocaleString();
+  showResult('apiResult');
+}
+
+function resetAPI(): void {
+  (document.getElementById('apiModel') as HTMLSelectElement).value = '{"input":10,"output":30}';
+  (document.getElementById('apiInputTokens') as HTMLInputElement).value = '2000';
+  (document.getElementById('apiOutputTokens') as HTMLInputElement).value = '500';
+  (document.getElementById('apiMonthlyCalls') as HTMLInputElement).value = '10000';
+  hideResult('apiResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcAPI);
+document.getElementById('resetBtn')!.addEventListener('click', resetAPI);
+document.addEventListener('DOMContentLoaded', calcAPI);
+</script>

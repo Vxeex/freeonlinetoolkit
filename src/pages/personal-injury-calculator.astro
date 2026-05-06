@@ -1,0 +1,173 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['personal-injury-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate a Personal Injury Settlement",
+    "description": "Estimate your personal injury settlement value by entering medical expenses, lost wages, pain and suffering, and liability percentage.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your total medical expenses including hospital bills, doctor visits, and therapy" },
+      { "@type": "HowToStep", "text": "Input your lost wages and any future lost income due to the injury" },
+      { "@type": "HowToStep", "text": "Select a pain and suffering multiplier based on injury severity from 1 to 5" },
+      { "@type": "HowToStep", "text": "Enter your liability percentage to account for comparative fault" },
+      { "@type": "HowToStep", "text": "Add any property damage and click Calculate to see your estimated settlement" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate the potential value of your personal injury claim. This settlement calculator considers medical expenses, lost wages, pain and suffering, and comparative fault to give you a realistic compensation range.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Injury Settlement Calculator</h2>
+      <div class="form-group">
+        <label for="medExpenses">Medical Expenses ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="medExpenses" class="prefixed" value="15000" min="0" step="100">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="lostWages">Lost Wages ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="lostWages" class="prefixed" value="5000" min="0" step="100">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="futureIncome">Future Lost Income ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="futureIncome" class="prefixed" value="0" min="0" step="100">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="painMultiplier">Pain & Suffering Multiplier</label>
+          <select id="painMultiplier">
+            <option value="1">1.0 &mdash;Minor (quick recovery)</option>
+            <option value="2" selected>2.0 &mdash;Moderate (some ongoing issues)</option>
+            <option value="3">3.0 &mdash;Significant (long-term impact)</option>
+            <option value="4">4.0 &mdash;Severe (permanent disability)</option>
+            <option value="5">5.0 &mdash;Catastrophic (life-altering)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="liabilityPct">Your Liability (%) <span class="optional">comparative fault</span></label>
+          <input type="number" id="liabilityPct" value="0" min="0" max="100" step="5">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="propertyDamage">Property Damage ($) <span class="optional">optional</span></label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="propertyDamage" class="prefixed" value="0" min="0" step="100">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="injuryResult">
+        <div class="result-value" id="injuryTotal">$0.00</div>
+        <div class="result-label">Estimated Total Settlement</div>
+        <div class="result-details">
+          <div><span class="label">Economic Damages</span><span class="value" id="injuryEconomic">$0</span></div>
+          <div><span class="label">Non-Economic Damages (Pain & Suffering)</span><span class="value" id="injuryNonEconomic">$0</span></div>
+          <div><span class="label">Estimated Range</span><span class="value" id="injuryRange">$0 &mdash;$0</span></div>
+          <div><span class="label">After Attorney Fee (33% Contingency)</span><span class="value" id="injuryAfterFee">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Personal Injury Settlement Estimator</h2>
+      <p>Start by entering your <strong>total medical expenses</strong> including hospital stays, surgeries, doctor visits, physical therapy, and medications. Next, add any <strong>lost wages</strong> from time missed at work and <strong>future lost income</strong> if your injury affects your ability to earn in the future.</p>
+      <p>Select a <strong>pain and suffering multiplier</strong> from 1 to 5 based on injury severity &mdash;minor injuries with quick recovery use a lower multiplier, while catastrophic or permanent injuries use a higher one. Enter your <strong>liability percentage</strong> if you share any fault for the accident, as comparative fault reduces your settlement proportionally.</p>
+      <p>Add any <strong>property damage</strong> such as vehicle repair costs, then click Calculate. The estimator will show your economic damages, non-economic damages, a realistic settlement range, and the estimated amount after a standard 33% attorney contingency fee.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Personal Injury Settlement Formula</h2>
+      <div class="formula-box">
+        Economic Damages = Medical Expenses + Lost Wages + Future Lost Income
+      </div>
+      <div class="formula-box">
+        Non-Economic Damages = Medical Expenses &times; Pain & Suffering Multiplier
+      </div>
+      <div class="formula-box">
+        Total Settlement = (Economic Damages + Non-Economic Damages + Property Damage) &times; (1 &minus; Liability%)
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the multiplier method for pain and suffering?", answer: "The multiplier method is the most common way to calculate non-economic damages. Your total medical expenses are multiplied by a number between 1 and 5 based on injury severity. A minor sprain might use a 1.5 multiplier, while a permanent spinal cord injury could use a 4 or 5. Insurance adjusters and attorneys use this as a starting point for settlement negotiations." },
+      { question: "How does comparative fault affect my settlement?", answer: "Comparative fault (also called contributory negligence) reduces your settlement by your percentage of fault. For example, if you were 20% at fault for a car accident, your settlement is reduced by 20%. Some states bar recovery if you are 50% or more at fault, while others follow pure comparative fault rules allowing recovery even at 99% fault." },
+      { question: "What costs are included in economic damages?", answer: "Economic damages cover all quantifiable financial losses: medical bills (emergency care, surgery, hospital stays, medications, physical therapy), lost wages and lost earning capacity, future medical costs, property damage, and out-of-pocket expenses related to the injury. Keep all receipts and documentation to support these claims." },
+      { question: "Why is the attorney contingency fee typically 33%?", answer: "A 33% contingency fee means your attorney only gets paid if you win or settle. This fee covers investigation, medical record gathering, demand letters, negotiation with insurance companies, and litigation if needed. The percentage may vary from 25% to 40% depending on the case stage and jurisdiction." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="personal-injury-calculator" category="legal" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcInjury(): void {
+  const medical = parseFloat((document.getElementById('medExpenses') as HTMLInputElement).value) || 0;
+  const wages = parseFloat((document.getElementById('lostWages') as HTMLInputElement).value) || 0;
+  const future = parseFloat((document.getElementById('futureIncome') as HTMLInputElement).value) || 0;
+  const multiplier = parseFloat((document.getElementById('painMultiplier') as HTMLSelectElement).value);
+  const liability = parseFloat((document.getElementById('liabilityPct') as HTMLInputElement).value) || 0;
+  const property = parseFloat((document.getElementById('propertyDamage') as HTMLInputElement).value) || 0;
+
+  const economic = medical + wages + future;
+  const nonEconomic = medical * multiplier;
+  const liabilityFactor = (100 - liability) / 100;
+  const total = (economic + nonEconomic + property) * liabilityFactor;
+  const lowEstimate = total * 0.7;
+  const highEstimate = total * 1.3;
+  const afterFee = total * 0.67;
+
+  document.getElementById('injuryTotal')!.textContent = '$' + total.toFixed(2);
+  document.getElementById('injuryEconomic')!.textContent = '$' + economic.toFixed(2);
+  document.getElementById('injuryNonEconomic')!.textContent = '$' + nonEconomic.toFixed(2);
+  document.getElementById('injuryRange')!.textContent = '$' + lowEstimate.toFixed(2) + ' &mdash;$' + highEstimate.toFixed(2);
+  document.getElementById('injuryAfterFee')!.textContent = '$' + afterFee.toFixed(2);
+  showResult('injuryResult');
+}
+
+function resetInjury(): void {
+  (document.getElementById('medExpenses') as HTMLInputElement).value = '15000';
+  (document.getElementById('lostWages') as HTMLInputElement).value = '5000';
+  (document.getElementById('futureIncome') as HTMLInputElement).value = '0';
+  (document.getElementById('painMultiplier') as HTMLSelectElement).value = '2';
+  (document.getElementById('liabilityPct') as HTMLInputElement).value = '0';
+  (document.getElementById('propertyDamage') as HTMLInputElement).value = '0';
+  hideResult('injuryResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcInjury);
+document.getElementById('resetBtn')!.addEventListener('click', resetInjury);
+document.addEventListener('DOMContentLoaded', calcInjury);
+</script>

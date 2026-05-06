@@ -1,0 +1,153 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['wholesale-margin-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Wholesale Pricing",
+    "description": "Calculate wholesale prices, retail prices, and profit margins for B2B wholesale businesses.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your product cost from the manufacturer or supplier" },
+      { "@type": "HowToStep", "text": "Input your desired wholesale margin percentage" },
+      { "@type": "HowToStep", "text": "Set the retail markup percentage your retailers will use" },
+      { "@type": "HowToStep", "text": "Enter the order quantity to see total revenue and profit" },
+      { "@type": "HowToStep", "text": "Click Calculate to see wholesale price, retail price, and profit breakdown" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Calculate wholesale pricing, bulk discounts, and profit margins with confidence. This tool helps B2B sellers and manufacturers determine optimal wholesale and retail prices based on their costs and desired margins.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Wholesale Margin Calculator</h2>
+      <div class="form-group">
+        <label for="wsCost">Product Cost ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="wsCost" class="prefixed" value="10" min="1" step="0.5">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="wsMargin">Desired Wholesale Margin (%)</label>
+          <input type="number" id="wsMargin" value="30" min="1" max="90" step="1">
+        </div>
+        <div class="form-group">
+          <label for="wsMarkup">Retail Markup (%)</label>
+          <input type="number" id="wsMarkup" value="100" min="0" max="500" step="5">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="wsQuantity">Order Quantity</label>
+        <input type="number" id="wsQuantity" value="100" min="1" step="10">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="wsResult">
+        <div class="result-value" id="wsWholesalePrice">$0.00</div>
+        <div class="result-label">Wholesale Price Per Unit</div>
+        <div class="result-details">
+          <div><span class="label">Wholesale Profit Per Unit</span><span class="value" id="wsWholesaleProfit">$0.00</span></div>
+          <div><span class="label">Recommended Retail Price</span><span class="value" id="wsRetailPrice">$0.00</span></div>
+          <div><span class="label">Retail Profit Per Unit</span><span class="value" id="wsRetailProfit">$0.00</span></div>
+          <div><span class="label">Total Order Revenue</span><span class="value" id="wsTotalRev">$0.00</span></div>
+          <div><span class="label">Total Order Profit</span><span class="value" id="wsTotalProfit">$0.00</span></div>
+          <div><span class="label">Margin on Retail</span><span class="value" id="wsRetailMargin">0.0%</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This wholesale margin calculator makes B2B pricing straightforward. Start by entering your <strong>product cost</strong> (what you pay the manufacturer). Then set your <strong>desired wholesale margin</strong> &mdash; the profit percentage you want to earn as a wholesaler.</p>
+      <p>Enter the <strong>retail markup</strong> your retailers will apply. The default of 100% is keystone pricing, standard in most retail industries. Finally, enter the <strong>order quantity</strong> to see totals for the full order.</p>
+      <p>The calculator shows your wholesale price, per-unit profit, recommended retail price, retail profit for your buyers, and the total revenue and profit for the entire order.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Wholesale vs. Retail Pricing</h2>
+      <div class="formula-box">
+        Wholesale Price = Cost / (1 &minus; Desired Margin / 100)
+      </div>
+      <div class="formula-box">
+        Wholesale Profit = Wholesale Price &minus; Cost
+      </div>
+      <div class="formula-box">
+        Retail Price = Wholesale Price &times; (1 + Retail Markup / 100)
+      </div>
+      <div class="formula-box">
+        Margin on Retail = (Retail Price &minus; Cost) / Retail Price &times; 100
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is wholesale margin?", answer: "Wholesale margin is the profit percentage a wholesaler earns when selling products to retailers. It is calculated as (Wholesale Price - Cost) / Wholesale Price * 100. A healthy wholesale margin is typically 20-40%, depending on the industry and product type." },
+      { question: "What is keystone pricing?", answer: "Keystone pricing is a retail pricing strategy where the retail price is set at double the wholesale price (a 100% markup). It is a standard practice in many retail industries and is the default retail markup used in this calculator." },
+      { question: "What is the difference between margin and markup?", answer: "Margin (profit margin) is the percentage of the selling price that is profit: (Price - Cost) / Price * 100. Markup is the percentage added to the cost to determine the selling price: (Price - Cost) / Cost * 100." },
+      { question: "How do I set wholesale pricing?", answer: "To set wholesale pricing, start with your product cost, add operating expenses per unit, then add your desired profit margin. Research competitor pricing and industry standards. A common approach is to set wholesale price at 2-3 times your cost." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="wholesale-margin-calculator" category="ecommerce" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcWS(): void {
+  var cost = parseFloat((document.getElementById('wsCost') as HTMLInputElement).value);
+  var margin = parseFloat((document.getElementById('wsMargin') as HTMLInputElement).value);
+  var markup = parseFloat((document.getElementById('wsMarkup') as HTMLInputElement).value);
+  var quantity = parseFloat((document.getElementById('wsQuantity') as HTMLInputElement).value);
+
+  if (!cost || !margin || !markup || !quantity) return;
+
+  var wholesalePrice = cost / (1 - margin / 100);
+  var wholesaleProfit = wholesalePrice - cost;
+  var retailPrice = wholesalePrice * (1 + markup / 100);
+  var retailProfit = retailPrice - cost;
+  var totalRev = wholesalePrice * quantity;
+  var totalProfit = wholesaleProfit * quantity;
+  var retailMargin = ((retailPrice - cost) / retailPrice) * 100;
+
+  document.getElementById('wsWholesalePrice')!.textContent = '$' + wholesalePrice.toFixed(2);
+  document.getElementById('wsWholesaleProfit')!.textContent = '$' + wholesaleProfit.toFixed(2);
+  document.getElementById('wsRetailPrice')!.textContent = '$' + retailPrice.toFixed(2);
+  document.getElementById('wsRetailProfit')!.textContent = '$' + retailProfit.toFixed(2);
+  document.getElementById('wsTotalRev')!.textContent = '$' + totalRev.toFixed(2);
+  document.getElementById('wsTotalProfit')!.textContent = '$' + totalProfit.toFixed(2);
+  document.getElementById('wsRetailMargin')!.textContent = retailMargin.toFixed(1) + '%';
+  showResult('wsResult');
+}
+
+function resetWS(): void {
+  (document.getElementById('wsCost') as HTMLInputElement).value = '10';
+  (document.getElementById('wsMargin') as HTMLInputElement).value = '30';
+  (document.getElementById('wsMarkup') as HTMLInputElement).value = '100';
+  (document.getElementById('wsQuantity') as HTMLInputElement).value = '100';
+  hideResult('wsResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcWS);
+document.getElementById('resetBtn')!.addEventListener('click', resetWS);
+document.addEventListener('DOMContentLoaded', calcWS);
+</script>

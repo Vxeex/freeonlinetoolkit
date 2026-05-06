@@ -1,0 +1,219 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['gpa-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Your GPA",
+    "description": "Calculate your grade point average on a 4.0 scale with weighted and unweighted options.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select your grade for each course" },
+      { "@type": "HowToStep", "text": "Enter the credit hours for each course" },
+      { "@type": "HowToStep", "text": "Toggle weighted for honors/AP courses" },
+      { "@type": "HowToStep", "text": "View your semester and cumulative GPA" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Calculate your semester and cumulative GPA on a 4.0 scale. Supports weighted grades for AP, honors, and IB courses. Perfect for high school and college students tracking academic performance.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>GPA Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="gpaScale">GPA Scale</label>
+          <select id="gpaScale">
+            <option value="4.0">4.0 Scale (Standard)</option>
+            <option value="4.33">4.33 Scale (A+)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding-top:4px;">
+            <input type="checkbox" id="gpaWeighted"> Use Weighted (AP/Honors)
+          </label>
+        </div>
+      </div>
+
+      <div id="gpaCourses">
+        <div class="gpa-course-row" style="display:grid;grid-template-columns:1fr 80px 60px;gap:8px;margin-bottom:8px;align-items:center;">
+          <select class="gpa-grade">
+            <option value="4.0">A</option>
+            <option value="3.67">A-</option>
+            <option value="3.33">B+</option>
+            <option value="3.0">B</option>
+            <option value="2.67">B-</option>
+            <option value="2.33">C+</option>
+            <option value="2.0">C</option>
+            <option value="1.67">C-</option>
+            <option value="1.33">D+</option>
+            <option value="1.0">D</option>
+            <option value="0.0">F</option>
+          </select>
+          <input type="number" class="gpa-credits" value="3" min="0.5" max="6" step="0.5" style="text-align:center;">
+          <button class="btn btn-secondary" style="padding:6px;font-size:0.75rem;" id="removeGpaBtn0"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="gpa-course-row" style="display:grid;grid-template-columns:1fr 80px 60px;gap:8px;margin-bottom:8px;align-items:center;">
+          <select class="gpa-grade">
+            <option value="4.0">A</option>
+            <option value="3.67">A-</option>
+            <option value="3.33">B+</option>
+            <option value="3.0">B</option>
+            <option value="2.67">B-</option>
+            <option value="2.33">C+</option>
+            <option value="2.0">C</option>
+            <option value="1.67">C-</option>
+            <option value="1.33">D+</option>
+            <option value="1.0">D</option>
+            <option value="0.0">F</option>
+          </select>
+          <input type="number" class="gpa-credits" value="3" min="0.5" max="6" step="0.5" style="text-align:center;">
+          <button class="btn btn-secondary" style="padding:6px;font-size:0.75rem;" id="removeGpaBtn1"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <button class="btn btn-secondary" style="margin-bottom:16px;width:100%;" id="addGpaRow"><i class="fa-solid fa-plus"></i> Add Course</button>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate GPA</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="gpaResult">
+        <div class="result-value" id="gpaValue" style="font-size:2rem;">0.00</div>
+        <div class="result-label">Semester GPA</div>
+        <div class="result-details">
+          <div><span class="label">Total Grade Points</span><span class="value" id="gpaPoints">0</span></div>
+          <div><span class="label">Total Credits</span><span class="value" id="gpaCredits">0</span></div>
+          <div><span class="label">Letter Grade</span><span class="value" id="gpaLetter">F</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How GPA Is Calculated</h2>
+      <p>GPA is calculated by dividing the total grade points earned by the total credit hours attempted. Each letter grade has a numeric value (A = 4.0, B = 3.0, etc.). For <strong>weighted</strong> courses (AP, honors, IB), an extra 0.5-1.0 points is added to reflect course difficulty.</p>
+      <div class="formula-box">GPA = &Sigma;(Grade Value &times; Credits) / &Sigma;(Credits)</div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the difference between weighted and unweighted GPA?", answer: "Unweighted GPA treats all courses equally on a 4.0 scale. Weighted GPA adds extra points (typically 0.5-1.0) for advanced courses like AP, honors, and IB, allowing a maximum above 4.0. Colleges often recalculate both to evaluate your academic rigor." },
+      { question: "What GPA do I need for college?", answer: "Selective colleges typically look for 3.5-4.0 unweighted. Less selective schools may accept 2.5-3.0. However, colleges consider course rigor, extracurriculars, essays, and test scores alongside GPA. A slightly lower GPA with challenging courses can be stronger than a perfect GPA with easy classes." },
+      { question: "Can I calculate my cumulative GPA?", answer: "Yes! Your cumulative GPA is the average of all semesters combined. Add all courses from all semesters into this calculator to get your cumulative result. The weighted option supports AP/IB courses that often appear on high school transcripts." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="gpa-calculator" category="education" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function removeGpaRow(btn: HTMLButtonElement) {
+  const row = btn.closest('.gpa-course-row');
+  if (row && document.querySelectorAll('.gpa-course-row').length > 1) {
+    row.parentNode?.removeChild(row);
+  }
+}
+
+function addGpaRow() {
+  const container = document.getElementById('gpaCourses')!;
+  const row = document.createElement('div');
+  row.className = 'gpa-course-row';
+  row.style.cssText = 'display:grid;grid-template-columns:1fr 80px 60px;gap:8px;margin-bottom:8px;align-items:center;';
+  row.innerHTML = '<select class="gpa-grade" style="padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:0.85rem;">' +
+    '<option value="4.0">A</option><option value="3.67">A-</option><option value="3.33">B+</option><option value="3.0">B</option>' +
+    '<option value="2.67">B-</option><option value="2.33">C+</option><option value="2.0">C</option><option value="1.67">C-</option>' +
+    '<option value="1.33">D+</option><option value="1.0">D</option><option value="0.0">F</option></select>' +
+    '<input type="number" class="gpa-credits" value="3" min="0.5" max="6" step="0.5" style="padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:0.85rem;text-align:center;">' +
+    '<button class="btn btn-secondary gpa-remove-btn" style="padding:6px;font-size:0.75rem;"><i class="fa-solid fa-xmark"></i></button>';
+  container.appendChild(row);
+}
+
+function calcGPA() {
+  const scale = parseFloat((document.getElementById('gpaScale') as HTMLSelectElement).value);
+  const weighted = (document.getElementById('gpaWeighted') as HTMLInputElement).checked;
+
+  const grades = document.querySelectorAll<HTMLSelectElement>('.gpa-grade');
+  const credits = document.querySelectorAll<HTMLInputElement>('.gpa-credits');
+
+  let totalPoints = 0;
+  let totalCredits = 0;
+
+  for (let i = 0; i < grades.length; i++) {
+    const grade = parseFloat(grades[i].value);
+    const credit = parseFloat(credits[i].value);
+    if (!credit) continue;
+
+    let adjustedGrade = grade;
+    if (weighted && grade >= 3.0) {
+      adjustedGrade = Math.min(grade + 0.5, scale);
+    }
+
+    totalPoints += adjustedGrade * credit;
+    totalCredits += credit;
+  }
+
+  const gpa = totalCredits > 0 ? totalPoints / totalCredits : 0;
+  let letter = 'F';
+  if (gpa >= 3.67) letter = 'A';
+  else if (gpa >= 3.33) letter = 'A-';
+  else if (gpa >= 3.0) letter = 'B+';
+  else if (gpa >= 2.67) letter = 'B';
+  else if (gpa >= 2.33) letter = 'B-';
+  else if (gpa >= 2.0) letter = 'C+';
+  else if (gpa >= 1.67) letter = 'C';
+  else if (gpa >= 1.33) letter = 'C-';
+  else if (gpa >= 1.0) letter = 'D+';
+  else if (gpa >= 0.67) letter = 'D';
+
+  document.getElementById('gpaValue')!.textContent = gpa.toFixed(2);
+  document.getElementById('gpaPoints')!.textContent = totalPoints.toFixed(1);
+  document.getElementById('gpaCredits')!.textContent = totalCredits.toFixed(1);
+  document.getElementById('gpaLetter')!.textContent = letter;
+  showResult('gpaResult');
+}
+
+function resetGPA() {
+  (document.getElementById('gpaScale') as HTMLSelectElement).value = '4.0';
+  (document.getElementById('gpaWeighted') as HTMLInputElement).checked = false;
+  const container = document.getElementById('gpaCourses')!;
+  container.innerHTML = '';
+  for (let i = 0; i < 2; i++) {
+    const row = document.createElement('div');
+    row.className = 'gpa-course-row';
+    row.style.cssText = 'display:grid;grid-template-columns:1fr 80px 60px;gap:8px;margin-bottom:8px;align-items:center;';
+    row.innerHTML = '<select class="gpa-grade" style="padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:0.85rem;">' +
+      '<option value="4.0">A</option><option value="3.67">A-</option><option value="3.33">B+</option><option value="3.0" selected>B</option>' +
+      '<option value="2.67">B-</option><option value="2.33">C+</option><option value="2.0">C</option><option value="1.67">C-</option>' +
+      '<option value="1.33">D+</option><option value="1.0">D</option><option value="0.0">F</option></select>' +
+      '<input type="number" class="gpa-credits" value="3" min="0.5" max="6" step="0.5" style="padding:8px 10px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:0.85rem;text-align:center;">' +
+      '<button class="btn btn-secondary gpa-remove-btn" style="padding:6px;font-size:0.75rem;"><i class="fa-solid fa-xmark"></i></button>';
+    container.appendChild(row);
+  }
+  hideResult('gpaResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcGPA);
+document.getElementById('resetBtn')!.addEventListener('click', resetGPA);
+document.getElementById('addGpaRow')!.addEventListener('click', addGpaRow);
+document.addEventListener('click', (e) => {
+  const btn = (e.target as HTMLElement).closest('.gpa-remove-btn');
+  if (btn) removeGpaRow(btn as HTMLButtonElement);
+});
+</script>

@@ -1,0 +1,154 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['reading-time-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Reading Time",
+    "description": "Calculate how long it takes to read text based on word count and reading speed.",
+    "step": [
+      { "@type": "HowToStep", "text": "Paste or type your text, or enter the word count directly" },
+      { "@type": "HowToStep", "text": "Adjust the reading speed (WPM) for your audience" },
+      { "@type": "HowToStep", "text": "View reading time, speaking time, and content statistics" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate exactly how long it takes to read or speak any text. Perfect for bloggers timing their articles, podcasters scripting episodes, and public speakers preparing presentations.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Reading Time Estimator</h2>
+      <div class="form-group">
+        <label for="rtText">Paste Your Text or Enter Word Count</label>
+        <textarea id="rtText" rows="4" style="width:100%;padding:12px;border:1px solid var(--color-border);border-radius:var(--radius-sm);font-size:0.9rem;resize:vertical;font-family:inherit;">Welcome to our free online toolkit. We provide fast and accurate calculators for everyday use.</textarea>
+      </div>
+      <div class="form-group" style="margin-top:8px;">
+        <label>Or enter exact word count:</label>
+        <input type="number" id="rtWordCount" value="" min="0" step="50" style="max-width:200px;">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="rtReadingSpeed">Reading Speed (WPM)</label>
+          <select id="rtReadingSpeed">
+            <option value="130">Slow (130) &mdash; children/learners</option>
+            <option value="200" selected>Average (200) &mdash; general reading</option>
+            <option value="250">Fast (250) &mdash; skilled readers</option>
+            <option value="300">Skimming (300) &mdash; college-level</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="rtSpeakingSpeed">Speaking Speed (WPM)</label>
+          <select id="rtSpeakingSpeed">
+            <option value="120">Slow (120) &mdash; presentations</option>
+            <option value="150" selected>Average (150) &mdash; conversation</option>
+            <option value="175">Fast (175) &mdash; podcasts</option>
+            <option value="200">Rapid (200) &mdash; auctioneer</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="rtResult">
+        <div class="result-value" id="rtReadingResult" style="font-size:1.3rem;">0 min</div>
+        <div class="result-label">Estimated Reading Time</div>
+        <div class="result-details">
+          <div><span class="label">Word Count</span><span class="value" id="rtWords">0</span></div>
+          <div><span class="label">Characters</span><span class="value" id="rtChars">0</span></div>
+          <div><span class="label">Sentences</span><span class="value" id="rtSentences">0</span></div>
+          <div><span class="label">Speaking Time</span><span class="value" id="rtSpeakingResult">0 min</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Paste any text into the box, or enter a word count directly if you know it. Adjust the <strong>reading speed</strong> and <strong>speaking speed</strong> to match your audience. The calculator instantly shows estimated reading time, speaking time, and content statistics.</p>
+      <p>Average adult reading speed is about 200-250 words per minute. Conversational speaking speed is around 140-160 words per minute.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Reading Speed Guide</h2>
+      <div class="formula-box">Time = Word Count &divide; Speed (WPM)<br>500 words &divide; 200 WPM = 2.5 minutes reading time</div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a good reading speed?", answer: "The average adult reads at 200-250 words per minute. College students often reach 300 WPM. Speed reading techniques can achieve 400-700 WPM but comprehension typically drops." },
+      { question: "How long should a podcast script be?", answer: "A typical 30-minute podcast has about 4,500-5,000 spoken words (at 150 WPM). A 5-minute segment needs roughly 700-800 words." },
+      { question: "How long does it take to read a book?", answer: "A typical novel has about 80,000-100,000 words. At average reading speed (200 WPM), a novel takes about 6.5-8.5 hours of total reading time." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="reading-time-calculator" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcReadingTime() {
+  const text = (document.getElementById('rtText') as HTMLTextAreaElement).value;
+  const manualCount = parseInt((document.getElementById('rtWordCount') as HTMLInputElement).value);
+
+  let wordCount: number;
+  if (manualCount && manualCount > 0) {
+    wordCount = manualCount;
+  } else {
+    const trimmed = text.trim();
+    wordCount = trimmed ? trimmed.split(/\s+/).length : 0;
+  }
+
+  const charCount = text.length;
+  const sentenceCount = text.split(/[.!?]+/).filter(function(s) { return s.trim().length > 0; }).length;
+  const readingSpeed = parseInt((document.getElementById('rtReadingSpeed') as HTMLSelectElement).value);
+  const speakingSpeed = parseInt((document.getElementById('rtSpeakingSpeed') as HTMLSelectElement).value);
+
+  function fmtTime(minutes: number) {
+    if (minutes < 1) return '< 1 min';
+    const mins = Math.round(minutes);
+    if (mins < 60) return mins + ' min';
+    const hrs = Math.floor(mins / 60);
+    const rem = mins % 60;
+    return hrs + ' hr ' + rem + ' min';
+  }
+
+  const readingMin = wordCount / readingSpeed;
+  const speakingMin = wordCount / speakingSpeed;
+
+  document.getElementById('rtWords')!.textContent = wordCount.toLocaleString();
+  document.getElementById('rtChars')!.textContent = charCount.toLocaleString();
+  document.getElementById('rtSentences')!.textContent = sentenceCount.toString();
+  document.getElementById('rtReadingResult')!.textContent = fmtTime(readingMin);
+  document.getElementById('rtSpeakingResult')!.textContent = fmtTime(speakingMin);
+  showResult('rtResult');
+}
+
+function resetReadingTime() {
+  (document.getElementById('rtText') as HTMLTextAreaElement).value = '';
+  (document.getElementById('rtWordCount') as HTMLInputElement).value = '';
+  (document.getElementById('rtReadingSpeed') as HTMLSelectElement).value = '200';
+  (document.getElementById('rtSpeakingSpeed') as HTMLSelectElement).value = '150';
+  hideResult('rtResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcReadingTime);
+document.getElementById('resetBtn')!.addEventListener('click', resetReadingTime);
+document.addEventListener('DOMContentLoaded', calcReadingTime);
+</script>

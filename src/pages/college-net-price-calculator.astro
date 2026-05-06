@@ -1,0 +1,273 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['college-net-price-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate College Net Price",
+    "description": "Calculate the net price of college by entering costs, income, and assets to estimate EFC and grant aid.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your tuition and fees, room and board, books, and personal expenses" },
+      { "@type": "HowToStep", "text": "Input parent and student income and asset information" },
+      { "@type": "HowToStep", "text": "Select your dependency status and state of residence" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your estimated EFC and net price" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate the true cost of college after financial aid. This college net price calculator uses a simplified federal methodology to calculate your Expected Family Contribution (EFC), grant aid, and out-of-pocket net price.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Net Price Calculator</h2>
+
+      <h3 style="font-size:1rem;color:var(--color-primary);margin-bottom:0.75rem;">College Costs</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="tuition">Tuition &amp; Fees ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="tuition" class="prefixed" value="35000" min="0" step="1000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="roomBoard">Room &amp; Board ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="roomBoard" class="prefixed" value="12000" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="books">Books &amp; Supplies ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="books" class="prefixed" value="1200" min="0" step="100">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="personalExpenses">Personal Expenses ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="personalExpenses" class="prefixed" value="2500" min="0" step="100">
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--color-primary);margin:1rem 0 0.75rem;">Family Financial Information</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="parentIncome">Parent Income ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="parentIncome" class="prefixed" value="75000" min="0" step="5000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="parentAssets">Parent Assets ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="parentAssets" class="prefixed" value="30000" min="0" step="5000">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="studentIncome">Student Income ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="studentIncome" class="prefixed" value="5000" min="0" step="500">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="studentAssets">Student Assets ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="studentAssets" class="prefixed" value="2000" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="dependencyStatus">Dependency Status</label>
+          <select id="dependencyStatus">
+            <option value="dependent" selected>Dependent</option>
+            <option value="independent">Independent</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="state">State of Residence</label>
+          <select id="state">
+            <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option>
+            <option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option>
+            <option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option>
+            <option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option>
+            <option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option>
+            <option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="netPriceResult">
+        <div class="result-value" id="netPriceCOA">$0.00</div>
+        <div class="result-label">Total Cost of Attendance (COA)</div>
+        <div class="result-details">
+          <div><span class="label">Estimated EFC</span><span class="value" id="netPriceEFC">$0</span></div>
+          <div><span class="label">Estimated Grant Aid</span><span class="value" id="netPriceGrants">$0</span></div>
+          <div><span class="label">Net Price (Out-of-Pocket)</span><span class="value" id="netPriceOutOfPocket">$0</span></div>
+          <div><span class="label">Loan Recommendation</span><span class="value" id="netPriceLoanRec">--</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section" id="netPriceBreakdown" style="display:none;">
+      <h2>Family Contribution Breakdown</h2>
+      <div class="table-wrap">
+        <table class="amort-table">
+          <thead>
+            <tr><th>Category</th><th>Amount</th><th>Percentage of COA</th></tr>
+          </thead>
+          <tbody id="netPriceBreakdownBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the College Net Price Calculator</h2>
+      <p>Start by entering the <strong>total cost of attendance</strong> including tuition, fees, room and board, books, and personal expenses. These figures are typically available on your prospective college's website under "Cost of Attendance."</p>
+      <p>Next, provide <strong>family financial information</strong> including parent and student income and assets. The calculator uses a simplified version of the federal methodology to estimate your Expected Family Contribution (EFC). Your dependency status affects the income protection allowance used in the calculation.</p>
+      <p>Once you click "Calculate," you will see the total COA, estimated EFC, grant aid, and your expected out-of-pocket net price. The breakdown table shows how each cost category contributes to your total.</p>
+      <p>Pro tip: Your <strong>net price</strong> is the most important number - it represents what you will actually need to pay or finance after grants and scholarships. Use this to compare colleges realistically.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Net Price Formula</h2>
+      <p>The Expected Family Contribution (EFC) is estimated using a simplified federal methodology:</p>
+      <div class="formula-box">EFC = (Parent Income &minus; IPA) &times; 0.22 + Student Income &times; 0.50 + Parent Assets &times; 0.06 + Student Assets &times; 0.20</div>
+      <p>Where <strong>IPA</strong> (Income Protection Allowance) is $10,000 for dependent students and $15,000 for independent students.</p>
+      <p><strong>Net Price</strong> = Cost of Attendance - Estimated Grant Aid. Estimated Grant Aid is based on financial need, with higher EFC resulting in lower need-based aid.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the difference between COA and net price?", answer: "The Cost of Attendance (COA) is the total published price including tuition, fees, housing, and other expenses. Net price is what you actually pay after subtracting grants and scholarships. Most students pay less than the published COA." },
+      { question: "How accurate is this EFC estimate?", answer: "This calculator uses a simplified version of the federal methodology and provides an estimate only. The official FAFSA calculation includes additional factors such as family size, number in college, and age of older parent. Use this as a planning tool, not an official determination." },
+      { question: "Does my state of residence affect college costs?", answer: "Yes, state of residence significantly affects tuition at public universities. In-state students pay substantially less than out-of-state students at state schools. Private colleges typically charge the same regardless of residence, though some offer regional tuition discounts." },
+      { question: "What if my EFC is higher than the cost of attendance?", answer: "If your EFC exceeds the COA, you are not eligible for need-based financial aid. However, you may still qualify for merit-based scholarships, federal unsubsidized loans, and private education loans. Consider appealing the financial aid offer if your circumstances have changed." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="college-net-price-calculator" category="education" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcNetPrice() {
+  const tuition = getNum('tuition') || 0;
+  const roomBoard = getNum('roomBoard') || 0;
+  const books = getNum('books') || 0;
+  const personal = getNum('personalExpenses') || 0;
+  const parentIncome = getNum('parentIncome') || 0;
+  const parentAssets = getNum('parentAssets') || 0;
+  const studentIncome = getNum('studentIncome') || 0;
+  const studentAssets = getNum('studentAssets') || 0;
+  const depStatus = (document.getElementById('dependencyStatus') as HTMLSelectElement).value;
+
+  const COA = tuition + roomBoard + books + personal;
+
+  const ipa = depStatus === 'independent' ? 15000 : 10000;
+  const availableParentIncome = Math.max(0, parentIncome - ipa) * 0.22;
+  const availableStudentIncome = studentIncome * 0.5;
+  const availableParentAssets = parentAssets * 0.06;
+  const availableStudentAssets = studentAssets * 0.20;
+  const EFC = availableParentIncome + availableStudentIncome + availableParentAssets + availableStudentAssets;
+
+  const need = Math.max(0, COA - EFC);
+  const grantAid = Math.min(COA * 0.6, need * 0.7 + COA * 0.15);
+  const netPrice = Math.max(0, COA - grantAid);
+
+  document.getElementById('netPriceCOA')!.textContent = formatCurrency(COA);
+  document.getElementById('netPriceEFC')!.textContent = formatCurrency(EFC);
+  document.getElementById('netPriceGrants')!.textContent = formatCurrency(grantAid);
+  document.getElementById('netPriceOutOfPocket')!.textContent = formatCurrency(netPrice);
+
+  let loanRec = '';
+  if (netPrice <= 5000) loanRec = 'Minimal borrowing needed';
+  else if (netPrice <= 15000) loanRec = 'Federal loans recommended';
+  else if (netPrice <= 30000) loanRec = 'Federal loans + work-study recommended';
+  else loanRec = 'Maximize federal loans, consider private cautiously';
+  document.getElementById('netPriceLoanRec')!.textContent = loanRec;
+
+  showResult('netPriceResult');
+
+  const body = document.getElementById('netPriceBreakdownBody')!;
+  body.innerHTML = '';
+  const items = [
+    { cat: 'Tuition & Fees', val: tuition },
+    { cat: 'Room & Board', val: roomBoard },
+    { cat: 'Books & Supplies', val: books },
+    { cat: 'Personal Expenses', val: personal },
+    { cat: 'Estimated Grant Aid', val: -grantAid }
+  ];
+  items.forEach(function(item) {
+    const row = document.createElement('tr');
+    const pct = COA > 0 ? (Math.abs(item.val) / COA * 100).toFixed(1) : '0.0';
+    row.innerHTML = '<td>' + item.cat + '</td><td>' + formatCurrency(item.val) + '</td><td>' + pct + '%</td>';
+    body.appendChild(row);
+  });
+  const netRow = document.createElement('tr');
+  netRow.style.fontWeight = 'bold';
+  const netPct = COA > 0 ? (netPrice / COA * 100).toFixed(1) : '0.0';
+  netRow.innerHTML = '<td>Net Price (Your Cost)</td><td>' + formatCurrency(netPrice) + '</td><td>' + netPct + '%</td>';
+  body.appendChild(netRow);
+
+  document.getElementById('netPriceBreakdown')!.style.display = 'block';
+}
+
+function resetNetPrice() {
+  (document.getElementById('tuition') as HTMLInputElement).value = '35000';
+  (document.getElementById('roomBoard') as HTMLInputElement).value = '12000';
+  (document.getElementById('books') as HTMLInputElement).value = '1200';
+  (document.getElementById('personalExpenses') as HTMLInputElement).value = '2500';
+  (document.getElementById('parentIncome') as HTMLInputElement).value = '75000';
+  (document.getElementById('parentAssets') as HTMLInputElement).value = '30000';
+  (document.getElementById('studentIncome') as HTMLInputElement).value = '5000';
+  (document.getElementById('studentAssets') as HTMLInputElement).value = '2000';
+  (document.getElementById('dependencyStatus') as HTMLSelectElement).value = 'dependent';
+  (document.getElementById('state') as HTMLSelectElement).value = 'AL';
+  document.getElementById('netPriceBreakdown')!.style.display = 'none';
+  hideResult('netPriceResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcNetPrice);
+document.getElementById('resetBtn')!.addEventListener('click', resetNetPrice);
+document.addEventListener('DOMContentLoaded', calcNetPrice);
+</script>

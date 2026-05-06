@@ -1,0 +1,183 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['unit-converter'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Convert Units",
+    "description": "Convert between different units of measurement for length, weight, volume, and more.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select the category of measurement" },
+      { "@type": "HowToStep", "text": "Choose the unit you want to convert from" },
+      { "@type": "HowToStep", "text": "Choose the unit you want to convert to" },
+      { "@type": "HowToStep", "text": "Enter the value to see the converted result instantly" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Convert between hundreds of measurement units instantly. Length, weight, volume, temperature, area, speed, and more — all in one tool. Fast and accurate conversions for everyday use.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Unit Converter</h2>
+
+      <div class="form-group">
+        <label for="ucCategory">Category</label>
+        <select id="ucCategory">
+          <option value="length">Length</option>
+          <option value="weight">Weight & Mass</option>
+          <option value="volume">Volume</option>
+          <option value="temperature">Temperature</option>
+          <option value="area">Area</option>
+          <option value="speed">Speed</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ucFrom">From</label>
+          <select id="ucFrom"></select>
+        </div>
+        <div class="form-group">
+          <label for="ucTo">To</label>
+          <select id="ucTo"></select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ucValue">Value</label>
+          <input type="number" id="ucValue" value="1" min="0" step="any">
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-end;">
+          <button class="btn btn-primary" id="convertBtn" style="width:100%;">Convert</button>
+        </div>
+      </div>
+
+      <div class="result-box" id="ucResult" style="display:block;">
+        <div class="result-value" id="ucResultValue">1.000</div>
+        <div class="result-label" id="ucResultLabel">Result</div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Unit Converter</h2>
+      <p>Select a <strong>category</strong>, then choose the units you want to convert <strong>from</strong> and <strong>to</strong>. Enter the value and click <strong>Convert</strong> to see the result instantly. The converter supports both metric and imperial units across all categories.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Conversion Reference</h2>
+      <p><strong>Length:</strong> 1 inch = 2.54 cm, 1 foot = 0.3048 m, 1 mile = 1.609 km</p>
+      <p><strong>Weight:</strong> 1 kg = 2.20462 lbs, 1 ounce = 28.3495 g</p>
+      <p><strong>Volume:</strong> 1 gallon (US) = 3.78541 L, 1 fl oz = 29.5735 mL</p>
+      <p><strong>Temperature:</strong> &deg;C = (&deg;F - 32) &times; 5/9</p>
+    </div>
+
+    <FAQ items={[
+      { question: "Are the conversion factors accurate?", answer: "Yes. All conversion factors use internationally accepted standard definitions based on the international yard definition and SI standard definitions." },
+      { question: "Can I convert between metric and imperial?", answer: "Yes, the converter supports both metric and imperial units in every category — meters to feet, kilograms to pounds, liters to gallons, and more." },
+      { question: "What's the difference between US and Imperial gallons?", answer: "A US gallon equals 3.78541 liters, while a UK imperial gallon equals 4.54609 liters. This converter uses US liquid volume units." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="unit-converter" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { formatNumber } from '../utils/calculator-utils';
+
+const unitData: Record<string, { units: string[]; toBase: (number | string)[] }> = {
+  length: {
+    units: ['Meters', 'Kilometers', 'Centimeters', 'Millimeters', 'Miles', 'Yards', 'Feet', 'Inches', 'Nautical Miles'],
+    toBase: [1, 1000, 0.01, 0.001, 1609.344, 0.9144, 0.3048, 0.0254, 1852]
+  },
+  weight: {
+    units: ['Kilograms', 'Grams', 'Milligrams', 'Metric Tons', 'Pounds', 'Ounces', 'Stones', 'US Tons'],
+    toBase: [1, 0.001, 0.000001, 1000, 0.453592, 0.0283495, 6.35029, 907.185]
+  },
+  volume: {
+    units: ['Liters', 'Milliliters', 'Cubic Meters', 'US Gallons', 'US Quarts', 'US Pints', 'US Cups', 'Fluid Ounces (US)', 'Cubic Feet'],
+    toBase: [1, 0.001, 1000, 3.78541, 0.946353, 0.473176, 0.236588, 0.0295735, 28.3168]
+  },
+  temperature: {
+    units: ['Celsius', 'Fahrenheit', 'Kelvin'],
+    toBase: ['C', 'F', 'K']
+  },
+  area: {
+    units: ['Square Meters', 'Square Kilometers', 'Square Feet', 'Square Inches', 'Acres', 'Hectares', 'Square Miles', 'Square Yards'],
+    toBase: [1, 1000000, 0.092903, 0.00064516, 4046.86, 10000, 2589988, 0.836127]
+  },
+  speed: {
+    units: ['km/h', 'mph', 'm/s', 'Knots', 'ft/s'],
+    toBase: [0.277778, 0.44704, 1, 0.514444, 0.3048]
+  }
+};
+
+function updateUnits() {
+  const cat = (document.getElementById('ucCategory') as HTMLSelectElement).value;
+  const data = unitData[cat];
+  const fromSel = document.getElementById('ucFrom') as HTMLSelectElement;
+  const toSel = document.getElementById('ucTo') as HTMLSelectElement;
+  fromSel.innerHTML = '';
+  toSel.innerHTML = '';
+  for (let i = 0; i < data.units.length; i++) {
+    fromSel.innerHTML += '<option value="' + i + '">' + data.units[i] + '</option>';
+    toSel.innerHTML += '<option value="' + i + '">' + data.units[i] + '</option>';
+  }
+  if (data.units.length > 1) toSel.value = '1';
+  convertUnit();
+}
+
+function convertTemp(val: number, from: string, to: string): number {
+  let celsius: number;
+  if (from === 'C') celsius = val;
+  else if (from === 'F') celsius = (val - 32) * 5 / 9;
+  else celsius = val - 273.15;
+
+  if (to === 'C') return celsius;
+  if (to === 'F') return (celsius * 9 / 5) + 32;
+  return celsius + 273.15;
+}
+
+function convertUnit() {
+  const cat = (document.getElementById('ucCategory') as HTMLSelectElement).value;
+  const fromIdx = parseInt((document.getElementById('ucFrom') as HTMLSelectElement).value);
+  const toIdx = parseInt((document.getElementById('ucTo') as HTMLSelectElement).value);
+  const val = parseFloat((document.getElementById('ucValue') as HTMLInputElement).value);
+  if (isNaN(val)) return;
+
+  const data = unitData[cat];
+  let result: number;
+
+  if (cat === 'temperature') {
+    result = convertTemp(val, data.toBase[fromIdx] as string, data.toBase[toIdx] as string);
+  } else {
+    const baseVal = val * (data.toBase[fromIdx] as number);
+    result = baseVal / (data.toBase[toIdx] as number);
+  }
+
+  const fromUnit = data.units[fromIdx];
+  const toUnit = data.units[toIdx];
+  (document.getElementById('ucResultValue') as HTMLElement).textContent = formatNumber(result, 4);
+  (document.getElementById('ucResultLabel') as HTMLElement).textContent = val + ' ' + fromUnit + ' = ' + result.toFixed(4) + ' ' + toUnit;
+}
+
+document.getElementById('ucCategory')!.addEventListener('change', updateUnits);
+document.getElementById('convertBtn')!.addEventListener('click', convertUnit);
+document.addEventListener('DOMContentLoaded', updateUnits);
+</script>

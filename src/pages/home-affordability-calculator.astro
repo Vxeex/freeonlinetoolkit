@@ -1,0 +1,207 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['home-affordability-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Home Affordability",
+    "description": "Calculate how much house you can afford based on your income, down payment, monthly debts, and current interest rates using the 28/36 rule.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your annual household income before taxes" },
+      { "@type": "HowToStep", "text": "Input your down payment amount and monthly debt payments" },
+      { "@type": "HowToStep", "text": "Enter the estimated interest rate and loan term" },
+      { "@type": "HowToStep", "text": "Add estimated annual property taxes and homeowner's insurance" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your maximum affordable home price" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Find out how much house you can afford based on your income, down payment, and monthly debts. This calculator uses the standard 28/36 debt-to-income rule that most mortgage lenders follow to determine your maximum home price.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Affordability Calculator</h2>
+      <div class="form-group">
+        <label for="annualIncome">Annual Household Income ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="annualIncome" class="prefixed" value="85000" min="0" step="1000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="downPayment">Down Payment ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="downPayment" class="prefixed" value="40000" min="0" step="1000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="monthlyDebts">Monthly Debts ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="monthlyDebts" class="prefixed" value="400" min="0" step="50">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="interestRate">Interest Rate (%)</label>
+          <input type="number" id="interestRate" value="6.5" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="loanTerm">Loan Term (Years)</label>
+          <input type="number" id="loanTerm" value="30" min="1" max="50">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propertyTax">Annual Property Tax ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="propertyTax" class="prefixed" value="3600" min="0" step="100">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="insurance">Annual Insurance ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="insurance" class="prefixed" value="1200" min="0" step="100">
+          </div>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="affordResult">
+        <div class="result-value" id="affordMaxPrice">$0</div>
+        <div class="result-label">Maximum Affordable Home Price</div>
+        <div class="result-details">
+          <div><span class="label">Max Loan Amount</span><span class="value" id="affordMaxLoan">$0</span></div>
+          <div><span class="label">Monthly Payment (PITI)</span><span class="value" id="affordMonthlyPayment">$0</span></div>
+          <div><span class="label">Principal & Interest</span><span class="value" id="affordPI">$0</span></div>
+          <div><span class="label">Property Taxes</span><span class="value" id="affordTax">$0</span></div>
+          <div><span class="label">Insurance</span><span class="value" id="affordInsurance">$0</span></div>
+          <div><span class="label">Front-End DTI (28% Rule)</span><span class="value" id="affordFrontDTI">--</span></div>
+          <div><span class="label">Back-End DTI (36% Rule)</span><span class="value" id="affordBackDTI">--</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Home Affordability Calculator</h2>
+      <p>Enter your <strong>annual household income</strong> before taxes, your <strong>down payment</strong> amount, and your <strong>monthly debt payments</strong>. Enter the <strong>interest rate</strong> and <strong>loan term</strong>, plus annual <strong>property taxes</strong> and <strong>homeowner's insurance</strong>.</p>
+      <p>The calculator applies the <strong>28/36 rule</strong>: your monthly housing costs should not exceed 28% of your gross monthly income (front-end ratio), and your total debt payments should not exceed 36% (back-end ratio).</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Home Affordability Formula</h2>
+      <div class="formula-box">
+        Front-End Limit = Monthly Income x 0.28<br>
+        Back-End Limit = (Monthly Income - Monthly Debts) x 0.36
+      </div>
+      <p>Your <strong>maximum monthly payment</strong> is the lower of these two limits. The calculator then works backward using the standard amortization formula to determine the maximum loan amount.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the 28/36 rule in home buying?", answer: "The 28/36 rule is a common guideline used by mortgage lenders. It states that your monthly housing costs should not exceed 28% of your gross monthly income, and your total debt payments should not exceed 36% of your gross monthly income." },
+      { question: "How much should I put down on a house?", answer: "A 20% down payment is ideal because it eliminates the need for private mortgage insurance (PMI). However, many conventional loans allow as little as 3-5% down, and FHA loans require only 3.5%." },
+      { question: "What debts count toward my debt-to-income ratio?", answer: "Lenders count all recurring monthly debt payments including car loans, student loans, credit card minimum payments, personal loans, and alimony. Utilities, groceries, and insurance are not counted." },
+      { question: "Can I afford more house than this calculator shows?", answer: "This calculator uses conservative 28/36 guidelines. Some lenders may approve loans with higher ratios, especially with excellent credit or a large down payment. However, staying within these limits helps ensure manageable housing costs." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="home-affordability-calculator" category="real-estate" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcAfford() {
+  const income = getNum('annualIncome');
+  const downPmt = getNum('downPayment');
+  const debts = getNum('monthlyDebts');
+  const annualRate = getNum('interestRate');
+  const years = getNum('loanTerm');
+  const tax = getNum('propertyTax');
+  const ins = getNum('insurance');
+
+  if (!income || !annualRate || !years) return;
+
+  const monthlyIncome = income / 12;
+  const monthlyTax = tax / 12;
+  const monthlyIns = ins / 12;
+
+  const frontEndMax = monthlyIncome * 0.28;
+  const backEndMax = (monthlyIncome * 0.36) - debts;
+  const maxPITI = Math.min(frontEndMax, backEndMax);
+  const maxPI = Math.max(0, maxPITI - monthlyTax - monthlyIns);
+
+  if (maxPI <= 0) {
+    document.getElementById('affordMaxPrice')!.textContent = '$0';
+    document.getElementById('affordMaxLoan')!.textContent = '$0';
+    document.getElementById('affordMonthlyPayment')!.textContent = formatCurrency(maxPITI);
+    document.getElementById('affordPI')!.textContent = '$0';
+    document.getElementById('affordTax')!.textContent = formatCurrency(monthlyTax);
+    document.getElementById('affordInsurance')!.textContent = formatCurrency(monthlyIns);
+    document.getElementById('affordFrontDTI')!.textContent = (frontEndMax / monthlyIncome * 100).toFixed(1) + '%';
+    document.getElementById('affordBackDTI')!.textContent = ((maxPITI + debts) / monthlyIncome * 100).toFixed(1) + '%';
+    showResult('affordResult');
+    return;
+  }
+
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+  const maxLoan = maxPI * (Math.pow(1 + r, n) - 1) / (r * Math.pow(1 + r, n));
+  const maxHomePrice = maxLoan + downPmt;
+
+  const actualPI = maxLoan * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const actualPITI = actualPI + monthlyTax + monthlyIns;
+
+  const frontDTI = (actualPITI / monthlyIncome) * 100;
+  const backDTI = ((actualPITI + debts) / monthlyIncome) * 100;
+
+  document.getElementById('affordMaxPrice')!.textContent = formatCurrency(maxHomePrice);
+  document.getElementById('affordMaxLoan')!.textContent = formatCurrency(maxLoan);
+  document.getElementById('affordMonthlyPayment')!.textContent = formatCurrency(actualPITI);
+  document.getElementById('affordPI')!.textContent = formatCurrency(actualPI);
+  document.getElementById('affordTax')!.textContent = formatCurrency(monthlyTax);
+  document.getElementById('affordInsurance')!.textContent = formatCurrency(monthlyIns);
+  document.getElementById('affordFrontDTI')!.textContent = frontDTI.toFixed(1) + '%';
+  document.getElementById('affordBackDTI')!.textContent = backDTI.toFixed(1) + '%';
+
+  showResult('affordResult');
+}
+
+function resetAfford() {
+  (document.getElementById('annualIncome') as HTMLInputElement).value = '85000';
+  (document.getElementById('downPayment') as HTMLInputElement).value = '40000';
+  (document.getElementById('monthlyDebts') as HTMLInputElement).value = '400';
+  (document.getElementById('interestRate') as HTMLInputElement).value = '6.5';
+  (document.getElementById('loanTerm') as HTMLInputElement).value = '30';
+  (document.getElementById('propertyTax') as HTMLInputElement).value = '3600';
+  (document.getElementById('insurance') as HTMLInputElement).value = '1200';
+  hideResult('affordResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcAfford);
+document.getElementById('resetBtn')!.addEventListener('click', resetAfford);
+document.addEventListener('DOMContentLoaded', calcAfford);
+</script>

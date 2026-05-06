@@ -1,0 +1,143 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['savings-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Savings Growth",
+    "description": "Project your savings growth with regular contributions and compound interest.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your initial deposit amount" },
+      { "@type": "HowToStep", "text": "Input the annual interest rate" },
+      { "@type": "HowToStep", "text": "Add your monthly contribution amount" },
+      { "@type": "HowToStep", "text": "Set the savings time period in years" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your projected savings" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Plan your financial future with this easy-to-use savings calculator. See how your money grows with regular contributions and compound interest over time.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Savings Calculator</h2>
+      <div class="form-group">
+        <label for="saveInitial">Initial Deposit ($)</label>
+        <input type="number" id="saveInitial" value="1000" min="0" step="100">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="saveRate">Annual Interest Rate (%)</label>
+          <input type="number" id="saveRate" value="4" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="saveYears">Time Period (Years)</label>
+          <input type="number" id="saveYears" value="10" min="1" max="100">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="saveMonthly">Monthly Contribution ($)</label>
+        <input type="number" id="saveMonthly" value="200" min="0" step="50">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="saveResult">
+        <div class="result-value" id="saveTotal">$0.00</div>
+        <div class="result-label">Total Balance After Growth</div>
+        <div class="result-details">
+          <div><span class="label">Total Contributions</span><span class="value" id="saveContrib">$0</span></div>
+          <div><span class="label">Total Interest Earned</span><span class="value" id="saveInterest">$0</span></div>
+          <div><span class="label">Final Yearly Interest</span><span class="value" id="saveYearlyInterest">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Savings Calculator</h2>
+      <p>This savings calculator helps you project how your money will grow over time. Start by entering your <strong>initial deposit</strong> — the amount you already have saved. Then input the <strong>annual interest rate</strong> your savings account or investment earns.</p>
+      <p>Add your planned <strong>monthly contribution</strong> and the <strong>time period</strong> in years. The calculator shows your total balance, how much you contributed, and the total interest earned.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Savings Tips</h2>
+      <ul>
+        <li><strong>Start early:</strong> The earlier you start saving, the more time compound interest has to work</li>
+        <li><strong>Be consistent:</strong> Regular monthly contributions add up significantly over time</li>
+        <li><strong>High-yield accounts:</strong> Look for accounts with competitive interest rates to maximize growth</li>
+        <li><strong>Emergency fund:</strong> Aim to save 3-6 months of expenses for unexpected events</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "How much should I save each month?", answer: "A common guideline is to save 20% of your income, but any amount is better than none. Start with what you can and increase over time." },
+      { question: "What's a good interest rate for savings?", answer: "High-yield savings accounts currently offer 4-5% APY, while traditional accounts may offer 0.01-0.1%. Online banks typically offer the best rates." },
+      { question: "Should I save or invest?", answer: "Savings accounts are best for short-term goals and emergency funds. For long-term goals (5+ years), investing in the market historically offers higher returns." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="savings-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcSavings() {
+  const P = getNum('saveInitial')!;
+  const r = getNum('saveRate')! / 100;
+  const t = getNum('saveYears')!;
+  const monthly = getNum('saveMonthly') || 0;
+
+  if (!P || !r || !t) return;
+
+  const n = 12;
+  const totalMonths = t * 12;
+  const ratePerMonth = r / 12;
+
+  const fvPrincipal = P * Math.pow(1 + ratePerMonth, totalMonths);
+  let fvContributions = 0;
+  if (monthly > 0) {
+    fvContributions = monthly * (Math.pow(1 + ratePerMonth, totalMonths) - 1) / ratePerMonth;
+  }
+
+  const total = fvPrincipal + fvContributions;
+  const totalContrib = P + (monthly * totalMonths);
+  const interest = total - totalContrib;
+  const finalYearlyInterest = total * r;
+
+  document.getElementById('saveTotal')!.textContent = formatCurrency(total);
+  document.getElementById('saveContrib')!.textContent = formatCurrency(totalContrib);
+  document.getElementById('saveInterest')!.textContent = formatCurrency(interest);
+  document.getElementById('saveYearlyInterest')!.textContent = formatCurrency(finalYearlyInterest);
+  showResult('saveResult');
+}
+
+function resetSavings() {
+  (document.getElementById('saveInitial') as HTMLInputElement).value = '1000';
+  (document.getElementById('saveRate') as HTMLInputElement).value = '4';
+  (document.getElementById('saveYears') as HTMLInputElement).value = '10';
+  (document.getElementById('saveMonthly') as HTMLInputElement).value = '200';
+  hideResult('saveResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcSavings);
+document.getElementById('resetBtn')!.addEventListener('click', resetSavings);
+document.addEventListener('DOMContentLoaded', calcSavings);
+</script>

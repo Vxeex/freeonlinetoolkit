@@ -1,0 +1,371 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['kafka-cost-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Apache Kafka Infrastructure Costs",
+    "description": "Calculate monthly costs for Apache Kafka clusters across cloud providers and deployment models.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select your cloud provider and cluster type" },
+      { "@type": "HowToStep", "text": "Enter your throughput, storage, and retention requirements" },
+      { "@type": "HowToStep", "text": "Set the replication factor and number of topics" },
+      { "@type": "HowToStep", "text": "View your total monthly cost estimate and breakdown" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your monthly Apache Kafka infrastructure costs across cloud providers. Compare Confluent Cloud, AWS MSK, Azure Event Hubs, and self-managed clusters. Plan your streaming data budget with confidence.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Kafka Cluster Cost Estimator</h2>
+
+      <div class="form-group">
+        <label for="clusterConfig">Cloud Provider &amp; Cluster Type</label>
+        <select id="clusterConfig">
+          <option value="confluent-basic">Confluent Cloud Basic (Serverless)</option>
+          <option value="confluent-standard">Confluent Cloud Standard (Provisioned)</option>
+          <option value="confluent-enterprise" selected>Confluent Cloud Enterprise</option>
+          <option value="aws-msk">AWS MSK (Managed)</option>
+          <option value="aws-self">AWS Self-Managed on EC2</option>
+          <option value="azure-eventhubs">Azure Event Hubs</option>
+          <option value="azure-self">Azure Self-Managed on VM</option>
+          <option value="gcp-self">GCP Self-Managed on Compute Engine</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="throughput">Throughput <span class="num-brokers-badge" id="throughputBadge">MB/s</span></label>
+          <input type="number" id="throughput" value="50" min="1" max="500" step="1">
+        </div>
+        <div class="form-group">
+          <label for="storageTB">Storage (TB)</label>
+          <input type="number" id="storageTB" value="5" min="0.5" max="50" step="0.5">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="retentionDays">Retention (days)</label>
+          <input type="number" id="retentionDays" value="7" min="1" max="90" step="1">
+        </div>
+        <div class="form-group">
+          <label for="topicsCount">Number of Topics</label>
+          <input type="number" id="topicsCount" value="20" min="1" max="500" step="1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Replication Factor</label>
+        <div style="display:flex;gap:14px;">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
+            <input type="radio" name="replication" value="2"> 2 (dev/test)
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;">
+            <input type="radio" name="replication" value="3" checked> 3 (production)
+          </label>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="kafkaResult">
+        <div class="result-value" id="kafkaMonthlyCost" style="font-size:1.5rem;">$0.00</div>
+        <div class="result-label">Estimated Monthly Cost</div>
+
+        <div class="kafka-summary-grid" id="kafkaSummary">
+          <div class="summary-item"><div class="val" id="kafkaComputeCost">$0</div><div class="lbl">Compute</div></div>
+          <div class="summary-item"><div class="val" id="kafkaStorageCost">$0</div><div class="lbl">Storage</div></div>
+          <div class="summary-item"><div class="val" id="kafkaTransferCost">$0</div><div class="lbl">Data Transfer</div></div>
+          <div class="summary-item"><div class="val" id="kafkaCostPerGB">$0</div><div class="lbl">Cost per GB</div></div>
+        </div>
+
+        <div class="kafka-breakdown" id="kafkaBreakdown">
+          <div class="bar-row">
+            <span class="bar-label">Compute</span>
+            <div class="bar-track"><div class="bar-fill" id="computeBar" style="width:0%;background:var(--color-primary);">0%</div></div>
+            <span class="bar-value" id="computeBarVal">$0</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Storage</span>
+            <div class="bar-track"><div class="bar-fill" id="storageBar" style="width:0%;background:var(--color-accent,#d97706);">0%</div></div>
+            <span class="bar-value" id="storageBarVal">$0</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Transfer</span>
+            <div class="bar-track"><div class="bar-fill" id="transferBar" style="width:0%;background:var(--color-success,#059669);">0%</div></div>
+            <span class="bar-value" id="transferBarVal">$0</span>
+          </div>
+        </div>
+
+        <div class="kafka-vs-box" id="kafkaVsBox">
+          <div class="vs-label">Comparison &mdash; What would this cost with a different setup?</div>
+          <div class="vs-value" id="kafkaVsValue">Running self-managed on EC2: $0.00/mo</div>
+          <div class="vs-note" id="kafkaVsNote">Self-managed saves on service fees but requires operational overhead.</div>
+        </div>
+
+        <div class="result-details">
+          <div><span class="label">Effective Brokers</span><span class="value" id="kafkaBrokers">0</span></div>
+          <div><span class="label">Monthly Data Ingested</span><span class="value" id="kafkaDataIngested">0 GB</span></div>
+          <div><span class="label">Total Data Transferred</span><span class="value" id="kafkaDataTransferred">0 GB</span></div>
+          <div><span class="label">Topics Overhead</span><span class="value" id="kafkaTopicsOverhead">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use This Kafka Cost Calculator</h2>
+      <p>Select your <strong>cloud provider</strong> and <strong>cluster type</strong> (Confluent Cloud, AWS MSK, Azure Event Hubs, or self-managed). Enter your expected <strong>throughput</strong> in MB/s, <strong>storage</strong> in TB, and <strong>retention period</strong> in days. Choose a <strong>replication factor</strong> of 2 for development or 3 for production. The calculator shows your total monthly cost broken down by compute, storage, and data transfer.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How Kafka Costs Are Calculated</h2>
+      <div class="formula-box">
+        Monthly Cost = Compute + Storage + Data Transfer + Topics Overhead
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is Apache Kafka and why do I need a cost estimator?", answer: "Apache Kafka is a distributed streaming platform used for real-time data pipelines and event-driven architectures. Costs vary significantly based on deployment model, throughput, and storage. This estimator helps you compare options and budget accurately before committing to a provider." },
+      { question: "Which Kafka deployment is cheapest?", answer: "Self-managed clusters on cloud VMs are typically the cheapest in raw dollar terms, especially at high throughput. However, they require significant operational expertise. AWS MSK and Confluent Cloud cost more but reduce operational overhead." },
+      { question: "When should I choose self-managed over managed Kafka?", answer: "Choose self-managed when you have dedicated DevOps resources, need full control over configuration, or operate at very high throughput (200+ MB/s). Choose managed services when you want to minimize operational burden." },
+      { question: "Does replication factor affect cost?", answer: "Yes, significantly. A replication factor of 3 triples your storage costs for self-managed clusters. For managed services, replication costs are built into the storage price. We recommend factor 3 for production and factor 2 for development." },
+      { question: "How does retention period impact cost?", answer: "Longer retention increases storage costs because more data remains on the brokers. Most production deployments use 3-7 days of retention and offload older data to cheaper storage like S3 or GCS." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="kafka-cost-calculator" category="developer" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+interface KafkaModel {
+  name: string;
+  provider: string;
+  category: string;
+  baseMonthly: number;
+  storagePerGB: number;
+  transferPerGB: number;
+  transferMultiplier: number;
+  hourlyPerBroker: number;
+  minBrokers: number;
+  storageIncludesReplication: boolean;
+  throughputPerBroker: number;
+  tuHourly?: number;
+  tuThroughput?: number;
+}
+
+interface KafkaResult {
+  totalMonthly: number;
+  computeMonthly: number;
+  storageMonthly: number;
+  transferMonthly: number;
+  topicsMonthly: number;
+  brokers: number;
+  dataIngestedGB: number;
+  dataTransferredGB: number;
+  effectiveStorageGB: number;
+  costPerGB: number;
+  model: KafkaModel;
+}
+
+const MODELS: Record<string, KafkaModel> = {
+  'confluent-basic': { name: 'Confluent Cloud Basic', provider: 'Confluent Cloud', category: 'Serverless', baseMonthly: 0, storagePerGB: 0.10, transferPerGB: 0.05, transferMultiplier: 2, hourlyPerBroker: 0, minBrokers: 0, storageIncludesReplication: true, throughputPerBroker: Infinity },
+  'confluent-standard': { name: 'Confluent Cloud Standard', provider: 'Confluent Cloud', category: 'Provisioned', baseMonthly: 50, storagePerGB: 0.20, transferPerGB: 0.10, transferMultiplier: 2, hourlyPerBroker: 0.50, minBrokers: 2, storageIncludesReplication: true, throughputPerBroker: 40 },
+  'confluent-enterprise': { name: 'Confluent Cloud Enterprise', provider: 'Confluent Cloud', category: 'Provisioned', baseMonthly: 0, storagePerGB: 0.15, transferPerGB: 0.10, transferMultiplier: 2, hourlyPerBroker: 100, minBrokers: 1, storageIncludesReplication: true, throughputPerBroker: Infinity },
+  'aws-msk': { name: 'AWS MSK', provider: 'AWS', category: 'Managed', baseMonthly: 0, storagePerGB: 0.10, transferPerGB: 0.05, transferMultiplier: 1, hourlyPerBroker: 0.08, minBrokers: 3, storageIncludesReplication: true, throughputPerBroker: 20 },
+  'aws-self': { name: 'AWS Self-Managed (EC2)', provider: 'AWS', category: 'Self-Managed', baseMonthly: 0, storagePerGB: 0.08, transferPerGB: 0.05, transferMultiplier: 1, hourlyPerBroker: 0.50, minBrokers: 2, storageIncludesReplication: false, throughputPerBroker: 25 },
+  'azure-eventhubs': { name: 'Azure Event Hubs', provider: 'Azure', category: 'Managed', baseMonthly: 0, storagePerGB: 0.08, transferPerGB: 0.04, transferMultiplier: 1, hourlyPerBroker: 0, minBrokers: 0, tuHourly: 0.02, tuThroughput: 1, storageIncludesReplication: true, throughputPerBroker: Infinity },
+  'azure-self': { name: 'Azure Self-Managed (VM)', provider: 'Azure', category: 'Self-Managed', baseMonthly: 0, storagePerGB: 0.08, transferPerGB: 0.04, transferMultiplier: 1, hourlyPerBroker: 0.45, minBrokers: 2, storageIncludesReplication: false, throughputPerBroker: 15 },
+  'gcp-self': { name: 'GCP Self-Managed', provider: 'GCP', category: 'Self-Managed', baseMonthly: 0, storagePerGB: 0.08, transferPerGB: 0.05, transferMultiplier: 1, hourlyPerBroker: 0.35, minBrokers: 2, storageIncludesReplication: false, throughputPerBroker: 15 }
+};
+
+var SECONDS_PER_MONTH = 2592000;
+
+function calcKafkaCosts(modelKey: string, throughput: number, storageTB: number, retention: number, replication: number, topics: number): KafkaResult | null {
+  var model = MODELS[modelKey];
+  if (!model) return null;
+  if (!throughput || throughput < 1) throughput = 1;
+
+  var brokers = model.minBrokers || 0;
+  if (model.throughputPerBroker && model.throughputPerBroker < Infinity) {
+    var needed = Math.ceil(throughput / model.throughputPerBroker);
+    if (needed > brokers) brokers = needed;
+  }
+
+  var computeMonthly = model.baseMonthly || 0;
+  if (model.hourlyPerBroker && model.hourlyPerBroker > 0) {
+    if (model.hourlyPerBroker >= 50) {
+      computeMonthly += model.hourlyPerBroker * SECONDS_PER_MONTH / 3600;
+    } else {
+      computeMonthly += model.hourlyPerBroker * brokers * SECONDS_PER_MONTH / 3600;
+    }
+  }
+  if (model.tuHourly) {
+    var tus = Math.ceil(throughput / (model.tuThroughput || 1));
+    computeMonthly += tus * model.tuHourly * SECONDS_PER_MONTH / 3600;
+  }
+
+  var storageGB = storageTB * 1024;
+  var effectiveStorageGB = storageGB;
+  if (!model.storageIncludesReplication) {
+    effectiveStorageGB = storageGB * replication;
+  }
+  var storageMonthly = effectiveStorageGB * model.storagePerGB;
+
+  var dataIngestedGB = throughput * SECONDS_PER_MONTH / 1024;
+  var dataTransferredGB = dataIngestedGB * model.transferMultiplier;
+  var transferMonthly = dataTransferredGB * model.transferPerGB;
+
+  var topicsMonthly = 0;
+  if (topics > 50) {
+    topicsMonthly = (topics - 50) * 0.50;
+  }
+
+  var totalMonthly = computeMonthly + storageMonthly + transferMonthly + topicsMonthly;
+  var costPerGB = dataIngestedGB > 0 ? totalMonthly / dataIngestedGB : 0;
+
+  return { totalMonthly, computeMonthly, storageMonthly, transferMonthly, topicsMonthly, brokers, dataIngestedGB, dataTransferredGB, effectiveStorageGB, costPerGB, model };
+}
+
+function formatCurrency(val: number): string {
+  return '$' + val.toFixed(2);
+}
+
+function formatNumber(val: number, decimals: number): string {
+  return val.toFixed(decimals);
+}
+
+function calcKafka(): void {
+  var config = (document.getElementById('clusterConfig') as HTMLSelectElement).value;
+  var throughput = parseFloat((document.getElementById('throughput') as HTMLInputElement).value) || 1;
+  var storageTB = parseFloat((document.getElementById('storageTB') as HTMLInputElement).value) || 1;
+  var retention = parseInt((document.getElementById('retentionDays') as HTMLInputElement).value) || 7;
+  var replicationRadios = document.querySelectorAll('input[name="replication"]') as NodeListOf<HTMLInputElement>;
+  var replication = 3;
+  replicationRadios.forEach(function(r) { if (r.checked) replication = parseInt(r.value); });
+  var topics = parseInt((document.getElementById('topicsCount') as HTMLInputElement).value) || 1;
+
+  var result = calcKafkaCosts(config, throughput, storageTB, retention, replication, topics);
+  if (!result) return;
+
+  document.getElementById('kafkaMonthlyCost')!.textContent = formatCurrency(result.totalMonthly);
+  document.getElementById('kafkaComputeCost')!.textContent = formatCurrency(result.computeMonthly);
+  document.getElementById('kafkaStorageCost')!.textContent = formatCurrency(result.storageMonthly);
+  document.getElementById('kafkaTransferCost')!.textContent = formatCurrency(result.transferMonthly);
+  document.getElementById('kafkaCostPerGB')!.textContent = formatCurrency(result.costPerGB);
+  document.getElementById('kafkaBrokers')!.textContent = result.brokers.toString();
+  document.getElementById('kafkaDataIngested')!.textContent = formatNumber(result.dataIngestedGB, 0) + ' GB';
+  document.getElementById('kafkaDataTransferred')!.textContent = formatNumber(result.dataTransferredGB, 0) + ' GB';
+  document.getElementById('kafkaTopicsOverhead')!.textContent = formatCurrency(result.topicsMonthly);
+
+  var total = result.totalMonthly || 1;
+  var computePct = Math.round((result.computeMonthly / total) * 100);
+  var storagePct = Math.round((result.storageMonthly / total) * 100);
+  var transferPct = Math.round((result.transferMonthly / total) * 100);
+
+  var computeBar = document.getElementById('computeBar') as HTMLElement;
+  var storageBar = document.getElementById('storageBar') as HTMLElement;
+  var transferBar = document.getElementById('transferBar') as HTMLElement;
+
+  computeBar.style.width = computePct + '%';
+  computeBar.textContent = computePct + '%';
+  storageBar.style.width = storagePct + '%';
+  storageBar.textContent = storagePct + '%';
+  transferBar.style.width = transferPct + '%';
+  transferBar.textContent = transferPct + '%';
+
+  document.getElementById('computeBarVal')!.textContent = formatCurrency(result.computeMonthly);
+  document.getElementById('storageBarVal')!.textContent = formatCurrency(result.storageMonthly);
+  document.getElementById('transferBarVal')!.textContent = formatCurrency(result.transferMonthly);
+
+  var vsResult: KafkaResult | null = null;
+  var vsKey: string | null = null;
+  if (config === 'aws-self' || config === 'azure-self' || config === 'gcp-self') {
+    if (result.model.provider === 'AWS') vsKey = 'aws-msk';
+    else if (result.model.provider === 'Azure') vsKey = 'azure-eventhubs';
+    else vsKey = 'confluent-standard';
+  } else {
+    if (result.model.provider === 'AWS' || result.model.provider === 'Confluent Cloud') vsKey = 'aws-self';
+    else if (result.model.provider === 'Azure') vsKey = 'azure-self';
+    else vsKey = 'gcp-self';
+  }
+
+  if (vsKey && MODELS[vsKey]) {
+    vsResult = calcKafkaCosts(vsKey, throughput, storageTB, retention, replication, topics);
+  }
+
+  var vsBox = document.getElementById('kafkaVsBox') as HTMLElement;
+  if (vsResult) {
+    var vsModel = vsResult.model;
+    if (vsModel.category === 'Self-Managed') {
+      document.getElementById('kafkaVsValue')!.innerHTML = 'Running self-managed on ' + vsModel.provider + ' would cost: <strong>' + formatCurrency(vsResult.totalMonthly) + '/mo</strong>';
+      document.getElementById('kafkaVsNote')!.textContent = 'Self-managed saves on service fees but requires operational overhead.';
+    } else {
+      document.getElementById('kafkaVsValue')!.innerHTML = 'Using ' + vsModel.name + ' would cost: <strong>' + formatCurrency(vsResult.totalMonthly) + '/mo</strong>';
+      document.getElementById('kafkaVsNote')!.textContent = 'Managed services reduce operational burden but have higher monthly costs.';
+    }
+    vsBox.style.display = 'block';
+  } else {
+    vsBox.style.display = 'none';
+  }
+
+  document.getElementById('throughputBadge')!.textContent = throughput + ' MB/s';
+  showResult('kafkaResult');
+}
+
+function resetKafka(): void {
+  (document.getElementById('clusterConfig') as HTMLSelectElement).value = 'confluent-enterprise';
+  (document.getElementById('throughput') as HTMLInputElement).value = '50';
+  (document.getElementById('storageTB') as HTMLInputElement).value = '5';
+  (document.getElementById('retentionDays') as HTMLInputElement).value = '7';
+  (document.getElementById('topicsCount') as HTMLInputElement).value = '20';
+  var replicationRadios = document.querySelectorAll('input[name="replication"]') as NodeListOf<HTMLInputElement>;
+  replicationRadios.forEach(function(r) { if (r.value === '3') r.checked = true; });
+  document.getElementById('throughputBadge')!.textContent = 'MB/s';
+  hideResult('kafkaResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcKafka);
+document.getElementById('resetBtn')!.addEventListener('click', resetKafka);
+document.addEventListener('DOMContentLoaded', calcKafka);
+</script>
+
+<style>
+.kafka-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.kafka-summary-grid .summary-item { text-align: center; padding: 14px 8px; background: var(--color-bg); border-radius: var(--radius-md); }
+.kafka-summary-grid .summary-item .val { font-size: 1.3rem; font-weight: 700; color: var(--color-text); }
+.kafka-summary-grid .summary-item .lbl { font-size: 0.78rem; color: var(--color-text-secondary); margin-top: 2px; }
+.kafka-breakdown { margin: 14px 0 0; }
+.kafka-breakdown .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.88rem; }
+.kafka-breakdown .bar-row .bar-label { width: 80px; flex-shrink: 0; color: var(--color-text-secondary); }
+.kafka-breakdown .bar-row .bar-track { flex: 1; height: 22px; background: var(--color-bg); border-radius: 11px; overflow: hidden; }
+.kafka-breakdown .bar-row .bar-fill { height: 100%; border-radius: 11px; transition: width 0.4s var(--ease-out); display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 0.72rem; font-weight: 600; color: #fff; min-width: 0; }
+.kafka-breakdown .bar-row .bar-value { width: 80px; text-align: right; font-weight: 600; color: var(--color-text); flex-shrink: 0; }
+.kafka-vs-box { margin-top: 14px; padding: 14px; background: var(--color-bg); border-radius: var(--radius-md); border: 1px solid var(--color-border); }
+.kafka-vs-box .vs-label { font-size: 0.82rem; color: var(--color-text-secondary); margin-bottom: 4px; }
+.kafka-vs-box .vs-value { font-size: 1.2rem; font-weight: 700; }
+.kafka-vs-box .vs-note { font-size: 0.82rem; color: var(--color-text-muted); margin-top: 4px; }
+.num-brokers-badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; background: var(--color-primary-bg); color: var(--color-primary); margin-left: 6px; }
+</style>

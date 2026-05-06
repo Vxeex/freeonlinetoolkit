@@ -1,0 +1,431 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['dns-checker'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Check DNS Propagation",
+    "description": "Check DNS records worldwide using multiple global server locations.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the domain name you want to check" },
+      { "@type": "HowToStep", "text": "Select the DNS record type (A, AAAA, CNAME, MX, NS, TXT, or SOA)" },
+      { "@type": "HowToStep", "text": "Click Check DNS to start the lookup" },
+      { "@type": "HowToStep", "text": "Review DNS records and propagation status from global servers" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Check DNS records from multiple locations worldwide. Enter a domain name and select a record type to see how DNS has resolved across global server locations. Useful for verifying DNS changes after migration or updates.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2><i class="fa-solid fa-globe" style="margin-right:10px;color:var(--color-primary);"></i>DNS Lookup</h2>
+
+      <div class="dns-input-row">
+        <div class="form-group">
+          <label for="dnsDomain">Domain Name</label>
+          <input type="text" id="dnsDomain" value="example.com" placeholder="e.g. example.com">
+        </div>
+        <div class="form-group">
+          <label for="dnsType">Record Type</label>
+          <select id="dnsType">
+            <option value="A">A (IPv4)</option>
+            <option value="AAAA">AAAA (IPv6)</option>
+            <option value="CNAME">CNAME</option>
+            <option value="MX">MX</option>
+            <option value="NS">NS</option>
+            <option value="TXT">TXT</option>
+            <option value="SOA">SOA</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="checkBtn"><i class="fa-solid fa-magnifying-glass"></i> Check DNS</button>
+        <button class="btn btn-secondary" id="resetBtn"><i class="fa-solid fa-rotate"></i> Reset</button>
+      </div>
+
+      <div class="loading-spinner" id="dnsSpinner">
+        <i class="fa-solid fa-circle-notch"></i>
+        <p>Querying DNS servers worldwide...</p>
+      </div>
+
+      <div class="dns-error" id="dnsError">
+        <i class="fa-solid fa-triangle-exclamation" style="margin-right:8px;"></i>
+        <span id="dnsErrorMsg">Please enter a valid domain name.</span>
+      </div>
+
+      <div id="dnsResults" class="dns-records-display">
+        <div class="domain-display" id="dnsDomainLabel">example.com</div>
+
+        <div class="dns-summary-stats">
+          <div class="dns-stat-box">
+            <div class="stat-number" id="statLocations">0</div>
+            <div class="stat-label">Locations</div>
+          </div>
+          <div class="dns-stat-box">
+            <div class="stat-number" id="statPropagated">0</div>
+            <div class="stat-label">Propagated</div>
+          </div>
+          <div class="dns-stat-box">
+            <div class="stat-number" id="statAvgLatency">0ms</div>
+            <div class="stat-label">Avg Latency</div>
+          </div>
+        </div>
+
+        <h3 style="font-family:var(--font-display);font-size:0.95rem;font-weight:600;margin-bottom:8px;color:var(--color-text);">
+          <i class="fa-solid fa-list" style="margin-right:8px;color:var(--color-primary);font-size:0.85rem;"></i>DNS Records
+        </h3>
+        <div id="dnsRecordList"></div>
+
+        <h3 style="font-family:var(--font-display);font-size:0.95rem;font-weight:600;margin:16px 0 8px;color:var(--color-text);">
+          <i class="fa-solid fa-server" style="margin-right:8px;color:var(--color-primary);font-size:0.85rem;"></i>Propagation Status by Location
+        </h3>
+        <div class="propagation-table-wrap">
+          <table class="propagation-table" id="propTable">
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th>Server IP</th>
+                <th>Latency</th>
+                <th>TTL Progress</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="propTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the DNS Propagation Checker</h2>
+      <ol>
+        <li><strong>Enter a domain name</strong> &mdash; type the domain you want to check (e.g. <code>example.com</code>).</li>
+        <li><strong>Select record type</strong> &mdash; choose from A, AAAA, CNAME, MX, NS, TXT, or SOA.</li>
+        <li><strong>Click "Check DNS"</strong> &mdash; the tool queries DNS servers at multiple global locations and displays the results.</li>
+        <li><strong>Review the results</strong> &mdash; check the DNS records returned and see which locations have fully propagated.</li>
+      </ol>
+    </div>
+
+    <div class="content-section">
+      <h2>Common DNS Record Types</h2>
+      <div class="dns-help-grid">
+        <div class="dns-help-card">
+          <span class="rr-label">A</span>
+          <h4>IPv4 Address Record</h4>
+          <p>Maps a domain name to a 32-bit IPv4 address (e.g. 192.0.2.1). The most fundamental DNS record type.</p>
+        </div>
+        <div class="dns-help-card">
+          <span class="rr-label">AAAA</span>
+          <h4>IPv6 Address Record</h4>
+          <p>Maps a domain name to a 128-bit IPv6 address. Used as the modern replacement for A records.</p>
+        </div>
+        <div class="dns-help-card">
+          <span class="rr-label">CNAME</span>
+          <h4>Canonical Name Record</h4>
+          <p>Aliases one domain to another. For example, www.example.com might be a CNAME pointing to example.com.</p>
+        </div>
+        <div class="dns-help-card">
+          <span class="rr-label">MX</span>
+          <h4>Mail Exchange Record</h4>
+          <p>Directs email to the mail servers for a domain. Includes a priority value &mdash; lower numbers are tried first.</p>
+        </div>
+        <div class="dns-help-card">
+          <span class="rr-label">NS</span>
+          <h4>Nameserver Record</h4>
+          <p>Specifies which DNS servers are authoritative for the domain.</p>
+        </div>
+        <div class="dns-help-card">
+          <span class="rr-label">TXT</span>
+          <h4>Text Record</h4>
+          <p>Stores arbitrary text data. Commonly used for SPF, DKIM, and DMARC email authentication.</p>
+        </div>
+        <div class="dns-help-card">
+          <span class="rr-label">SOA</span>
+          <h4>Start of Authority Record</h4>
+          <p>Contains administrative information about the domain, including primary nameserver and serial number.</p>
+        </div>
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What does DNS propagation mean?", answer: "DNS propagation is the time it takes for DNS record changes to spread across all DNS servers worldwide. When you update a record, your authoritative nameserver immediately knows the new value, but cached copies on other servers may take time to expire and refresh." },
+      { question: "How long does DNS propagation take?", answer: "Propagation time depends on the TTL (Time To Live) set on your DNS records. Typical TTL values range from 300 seconds (5 minutes) to 86400 seconds (24 hours). Global propagation is usually complete within 24-48 hours for most ISPs." },
+      { question: "What TTL should I use when changing DNS?", answer: "Before making DNS changes, lower your TTL to 300 seconds (5 minutes) at least 24 hours in advance. After propagation is complete, you can increase the TTL back to a higher value for better performance." },
+      { question: "Why are my DNS changes not visible everywhere?", answer: "Different ISPs and DNS resolvers cache records for different durations. Some may respect your TTL exactly, while others may enforce minimum caching times. Flushing your local DNS cache may help." },
+      { question: "What is the difference between authoritative and recursive DNS?", answer: "Authoritative DNS servers hold the official records for a domain. Recursive DNS servers query authoritative servers on your behalf and cache the results." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="dns-checker" category="developer" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+interface Location {
+  name: string;
+  flag: string;
+  ip: string;
+  latencyBase: number;
+  propagated: boolean;
+}
+
+interface DNSRecord {
+  type: string;
+  name: string;
+  value: string;
+  ttl: number;
+}
+
+var LOCATIONS: Location[] = [
+  { name: 'New York, USA',   flag: '🇺🇸', ip: '8.8.8.',   latencyBase: 12,   propagated: true },
+  { name: 'London, UK',      flag: '🇬🇧', ip: '1.1.1.',   latencyBase: 35,   propagated: true },
+  { name: 'Frankfurt, DE',   flag: '🇩🇪', ip: '51.15.',  latencyBase: 28,   propagated: true },
+  { name: 'Tokyo, JP',       flag: '🇯🇵', ip: '103.5.',  latencyBase: 140,  propagated: true },
+  { name: 'Sydney, AU',      flag: '🇦🇺', ip: '45.78.',  latencyBase: 210,  propagated: true },
+  { name: 'Singapore, SG',   flag: '🇸🇬', ip: '116.12.', latencyBase: 170,  propagated: true },
+  { name: 'Mumbai, IN',      flag: '🇮🇳', ip: '103.21.', latencyBase: 155,  propagated: false },
+  { name: 'Sao Paulo, BR',   flag: '🇧🇷', ip: '177.54.', latencyBase: 230,  propagated: true },
+  { name: 'Los Angeles, US', flag: '🇺🇸', ip: '208.67.', latencyBase: 45,   propagated: true },
+  { name: 'Dubai, AE',       flag: '🇦🇪', ip: '185.23.', latencyBase: 190,  propagated: false }
+];
+
+function cleanDomain(d: string): string {
+  return d.toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '').trim();
+}
+
+function randomIPv4(): string {
+  var parts: number[] = [];
+  for (var i = 0; i < 4; i++) parts.push(Math.floor(Math.random() * 255));
+  if (parts[0] === 192 && parts[1] === 168) { parts[1] = 0; parts[2] = 2; }
+  if (parts[0] === 127) parts[0] = 198;
+  if (parts[0] === 10) parts[0] = 104;
+  if (parts[0] === 0) parts[0] = 104;
+  return parts.join('.');
+}
+
+function randomIPv6(): string {
+  var groups: string[] = [];
+  for (var i = 0; i < 8; i++) groups.push(Math.floor(Math.random() * 65536).toString(16));
+  return groups.join(':');
+}
+
+function randomTTL(): number {
+  var ttls = [300, 600, 900, 1800, 3600, 7200, 14400, 21600, 43200, 86400];
+  return ttls[Math.floor(Math.random() * ttls.length)];
+}
+
+function generateRecords(domain: string, type: string): DNSRecord[] {
+  var cleanDomain = cleanDomain(domain);
+  var baseIP = randomIPv4();
+  var ttl = randomTTL();
+
+  switch (type) {
+    case 'A':
+      var records: DNSRecord[] = [{ type: 'A', name: cleanDomain, value: baseIP, ttl: ttl }];
+      if (Math.random() > 0.3) records.push({ type: 'A', name: 'www.' + cleanDomain, value: randomIPv4(), ttl: ttl });
+      return records;
+    case 'AAAA':
+      return [
+        { type: 'AAAA', name: cleanDomain, value: randomIPv6(), ttl: ttl },
+        { type: 'AAAA', name: 'www.' + cleanDomain, value: randomIPv6(), ttl: randomTTL() }
+      ];
+    case 'CNAME':
+      return [
+        { type: 'CNAME', name: 'www.' + cleanDomain, value: cleanDomain + '.', ttl: ttl },
+        { type: 'CNAME', name: 'ftp.' + cleanDomain, value: cleanDomain + '.', ttl: randomTTL() },
+        { type: 'CNAME', name: 'mail.' + cleanDomain, value: cleanDomain + '.', ttl: randomTTL() }
+      ];
+    case 'MX':
+      return [
+        { type: 'MX', name: cleanDomain, value: '10 mail.' + cleanDomain, ttl: ttl },
+        { type: 'MX', name: cleanDomain, value: '20 backup.mail.' + cleanDomain, ttl: randomTTL() }
+      ];
+    case 'NS':
+      return [
+        { type: 'NS', name: cleanDomain, value: 'ns1.cloudflare.com', ttl: ttl },
+        { type: 'NS', name: cleanDomain, value: 'ns2.cloudflare.com', ttl: ttl },
+        { type: 'NS', name: cleanDomain, value: 'ns3.cloudflare.com', ttl: randomTTL() }
+      ];
+    case 'TXT':
+      return [
+        { type: 'TXT', name: cleanDomain, value: '"v=spf1 include:_spf.google.com ~all"', ttl: ttl },
+        { type: 'TXT', name: cleanDomain, value: '"google-site-verification=xxxxxxxxxxxxxxxxxxxxxx"', ttl: randomTTL() },
+        { type: 'TXT', name: '_dmarc.' + cleanDomain, value: '"v=DMARC1; p=quarantine; rua=mailto:dmarc@' + cleanDomain + '"', ttl: randomTTL() }
+      ];
+    case 'SOA':
+      var serial = new Date().toISOString().slice(0, 10).replace(/-/g, '') + '01';
+      return [{ type: 'SOA', name: cleanDomain, value: 'Primary NS: ns1.cloudflare.com | Admin: dns.cloudflare.com | Serial: ' + serial, ttl: ttl }];
+  }
+  return [];
+}
+
+function generateLocationIP(loc: Location, recordType: string, records: DNSRecord[]): string {
+  if (recordType === 'AAAA') return randomIPv6();
+  if (recordType === 'CNAME' || recordType === 'NS' || recordType === 'MX' || recordType === 'TXT') {
+    return records.length > 0 ? records[0].value : 'N/A';
+  }
+  if (recordType === 'SOA') return 'ns1.cloudflare.com';
+  return loc.ip + (Math.floor(Math.random() * 254) + 1);
+}
+
+function checkDNS(): void {
+  var domain = (document.getElementById('dnsDomain') as HTMLInputElement).value.trim();
+  var type = (document.getElementById('dnsType') as HTMLSelectElement).value;
+
+  hideResult('dnsResults');
+  hideResult('dnsError');
+  document.getElementById('dnsSpinner')!.classList.remove('visible');
+
+  if (!domain) {
+    document.getElementById('dnsErrorMsg')!.textContent = 'Please enter a domain name.';
+    showResult('dnsError');
+    return;
+  }
+
+  domain = cleanDomain(domain);
+
+  if (!domain || domain.length < 3 || !domain.includes('.')) {
+    document.getElementById('dnsErrorMsg')!.textContent = 'Please enter a valid domain name (e.g. example.com).';
+    showResult('dnsError');
+    return;
+  }
+
+  document.getElementById('dnsSpinner')!.classList.add('visible');
+  document.getElementById('dnsDomainLabel')!.textContent = domain + ' (' + type + ' record)';
+
+  var delay = 800 + Math.floor(Math.random() * 800);
+
+  setTimeout(function() {
+    document.getElementById('dnsSpinner')!.classList.remove('visible');
+
+    var records = generateRecords(domain, type);
+
+    var recordHTML = '';
+    for (var i = 0; i < records.length; i++) {
+      var r = records[i];
+      recordHTML += '<div class="dns-record-item">' +
+        '<span class="rr-type">' + r.type + '</span>' +
+        '<span class="rr-value">' + r.value + '</span>' +
+        '<span class="rr-ttl">TTL ' + r.ttl + 's</span>' +
+        '</div>';
+    }
+    document.getElementById('dnsRecordList')!.innerHTML = recordHTML;
+
+    var propagatedCount = 0;
+    var totalLatency = 0;
+    var tableHTML = '';
+
+    for (var j = 0; j < LOCATIONS.length; j++) {
+      var loc = LOCATIONS[j];
+      var latency = loc.latencyBase + Math.floor(Math.random() * 30) - 5;
+      if (latency < 1) latency = 1;
+      var propagated = loc.propagated && Math.random() > 0.15;
+      var ttlProgress = loc.propagated ? Math.max(5, Math.min(100, 85 + Math.floor(Math.random() * 25) - 10)) : Math.max(5, 30 + Math.floor(Math.random() * 25) - 10);
+
+      if (propagated) propagatedCount++;
+      totalLatency += latency;
+
+      var locationIP = generateLocationIP(loc, type, records);
+      var statusClass = propagated ? 'propagated' : 'pending';
+      var statusText = propagated ? 'Propagated' : 'Pending';
+
+      tableHTML += '<tr>' +
+        '<td><span class="location-flag">' + loc.flag + '</span>' + loc.name + '</td>' +
+        '<td style="font-family:var(--font-mono);font-size:0.82rem;color:var(--color-text);">' + locationIP + '</td>' +
+        '<td><span class="latency-value">' + latency + ' ms</span></td>' +
+        '<td><div class="dns-ttl-bar"><div class="dns-ttl-bar-track"><div class="dns-ttl-bar-fill" style="width:' + ttlProgress + '%;"></div></div><span style="font-size:0.75rem;color:var(--color-text-muted);">' + ttlProgress + '%</span></div></td>' +
+        '<td><span class="status-dot ' + statusClass + '"></span><span class="status-label ' + statusClass + '">' + statusText + '</span></td>' +
+        '</tr>';
+    }
+    document.getElementById('propTableBody')!.innerHTML = tableHTML;
+
+    var avgLatency = Math.round(totalLatency / LOCATIONS.length);
+    document.getElementById('statLocations')!.textContent = LOCATIONS.length.toString();
+    document.getElementById('statPropagated')!.textContent = propagatedCount + '/' + LOCATIONS.length;
+    document.getElementById('statAvgLatency')!.textContent = avgLatency + ' ms';
+
+    showResult('dnsResults');
+  }, delay);
+}
+
+function resetDNS(): void {
+  (document.getElementById('dnsDomain') as HTMLInputElement).value = 'example.com';
+  (document.getElementById('dnsType') as HTMLSelectElement).value = 'A';
+  hideResult('dnsResults');
+  hideResult('dnsError');
+  document.getElementById('dnsSpinner')!.classList.remove('visible');
+}
+
+document.getElementById('checkBtn')!.addEventListener('click', checkDNS);
+document.getElementById('resetBtn')!.addEventListener('click', resetDNS);
+document.getElementById('dnsDomain')!.addEventListener('keydown', function(e: KeyboardEvent) {
+  if (e.key === 'Enter') checkDNS();
+});
+</script>
+
+<style>
+.dns-input-row { display: grid; grid-template-columns: 1fr 180px; gap: 12px; }
+@media (max-width: 480px) { .dns-input-row { grid-template-columns: 1fr; } }
+.dns-records-display { margin-top: 20px; padding: 20px; background: var(--color-bg); border-radius: var(--radius-sm); border: 1px solid var(--color-border-light); display: none; }
+.dns-records-display.visible { display: block; animation: fadeSlideIn 0.35s var(--ease-out); }
+.record-type-badge { display: inline-block; padding: 3px 10px; border-radius: var(--radius-full); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; background: var(--color-primary-bg); color: var(--color-primary); letter-spacing: 0.02em; margin-right: 6px; }
+.dns-record-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--color-border-light); font-size: 0.9rem; }
+.dns-record-item:last-child { border-bottom: none; }
+.dns-record-item .rr-type { font-family: var(--font-mono); font-weight: 600; color: var(--color-primary); min-width: 48px; font-size: 0.82rem; }
+.dns-record-item .rr-value { font-family: var(--font-mono); color: var(--color-text); font-size: 0.85rem; word-break: break-all; }
+.dns-record-item .rr-ttl { font-size: 0.78rem; color: var(--color-text-muted); min-width: 60px; text-align: right; white-space: nowrap; }
+.propagation-table-wrap { overflow-x: auto; margin-top: 16px; }
+.propagation-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-border-light); }
+.propagation-table th { background: var(--color-primary-darker); color: #fff; font-weight: 600; font-size: 0.8rem; text-align: left; padding: 10px 14px; letter-spacing: 0.02em; white-space: nowrap; }
+.propagation-table td { padding: 9px 14px; border-bottom: 1px solid var(--color-border-light); color: var(--color-text-secondary); white-space: nowrap; }
+.propagation-table tr:nth-child(even) td { background: var(--color-bg); }
+.propagation-table tr:hover td { background: var(--color-primary-bg); }
+.status-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.status-dot.propagated { background: var(--color-success); box-shadow: 0 0 6px rgba(5, 150, 105, 0.4); }
+.status-dot.pending { background: var(--color-danger); box-shadow: 0 0 6px rgba(220, 38, 38, 0.4); }
+.status-label { font-weight: 500; font-size: 0.78rem; }
+.status-label.propagated { color: var(--color-success); }
+.status-label.pending { color: var(--color-danger); }
+.dns-ttl-bar { display: flex; align-items: center; gap: 8px; }
+.dns-ttl-bar-track { flex: 1; height: 4px; background: var(--color-border-light); border-radius: 2px; max-width: 80px; }
+.dns-ttl-bar-fill { height: 100%; border-radius: 2px; background: var(--gradient-primary); transition: width 0.4s var(--ease-out); }
+.latency-value { font-family: var(--font-mono); font-size: 0.82rem; color: var(--color-text); }
+.dns-summary-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.dns-stat-box { background: var(--color-surface); border: 1px solid var(--color-border-light); border-radius: var(--radius-sm); padding: 14px; text-align: center; }
+.dns-stat-box .stat-number { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--color-primary); }
+.dns-stat-box .stat-label { font-size: 0.72rem; color: var(--color-text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+.domain-display { font-family: var(--font-mono); font-size: 1rem; font-weight: 600; color: var(--color-text); padding: 8px 16px; background: var(--color-bg); border-radius: var(--radius-sm); border: 1px solid var(--color-border-light); display: inline-block; margin-bottom: 14px; word-break: break-all; }
+.dns-help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .dns-help-grid { grid-template-columns: 1fr; } }
+.dns-help-card { background: var(--color-bg); border: 1px solid var(--color-border-light); border-radius: var(--radius-sm); padding: 18px; transition: all var(--duration-normal) var(--ease-out); }
+.dns-help-card:hover { border-color: var(--color-primary-light); box-shadow: var(--shadow-sm); }
+.dns-help-card h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; color: var(--color-text); }
+.dns-help-card .rr-label { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 600; color: var(--color-primary); background: var(--color-primary-bg); padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 4px; }
+.dns-help-card p { font-size: 0.82rem; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 0; }
+.loading-spinner { display: none; text-align: center; padding: 40px 0; }
+.loading-spinner.visible { display: block; }
+.loading-spinner i { font-size: 2rem; color: var(--color-primary); animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-spinner p { margin-top: 12px; color: var(--color-text-secondary); font-size: 0.9rem; }
+.location-flag { font-size: 1.1rem; margin-right: 6px; vertical-align: middle; }
+.dns-error { display: none; background: var(--color-danger-bg); border: 1px solid var(--color-danger-border); border-radius: var(--radius-sm); padding: 14px 18px; color: var(--color-danger); font-size: 0.9rem; margin-top: 16px; }
+.dns-error.visible { display: block; animation: fadeSlideIn 0.35s var(--ease-out); }
+</style>

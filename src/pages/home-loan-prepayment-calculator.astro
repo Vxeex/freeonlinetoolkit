@@ -1,0 +1,172 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['home-loan-prepayment-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Home Loan Prepayment Savings",
+    "description": "Calculate how much interest you save by making extra payments on your home loan.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your current loan balance" },
+      { "@type": "HowToStep", "text": "Input your annual interest rate" },
+      { "@type": "HowToStep", "text": "Enter the remaining loan term in years" },
+      { "@type": "HowToStep", "text": "Choose monthly prepayment or lump sum amount" },
+      { "@type": "HowToStep", "text": "Click Calculate to see interest savings and new payoff date" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">See how extra payments on your home loan save you thousands in interest. Compare monthly prepayments and lump sum payments to find the best payoff strategy for your mortgage.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Prepayment Calculator</h2>
+      <div class="form-group">
+        <label for="preLoanBalance">Current Loan Balance ($)</label>
+        <input type="number" id="preLoanBalance" value="250000" min="0" step="1000">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="preRate">Annual Interest Rate (%)</label>
+          <input type="number" id="preRate" value="6.5" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="preTerm">Remaining Term (Years)</label>
+          <input type="number" id="preTerm" value="25" min="1" max="50">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="preMonthlyExtra">Monthly Prepayment ($) — extra amount per month</label>
+        <input type="number" id="preMonthlyExtra" value="200" min="0" step="50">
+      </div>
+      <div class="form-group">
+        <label for="preLumpSum">One-Time Lump Sum Prepayment ($)</label>
+        <input type="number" id="preLumpSum" value="0" min="0" step="1000">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="preResult">
+        <div style="font-weight:600;font-size:1.05rem;margin-bottom:10px;color:var(--color-text);">Interest Savings Summary</div>
+        <div class="result-details">
+          <div><span class="label">Current Total Interest (no prepayment)</span><span class="value" id="preCurrentInterest">$0</span></div>
+          <div><span class="label">New Total Interest (with prepayment)</span><span class="value" id="preNewInterest" style="color:#059669;">$0</span></div>
+          <div><span class="label">Interest Saved</span><span class="value" id="preInterestSaved" style="color:#059669;font-weight:700;">$0</span></div>
+          <div><span class="label">New Payoff Time</span><span class="value" id="preNewTerm">0 years</span></div>
+          <div><span class="label">Time Saved</span><span class="value" id="preTimeSaved" style="color:#059669;">0 years</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Prepayment Calculator</h2>
+      <p>This calculator shows you how making extra payments on your home loan can save thousands in interest. Enter your <strong>current loan balance</strong>, <strong>annual interest rate</strong>, and <strong>remaining term</strong>. You can use either or both prepayment options: a <strong>monthly prepayment</strong> or a <strong>lump sum prepayment</strong>.</p>
+      <p>The results show a comparison: total interest without prepayment versus with prepayments, total interest saved, and how much faster you'll pay off your loan.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Prepayment Strategy Tips</h2>
+      <ul>
+        <li><strong>Start early:</strong> Extra payments early in the loan term save more interest</li>
+        <li><strong>Bi-weekly payments:</strong> Making half your payment every two weeks results in one extra full payment per year</li>
+        <li><strong>Check for penalties:</strong> Some lenders charge prepayment penalties</li>
+        <li><strong>Emergency fund first:</strong> Save 3-6 months of expenses before prepaying</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "Does prepaying my mortgage always save money?", answer: "Yes, prepaying reduces the principal faster so less interest accrues. However, if your mortgage rate is low (under 4%), investing may earn more than the interest savings." },
+      { question: "What is the best time to make prepayments?", answer: "Early in the loan term is best, when the highest portion of your payment goes toward interest. The first 5-10 years of a 30-year loan have the most impact." },
+      { question: "Should I prepay my mortgage or invest?", answer: "Compare your mortgage rate to expected investment returns. If your rate is 6-7%+, prepaying is a risk-free return at that rate. If it's 3-4%, investing may outperform." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="home-loan-prepayment-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcPrepayment() {
+  const balance = getNum('preLoanBalance')!;
+  const rate = getNum('preRate')!;
+  const term = getNum('preTerm')!;
+  const monthlyExtra = getNum('preMonthlyExtra') || 0;
+  const lumpSum = getNum('preLumpSum') || 0;
+
+  if (!balance || !rate || !term) return;
+
+  const r = rate / 100 / 12;
+  const n = term * 12;
+
+  const M = balance * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const totalCurrent = M * n;
+  const currentInterest = totalCurrent - balance;
+
+  let newBalance = balance - lumpSum;
+  if (newBalance <= 0) {
+    document.getElementById('preCurrentInterest')!.textContent = formatCurrency(currentInterest);
+    document.getElementById('preNewInterest')!.textContent = '$0.00';
+    document.getElementById('preInterestSaved')!.textContent = formatCurrency(currentInterest);
+    document.getElementById('preNewTerm')!.textContent = 'Loan paid off!';
+    document.getElementById('preTimeSaved')!.textContent = term + ' years';
+    showResult('preResult');
+    return;
+  }
+
+  let remainingBalance = newBalance;
+  let months = 0;
+  let totalPaid = 0;
+
+  while (remainingBalance > 0 && months < 600) {
+    const interestThisMonth = remainingBalance * r;
+    const principalThisMonth = (M + monthlyExtra) - interestThisMonth;
+    if (principalThisMonth <= 0) { months = n; totalPaid = n * M; break; }
+    remainingBalance -= principalThisMonth;
+    totalPaid += M + monthlyExtra;
+    months++;
+    if (remainingBalance < M) break;
+  }
+
+  const newInterest = totalPaid - newBalance;
+  const interestSaved = Math.max(0, currentInterest - newInterest);
+  const yearsSaved = term - months / 12;
+
+  document.getElementById('preCurrentInterest')!.textContent = formatCurrency(currentInterest);
+  document.getElementById('preNewInterest')!.textContent = formatCurrency(newInterest);
+  document.getElementById('preInterestSaved')!.textContent = formatCurrency(interestSaved);
+  document.getElementById('preNewTerm')!.textContent = Math.round(months / 12) + ' years, ' + (months % 12) + ' months';
+  document.getElementById('preTimeSaved')!.textContent = Math.max(0, yearsSaved).toFixed(1) + ' years';
+  showResult('preResult');
+}
+
+function resetPrepayment() {
+  (document.getElementById('preLoanBalance') as HTMLInputElement).value = '250000';
+  (document.getElementById('preRate') as HTMLInputElement).value = '6.5';
+  (document.getElementById('preTerm') as HTMLInputElement).value = '25';
+  (document.getElementById('preMonthlyExtra') as HTMLInputElement).value = '200';
+  (document.getElementById('preLumpSum') as HTMLInputElement).value = '0';
+  hideResult('preResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcPrepayment);
+document.getElementById('resetBtn')!.addEventListener('click', resetPrepayment);
+document.addEventListener('DOMContentLoaded', calcPrepayment);
+</script>

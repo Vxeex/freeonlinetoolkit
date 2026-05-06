@@ -1,0 +1,215 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['business-loan-repayment-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Compare Business Loan Repayment Options",
+    "description": "Compare monthly payments, total interest, and total cost across bank loans, SBA loans, and online lender financing.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the total loan amount you need to borrow" },
+      { "@type": "HowToStep", "text": "Input interest rates for bank, SBA, and online lender options" },
+      { "@type": "HowToStep", "text": "Set the loan term in months" },
+      { "@type": "HowToStep", "text": "Compare monthly payments, total interest, and total cost side by side" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Compare repayment costs across bank loans, SBA loans, and online lenders side by side. See monthly payments, total interest, and total cost for each option so you can choose the best financing for your business.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Loan Comparison</h2>
+      <div class="form-group">
+        <label for="loanAmountBlr">Loan Amount ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="loanAmountBlr" class="prefixed" value="100000" min="0" step="5000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="bankRate">Bank Loan Rate (%)</label>
+          <input type="number" id="bankRate" value="7" min="0" step="0.1">
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Traditional bank: 5-9%</span>
+        </div>
+        <div class="form-group">
+          <label for="sbaRate">SBA Loan Rate (%)</label>
+          <input type="number" id="sbaRate" value="11" min="0" step="0.1">
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">SBA 7(a) typical: 9-13%</span>
+        </div>
+        <div class="form-group">
+          <label for="onlineRate">Online Lender Rate (%)</label>
+          <input type="number" id="onlineRate" value="25" min="0" step="0.1">
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Online/fintech: 15-40%</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="loanTermBlr">Loan Term (months)</label>
+        <input type="number" id="loanTermBlr" value="60" min="1" max="360" step="1">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="loanComparisonResult">
+        <div class="result-value" style="font-size:1rem;color:var(--color-text-secondary);margin-bottom:4px;">Monthly Payment Comparison</div>
+        <div class="result-label" style="font-size:0.85rem;">Lower is better &mdash; scroll down for total cost</div>
+
+        <div class="compare-grid">
+          <div class="compare-card">
+            <div class="cc-title"><i class="fa-solid fa-building-columns" style="margin-right:5px;"></i> Bank Loan</div>
+            <div class="cc-payment" id="blrBankPayment">$0.00</div>
+            <div class="cc-payment-label">per month</div>
+            <div class="cc-detail"><span class="cd-label">Total Interest</span><span class="cd-value" id="blrBankInterest">$0</span></div>
+            <div class="cc-detail"><span class="cd-label">Total Cost</span><span class="cd-value" id="blrBankTotal">$0</span></div>
+            <div class="cc-detail"><span class="cd-label">APR</span><span class="cd-value" id="blrBankApr">7.0%</span></div>
+          </div>
+
+          <div class="compare-card highlight">
+            <div class="cc-title"><i class="fa-solid fa-handshake" style="margin-right:5px;"></i> SBA Loan</div>
+            <div class="cc-payment" id="blrSbaPayment">$0.00</div>
+            <div class="cc-payment-label">per month</div>
+            <div class="cc-detail"><span class="cd-label">Total Interest</span><span class="cd-value" id="blrSbaInterest">$0</span></div>
+            <div class="cc-detail"><span class="cd-label">Total Cost</span><span class="cd-value" id="blrSbaTotal">$0</span></div>
+            <div class="cc-detail"><span class="cd-label">APR</span><span class="cd-value" id="blrSbaApr">11.0%</span></div>
+          </div>
+
+          <div class="compare-card">
+            <div class="cc-title"><i class="fa-solid fa-wifi" style="margin-right:5px;"></i> Online Lender</div>
+            <div class="cc-payment" id="blrOnlinePayment">$0.00</div>
+            <div class="cc-payment-label">per month</div>
+            <div class="cc-detail"><span class="cd-label">Total Interest</span><span class="cd-value" id="blrOnlineInterest">$0</span></div>
+            <div class="cc-detail"><span class="cd-label">Total Cost</span><span class="cd-value" id="blrOnlineTotal">$0</span></div>
+            <div class="cc-detail"><span class="cd-label">APR</span><span class="cd-value" id="blrOnlineApr">25.0%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This calculator compares three common business loan types side by side. Enter the <strong>loan amount</strong>, then adjust rates for bank loans, SBA loans, and online lenders. Set the <strong>loan term</strong> in months and click calculate to see your comparison.</p>
+      <p>The comparison cards show your monthly payment, total interest, total cost, and APR for each option. The highlighted card shows the balanced option (SBA), which often offers the best combination of rate and accessibility.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Amortization Formula</h2>
+      <p>Monthly payments are calculated using the standard amortization formula:</p>
+      <div class="formula-box">M = P &times; [r(1+r)<sup>n</sup>] / [(1+r)<sup>n</sup> &minus; 1]</div>
+      <p>Where: <strong>M</strong> = monthly payment, <strong>P</strong> = loan principal, <strong>r</strong> = monthly interest rate (annual rate / 12), and <strong>n</strong> = total number of monthly payments.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the difference between bank loans, SBA loans, and online lender loans?", answer: "Bank loans offer the lowest rates (typically 5-9%) but have strict qualification requirements including strong credit, collateral, and years in business. SBA loans are government-backed with competitive rates (9-13%) and more flexible terms, but require extensive paperwork. Online lenders offer fast funding and easier qualification but charge higher rates (15-40%)." },
+      { question: "How is the monthly payment calculated for a business loan?", answer: "Monthly payments use the standard amortization formula: M = P x [r(1+r)^n] / [(1+r)^n - 1], where P is the principal loan amount, r is the monthly interest rate, and n is the total number of monthly payments." },
+      { question: "Which loan type is best for my business?", answer: "The best loan type depends on your credit profile and urgency. Bank loans are best for established businesses with strong credit. SBA loans are ideal for businesses that need competitive rates but may not qualify for bank loans. Online lenders are best for urgent needs despite higher costs." },
+      { question: "Can I pay off my business loan early to save on interest?", answer: "Most business loans allow early repayment, but some charge prepayment penalties (typically 1-3% of the remaining balance). SBA loans generally do not have prepayment penalties after the first year." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="business-loan-repayment-calculator" category="business-finance" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcAmort(P: number, annualRate: number, n: number) {
+  if (P <= 0 || annualRate <= 0 || n <= 0) {
+    return { payment: 0, totalInterest: 0, totalCost: 0 };
+  }
+  const r = annualRate / 100 / 12;
+  const payment = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const totalCost = payment * n;
+  const totalInterest = totalCost - P;
+  return { payment, totalInterest, totalCost };
+}
+
+function calcLoanComparison() {
+  let P = getNum('loanAmountBlr');
+  let bankRate = getNum('bankRate');
+  let sbaRate = getNum('sbaRate');
+  let onlineRate = getNum('onlineRate');
+  let n = getNum('loanTermBlr');
+
+  if (!P || P < 0) { P = 0; (document.getElementById('loanAmountBlr') as HTMLInputElement).value = '0'; }
+  if (!bankRate || bankRate < 0) { bankRate = 0; (document.getElementById('bankRate') as HTMLInputElement).value = '0'; }
+  if (!sbaRate || sbaRate < 0) { sbaRate = 0; (document.getElementById('sbaRate') as HTMLInputElement).value = '0'; }
+  if (!onlineRate || onlineRate < 0) { onlineRate = 0; (document.getElementById('onlineRate') as HTMLInputElement).value = '0'; }
+  if (!n || n < 1) { n = 60; (document.getElementById('loanTermBlr') as HTMLInputElement).value = '60'; }
+
+  const bank = calcAmort(P, bankRate, n);
+  const sba = calcAmort(P, sbaRate, n);
+  const online = calcAmort(P, onlineRate, n);
+
+  document.getElementById('blrBankPayment')!.textContent = formatCurrency(bank.payment);
+  document.getElementById('blrBankInterest')!.textContent = formatCurrency(bank.totalInterest);
+  document.getElementById('blrBankTotal')!.textContent = formatCurrency(bank.totalCost);
+  document.getElementById('blrBankApr')!.textContent = bankRate.toFixed(1) + '%';
+
+  document.getElementById('blrSbaPayment')!.textContent = formatCurrency(sba.payment);
+  document.getElementById('blrSbaInterest')!.textContent = formatCurrency(sba.totalInterest);
+  document.getElementById('blrSbaTotal')!.textContent = formatCurrency(sba.totalCost);
+  document.getElementById('blrSbaApr')!.textContent = sbaRate.toFixed(1) + '%';
+
+  document.getElementById('blrOnlinePayment')!.textContent = formatCurrency(online.payment);
+  document.getElementById('blrOnlineInterest')!.textContent = formatCurrency(online.totalInterest);
+  document.getElementById('blrOnlineTotal')!.textContent = formatCurrency(online.totalCost);
+  document.getElementById('blrOnlineApr')!.textContent = onlineRate.toFixed(1) + '%';
+
+  showResult('loanComparisonResult');
+}
+
+function resetLoanComparison() {
+  (document.getElementById('loanAmountBlr') as HTMLInputElement).value = '100000';
+  (document.getElementById('bankRate') as HTMLInputElement).value = '7';
+  (document.getElementById('sbaRate') as HTMLInputElement).value = '11';
+  (document.getElementById('onlineRate') as HTMLInputElement).value = '25';
+  (document.getElementById('loanTermBlr') as HTMLInputElement).value = '60';
+  hideResult('loanComparisonResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcLoanComparison);
+document.getElementById('resetBtn')!.addEventListener('click', resetLoanComparison);
+document.addEventListener('DOMContentLoaded', calcLoanComparison);
+</script>
+
+<style>
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+.compare-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  border: 1px solid var(--color-border-light);
+  text-align: center;
+}
+.compare-card .cc-title { font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+.compare-card .cc-payment { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--color-primary); margin-bottom: 2px; }
+.compare-card .cc-payment-label { font-size: 0.7rem; color: var(--color-text-secondary); margin-bottom: 10px; }
+.compare-card .cc-detail { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.8rem; border-top: 1px solid var(--color-border-light); }
+.compare-card .cc-detail .cd-label { color: var(--color-text-secondary); }
+.compare-card .cc-detail .cd-value { font-weight: 600; font-family: var(--font-mono); font-size: 0.8rem; }
+.compare-card.highlight { background: var(--color-primary-bg); border-color: var(--color-primary-light); }
+@media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+</style>

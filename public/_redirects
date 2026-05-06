@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects
+# SPA-style: serve index.html for each path
+/* /404.html 404

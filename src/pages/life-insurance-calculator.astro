@@ -1,0 +1,199 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['life-insurance-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Your Life Insurance Needs",
+    "description": "Calculate how much life insurance coverage you need using the DIME and income replacement methods.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your annual income and the number of years to replace" },
+      { "@type": "HowToStep", "text": "Enter your outstanding debts, including mortgage and loans" },
+      { "@type": "HowToStep", "text": "Enter future college costs, final expenses, and current savings" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your total insurance need and term recommendation" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Determine how much life insurance coverage your family needs. This calculator uses the DIME method (Debts, Income, Mortgage, Education) and income replacement approach to give you a comprehensive coverage target.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Life Insurance Needs Estimator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="annualIncome">Annual Income ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="annualIncome" class="prefixed" value="75000" min="0" step="5000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="incomeYears">Years of Income to Replace</label>
+          <input type="number" id="incomeYears" value="10" min="1" max="40">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="outstandingDebts">Total Outstanding Debts ($) <span class="optional">mortgage + loans</span></label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="outstandingDebts" class="prefixed" value="250000" min="0" step="10000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="collegeCost">Future College Cost per Child ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="collegeCost" class="prefixed" value="100000" min="0" step="5000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="numChildren">Number of Children</label>
+          <input type="number" id="numChildren" value="2" min="0" max="20">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="finalExpenses">Final Expenses ($) <span class="optional">funeral, medical, etc.</span></label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="finalExpenses" class="prefixed" value="15000" min="0" step="1000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="currentSavings">Current Savings & Existing Insurance ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="currentSavings" class="prefixed" value="50000" min="0" step="5000">
+          </div>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="lifeInsuranceResult">
+        <div class="result-value" id="totalInsuranceNeed">$0.00</div>
+        <div class="result-label">Total Life Insurance Coverage Needed</div>
+        <div class="result-details">
+          <div><span class="label">Income Replacement Portion</span><span class="value" id="incomePortion">$0</span></div>
+          <div><span class="label">Debt Coverage</span><span class="value" id="debtPortion">$0</span></div>
+          <div><span class="label">Education Funding</span><span class="value" id="educationPortion">$0</span></div>
+          <div><span class="label">Final Expenses</span><span class="value" id="finalPortion">$0</span></div>
+          <div><span class="label">Minus Current Savings/Insurance</span><span class="value" id="savingsDeduct" style="color:#ef4444;">$0</span></div>
+          <div><span class="label">Recommended Term Length</span><span class="value" id="recommendedTerm">--</span></div>
+          <div><span class="label">Coverage Gap</span><span class="value" id="coverageGap">--</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Life Insurance Calculator</h2>
+      <p>Enter your <strong>annual income</strong> and the <strong>number of years</strong> to replace. Enter <strong>total outstanding debts</strong>, <strong>estimated future college cost per child</strong>, <strong>number of children</strong>, <strong>final expenses</strong>, and <strong>current savings and existing insurance</strong>. The calculator applies the <strong>DIME method</strong> as a cross-check.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Life Insurance Needs Formula</h2>
+      <div class="formula-box">Total Need = (Income &times; Years &times; 75%) + Debts + (College Cost &times; Children) + Final Expenses &minus; Savings</div>
+      <p>The <strong>75% factor</strong> accounts for reduced expenses for the surviving family. The <strong>DIME method</strong> is: Debts + (Income &times; 7) + Mortgage + Education.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How much life insurance do I really need?", answer: "A common rule of thumb is 10-12 times your annual income, but the right amount depends on your specific situation. The needs-based approach used in this calculator provides a more accurate estimate." },
+      { question: "What is the DIME method for life insurance?", answer: "DIME stands for Debts, Income, Mortgage, and Education. This quick method suggests adding up all your debts plus 7 years of income plus your mortgage balance plus estimated education costs." },
+      { question: "Should I buy term or whole life insurance?", answer: "Term life insurance is generally recommended for most people because it provides affordable coverage for the period when your dependents need it most (20-30 years). Whole life is significantly more expensive." },
+      { question: "How does income replacement work in life insurance planning?", answer: "Income replacement means providing enough insurance so the death benefit can generate ongoing income. A common approach is to replace 75% of your income for a set number of years." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="life-insurance-calculator" category="health-insurance" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcLifeInsurance() {
+  const income = getNum('annualIncome');
+  const incomeYears = getNum('incomeYears');
+  const debts = getNum('outstandingDebts');
+  const collegeCost = getNum('collegeCost');
+  const numChildren = getNum('numChildren');
+  const finalExpenses = getNum('finalExpenses');
+  const savings = getNum('currentSavings');
+
+  if (!income || !incomeYears || debts === null || !collegeCost || numChildren === null || !finalExpenses || savings === null) return;
+
+  const incomePortion = income * incomeYears * 0.75;
+  const debtCoverage = debts;
+  const educationFunding = collegeCost * numChildren;
+  const finalPortion = finalExpenses;
+
+  let totalNeed = incomePortion + debtCoverage + educationFunding + finalPortion - savings;
+  if (totalNeed < 0) totalNeed = 0;
+
+  let termRec: string;
+  if (numChildren > 0) {
+    termRec = '20-25 years (until children are independent)';
+  } else if (incomeYears <= 10) {
+    termRec = '10-15 years';
+  } else if (incomeYears <= 20) {
+    termRec = '15-20 years';
+  } else {
+    termRec = '20-30 years';
+  }
+
+  const gap = totalNeed - savings;
+  let gapText: string;
+  if (totalNeed <= 0) {
+    gapText = 'No gap (you have sufficient coverage)';
+  } else if (gap < 100000) {
+    gapText = 'Small gap - consider additional term coverage';
+  } else if (gap < 500000) {
+    gapText = 'Moderate gap - term life insurance recommended';
+  } else {
+    gapText = 'Significant gap - a term life policy is strongly advised';
+  }
+
+  document.getElementById('totalInsuranceNeed')!.textContent = formatCurrency(totalNeed);
+  document.getElementById('incomePortion')!.textContent = formatCurrency(incomePortion);
+  document.getElementById('debtPortion')!.textContent = formatCurrency(debtCoverage);
+  document.getElementById('educationPortion')!.textContent = formatCurrency(educationFunding);
+  document.getElementById('finalPortion')!.textContent = formatCurrency(finalPortion);
+  document.getElementById('savingsDeduct')!.textContent = '-' + formatCurrency(savings);
+  document.getElementById('recommendedTerm')!.textContent = termRec;
+  document.getElementById('coverageGap')!.textContent = gapText;
+  showResult('lifeInsuranceResult');
+}
+
+function resetLifeInsurance() {
+  (document.getElementById('annualIncome') as HTMLInputElement).value = '75000';
+  (document.getElementById('incomeYears') as HTMLInputElement).value = '10';
+  (document.getElementById('outstandingDebts') as HTMLInputElement).value = '250000';
+  (document.getElementById('collegeCost') as HTMLInputElement).value = '100000';
+  (document.getElementById('numChildren') as HTMLInputElement).value = '2';
+  (document.getElementById('finalExpenses') as HTMLInputElement).value = '15000';
+  (document.getElementById('currentSavings') as HTMLInputElement).value = '50000';
+  hideResult('lifeInsuranceResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcLifeInsurance);
+document.getElementById('resetBtn')!.addEventListener('click', resetLifeInsurance);
+document.addEventListener('DOMContentLoaded', calcLifeInsurance);
+</script>

@@ -1,0 +1,171 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['fuel-cost-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Fuel Cost",
+    "description": "Calculate the total fuel cost for a trip based on distance, fuel efficiency, and fuel price.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the total distance of your trip" },
+      { "@type": "HowToStep", "text": "Input your vehicle's fuel efficiency (MPG or L/100km)" },
+      { "@type": "HowToStep", "text": "Enter the current fuel price per unit" },
+      { "@type": "HowToStep", "text": "Click Calculate to see total fuel cost" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate the fuel cost for any trip before you go. Enter your distance, vehicle efficiency, and local fuel prices to get an accurate cost estimate for gas or diesel.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Fuel Cost Calculator</h2>
+      <div class="form-group">
+        <label>Unit System</label>
+        <div style="display:flex;gap:14px;">
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="fuelUnit" value="us" checked> US (miles, MPG, $/gal)</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="fuelUnit" value="metric"> Metric (km, L/100km)</label>
+        </div>
+      </div>
+      <div id="fuelUS">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fuelDistance">Distance (miles)</label>
+            <input type="number" id="fuelDistance" value="300" min="0">
+          </div>
+          <div class="form-group">
+            <label for="fuelEfficiency">Fuel Efficiency (MPG)</label>
+            <input type="number" id="fuelEfficiency" value="25" min="0" step="0.5">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fuelPrice">Fuel Price per Gallon ($)</label>
+          <input type="number" id="fuelPrice" value="3.50" min="0" step="0.1">
+        </div>
+      </div>
+      <div id="fuelMetric" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fuelDistanceKm">Distance (km)</label>
+            <input type="number" id="fuelDistanceKm" value="500" min="0">
+          </div>
+          <div class="form-group">
+            <label for="fuelEfficiencyL">Fuel Efficiency (L/100km)</label>
+            <input type="number" id="fuelEfficiencyL" value="8" min="0" step="0.1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fuelPriceL">Fuel Price per Liter ($)</label>
+          <input type="number" id="fuelPriceL" value="1.50" min="0" step="0.1">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="fuelResult">
+        <div class="result-value" id="fuelTotalCost">$0.00</div>
+        <div class="result-label">Total Fuel Cost</div>
+        <div class="result-details">
+          <div><span class="label">Fuel Needed</span><span class="value" id="fuelNeeded">0</span></div>
+          <div><span class="label">Cost per Mile/km</span><span class="value" id="fuelPerUnit">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Fuel Cost Calculator</h2>
+      <p>Planning a road trip? This fuel cost calculator gives you an accurate estimate. Choose between <strong>US units</strong> (miles, MPG, dollars per gallon) or <strong>metric units</strong> (kilometers, liters per 100km, dollars per liter).</p>
+      <p>Enter the <strong>total distance</strong> of your trip, your vehicle's <strong>fuel efficiency</strong>, and the current <strong>fuel price</strong>. The calculator shows the total fuel cost, the amount of fuel you'll need, and the cost per mile or kilometer.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Fuel Cost Formula</h2>
+      <div class="formula-box">
+        <strong>US:</strong> Cost = (Distance / MPG) × Price per Gallon<br>
+        <strong>Metric:</strong> Cost = (Distance × L/100km / 100) × Price per Liter
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "How accurate is this fuel cost estimate?", answer: "The estimate is accurate based on the numbers you enter. Actual fuel costs may vary due to driving conditions, traffic, weather, driving style, and changes in fuel prices." },
+      { question: "How can I improve my fuel efficiency?", answer: "Maintain proper tire pressure, avoid aggressive acceleration and braking, remove excess weight, use cruise control on highways, and keep up with regular maintenance." },
+      { question: "Should I use highway or city MPG?", answer: "For long road trips, use highway MPG. For daily commuting, use your vehicle's combined MPG rating. For best accuracy, calculate your actual average MPG over several fill-ups." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="fuel-cost-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function toggleFuel() {
+  const isUS = (document.querySelector('input[name="fuelUnit"]:checked') as HTMLInputElement).value === 'us';
+  (document.getElementById('fuelUS') as HTMLElement).style.display = isUS ? 'block' : 'none';
+  (document.getElementById('fuelMetric') as HTMLElement).style.display = isUS ? 'none' : 'block';
+}
+
+function calcFuel() {
+  const isUS = (document.querySelector('input[name="fuelUnit"]:checked') as HTMLInputElement).value === 'us';
+  let distance: number, efficiency: number, price: number, fuelNeeded: number, cost: number, perUnit: number, unitLabel: string;
+
+  if (isUS) {
+    distance = getNum('fuelDistance')!;
+    efficiency = getNum('fuelEfficiency')!;
+    price = getNum('fuelPrice')!;
+    if (!distance || !efficiency || !price) return;
+    fuelNeeded = distance / efficiency;
+    cost = fuelNeeded * price;
+    perUnit = cost / distance;
+    unitLabel = 'mile';
+  } else {
+    distance = getNum('fuelDistanceKm')!;
+    efficiency = getNum('fuelEfficiencyL')!;
+    price = getNum('fuelPriceL')!;
+    if (!distance || !efficiency || !price) return;
+    fuelNeeded = distance * efficiency / 100;
+    cost = fuelNeeded * price;
+    perUnit = cost / distance;
+    unitLabel = 'km';
+  }
+
+  const fuelUnit = isUS ? 'gallons' : 'liters';
+
+  document.getElementById('fuelTotalCost')!.textContent = formatCurrency(cost);
+  document.getElementById('fuelNeeded')!.textContent = fuelNeeded.toFixed(2) + ' ' + fuelUnit;
+  document.getElementById('fuelPerUnit')!.textContent = formatCurrency(perUnit) + ' per ' + unitLabel;
+  showResult('fuelResult');
+}
+
+function resetFuel() {
+  (document.getElementById('fuelDistance') as HTMLInputElement).value = '300';
+  (document.getElementById('fuelEfficiency') as HTMLInputElement).value = '25';
+  (document.getElementById('fuelPrice') as HTMLInputElement).value = '3.50';
+  (document.getElementById('fuelDistanceKm') as HTMLInputElement).value = '500';
+  (document.getElementById('fuelEfficiencyL') as HTMLInputElement).value = '8';
+  (document.getElementById('fuelPriceL') as HTMLInputElement).value = '1.50';
+  hideResult('fuelResult');
+}
+
+document.querySelectorAll('input[name="fuelUnit"]').forEach(el => el.addEventListener('change', toggleFuel));
+document.getElementById('calcBtn')!.addEventListener('click', calcFuel);
+document.getElementById('resetBtn')!.addEventListener('click', resetFuel);
+document.addEventListener('DOMContentLoaded', calcFuel);
+</script>

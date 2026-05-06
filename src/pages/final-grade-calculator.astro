@@ -1,0 +1,173 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['final-grade-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate What You Need on Your Final Exam",
+    "description": "Find out what score you need on your final to reach your target grade.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your current grade percentage" },
+      { "@type": "HowToStep", "text": "Enter the weight of your final exam as a percentage" },
+      { "@type": "HowToStep", "text": "Enter your target grade for the course" },
+      { "@type": "HowToStep", "text": "Click Calculate to see the score you need" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Find out exactly what score you need on your final exam to reach your target grade. Supports weighted grading systems and multiple assignment categories. Perfect for midterms and finals season.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Final Exam Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fgCurrent">Current Grade (%)</label>
+          <input type="number" id="fgCurrent" value="85" min="0" max="100" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="fgTarget">Target Grade (%)</label>
+          <input type="number" id="fgTarget" value="90" min="0" max="100" step="0.5">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fgWeight">Final Exam Weight (%)</label>
+          <input type="number" id="fgWeight" value="20" min="1" max="100" step="5">
+        </div>
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding-top:4px;">
+            <input type="checkbox" id="fgExtraCredit" checked> Allow &gt;100% if needed
+          </label>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="fgResult">
+        <div class="result-value" id="fgNeed" style="font-size:1.8rem;">90%</div>
+        <div class="result-label">Score Needed on Final Exam</div>
+        <div class="result-details">
+          <div><span class="label">Letter Grade Needed</span><span class="value" id="fgLetter">A-</span></div>
+          <div><span class="label">Final Exam Worth</span><span class="value" id="fgWeightDisplay">20%</span></div>
+          <div><span class="label">Outcome</span><span class="value" id="fgVerdict" style="color:var(--color-primary);">Achievable!</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Enter your <strong>current grade</strong> in the course, your <strong>target grade</strong>, and the <strong>weight of your final exam</strong> (as a percentage of your total grade). The calculator shows the minimum score you need on the final to reach your goal.</p>
+      <p>Check "Allow &gt;100% if needed" to see results even if you'd need extra credit. Uncheck it to only show achievable targets.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How It's Calculated</h2>
+      <div class="formula-box">
+        Score Needed = (Target &minus; Current &times; (1 &minus; Weight)) / Weight<br>
+        Example: (90 &minus; 85 &times; 0.80) / 0.20 = 110% needed
+      </div>
+      <p>If the required score is over 100%, you'd need extra credit or a curve. If it's negative, you've already secured your target grade!</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What if I need over 100% on the final?", answer: "Needing over 100% means your current grade is too low to reach your target even with a perfect exam score. You can either adjust your target grade, ask about extra credit opportunities, or hope for a curve. Some teachers do allow exam scores above 100% with bonus questions." },
+      { question: "What does a negative required score mean?", answer: "A negative score means you've already secured your target grade regardless of your final exam performance. For example, if you have 92% going into a 15% final and want 90%, you'd need only 18.7% on the exam - practically guaranteed." },
+      { question: "How do I calculate grades with multiple weighted categories?", answer: "Use our GPA Calculator for courses with multiple assignments and categories. It supports adding multiple courses, each with their own grades and credit hours, giving you a complete semester view." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="final-grade-calculator" category="education" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function getLetter(pct: number): string {
+  if (pct >= 97) return 'A+';
+  if (pct >= 93) return 'A';
+  if (pct >= 90) return 'A-';
+  if (pct >= 87) return 'B+';
+  if (pct >= 83) return 'B';
+  if (pct >= 80) return 'B-';
+  if (pct >= 77) return 'C+';
+  if (pct >= 73) return 'C';
+  if (pct >= 70) return 'C-';
+  if (pct >= 67) return 'D+';
+  if (pct >= 63) return 'D';
+  if (pct >= 60) return 'D-';
+  return 'F';
+}
+
+function calcFinalGrade() {
+  const current = parseFloat((document.getElementById('fgCurrent') as HTMLInputElement).value);
+  const target = parseFloat((document.getElementById('fgTarget') as HTMLInputElement).value);
+  const weight = parseFloat((document.getElementById('fgWeight') as HTMLInputElement).value);
+  const allowExtra = (document.getElementById('fgExtraCredit') as HTMLInputElement).checked;
+
+  if (!current || !target || !weight) return;
+
+  const w = weight / 100;
+  const needed = (target - current * (1 - w)) / w;
+
+  document.getElementById('fgWeightDisplay')!.textContent = weight + '%';
+
+  const fgNeed = document.getElementById('fgNeed')!;
+  const fgLetter = document.getElementById('fgLetter')!;
+  const fgVerdict = document.getElementById('fgVerdict')!;
+
+  if (needed <= 0) {
+    fgNeed.textContent = '0% (Already done!)';
+    fgLetter.textContent = getLetter(current);
+    fgVerdict.textContent = 'Grade already secured!';
+    fgVerdict.style.color = 'var(--color-primary)';
+  } else if (needed > 100 && !allowExtra) {
+    fgNeed.textContent = needed.toFixed(1) + '%';
+    fgLetter.textContent = getLetter(needed);
+    fgVerdict.textContent = 'Not achievable without extra credit';
+    fgVerdict.style.color = 'var(--color-accent)';
+  } else {
+    fgNeed.textContent = needed.toFixed(1) + '%' + (needed > 100 ? ' (needs extra credit)' : '');
+    fgLetter.textContent = getLetter(needed);
+    if (needed <= 100) {
+      fgVerdict.textContent = 'Achievable! Study hard!';
+      fgVerdict.style.color = 'var(--color-primary)';
+    } else {
+      fgVerdict.textContent = 'Would need extra credit';
+      fgVerdict.style.color = '#d97706';
+    }
+  }
+
+  showResult('fgResult');
+}
+
+function resetFinalGrade() {
+  (document.getElementById('fgCurrent') as HTMLInputElement).value = '85';
+  (document.getElementById('fgTarget') as HTMLInputElement).value = '90';
+  (document.getElementById('fgWeight') as HTMLInputElement).value = '20';
+  (document.getElementById('fgExtraCredit') as HTMLInputElement).checked = true;
+  hideResult('fgResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcFinalGrade);
+document.getElementById('resetBtn')!.addEventListener('click', resetFinalGrade);
+document.addEventListener('DOMContentLoaded', calcFinalGrade);
+</script>

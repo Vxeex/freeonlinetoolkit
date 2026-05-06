@@ -1,0 +1,232 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['property-tax-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Property Taxes",
+    "description": "Estimate annual property taxes based on your home value and local tax rate, with multi-year projections.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your home's current market value" },
+      { "@type": "HowToStep", "text": "Input your local property tax rate or select a state with preset rates" },
+      { "@type": "HowToStep", "text": "Enter the expected annual assessment growth rate" },
+      { "@type": "HowToStep", "text": "Choose how many years to project forward" },
+      { "@type": "HowToStep", "text": "Click Calculate to see annual tax, monthly cost, and projected taxes over time" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your annual property taxes based on your home's value and your local tax rate. This calculator also projects how your taxes may change over time with assessment growth, helping you budget for the long term.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Property Tax Estimator</h2>
+      <div class="form-group">
+        <label for="homeValue">Home Value ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="homeValue" class="prefixed" value="350000" min="0" step="10000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="taxRate">Property Tax Rate (%)</label>
+        <input type="number" id="taxRate" value="1.1" min="0" step="0.05">
+      </div>
+      <div class="form-group">
+        <label for="stateSelect">Or Select a State (presets)</label>
+        <select id="stateSelect">
+          <option value="">-- Custom Rate --</option>
+          <option value="0.18">Alabama (0.18%)</option>
+          <option value="0.51">Alaska (0.51%)</option>
+          <option value="0.41">Arizona (0.41%)</option>
+          <option value="0.36">Arkansas (0.36%)</option>
+          <option value="0.79">California (0.79%)</option>
+          <option value="0.49">Colorado (0.49%)</option>
+          <option value="1.79">Connecticut (1.79%)</option>
+          <option value="0.55">Delaware (0.55%)</option>
+          <option value="0.98">Florida (0.98%)</option>
+          <option value="0.87">Georgia (0.87%)</option>
+          <option value="0.35">Hawaii (0.35%)</option>
+          <option value="0.83">Idaho (0.83%)</option>
+          <option value="2.27">Illinois (2.27%)</option>
+          <option value="0.85">Indiana (0.85%)</option>
+          <option value="1.57">Iowa (1.57%)</option>
+          <option value="1.04">Kansas (1.04%)</option>
+          <option value="0.82">Kentucky (0.82%)</option>
+          <option value="0.51">Louisiana (0.51%)</option>
+          <option value="1.29">Maine (1.29%)</option>
+          <option value="1.08">Maryland (1.08%)</option>
+          <option value="1.23">Massachusetts (1.23%)</option>
+          <option value="1.54">Michigan (1.54%)</option>
+          <option value="1.05">Minnesota (1.05%)</option>
+          <option value="0.77">Mississippi (0.77%)</option>
+          <option value="0.73">Missouri (0.73%)</option>
+          <option value="0.82">Montana (0.82%)</option>
+          <option value="1.73">Nebraska (1.73%)</option>
+          <option value="0.56">Nevada (0.56%)</option>
+          <option value="1.85">New Hampshire (1.85%)</option>
+          <option value="2.49">New Jersey (2.49%)</option>
+          <option value="0.81">New Mexico (0.81%)</option>
+          <option value="1.72">New York (1.72%)</option>
+          <option value="0.77">North Carolina (0.77%)</option>
+          <option value="0.99">North Dakota (0.99%)</option>
+          <option value="1.56">Ohio (1.56%)</option>
+          <option value="0.86">Oklahoma (0.86%)</option>
+          <option value="0.97">Oregon (0.97%)</option>
+          <option value="2.09">Pennsylvania (2.09%)</option>
+          <option value="1.28">Rhode Island (1.28%)</option>
+          <option value="0.55">South Carolina (0.55%)</option>
+          <option value="1.13">South Dakota (1.13%)</option>
+          <option value="0.67">Tennessee (0.67%)</option>
+          <option value="1.74">Texas (1.74%)</option>
+          <option value="0.62">Utah (0.62%)</option>
+          <option value="1.76">Vermont (1.76%)</option>
+          <option value="0.89">Virginia (0.89%)</option>
+          <option value="1.10">Washington (1.10%)</option>
+          <option value="1.42">West Virginia (1.42%)</option>
+          <option value="1.76">Wisconsin (1.76%)</option>
+          <option value="0.55">Wyoming (0.55%)</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="annualGrowth">Annual Assessment Growth (%)</label>
+          <input type="number" id="annualGrowth" value="2" min="0" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="projectYears">Project Forward (Years)</label>
+          <input type="number" id="projectYears" value="10" min="1" max="30">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="taxResult">
+        <div class="result-value" id="taxAnnual">$0</div>
+        <div class="result-label">Annual Property Tax</div>
+        <div class="result-details">
+          <div><span class="label">Monthly Tax Cost</span><span class="value" id="taxMonthly">$0</span></div>
+          <div><span class="label">Effective Tax Rate</span><span class="value" id="taxEffectiveRate">--</span></div>
+          <div><span class="label">Tax Over 10 Years</span><span class="value" id="taxTotalProjected">$0</span></div>
+        </div>
+      </div>
+
+      <div class="content-section" id="taxProjectionSection" style="display:none;">
+        <h2>Projected Property Taxes</h2>
+        <div class="table-wrap">
+          <table class="amort-table" id="taxProjectionTable">
+            <thead>
+              <tr><th>Year</th><th>Home Value</th><th>Annual Tax</th><th>Monthly Tax</th><th>Cumulative Tax</th></tr>
+            </thead>
+            <tbody id="taxProjectionBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Property Tax Calculator</h2>
+      <p>Enter your home's current <strong>market value</strong> and your local <strong>property tax rate</strong>. If you don't know your exact rate, use the <strong>state dropdown</strong> to select a state with a preset average effective tax rate. Enter the expected <strong>annual assessment growth rate</strong> and choose how many <strong>years to project forward</strong>.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Property Tax Formula</h2>
+      <div class="formula-box">Annual Tax = Home Value x (Tax Rate / 100)</div>
+      <p>For projected taxes: Projected Value = Current Value x (1 + Growth Rate)^n, where <strong>n</strong> = number of years in the future.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How are property taxes calculated?", answer: "Property taxes are calculated by multiplying your home's assessed value by the local millage rate. The assessed value is determined by the county assessor and may be a percentage of your home's market value." },
+      { question: "What is the average property tax rate in the US?", answer: "The average effective property tax rate in the United States is approximately 1.1% of home value. Rates vary significantly by state, from around 0.18% in Alabama and Hawaii to over 2.2% in Illinois, New Jersey, and Texas." },
+      { question: "Can my property taxes increase each year?", answer: "Yes, property taxes can increase each year as your home's assessed value rises or if local tax rates increase. Many areas have annual assessment growth limits (like California's Prop 13 which caps increases at 2% per year)." },
+      { question: "Are property taxes tax deductible?", answer: "Yes, property taxes paid on your primary residence are generally deductible if you itemize. However, the SALT deduction is capped at $10,000 per year." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="property-tax-calculator" category="real-estate" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcPropertyTax() {
+  const homeValue = getNum('homeValue');
+  let taxRate = getNum('taxRate');
+  const growth = getNum('annualGrowth');
+  const years = getNum('projectYears');
+
+  if (!homeValue || !taxRate || !years) return;
+
+  const annualTax = homeValue * (taxRate / 100);
+  const monthlyTax = annualTax / 12;
+  const effectiveRate = taxRate;
+
+  let cumulativeTax = 0;
+  let currentValue = homeValue;
+  const body = document.getElementById('taxProjectionBody')!;
+  body.innerHTML = '';
+
+  for (let y = 1; y <= years; y++) {
+    const yearValue = currentValue;
+    const yearTax = yearValue * (taxRate / 100);
+    cumulativeTax += yearTax;
+    const yearMonthly = yearTax / 12;
+
+    const row = document.createElement('tr');
+    row.innerHTML = '<td>' + y + '</td>'
+      + '<td>' + formatCurrency(yearValue) + '</td>'
+      + '<td>' + formatCurrency(yearTax) + '</td>'
+      + '<td>' + formatCurrency(yearMonthly) + '</td>'
+      + '<td>' + formatCurrency(cumulativeTax) + '</td>';
+    body.appendChild(row);
+
+    currentValue = currentValue * (1 + growth / 100);
+  }
+
+  document.getElementById('taxAnnual')!.textContent = formatCurrency(annualTax);
+  document.getElementById('taxMonthly')!.textContent = formatCurrency(monthlyTax);
+  document.getElementById('taxEffectiveRate')!.textContent = effectiveRate.toFixed(2) + '%';
+  document.getElementById('taxTotalProjected')!.textContent = formatCurrency(cumulativeTax);
+
+  showResult('taxResult');
+  document.getElementById('taxProjectionSection')!.style.display = 'block';
+}
+
+(document.getElementById('stateSelect') as HTMLSelectElement).addEventListener('change', function() {
+  if (this.value) {
+    (document.getElementById('taxRate') as HTMLInputElement).value = parseFloat(this.value).toFixed(2);
+    calcPropertyTax();
+  }
+});
+
+function resetPropertyTax() {
+  (document.getElementById('homeValue') as HTMLInputElement).value = '350000';
+  (document.getElementById('taxRate') as HTMLInputElement).value = '1.1';
+  (document.getElementById('stateSelect') as HTMLSelectElement).value = '';
+  (document.getElementById('annualGrowth') as HTMLInputElement).value = '2';
+  (document.getElementById('projectYears') as HTMLInputElement).value = '10';
+  document.getElementById('taxProjectionSection')!.style.display = 'none';
+  hideResult('taxResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcPropertyTax);
+document.getElementById('resetBtn')!.addEventListener('click', resetPropertyTax);
+document.addEventListener('DOMContentLoaded', calcPropertyTax);
+</script>

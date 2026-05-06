@@ -1,0 +1,208 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['concrete-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Concrete Volume",
+    "description": "Calculate how much concrete or gravel you need for slabs, driveways, and patios.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select material type (concrete or gravel)" },
+      { "@type": "HowToStep", "text": "Enter the length and width of the area" },
+      { "@type": "HowToStep", "text": "Select the depth/thickness" },
+      { "@type": "HowToStep", "text": "Click Calculate to see cubic yards and bag estimates" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free Concrete & Gravel Calculator</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Get precise estimates for concrete, gravel, or other materials. Enter your slab dimensions and we'll calculate cubic yards, cubic feet, and how many bags to order.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Concrete Slab &amp; Gravel Volume Calculator</h2>
+
+      <div class="form-group">
+        <label for="materialType">Material Type</label>
+        <select id="materialType">
+          <option value="concrete">Concrete</option>
+          <option value="gravel">Gravel / Aggregate</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="slabLength">Length (ft)</label>
+          <input type="number" id="slabLength" value="10" min="0.1" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="slabWidth">Width (ft)</label>
+          <input type="number" id="slabWidth" value="10" min="0.1" step="0.5">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="slabDepth">Depth / Thickness</label>
+        <select id="slabDepth">
+          <option value="4">4 inches (patio, walkway)</option>
+          <option value="6" selected>6 inches (driveway, garage)</option>
+          <option value="8">8 inches (heavy driveway, RV pad)</option>
+          <option value="10">10 inches (commercial)</option>
+          <option value="12">12 inches (foundation, footing)</option>
+        </select>
+      </div>
+
+      <div id="concreteOptions">
+        <div class="form-group">
+          <label for="bagSize">Bag Size (lb)</label>
+          <select id="bagSize">
+            <option value="60">60 lb bag (covers ~0.45 cu ft)</option>
+            <option value="80" selected>80 lb bag (covers ~0.60 cu ft)</option>
+            <option value="90">90 lb bag (covers ~0.68 cu ft)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="gravelOptions" style="display:none;">
+        <div class="form-group">
+          <label for="gravelDepth">Gravel Depth (inches)</label>
+          <select id="gravelDepth">
+            <option value="3">3 inches (pathway)</option>
+            <option value="4" selected>4 inches (driveway base)</option>
+            <option value="6">6 inches (road base)</option>
+            <option value="12">12 inches (drainage)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="wastage">Wastage Factor</label>
+        <select id="wastage">
+          <option value="1.05">5% (minimal waste)</option>
+          <option value="1.10" selected>10% (typical)</option>
+          <option value="1.15">15% (generous)</option>
+          <option value="1.20">20% (uneven ground)</option>
+        </select>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="concreteResult">
+        <div class="result-value" id="concreteResultValue">0</div>
+        <div class="result-label" id="concreteResultLabel">Material needed</div>
+        <div class="result-details" id="concreteResultDetails"></div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Concrete Calculator</h2>
+      <p>Enter the length, width, and thickness of your slab. The calculator handles both concrete (in bags) and gravel (in tons). It includes a wastage factor so you order enough material.</p>
+      <ul>
+        <li><strong>Concrete:</strong> Results show cubic yards, cubic feet, and number of bags</li>
+        <li><strong>Gravel:</strong> Results show cubic yards, cubic feet, and estimated tons</li>
+        <li><strong>Wastage:</strong> Add 5-15% extra depending on ground conditions</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Concrete Volume Formula</h2>
+      <div class="formula-box">Volume (cu yd) = Length (ft) &times; Width (ft) &times; Depth (in) &divide; 324</div>
+      <p>One cubic yard of concrete covers 81 sq ft at 4 inches thick. Standard ready-mix trucks hold 10-12 cubic yards.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How much concrete do I need for a 10x10 slab?", answer: "For a 10'x10' slab at 6\" thick: (10 x 10 x 6) / 324 = 1.85 cu yd. With 10% wastage, order about 2.04 cu yd — roughly 12 bags of 80-lb mix." },
+      { question: "Should I use bags or ready-mix?", answer: "For projects under 2 cubic yards, bags are cost-effective. For larger slabs, order ready-mix. A standard truck carries 10-12 yards with a minimum of 3-4 yards." },
+      { question: "How much gravel do I need for a driveway?", answer: "A typical driveway uses 4-6 inches of gravel base. For a 20'x30' driveway at 6\" deep: (20 x 30 x 6) / 324 = 11.1 cu yd — about 15 tons." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="concrete-calculator" category="home-construction" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function toggleMaterial() {
+  const mat = (document.getElementById('materialType') as HTMLSelectElement).value;
+  (document.getElementById('concreteOptions') as HTMLElement).style.display = mat === 'concrete' ? 'block' : 'none';
+  (document.getElementById('gravelOptions') as HTMLElement).style.display = mat === 'gravel' ? 'block' : 'none';
+  hideResult('concreteResult');
+}
+
+function calcConcrete() {
+  const length = parseFloat((document.getElementById('slabLength') as HTMLInputElement).value);
+  const width = parseFloat((document.getElementById('slabWidth') as HTMLInputElement).value);
+  const depth = parseInt((document.getElementById('slabDepth') as HTMLSelectElement).value);
+  const wasteMultiplier = parseFloat((document.getElementById('wastage') as HTMLSelectElement).value);
+  const mat = (document.getElementById('materialType') as HTMLSelectElement).value;
+
+  if (isNaN(length) || isNaN(width) || length <= 0 || width <= 0) return;
+
+  const cuFt = length * width * (depth / 12);
+  const cuYd = cuFt / 27;
+  const totalCuYd = cuYd * wasteMultiplier;
+  const totalCuFt = cuFt * wasteMultiplier;
+
+  if (mat === 'gravel') {
+    const gravelDepth = parseInt((document.getElementById('gravelDepth') as HTMLSelectElement).value);
+    const gravelCuFt = length * width * (gravelDepth / 12);
+    const gravelCuYd = (gravelCuFt * wasteMultiplier) / 27;
+    const tons = gravelCuYd * 1.4;
+    document.getElementById('concreteResultValue')!.textContent = tons.toFixed(1) + ' tons';
+    document.getElementById('concreteResultLabel')!.textContent = 'Gravel needed (with wastage)';
+    (document.getElementById('concreteResultDetails') as HTMLElement).innerHTML =
+      '<div><span class="label">Volume</span><span class="value">' + gravelCuYd.toFixed(2) + ' cu yd</span></div>' +
+      '<div><span class="label">In cubic feet</span><span class="value">' + (gravelCuFt * wasteMultiplier).toFixed(0) + ' cu ft</span></div>' +
+      '<div><span class="label">Wastage</span><span class="value">' + Math.round((wasteMultiplier - 1) * 100) + '%</span></div>';
+    showResult('concreteResult');
+    return;
+  }
+
+  const bagSize = parseInt((document.getElementById('bagSize') as HTMLSelectElement).value);
+  const bagCoverage = bagSize === 60 ? 0.45 : bagSize === 80 ? 0.60 : 0.68;
+  const bags = Math.ceil(totalCuFt / bagCoverage);
+
+  document.getElementById('concreteResultValue')!.textContent = totalCuYd.toFixed(2) + ' cu yd';
+  document.getElementById('concreteResultLabel')!.textContent = 'Concrete needed (with wastage)';
+  (document.getElementById('concreteResultDetails') as HTMLElement).innerHTML =
+    '<div><span class="label">In cubic feet</span><span class="value">' + totalCuFt.toFixed(0) + ' cu ft</span></div>' +
+    '<div><span class="label">Bags (' + bagSize + ' lb)</span><span class="value">' + bags + ' bags</span></div>' +
+    '<div><span class="label">Ready-mix equivalent</span><span class="value">' + Math.max(1, Math.ceil(totalCuYd)).toFixed(0) + ' cu yd truck</span></div>' +
+    '<div><span class="label">Wastage factor</span><span class="value">' + Math.round((wasteMultiplier - 1) * 100) + '%</span></div>';
+  showResult('concreteResult');
+}
+
+function resetConcrete() {
+  (document.getElementById('materialType') as HTMLSelectElement).value = 'concrete';
+  (document.getElementById('slabLength') as HTMLInputElement).value = '10';
+  (document.getElementById('slabWidth') as HTMLInputElement).value = '10';
+  (document.getElementById('slabDepth') as HTMLSelectElement).value = '6';
+  (document.getElementById('bagSize') as HTMLSelectElement).value = '80';
+  (document.getElementById('wastage') as HTMLSelectElement).value = '1.10';
+  toggleMaterial();
+  hideResult('concreteResult');
+}
+
+document.getElementById('materialType')!.addEventListener('change', toggleMaterial);
+document.getElementById('calcBtn')!.addEventListener('click', calcConcrete);
+document.getElementById('resetBtn')!.addEventListener('click', resetConcrete);
+document.addEventListener('DOMContentLoaded', () => { toggleMaterial(); calcConcrete(); });
+</script>

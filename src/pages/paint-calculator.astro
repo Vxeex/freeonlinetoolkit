@@ -1,0 +1,162 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['paint-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Paint Needed",
+    "description": "Calculate how much paint you need for any room based on wall dimensions.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your room length, width, and wall height" },
+      { "@type": "HowToStep", "text": "Enter the number of doors and windows" },
+      { "@type": "HowToStep", "text": "Select the number of coats" },
+      { "@type": "HowToStep", "text": "Click Calculate to see how much paint you need" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Find out exactly how much paint you need for any room. Enter your wall dimensions and get precise paint quantity estimates including doors and windows.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Paint &amp; Wall Square Footage Calculator</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="wallLength">Room Length (ft)</label>
+          <input type="number" id="wallLength" value="12" min="1" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="wallWidth">Room Width (ft)</label>
+          <input type="number" id="wallWidth" value="10" min="1" step="0.5">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="wallHeight">Wall Height (ft)</label>
+        <input type="number" id="wallHeight" value="8" min="1" step="0.5">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="doorCount">Number of Doors</label>
+          <input type="number" id="doorCount" value="1" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="windowCount">Number of Windows</label>
+          <input type="number" id="windowCount" value="2" min="0" step="1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="coats">Number of Coats</label>
+        <select id="coats">
+          <option value="1">1 coat (touch-up)</option>
+          <option value="2" selected>2 coats (recommended)</option>
+          <option value="3">3 coats (drastic color change)</option>
+        </select>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="paintResult">
+        <div class="result-value" id="paintResultValue">0</div>
+        <div class="result-label" id="paintResultLabel">Paint needed</div>
+        <div class="result-details" id="paintResultDetails"></div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Paint Calculator</h2>
+      <p>Measure your room's length, width, and wall height. Enter the number of doors and windows to subtract their area. Select how many coats you plan to apply.</p>
+      <ul>
+        <li><strong>Standard door:</strong> ~21 sq ft (3' x 7')</li>
+        <li><strong>Standard window:</strong> ~15 sq ft (3' x 5')</li>
+        <li><strong>Paint coverage:</strong> 1 gallon covers ~350 sq ft</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Paint Coverage Formula</h2>
+      <div class="formula-box">Total Area = Perimeter &times; Wall Height<br>Paint Needed = (Total Area - Doors &amp; Windows) &divide; 350 &times; Coats</div>
+    </div>
+
+    <FAQ items={[
+      { question: "How much paint do I need for one wall?", answer: "Measure the wall's width and height, multiply them for square footage, then divide by 350. For a 12' x 8' wall with one coat: 96 &divide; 350 = 0.27 gallons (about 1 quart)." },
+      { question: "Should I include ceiling paint?", answer: "This calculator estimates wall paint only. Ceilings typically take 1-2 gallons depending on room size." },
+      { question: "How much extra should I buy?", answer: "Buy 10% extra for waste, touch-ups, and future repairs. If the calculator says 1.2 gallons, buy 1 gallon and 1 quart." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="paint-calculator" category="home-construction" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcPaint() {
+  const length = parseFloat((document.getElementById('wallLength') as HTMLInputElement).value);
+  const width = parseFloat((document.getElementById('wallWidth') as HTMLInputElement).value);
+  const height = parseFloat((document.getElementById('wallHeight') as HTMLInputElement).value);
+  const doors = parseInt((document.getElementById('doorCount') as HTMLInputElement).value) || 0;
+  const windows = parseInt((document.getElementById('windowCount') as HTMLInputElement).value) || 0;
+  const coats = parseInt((document.getElementById('coats') as HTMLSelectElement).value);
+
+  if (isNaN(length) || isNaN(width) || isNaN(height) || length <= 0 || width <= 0 || height <= 0) return;
+
+  const perimeter = 2 * (length + width);
+  const grossArea = perimeter * height;
+  const doorArea = doors * 21;
+  const windowArea = windows * 15;
+  const netArea = Math.max(0, grossArea - doorArea - windowArea);
+  const totalArea = netArea * coats;
+  const gallons = totalArea / 350;
+  const gallonsRounded = Math.ceil(gallons * 4) / 4;
+
+  const display = gallonsRounded >= 1
+    ? Math.floor(gallonsRounded) + (gallonsRounded % 1 >= 0.25 ? ' gal ' + Math.round((gallonsRounded % 1) * 4) + ' qt' : ' gal')
+    : Math.round(gallonsRounded * 4) + ' qt';
+
+  document.getElementById('paintResultValue')!.textContent = display;
+  document.getElementById('paintResultLabel')!.textContent = 'Paint needed (' + coats + ' coat' + (coats > 1 ? 's' : '') + ')';
+  (document.getElementById('paintResultDetails') as HTMLElement).innerHTML =
+    '<div><span class="label">Wall area</span><span class="value">' + grossArea.toFixed(0) + ' sq ft</span></div>' +
+    '<div><span class="label">Minus doors</span><span class="value">-' + doorArea.toFixed(0) + ' sq ft</span></div>' +
+    '<div><span class="label">Minus windows</span><span class="value">-' + windowArea.toFixed(0) + ' sq ft</span></div>' +
+    '<div><span class="label">Net area per coat</span><span class="value">' + netArea.toFixed(0) + ' sq ft</span></div>' +
+    '<div><span class="label">Total with coats</span><span class="value">' + totalArea.toFixed(0) + ' sq ft</span></div>';
+  showResult('paintResult');
+}
+
+function resetPaint() {
+  (document.getElementById('wallLength') as HTMLInputElement).value = '12';
+  (document.getElementById('wallWidth') as HTMLInputElement).value = '10';
+  (document.getElementById('wallHeight') as HTMLInputElement).value = '8';
+  (document.getElementById('doorCount') as HTMLInputElement).value = '1';
+  (document.getElementById('windowCount') as HTMLInputElement).value = '2';
+  (document.getElementById('coats') as HTMLSelectElement).value = '2';
+  hideResult('paintResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcPaint);
+document.getElementById('resetBtn')!.addEventListener('click', resetPaint);
+document.addEventListener('DOMContentLoaded', calcPaint);
+</script>

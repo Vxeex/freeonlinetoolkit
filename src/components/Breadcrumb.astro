@@ -1,0 +1,22 @@
+---
+export interface Props {
+  items: { label: string; href?: string }[];
+}
+const { items } = Astro.props;
+---
+<div class="breadcrumb">
+  {items.map((item, i) => (
+    <span>
+      {i > 0 && <span class="sep">&#8250;</span>}
+      {item.href ? <a href={item.href}>{item.label}</a> : <span class="current">{item.label}</span>}
+    </span>
+  ))}
+</div>
+
+<style>
+  .breadcrumb { font-size: 0.82rem; color: var(--color-text-muted); margin-bottom: 12px; }
+  .breadcrumb a { color: var(--color-text-secondary); }
+  .breadcrumb a:hover { color: var(--color-primary); }
+  .breadcrumb .sep { margin: 0 6px; color: var(--color-text-muted); }
+  .breadcrumb .current { color: var(--color-text-muted); }
+</style>

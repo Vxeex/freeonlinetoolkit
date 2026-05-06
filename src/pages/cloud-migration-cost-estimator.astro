@@ -1,0 +1,191 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['cloud-migration-cost-estimator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Cloud Migration Costs",
+    "description": "Estimate the cost of migrating your infrastructure to AWS, Azure, or Google Cloud.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the number of servers or VMs you plan to migrate" },
+      { "@type": "HowToStep", "text": "Enter the vCPUs and RAM per server" },
+      { "@type": "HowToStep", "text": "Enter storage per server and estimated data transfer" },
+      { "@type": "HowToStep", "text": "Enter migration labor hours and hourly rate for engineers" },
+      { "@type": "HowToStep", "text": "Click Calculate to compare AWS, Azure, and GCP pricing" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Which cloud provider is the cheapest?", "acceptedAnswer": { "@type": "Answer", "text": "Pricing varies by workload configuration. Google Cloud typically offers the lowest compute costs with competitive pricing per vCPU. Azure tends to be more expensive for compute but offers lower storage costs. AWS provides the most flexible pricing options including spot instances and reserved instances." } },
+      { "@type": "Question", "name": "How much does cloud migration cost?", "acceptedAnswer": { "@type": "Answer", "text": "Cloud migration costs vary widely. A simple lift-and-shift of 10 servers typically costs $20,000-$50,000 in professional services and labor. More complex migrations with application rearchitecture can cost $100,000-$500,000+." } },
+      { "@type": "Question", "name": "Is the cloud cheaper than on-premise?", "acceptedAnswer": { "@type": "Answer", "text": "Cloud can be 20-40% cheaper than on-premise when you account for hardware replacement, power/cooling, IT staff, and capacity planning overhead. However, for predictable steady-state workloads, on-premise can sometimes be cheaper." } },
+      { "@type": "Question", "name": "What is a lift-and-shift migration?", "acceptedAnswer": { "@type": "Answer", "text": "Lift-and-shift (rehosting) is the simplest migration strategy where you move applications and data to the cloud with minimal changes. It's faster and less risky than rearchitecting, but may not take full advantage of cloud-native features." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Compare AWS, Azure, and Google Cloud pricing for your infrastructure. Estimate monthly costs, one-time migration expenses, and total first-year spend to make an informed cloud migration decision.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Cost Estimator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cloudServers">Number of Servers/VMs</label>
+          <input type="number" id="cloudServers" value="10" min="1">
+        </div>
+        <div class="form-group">
+          <label for="cloudVcpu">vCPUs Per Server</label>
+          <input type="number" id="cloudVcpu" value="8" min="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cloudRam">RAM Per Server (GB)</label>
+          <input type="number" id="cloudRam" value="32" min="1">
+        </div>
+        <div class="form-group">
+          <label for="cloudStorage">Storage Per Server (GB)</label>
+          <input type="number" id="cloudStorage" value="500" min="0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cloudTransfer">Estimated Data Transfer (GB/month)</label>
+        <input type="number" id="cloudTransfer" value="1000" min="0">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cloudLabor">Migration Labor Hours</label>
+          <input type="number" id="cloudLabor" value="200" min="0">
+        </div>
+        <div class="form-group">
+          <label for="cloudRate">Hourly Rate for Engineers ($)</label>
+          <input type="number" id="cloudRate" value="150" min="0">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="cloudResult">
+        <div style="font-weight:600;font-size:1.05rem;margin-bottom:10px;color:var(--color-text);">Cost Comparison</div>
+        <div class="result-details">
+          <div><span class="label" style="font-weight:600;"><i class="fa-brands fa-aws" style="margin-right:4px;"></i>AWS Monthly Cost</span><span class="value" id="cloudAWS">$0</span></div>
+          <div><span class="label" style="font-weight:600;"><i class="fa-brands fa-microsoft" style="margin-right:4px;"></i>Azure Monthly Cost</span><span class="value" id="cloudAzure">$0</span></div>
+          <div><span class="label" style="font-weight:600;"><i class="fa-brands fa-google" style="margin-right:4px;"></i>Google Cloud Monthly Cost</span><span class="value" id="cloudGCP">$0</span></div>
+          <div style="border-top:1px solid var(--color-border);padding-top:8px;margin-top:4px;"><span class="label">Monthly Savings vs. On-Premise</span><span class="value" id="cloudSavings" style="color:#059669;font-weight:600;">$0</span></div>
+          <div><span class="label">One-Time Migration Cost</span><span class="value" id="cloudMigration">$0</span></div>
+          <div style="border-top:1px solid var(--color-border);padding-top:8px;margin-top:4px;"><span class="label" style="font-weight:600;">First Year Total (AWS)</span><span class="value" id="cloudYearAWS" style="font-weight:600;">$0</span></div>
+          <div><span class="label" style="font-weight:600;">First Year Total (Azure)</span><span class="value" id="cloudYearAzure" style="font-weight:600;">$0</span></div>
+          <div><span class="label" style="font-weight:600;">First Year Total (GCP)</span><span class="value" id="cloudYearGCP" style="font-weight:600;">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This cloud migration cost estimator gives you an approximate price comparison across the three major cloud providers. Enter your <strong>infrastructure specifications</strong> — number of servers, vCPUs, RAM, and storage — along with your expected <strong>data transfer volume</strong>.</p>
+      <p>Include the <strong>labor hours</strong> you expect to spend on migration (planning, testing, reconfiguring, and cutover) and your <strong>hourly rate</strong> for engineers. The calculator shows monthly costs for each provider, an estimated on-premise comparison, the one-time migration cost, and total first-year spend.</p>
+      <p>Note that these are <strong>simplified estimates</strong> based on standard pay-as-you-go pricing. Actual costs may vary based on reserved instances, discounts, specific instance types, and additional services.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Pricing Methodology</h2>
+      <p>The estimates use simplified pricing models based on standard pay-as-you-go rates:</p>
+      <ul>
+        <li><strong>AWS:</strong> (vCPUs &times; $30) + (RAM GB &times; $4) + (Storage GB &times; $0.10) + (Data Transfer GB &times; $0.09) &times; number of servers</li>
+        <li><strong>Azure:</strong> (vCPUs &times; $32) + (RAM GB &times; $3.50) + (Storage GB &times; $0.08) + (Data Transfer GB &times; $0.087) &times; number of servers</li>
+        <li><strong>GCP:</strong> (vCPUs &times; $28) + (RAM GB &times; $3.75) + (Storage GB &times; $0.12) + (Data Transfer GB &times; $0.12) &times; number of servers</li>
+      </ul>
+      <p>On-premise costs are estimated as 30% higher than the most expensive cloud provider. First-year total includes 12 months of cloud costs plus the one-time migration labor expense.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "Which cloud provider is the cheapest?", answer: "Pricing varies by workload configuration. Google Cloud typically offers the lowest compute costs with competitive pricing per vCPU. Azure tends to be more expensive for compute but offers lower storage costs. AWS provides the most flexible pricing options including spot and reserved instances. Always compare based on your specific workload." },
+      { question: "How much does cloud migration cost?", answer: "A simple lift-and-shift of 10 servers typically costs $20,000-$50,000 in professional services and labor. More complex migrations with application rearchitecture can cost $100,000-$500,000+." },
+      { question: "Is the cloud cheaper than on-premise?", answer: "Cloud can be 20-40% cheaper than on-premise when you account for hardware replacement, power/cooling, IT staff, and capacity planning overhead. However, for predictable steady-state workloads, on-premise can sometimes be cheaper." },
+      { question: "What is a lift-and-shift migration?", answer: "Lift-and-shift (rehosting) is the simplest migration strategy where you move applications and data to the cloud with minimal changes. It's faster and less risky than rearchitecting, but may not take full advantage of cloud-native features." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="cloud-migration-cost-estimator" category="saas" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcCloud() {
+  const servers = getNum('cloudServers');
+  const vcpu = getNum('cloudVcpu');
+  const ram = getNum('cloudRam');
+  const storage = getNum('cloudStorage');
+  const transfer = getNum('cloudTransfer');
+  const labor = getNum('cloudLabor');
+  const rate = getNum('cloudRate');
+
+  if (!servers || servers <= 0) return;
+  if (!vcpu || vcpu <= 0) return;
+  if (!ram || ram <= 0) return;
+
+  const awsPerServer = (vcpu * 30) + (ram * 4) + (storage * 0.10) + (transfer * 0.09);
+  const azurePerServer = (vcpu * 32) + (ram * 3.50) + (storage * 0.08) + (transfer * 0.087);
+  const gcpPerServer = (vcpu * 28) + (ram * 3.75) + (storage * 0.12) + (transfer * 0.12);
+
+  const awsMonthly = awsPerServer * servers;
+  const azureMonthly = azurePerServer * servers;
+  const gcpMonthly = gcpPerServer * servers;
+
+  const maxCloud = Math.max(awsMonthly, azureMonthly, gcpMonthly);
+  const onPrem = maxCloud * 1.3;
+  const savings = onPrem - maxCloud;
+
+  const migrationCost = (labor || 0) * (rate || 0);
+
+  const yearAWS = (awsMonthly * 12) + migrationCost;
+  const yearAzure = (azureMonthly * 12) + migrationCost;
+  const yearGCP = (gcpMonthly * 12) + migrationCost;
+
+  document.getElementById('cloudAWS').textContent = formatCurrency(awsMonthly);
+  document.getElementById('cloudAzure').textContent = formatCurrency(azureMonthly);
+  document.getElementById('cloudGCP').textContent = formatCurrency(gcpMonthly);
+  document.getElementById('cloudSavings').textContent = formatCurrency(savings) + ' /mo';
+  document.getElementById('cloudMigration').textContent = formatCurrency(migrationCost);
+  document.getElementById('cloudYearAWS').textContent = formatCurrency(yearAWS);
+  document.getElementById('cloudYearAzure').textContent = formatCurrency(yearAzure);
+  document.getElementById('cloudYearGCP').textContent = formatCurrency(yearGCP);
+  showResult('cloudResult');
+}
+
+function resetCloud() {
+  (document.getElementById('cloudServers') as HTMLInputElement).value = '10';
+  (document.getElementById('cloudVcpu') as HTMLInputElement).value = '8';
+  (document.getElementById('cloudRam') as HTMLInputElement).value = '32';
+  (document.getElementById('cloudStorage') as HTMLInputElement).value = '500';
+  (document.getElementById('cloudTransfer') as HTMLInputElement).value = '1000';
+  (document.getElementById('cloudLabor') as HTMLInputElement).value = '200';
+  (document.getElementById('cloudRate') as HTMLInputElement).value = '150';
+  hideResult('cloudResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcCloud);
+document.getElementById('resetBtn')!.addEventListener('click', resetCloud);
+document.addEventListener('DOMContentLoaded', calcCloud);
+</script>

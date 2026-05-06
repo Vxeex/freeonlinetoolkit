@@ -1,0 +1,214 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['divorce-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Divorce Costs",
+    "description": "Estimate the total cost of a divorce based on your state, marital status, legal fees, and mediation needs.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select your filing state to apply the correct filing fees" },
+      { "@type": "HowToStep", "text": "Choose whether your divorce is contested or uncontested" },
+      { "@type": "HowToStep", "text": "Enter whether children are involved and your estimated asset value range" },
+      { "@type": "HowToStep", "text": "Input your attorney's hourly rate and estimated hours needed" },
+      { "@type": "HowToStep", "text": "Select whether you plan to use mediation and click Calculate" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Plan for the financial side of divorce. This cost estimator accounts for state filing fees, attorney costs, mediation expenses, and court costs based on your specific situation.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Divorce Cost Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="filingState">Filing State</label>
+          <select id="filingState">
+            <option value="CA" selected>California</option>
+            <option value="NY">New York</option>
+            <option value="TX">Texas</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="maritalStatus">Marital Status</label>
+          <select id="maritalStatus">
+            <option value="uncontested" selected>Uncontested</option>
+            <option value="contested">Contested</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="children">Children Involved?</label>
+          <select id="children">
+            <option value="no" selected>No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="assetRange">Assets Value Range</label>
+          <select id="assetRange">
+            <option value="low">Under $100,000</option>
+            <option value="medium" selected>$100,000 - $500,000</option>
+            <option value="high">$500,000 - $1,000,000</option>
+            <option value="veryhigh">Over $1,000,000</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="attorneyRate">Attorney Hourly Rate ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="attorneyRate" class="prefixed" value="350" min="0" step="25">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="attorneyHours">Estimated Attorney Hours</label>
+          <input type="number" id="attorneyHours" value="20" min="1" step="5">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="mediation">Mediation?</label>
+        <select id="mediation">
+          <option value="no" selected>No</option>
+          <option value="yes">Yes (+$5,000 mediation cost)</option>
+        </select>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="divorceResult">
+        <div class="result-value" id="divorceTotal">$0.00</div>
+        <div class="result-label">Total Estimated Cost</div>
+        <div class="result-details">
+          <div><span class="label">Filing Fee</span><span class="value" id="divorceFilingFee">$0</span></div>
+          <div><span class="label">Attorney Fee Estimate</span><span class="value" id="divorceAttorneyFee">$0</span></div>
+          <div><span class="label">Mediation Cost</span><span class="value" id="divorceMediation">$0</span></div>
+          <div><span class="label">Cost Range</span><span class="value" id="divorceRange">$0 &mdash;$0</span></div>
+          <div><span class="label">Estimated Timeline</span><span class="value" id="divorceTimeline">0 months</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Divorce Cost Calculator</h2>
+      <p>Start by selecting your <strong>filing state</strong> &mdash;filing fees vary by state with California ($435), New York ($335), and Texas ($300). Choose your <strong>marital status</strong>: uncontested divorces where both parties agree typically cost much less than contested divorces that go to court.</p>
+      <p>Indicate whether <strong>children</strong> are involved and your <strong>assets value range</strong>, as these factors influence complexity and cost. Enter your <strong>attorney's hourly rate</strong> and the <strong>estimated hours</strong> needed &mdash;uncontested cases average around 20 hours, while contested cases can require 100-200 hours.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Divorce Cost Formula</h2>
+      <div class="formula-box">
+        Total Cost = Filing Fee + Attorney Fees + Mediation Cost + Court Costs
+      </div>
+      <div class="formula-box">
+        Attorney Fees = Hourly Rate &times; Estimated Hours
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the difference between contested and uncontested divorce?", answer: "An uncontested divorce means both spouses agree on all major issues including asset division, child custody, and support. It is faster, cheaper, and less stressful. A contested divorce involves disagreements that require court intervention, making it significantly more expensive and time-consuming." },
+      { question: "How much does mediation cost in a divorce?", answer: "Mediation typically costs $3,000 to $8,000 depending on the mediator's rates, the complexity of issues, and the number of sessions needed. The mediator helps both parties communicate and reach mutually acceptable agreements. While mediation has an upfront cost, it usually saves thousands in attorney fees." },
+      { question: "How long does a divorce take?", answer: "An uncontested divorce can be finalized in 3-6 months depending on your state's waiting period and court processing times. Contested divorces can take 12-24 months or longer, especially when children, complex assets, or high conflict are involved." },
+      { question: "Can I file for divorce without an attorney?", answer: "Yes, you can file for divorce pro se (without an attorney), especially in simple, uncontested cases with no children and minimal assets. Many courts provide self-help resources and forms. However, if there are significant assets, children involved, or any disagreement on terms, hiring an attorney is strongly recommended." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="divorce-calculator" category="legal" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+const STATE_FILING_FEES: Record<string, number> = {
+  CA: 435,
+  NY: 335,
+  TX: 300
+};
+
+const ASSET_MULTIPLIERS: Record<string, number> = {
+  low: 1,
+  medium: 1.2,
+  high: 1.5,
+  veryhigh: 2
+};
+
+function calcDivorce(): void {
+  const state = (document.getElementById('filingState') as HTMLSelectElement).value;
+  const status = (document.getElementById('maritalStatus') as HTMLSelectElement).value;
+  const hasChildren = (document.getElementById('children') as HTMLSelectElement).value;
+  const assetRange = (document.getElementById('assetRange') as HTMLSelectElement).value;
+  const rate = parseFloat((document.getElementById('attorneyRate') as HTMLInputElement).value) || 0;
+  const hours = parseFloat((document.getElementById('attorneyHours') as HTMLInputElement).value) || 0;
+  const mediation = (document.getElementById('mediation') as HTMLSelectElement).value;
+
+  const filingFee = STATE_FILING_FEES[state];
+  const assetMultiplier = ASSET_MULTIPLIERS[assetRange];
+  const childrenMultiplier = hasChildren === 'yes' ? 1.3 : 1;
+
+  let adjustedHours = hours;
+  if (status === 'contested') {
+    adjustedHours = Math.max(hours, 100);
+  }
+  adjustedHours = adjustedHours * assetMultiplier * childrenMultiplier;
+
+  const attorneyFee = rate * adjustedHours;
+  const mediationCost = mediation === 'yes' ? 5000 : 0;
+  const courtCosts = 500;
+  const total = filingFee + attorneyFee + mediationCost + courtCosts;
+  const lowRange = total * 0.8;
+  const highRange = total * 1.2;
+
+  let timelineMonths = 0;
+  if (status === 'uncontested') {
+    timelineMonths = hasChildren === 'yes' ? 6 : 4;
+  } else {
+    timelineMonths = hasChildren === 'yes' ? 18 : 12;
+  }
+  if (assetRange === 'veryhigh') timelineMonths += 6;
+  if (assetRange === 'high') timelineMonths += 3;
+
+  document.getElementById('divorceTotal')!.textContent = '$' + total.toFixed(2);
+  document.getElementById('divorceFilingFee')!.textContent = '$' + filingFee.toFixed(2);
+  document.getElementById('divorceAttorneyFee')!.textContent = '$' + attorneyFee.toFixed(2);
+  document.getElementById('divorceMediation')!.textContent = '$' + mediationCost.toFixed(2);
+  document.getElementById('divorceRange')!.textContent = '$' + lowRange.toFixed(2) + ' &mdash;$' + highRange.toFixed(2);
+  document.getElementById('divorceTimeline')!.textContent = timelineMonths + ' months';
+
+  showResult('divorceResult');
+}
+
+function resetDivorce(): void {
+  (document.getElementById('filingState') as HTMLSelectElement).value = 'CA';
+  (document.getElementById('maritalStatus') as HTMLSelectElement).value = 'uncontested';
+  (document.getElementById('children') as HTMLSelectElement).value = 'no';
+  (document.getElementById('assetRange') as HTMLSelectElement).value = 'medium';
+  (document.getElementById('attorneyRate') as HTMLInputElement).value = '350';
+  (document.getElementById('attorneyHours') as HTMLInputElement).value = '20';
+  (document.getElementById('mediation') as HTMLSelectElement).value = 'no';
+  hideResult('divorceResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcDivorce);
+document.getElementById('resetBtn')!.addEventListener('click', resetDivorce);
+document.addEventListener('DOMContentLoaded', calcDivorce);
+</script>

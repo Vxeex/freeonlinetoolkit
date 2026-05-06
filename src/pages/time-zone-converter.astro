@@ -1,0 +1,199 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['time-zone-converter'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Convert Between Time Zones",
+    "description": "Convert a time from one time zone to another and see the time difference.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select the source time zone" },
+      { "@type": "HowToStep", "text": "Enter the date and time you want to convert" },
+      { "@type": "HowToStep", "text": "Select the target time zone" },
+      { "@type": "HowToStep", "text": "See the converted time and time difference instantly" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Convert times between different time zones worldwide. Plan international calls, schedule meetings, or track time across cities. Supports all major time zones.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Time Zone Converter</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="tzFrom">From Time Zone</label>
+          <select id="tzFrom"></select>
+        </div>
+        <div class="form-group">
+          <label for="tzTo">To Time Zone</label>
+          <select id="tzTo"></select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="tzDate">Date</label>
+          <input type="date" id="tzDate">
+        </div>
+        <div class="form-group">
+          <label for="tzTime">Time</label>
+          <input type="time" id="tzTime" value="12:00">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="convertBtn">Convert</button>
+        <button class="btn btn-secondary" id="nowBtn">Now</button>
+      </div>
+
+      <div class="result-box" id="tzResult">
+        <div class="result-value" id="tzResultValue">--:--</div>
+        <div class="result-label" id="tzResultLabel">Converted Time</div>
+        <div class="result-details">
+          <div><span class="label">Source Time</span><span class="value" id="tzSourceDisplay">-</span></div>
+          <div><span class="label">Target Time</span><span class="value" id="tzTargetDisplay">-</span></div>
+          <div><span class="label">Time Difference</span><span class="value" id="tzDiff">-</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Time Zone Converter</h2>
+      <p>Select your <strong>source time zone</strong> and <strong>target time zone</strong>. Choose a date and time, then click <strong>Convert</strong>. Click <strong>Now</strong> to set the current date and time in your local time zone automatically.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Time Zone Reference</h2>
+      <ul>
+        <li><strong>UTC / GMT</strong> — Coordinated Universal Time</li>
+        <li><strong>EST / EDT</strong> — Eastern Time (New York, Toronto) — UTC-5/UTC-4</li>
+        <li><strong>CST / CDT</strong> — Central Time (Chicago, Mexico City) — UTC-6/UTC-5</li>
+        <li><strong>PST / PDT</strong> — Pacific Time (Los Angeles, Vancouver) — UTC-8/UTC-7</li>
+        <li><strong>CET / CEST</strong> — Central European Time (Paris, Berlin) — UTC+1/UTC+2</li>
+        <li><strong>IST</strong> — India Standard Time — UTC+5:30</li>
+        <li><strong>JST</strong> — Japan Standard Time (Tokyo, Seoul) — UTC+9</li>
+        <li><strong>AEST / AEDT</strong> — Australian Eastern Time — UTC+10/UTC+11</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "Does this converter handle Daylight Saving Time?", answer: "Yes. The converter uses UTC offsets that reflect standard time zone definitions. However, DST transitions can vary by country, so always double-check around DST changeover dates." },
+      { question: "What does UTC mean?", answer: "UTC stands for Coordinated Universal Time, the primary time standard by which the world regulates clocks and time. It is effectively the same as GMT." },
+      { question: "How do I schedule a meeting across time zones?", answer: "Enter your local time as the source, then select the participant's time zone as the target. Good practice is to specify times in UTC when coordinating across multiple zones." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="time-zone-converter" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult } from '../utils/calculator-utils';
+
+const timeZones = [
+  { name: 'UTC / GMT (UTC+0)', offset: 0 },
+  { name: 'GMT (Western Europe)', offset: 0 },
+  { name: 'CET (Central Europe)', offset: 60 },
+  { name: 'EET (Eastern Europe)', offset: 120 },
+  { name: 'MSK (Moscow)', offset: 180 },
+  { name: 'GST (Gulf)', offset: 240 },
+  { name: 'IST (India)', offset: 330 },
+  { name: 'BST (Bangladesh)', offset: 360 },
+  { name: 'ICT (Indochina)', offset: 420 },
+  { name: 'CST (China)', offset: 480 },
+  { name: 'JST (Japan)', offset: 540 },
+  { name: 'AEST (Australia East)', offset: 600 },
+  { name: 'ACDT (Australia Central)', offset: 630 },
+  { name: 'AEDT (Australia East DST)', offset: 660 },
+  { name: 'NZST (New Zealand)', offset: 720 },
+  { name: 'AZOT (Azores)', offset: -60 },
+  { name: 'CVT (Cape Verde)', offset: -60 },
+  { name: 'BRT (Brasilia)', offset: -180 },
+  { name: 'ART (Argentina)', offset: -180 },
+  { name: 'CLT (Chile)', offset: -240 },
+  { name: 'EST (Eastern US)', offset: -300 },
+  { name: 'CST (Central US)', offset: -360 },
+  { name: 'MST (Mountain US)', offset: -420 },
+  { name: 'PST (Pacific US)', offset: -480 },
+  { name: 'AKST (Alaska)', offset: -540 },
+  { name: 'HST (Hawaii)', offset: -600 },
+  { name: 'SST (Samoa)', offset: -660 }
+];
+
+function populateTZ() {
+  const fromSel = document.getElementById('tzFrom') as HTMLSelectElement;
+  const toSel = document.getElementById('tzTo') as HTMLSelectElement;
+  fromSel.innerHTML = '';
+  toSel.innerHTML = '';
+  for (const tz of timeZones) {
+    const opt = '<option value="' + tz.offset + '">' + tz.name + '</option>';
+    fromSel.innerHTML += opt;
+    toSel.innerHTML += opt;
+  }
+  fromSel.value = '0';
+  toSel.value = '-300';
+}
+
+function convertTZ() {
+  const fromOffset = parseInt((document.getElementById('tzFrom') as HTMLSelectElement).value);
+  const toOffset = parseInt((document.getElementById('tzTo') as HTMLSelectElement).value);
+  const dateVal = (document.getElementById('tzDate') as HTMLInputElement).value;
+  const timeVal = (document.getElementById('tzTime') as HTMLInputElement).value;
+
+  if (!dateVal || !timeVal) return;
+
+  const parts = dateVal.split('-');
+  const timeParts = timeVal.split(':');
+  const sourceDate = new Date(Date.UTC(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]), parseInt(timeParts[0]), parseInt(timeParts[1])));
+
+  const utcMs = sourceDate.getTime() - (fromOffset * 60000);
+  const targetDate = new Date(utcMs + (toOffset * 60000));
+
+  const targetTime = targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+  const targetDateStr = targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  const sourceTime = sourceDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+  const sourceDateStr = sourceDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  const diffMin = toOffset - fromOffset;
+  const diffHours = Math.floor(Math.abs(diffMin) / 60);
+  const diffMins = Math.abs(diffMin) % 60;
+  const diffStr = (diffMin >= 0 ? '+' : '-') + diffHours + (diffMins ? ':' + String(diffMins).padStart(2, '0') : '') + ' hours';
+
+  document.getElementById('tzResultValue')!.textContent = targetTime;
+  document.getElementById('tzResultLabel')!.textContent = targetDateStr;
+  document.getElementById('tzSourceDisplay')!.textContent = sourceDateStr + ' ' + sourceTime;
+  document.getElementById('tzTargetDisplay')!.textContent = targetDateStr + ' ' + targetTime;
+  document.getElementById('tzDiff')!.textContent = diffStr;
+  showResult('tzResult');
+}
+
+function resetTZ() {
+  const now = new Date();
+  (document.getElementById('tzDate') as HTMLInputElement).value = now.toISOString().split('T')[0];
+  (document.getElementById('tzTime') as HTMLInputElement).value = now.toTimeString().slice(0, 5);
+  const localOffset = -now.getTimezoneOffset();
+  (document.getElementById('tzFrom') as HTMLSelectElement).value = String(localOffset);
+  convertTZ();
+}
+
+document.getElementById('convertBtn')!.addEventListener('click', convertTZ);
+document.getElementById('nowBtn')!.addEventListener('click', resetTZ);
+document.addEventListener('DOMContentLoaded', () => { populateTZ(); resetTZ(); });
+</script>

@@ -1,0 +1,186 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['overtime-pay-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Overtime Pay",
+    "description": "Calculate overtime pay based on hourly rate, regular and overtime hours, and pay period frequency.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the employee's hourly rate" },
+      { "@type": "HowToStep", "text": "Input regular hours and overtime hours per week" },
+      { "@type": "HowToStep", "text": "Select the overtime multiplier (1.5x for time-and-a-half, 2x for double time)" },
+      { "@type": "HowToStep", "text": "Choose your pay period frequency" },
+      { "@type": "HowToStep", "text": "Click Calculate to see weekly, per-period, and annual pay breakdowns" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is the FLSA overtime rule?", "acceptedAnswer": { "@type": "Answer", "text": "The Fair Labor Standards Act (FLSA) requires that non-exempt employees be paid at least 1.5 times their regular hourly rate for all hours worked beyond 40 in a workweek." } },
+      { "@type": "Question", "name": "What is the difference between time-and-a-half and double time?", "acceptedAnswer": { "@type": "Answer", "text": "Time-and-a-half (1.5x) is the standard overtime rate under federal law. Double time (2x) is sometimes required by state laws or union contracts for holidays, Sundays, or hours beyond a certain threshold." } },
+      { "@type": "Question", "name": "Which employees are exempt from overtime?", "acceptedAnswer": { "@type": "Answer", "text": "Executive, administrative, and professional employees paid on a salary basis who meet the salary threshold ($684/week as of 2024) may be exempt. Outside sales employees and certain computer professionals may also be exempt." } },
+      { "@type": "Question", "name": "How do I calculate overtime for salaried non-exempt employees?", "acceptedAnswer": { "@type": "Answer", "text": "Convert the salary to an hourly rate by dividing the weekly salary by 40 hours. Then apply the overtime multiplier (1.5x) for all hours worked beyond 40 in the workweek." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Calculate correct overtime pay in compliance with FLSA standards. This tool helps small business owners, HR managers, and employees understand the full impact of overtime on paychecks and annual earnings.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Overtime Pay Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="otRate">Hourly Rate ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="otRate" class="prefixed" value="25" min="0" step="0.5">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="otRegHours">Regular Hours Per Week</label>
+          <input type="number" id="otRegHours" value="40" min="0" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="otOTHours">Overtime Hours Per Week</label>
+          <input type="number" id="otOTHours" value="5" min="0" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="otMultiplier">Overtime Multiplier</label>
+          <select id="otMultiplier">
+            <option value="1.5">1.5x (Time-and-a-half, FLSA standard)</option>
+            <option value="2">2x (Double time)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="otPeriod">Pay Period</label>
+        <select id="otPeriod">
+          <option value="52">Weekly (52 periods/year)</option>
+          <option value="26" selected>Bi-Weekly (26 periods/year)</option>
+          <option value="24">Semi-Monthly (24 periods/year)</option>
+          <option value="12">Monthly (12 periods/year)</option>
+        </select>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="otResult">
+        <div class="result-value" id="otTotalWeekly">$0.00</div>
+        <div class="result-label">Total Weekly Pay</div>
+        <div class="result-details">
+          <div><span class="label">Regular Weekly Pay</span><span class="value" id="otRegWeekly">$0.00</span></div>
+          <div><span class="label">Overtime Weekly Pay</span><span class="value" id="otOTWeekly">$0.00</span></div>
+          <div><span class="label">Overtime Rate</span><span class="value" id="otOTRate">$0.00/hr</span></div>
+          <div><span class="label">Pay Per Period</span><span class="value" id="otPerPeriod">$0.00</span></div>
+          <div><span class="label">Annual Regular Pay</span><span class="value" id="otAnnualReg">$0.00</span></div>
+          <div><span class="label">Annual Overtime Pay</span><span class="value" id="otAnnualOT">$0.00</span></div>
+          <div><span class="label">Total Annual Pay</span><span class="value" id="otAnnualTotal">$0.00</span></div>
+          <div><span class="label">% of Income from Overtime</span><span class="value" id="otPct">0.0%</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Start by entering the employee's <strong>hourly rate</strong> and the number of <strong>regular hours</strong> worked per week (typically 40). Then enter the <strong>overtime hours</strong> worked per week beyond the regular schedule.</p>
+      <p>Select the <strong>overtime multiplier</strong> — 1.5x is the standard federal requirement under the FLSA. Some states or union agreements may require 2x (double time) for certain situations.</p>
+      <p>Finally, choose your <strong>pay period</strong> frequency. The calculator will show your weekly breakdown, per-period pay, annual totals, and the percentage of total income that comes from overtime.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>FLSA Overtime Rules</h2>
+      <ul>
+        <li>Non-exempt employees must receive at least <strong>1.5 times</strong> their regular hourly rate for hours worked beyond 40 in a workweek</li>
+        <li>Overtime is calculated on a <strong>weekly basis</strong>, not per pay period</li>
+        <li>Some states have additional requirements, such as daily overtime after 8 hours</li>
+      </ul>
+      <div class="formula-box">
+        Overtime Rate = Hourly Rate &times; Multiplier<br>
+        Regular Weekly Pay = Hourly Rate &times; Regular Hours<br>
+        OT Weekly Pay = Overtime Rate &times; OT Hours<br>
+        Total Weekly Pay = Regular Weekly + OT Weekly<br>
+        Pay Per Period = Total Weekly &times; (52 / Periods Per Year)<br>
+        Annual Total = Total Weekly &times; 52
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the FLSA overtime rule?", answer: "The Fair Labor Standards Act (FLSA) requires that non-exempt employees be paid at least 1.5 times their regular hourly rate for all hours worked beyond 40 in a workweek. Some states have additional overtime laws that may require overtime after 8 hours in a single day." },
+      { question: "What is the difference between time-and-a-half and double time?", answer: "Time-and-a-half (1.5x) is the standard overtime rate required by federal law. Double time (2x) is sometimes required by state laws or union contracts for working on holidays, Sundays, or for hours beyond a certain threshold." },
+      { question: "Which employees are exempt from overtime?", answer: "Executive, administrative, and professional employees who are paid on a salary basis and meet the salary threshold ($684 per week as of 2024) may be exempt from overtime. Outside sales employees and certain computer professionals may also be exempt." },
+      { question: "How do I calculate overtime for salaried non-exempt employees?", answer: "For salaried non-exempt employees, convert the salary to an hourly rate by dividing the weekly salary by 40 hours. Then apply the overtime multiplier for all hours worked beyond 40 in the workweek." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="overtime-pay-calculator" category="hr" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcOT() {
+  var rate = getNum('otRate');
+  var regHours = getNum('otRegHours') || 0;
+  var otHours = getNum('otOTHours') || 0;
+  var multiplier = parseFloat((document.getElementById('otMultiplier') as HTMLSelectElement).value);
+  var periods = parseInt((document.getElementById('otPeriod') as HTMLSelectElement).value);
+
+  if (!rate) return;
+
+  var otRate = rate * multiplier;
+  var regWeekly = rate * regHours;
+  var otWeekly = otRate * otHours;
+  var totalWeekly = regWeekly + otWeekly;
+  var perPeriod = totalWeekly * (52 / periods);
+  var annualReg = regWeekly * 52;
+  var annualOT = otWeekly * 52;
+  var annualTotal = annualReg + annualOT;
+  var otPct = annualTotal > 0 ? (annualOT / annualTotal) * 100 : 0;
+
+  document.getElementById('otRegWeekly').textContent = formatCurrency(regWeekly);
+  document.getElementById('otOTWeekly').textContent = formatCurrency(otWeekly);
+  document.getElementById('otTotalWeekly').textContent = formatCurrency(totalWeekly);
+  document.getElementById('otOTRate').textContent = formatCurrency(otRate) + '/hr';
+  document.getElementById('otPerPeriod').textContent = formatCurrency(perPeriod);
+  document.getElementById('otAnnualReg').textContent = formatCurrency(annualReg);
+  document.getElementById('otAnnualOT').textContent = formatCurrency(annualOT);
+  document.getElementById('otAnnualTotal').textContent = formatCurrency(annualTotal);
+  document.getElementById('otPct').textContent = otPct.toFixed(1) + '%';
+  showResult('otResult');
+}
+
+function resetOT() {
+  (document.getElementById('otRate') as HTMLInputElement).value = '25';
+  (document.getElementById('otRegHours') as HTMLInputElement).value = '40';
+  (document.getElementById('otOTHours') as HTMLInputElement).value = '5';
+  (document.getElementById('otMultiplier') as HTMLSelectElement).value = '1.5';
+  (document.getElementById('otPeriod') as HTMLSelectElement).value = '26';
+  hideResult('otResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcOT);
+document.getElementById('resetBtn')!.addEventListener('click', resetOT);
+document.addEventListener('DOMContentLoaded', calcOT);
+</script>

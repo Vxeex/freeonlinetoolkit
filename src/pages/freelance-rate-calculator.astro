@@ -1,0 +1,419 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['freelance-rate-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Your Freelance Hourly Rate",
+    "description": "Calculate your freelance hourly rate based on desired income, business expenses, billable hours, and taxes.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your desired annual salary or income target" },
+      { "@type": "HowToStep", "text": "Enter your monthly business expenses" },
+      { "@type": "HowToStep", "text": "Set your billable hours per week and vacation days" },
+      { "@type": "HowToStep", "text": "Enter your tax rate and desired profit margin" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your hourly, daily, and project rates" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Why do freelancers bill fewer hours than they work?", "acceptedAnswer": { "@type": "Answer", "text": "Freelancers spend about 60% of their working hours on billable client work. The rest goes to administrative tasks, marketing, proposals, accounting, and professional development. This utilization rate of 60-70% is considered healthy." } },
+      { "@type": "Question", "name": "What about benefits like health insurance and retirement?", "acceptedAnswer": { "@type": "Answer", "text": "Unlike employees, freelancers pay 100% of their health insurance and retirement savings. A good rule is to add 20-30% to your desired income to account for these costs, or include health insurance premiums in your monthly expenses." } },
+      { "@type": "Question", "name": "Should I charge hourly or per project?", "acceptedAnswer": { "@type": "Answer", "text": "Hourly billing works well for ongoing work. Project-based pricing rewards efficiency. Many freelancers use a hybrid: calculate your hourly rate as a baseline, then quote fixed project prices based on estimated hours." } },
+      { "@type": "Question", "name": "How often should I review my rates?", "acceptedAnswer": { "@type": "Answer", "text": "Review your rates at least once a year. Increase them when you gain experience or your expenses rise. A standard practice is to raise rates 5-10% annually. Never lower your rates — offer a smaller scope instead." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Set your rates with confidence. Enter your income goal and expenses to get your ideal hourly rate, day rate, weekly rate, and project pricing. Built for freelancers, consultants, and independent contractors.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Rate Calculator</h2>
+
+      <!-- Mode toggle -->
+      <div class="mode-toggle-wrap" role="tablist" style="display:flex;background:var(--color-bg);border-radius:var(--radius-sm);padding:3px;margin-bottom:22px;border:1px solid var(--color-border-light);">
+        <button class="mode-btn active" data-mode="hourly" role="tab" aria-selected="true" onclick="switchMode('hourly')" style="flex:1;padding:9px 16px;border:none;background:var(--color-surface);border-radius:6px;font-family:var(--font-body);font-size:0.85rem;font-weight:600;color:var(--color-primary);cursor:pointer;box-shadow:var(--shadow-sm);">
+          <i class="fa-regular fa-clock"></i> Hourly / Day Rate
+        </button>
+        <button class="mode-btn" data-mode="project" role="tab" aria-selected="false" onclick="switchMode('project')" style="flex:1;padding:9px 16px;border:none;background:transparent;border-radius:6px;font-family:var(--font-body);font-size:0.85rem;font-weight:500;color:var(--color-text-secondary);cursor:pointer;">
+          <i class="fa-regular fa-file-lines"></i> Project Rate
+        </button>
+      </div>
+
+      <!-- Hourly / Day Rate Panel -->
+      <div class="hourly-panel" id="hourlyPanel">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="desiredSalary">Desired Annual Income (after expenses & taxes)</label>
+            <div class="input-wrap">
+              <span class="prefix">$</span>
+              <input type="number" id="desiredSalary" class="prefixed" value="80000" min="0" step="1000">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="monthlyExpenses">Business Expenses (per month)</label>
+            <div class="input-wrap">
+              <span class="prefix">$</span>
+              <input type="number" id="monthlyExpenses" class="prefixed" value="1500" min="0" step="100">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="billableHours">Billable Hours Per Week</label>
+            <input type="number" id="billableHours" value="25" min="1" max="80" step="1">
+            <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Typical: 20-30 hours for freelancers</span>
+          </div>
+          <div class="form-group">
+            <label for="vacationDays">Vacation Days Per Year</label>
+            <input type="number" id="vacationDays" value="20" min="0" max="365" step="1">
+            <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Includes holidays & sick days</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taxRate">Tax Rate (%)</label>
+            <input type="number" id="taxRate" value="30" min="0" max="60" step="0.5">
+            <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Self-employment + income tax</span>
+          </div>
+          <div class="form-group">
+            <label for="profitMargin">Profit Margin (%)</label>
+            <input type="number" id="profitMargin" value="15" min="0" max="100" step="1">
+            <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Profit / buffer above costs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Rate Panel -->
+      <div class="project-panel" id="projectPanel" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="projectHours">Estimated Project Hours</label>
+            <input type="number" id="projectHours" value="40" min="1" max="9999" step="1">
+          </div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--color-text-secondary);margin-bottom:0;">First calculate your hourly rate above, then enter project hours to see the total price.</p>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn"><i class="fa-solid fa-calculator"></i> Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="rateResult">
+        <div class="result-value" id="primaryRate">$0.00</div>
+        <div class="result-label" id="primaryRateLabel">Hourly Rate</div>
+        <div id="ratesGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;">
+          <div class="result-card" style="background:var(--color-bg);border-radius:var(--radius-sm);padding:16px;text-align:center;border:1px solid var(--color-border-light);">
+            <div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--color-primary);" id="resultHourly">$0.00</div>
+            <div style="font-size:0.75rem;color:var(--color-text-secondary);">Hourly Rate</div>
+          </div>
+          <div class="result-card" style="background:var(--color-bg);border-radius:var(--radius-sm);padding:16px;text-align:center;border:1px solid var(--color-border-light);">
+            <div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--color-primary);" id="resultDaily">$0.00</div>
+            <div style="font-size:0.75rem;color:var(--color-text-secondary);">Daily Rate (8 hours)</div>
+          </div>
+          <div class="result-card" style="background:var(--color-bg);border-radius:var(--radius-sm);padding:16px;text-align:center;border:1px solid var(--color-border-light);">
+            <div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--color-text);" id="resultWeekly">$0.00</div>
+            <div style="font-size:0.75rem;color:var(--color-text-secondary);">Weekly Rate</div>
+          </div>
+          <div class="result-card" style="background:var(--color-bg);border-radius:var(--radius-sm);padding:16px;text-align:center;border:1px solid var(--color-border-light);">
+            <div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--color-text);" id="resultMonthly">$0.00</div>
+            <div style="font-size:0.75rem;color:var(--color-text-secondary);">Monthly Revenue Needed</div>
+          </div>
+          <div class="result-card" style="background:var(--color-bg);border-radius:var(--radius-sm);padding:16px;text-align:center;border:1px solid var(--color-border-light);">
+            <div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--color-text);" id="resultBreakEven">0 hrs</div>
+            <div style="font-size:0.75rem;color:var(--color-text-secondary);">Break-Even Hours / Month</div>
+          </div>
+          <div class="result-card" style="background:var(--color-bg);border-radius:var(--radius-sm);padding:16px;text-align:center;border:1px solid var(--color-border-light);">
+            <div style="font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--color-text);" id="resultProjectPrice">$0.00</div>
+            <div style="font-size:0.75rem;color:var(--color-text-secondary);">Project Price (estimated)</div>
+          </div>
+        </div>
+
+        <div class="rate-breakdown" id="rateBreakdown" style="background:var(--color-bg);border-radius:var(--radius-md);padding:20px;margin-top:16px;border:1px solid var(--color-border-light);">
+          <h3 style="font-family:var(--font-display);font-size:0.95rem;font-weight:600;margin-bottom:12px;color:var(--color-text);"><i class="fa-solid fa-chart-simple" style="margin-right:6px;color:var(--color-primary);"></i> How Your Rate Is Calculated</h3>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:0.88rem;border-bottom:1px solid var(--color-border-light);">
+            <span style="color:var(--color-text-secondary);">Desired Annual Income</span>
+            <span style="font-weight:600;color:var(--color-text);font-family:var(--font-mono);font-size:0.85rem;" id="bdIncome">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:0.88rem;border-bottom:1px solid var(--color-border-light);">
+            <span style="color:var(--color-text-secondary);">Annual Business Expenses</span>
+            <span style="font-weight:600;color:var(--color-text);font-family:var(--font-mono);font-size:0.85rem;" id="bdExpenses">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:0.88rem;border-bottom:1px solid var(--color-border-light);">
+            <span style="color:var(--color-text-secondary);">Total Revenue Needed (before tax)</span>
+            <span style="font-weight:600;color:var(--color-text);font-family:var(--font-mono);font-size:0.85rem;" id="bdRevenueNeeded">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:0.88rem;border-bottom:1px solid var(--color-border-light);">
+            <span style="color:var(--color-text-secondary);">Tax Amount</span>
+            <span style="font-weight:600;color:var(--color-text);font-family:var(--font-mono);font-size:0.85rem;" id="bdTax">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:0.88rem;border-bottom:1px solid var(--color-border-light);">
+            <span style="color:var(--color-text-secondary);">Profit Margin Buffer</span>
+            <span style="font-weight:600;color:var(--color-text);font-family:var(--font-mono);font-size:0.85rem;" id="bdProfit">$0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:0.88rem;border-bottom:1px solid var(--color-border-light);">
+            <span style="color:var(--color-text-secondary);">Total Billable Hours / Year</span>
+            <span style="font-weight:600;color:var(--color-text);font-family:var(--font-mono);font-size:0.85rem;" id="bdBillableHours">0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:0.88rem;">
+            <span style="font-weight:600;color:var(--color-text);">Resulting Hourly Rate</span>
+            <span style="color:var(--color-primary);font-size:1rem;font-family:var(--font-mono);font-weight:700;" id="bdHourlyResult">$0.00</span>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;background:var(--color-accent-bg);border:1px solid rgba(180,83,9,0.15);border-radius:var(--radius-sm);padding:12px 16px;margin-top:16px;font-size:0.82rem;color:var(--color-text-secondary);line-height:1.5;">
+          <i class="fa-solid fa-lightbulb" style="color:var(--color-accent);font-size:0.9rem;margin-top:1px;flex-shrink:0;"></i>
+          <span id="infoTipText">Most freelancers bill 20-30 hours per week. If you're new, consider starting with a lower rate and raising it as you build your portfolio and reputation.</span>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This calculator helps you determine what to charge as a freelancer by working backward from your financial goals. Here is how it works:</p>
+      <ol>
+        <li><strong>Desired annual income</strong> — how much you want to take home after expenses and taxes.</li>
+        <li><strong>Business expenses</strong> — software, tools, office space, insurance, and other monthly costs.</li>
+        <li><strong>Billable hours per week</strong> — the hours you can realistically charge clients. Typically 20-30 hours.</li>
+        <li><strong>Vacation days</strong> — days off including holidays and sick leave.</li>
+        <li><strong>Tax rate</strong> — your combined self-employment tax plus income tax. Budget 25-35%.</li>
+        <li><strong>Profit margin</strong> — a buffer for unexpected costs, savings, and business growth.</li>
+      </ol>
+      <p>Toggle to <strong>Project Rate</strong> mode to calculate a fixed price for a project based on your hourly rate.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Understanding the Formula</h2>
+      <div class="formula-box">
+        1. Annual Expenses = Monthly Expenses x 12<br>
+        2. Total Revenue Need = Desired Income + Annual Expenses<br>
+        3. Gross Revenue Target = Total Revenue Need / (1 - Tax Rate)<br>
+        4. Final Target = Gross Revenue Target x (1 + Profit Margin)<br>
+        5. Billable Hours/Year = (260 - Vacation Days) x (Billable Hours/Week / 5)<br>
+        6. Hourly Rate = Final Target / Billable Hours/Year
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "Why do freelancers bill fewer hours than they work?", answer: "Freelancers spend about 60% of their working hours on billable client work. The rest goes to administrative tasks, marketing, proposals, accounting, and professional development. This utilization rate of 60-70% is considered healthy." },
+      { question: "What about benefits like health insurance and retirement?", answer: "Unlike employees, freelancers pay 100% of their health insurance and retirement savings. A good rule is to add 20-30% to your desired income to account for these costs, or include health insurance premiums in your monthly expenses." },
+      { question: "Should I charge hourly or per project?", answer: "Hourly billing works well for ongoing work. Project-based pricing rewards efficiency. Many freelancers use a hybrid: calculate your hourly rate as a baseline, then quote fixed project prices based on estimated hours." },
+      { question: "How often should I review my rates?", answer: "Review your rates at least once a year. Increase them when you gain experience or your expenses rise. A standard practice is to raise rates 5-10% annually. Never lower your rates — offer a smaller scope instead." },
+      { question: "What is the difference between gross revenue and take-home pay?", answer: "Gross revenue is everything you invoice clients. From that, you subtract business expenses, taxes, and profit margin before arriving at your take-home pay. This is why the required hourly rate is higher than you might expect." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="freelance-rate-calculator" category="freelancing" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+var currentMode = 'hourly';
+
+function switchMode(mode: string) {
+  currentMode = mode;
+  var btns = document.querySelectorAll('.mode-btn');
+  btns.forEach(function(b) {
+    var btn = b as HTMLElement;
+    if (btn.dataset.mode === mode) {
+      btn.style.background = 'var(--color-surface)';
+      btn.style.color = 'var(--color-primary)';
+      btn.style.fontWeight = '600';
+      btn.style.boxShadow = 'var(--shadow-sm)';
+      (btn as HTMLButtonElement).setAttribute('aria-selected', 'true');
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.color = 'var(--color-text-secondary)';
+      btn.style.fontWeight = '500';
+      btn.style.boxShadow = 'none';
+      (btn as HTMLButtonElement).setAttribute('aria-selected', 'false');
+    }
+  });
+  var hp = document.getElementById('hourlyPanel');
+  var pp = document.getElementById('projectPanel');
+  if (hp) { (hp as HTMLElement).style.display = mode === 'hourly' ? 'block' : 'none'; }
+  if (pp) { (pp as HTMLElement).style.display = mode === 'project' ? 'block' : 'none'; }
+  var rr = document.getElementById('rateResult');
+  if (rr && rr.classList.contains('visible')) {
+    if (mode === 'project') {
+      showProjectRate();
+    } else {
+      calculateRates();
+    }
+  }
+}
+
+function calculateRates() {
+  var desiredIncome = getNum('desiredSalary');
+  var monthlyExp = getNum('monthlyExpenses');
+  var billHrs = getNum('billableHours');
+  var vacDays = getNum('vacationDays');
+  var taxPct = getNum('taxRate');
+  var profitPct = getNum('profitMargin');
+
+  if (!desiredIncome || desiredIncome <= 0) { desiredIncome = 80000; (document.getElementById('desiredSalary') as HTMLInputElement).value = '80000'; }
+  if (!monthlyExp || monthlyExp < 0) { monthlyExp = 0; (document.getElementById('monthlyExpenses') as HTMLInputElement).value = '0'; }
+  if (!billHrs || billHrs <= 0) { billHrs = 25; (document.getElementById('billableHours') as HTMLInputElement).value = '25'; }
+  if (vacDays === null || vacDays < 0) { vacDays = 20; (document.getElementById('vacationDays') as HTMLInputElement).value = '20'; }
+  if (!taxPct || taxPct < 0) { taxPct = 30; (document.getElementById('taxRate') as HTMLInputElement).value = '30'; }
+  if (!profitPct || profitPct < 0) { profitPct = 15; (document.getElementById('profitMargin') as HTMLInputElement).value = '15'; }
+
+  var annualExpenses = monthlyExp * 12;
+  var totalNeeded = desiredIncome + annualExpenses;
+  var taxDecimal = taxPct / 100;
+  var grossRevenue = totalNeeded / (1 - taxDecimal);
+  var profitDecimal = profitPct / 100;
+  var finalTarget = grossRevenue * (1 + profitDecimal);
+
+  var totalWorkDaysPerYear = 260;
+  var billableDays = Math.max(1, totalWorkDaysPerYear - vacDays);
+  var billableHrsPerDay = billHrs / 5;
+  var billableHrsPerYear = billableDays * billableHrsPerDay;
+
+  var hourlyRate = finalTarget / billableHrsPerYear;
+  var dailyRate = hourlyRate * 8;
+  var weeklyRate = hourlyRate * billHrs;
+  var monthlyRevenue = finalTarget / 12;
+  var breakEvenHours = (annualExpenses / 12) / hourlyRate;
+
+  var taxAmount = grossRevenue - totalNeeded;
+  var profitAmount = finalTarget - grossRevenue;
+
+  document.getElementById('primaryRate')!.textContent = formatCurrency(hourlyRate);
+  document.getElementById('primaryRateLabel')!.textContent = 'Hourly Rate';
+
+  document.getElementById('resultHourly')!.textContent = formatCurrency(hourlyRate);
+  document.getElementById('resultDaily')!.textContent = formatCurrency(dailyRate);
+  document.getElementById('resultWeekly')!.textContent = formatCurrency(weeklyRate);
+  document.getElementById('resultMonthly')!.textContent = formatCurrency(monthlyRevenue);
+  document.getElementById('resultBreakEven')!.textContent = Math.ceil(breakEvenHours) + ' hrs';
+  document.getElementById('resultProjectPrice')!.textContent = formatCurrency(hourlyRate * 40);
+  document.getElementById('resultProjectPrice')!.parentElement!.querySelector('div:last-child')!.textContent = 'Project Price (40 hrs)';
+
+  document.getElementById('bdIncome')!.textContent = formatCurrency(desiredIncome);
+  document.getElementById('bdExpenses')!.textContent = formatCurrency(annualExpenses);
+  document.getElementById('bdRevenueNeeded')!.textContent = formatCurrency(totalNeeded);
+  document.getElementById('bdTax')!.textContent = formatCurrency(taxAmount);
+  document.getElementById('bdProfit')!.textContent = formatCurrency(profitAmount);
+  document.getElementById('bdBillableHours')!.textContent = Math.round(billableHrsPerYear).toString();
+  document.getElementById('bdHourlyResult')!.textContent = formatCurrency(hourlyRate);
+
+  var tips = [
+    'Most freelancers bill 20-30 hours per week. If you are new, consider starting with a lower rate and raising it as you build your portfolio and reputation.',
+    'Remember to include health insurance, retirement savings, and professional development in your desired income or expenses.',
+    'If this rate seems high, try increasing your billable hours or reducing expenses.',
+    'Many freelancers find they need to raise rates every 6-12 months as their skills and experience grow.'
+  ];
+  document.getElementById('infoTipText')!.textContent = tips[Math.floor(Math.random() * tips.length)];
+
+  showResult('rateResult');
+}
+
+function showProjectRate() {
+  var projectHrs = getNum('projectHours');
+  if (!projectHrs || projectHrs <= 0) { projectHrs = 40; (document.getElementById('projectHours') as HTMLInputElement).value = '40'; }
+
+  var desiredIncome = getNum('desiredSalary');
+  var monthlyExp = getNum('monthlyExpenses');
+  var billHrs = getNum('billableHours');
+  var vacDays = getNum('vacationDays');
+  var taxPct = getNum('taxRate');
+  var profitPct = getNum('profitMargin');
+
+  if (!desiredIncome || desiredIncome <= 0) { desiredIncome = 80000; }
+  if (!monthlyExp || monthlyExp < 0) { monthlyExp = 0; }
+  if (!billHrs || billHrs <= 0) { billHrs = 25; }
+  if (vacDays === null || vacDays < 0) { vacDays = 20; }
+  if (!taxPct || taxPct < 0) { taxPct = 30; }
+  if (!profitPct || profitPct < 0) { profitPct = 15; }
+
+  var annualExpenses = monthlyExp * 12;
+  var totalNeeded = desiredIncome + annualExpenses;
+  var taxDecimal = taxPct / 100;
+  var grossRevenue = totalNeeded / (1 - taxDecimal);
+  var profitDecimal = profitPct / 100;
+  var finalTarget = grossRevenue * (1 + profitDecimal);
+  var totalWorkDaysPerYear = 260;
+  var billableDays = Math.max(1, totalWorkDaysPerYear - vacDays);
+  var billableHrsPerDay = billHrs / 5;
+  var billableHrsPerYear = billableDays * billableHrsPerDay;
+  var hourlyRate = finalTarget / billableHrsPerYear;
+  var projectPrice = hourlyRate * projectHrs;
+
+  document.getElementById('primaryRate')!.textContent = formatCurrency(projectPrice);
+  document.getElementById('primaryRateLabel')!.textContent = 'Project Price (' + projectHrs + ' hours)';
+
+  document.getElementById('resultHourly')!.textContent = formatCurrency(hourlyRate);
+  document.getElementById('resultDaily')!.textContent = formatCurrency(hourlyRate * 8);
+  document.getElementById('resultWeekly')!.textContent = formatCurrency(hourlyRate * billHrs);
+  document.getElementById('resultMonthly')!.textContent = formatCurrency(finalTarget / 12);
+  document.getElementById('resultBreakEven')!.textContent = Math.ceil((annualExpenses / 12) / hourlyRate) + ' hrs';
+  document.getElementById('resultProjectPrice')!.textContent = formatCurrency(projectPrice);
+
+  var taxAmount = grossRevenue - totalNeeded;
+  var profitAmount = finalTarget - grossRevenue;
+  document.getElementById('bdIncome')!.textContent = formatCurrency(desiredIncome);
+  document.getElementById('bdExpenses')!.textContent = formatCurrency(annualExpenses);
+  document.getElementById('bdRevenueNeeded')!.textContent = formatCurrency(totalNeeded);
+  document.getElementById('bdTax')!.textContent = formatCurrency(taxAmount);
+  document.getElementById('bdProfit')!.textContent = formatCurrency(profitAmount);
+  document.getElementById('bdBillableHours')!.textContent = Math.round(billableHrsPerYear).toString();
+  document.getElementById('bdHourlyResult')!.textContent = formatCurrency(hourlyRate);
+
+  var pTips = [
+    'Project-based pricing rewards efficiency. If you finish early, your effective hourly rate goes up.',
+    'Be specific in your project scope to avoid scope creep. Define what is included and what costs extra.',
+    'For large projects, consider milestone payments rather than one lump sum at the end.',
+    'Always add a buffer of 20-30% to your estimated hours for revisions and unexpected complications.'
+  ];
+  document.getElementById('infoTipText')!.textContent = pTips[Math.floor(Math.random() * pTips.length)];
+
+  showResult('rateResult');
+}
+
+function resetAll() {
+  (document.getElementById('desiredSalary') as HTMLInputElement).value = '80000';
+  (document.getElementById('monthlyExpenses') as HTMLInputElement).value = '1500';
+  (document.getElementById('billableHours') as HTMLInputElement).value = '25';
+  (document.getElementById('vacationDays') as HTMLInputElement).value = '20';
+  (document.getElementById('taxRate') as HTMLInputElement).value = '30';
+  (document.getElementById('profitMargin') as HTMLInputElement).value = '15';
+  (document.getElementById('projectHours') as HTMLInputElement).value = '40';
+  currentMode = 'hourly';
+  switchMode('hourly');
+  hideResult('rateResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', function() {
+  if (currentMode === 'project') {
+    showProjectRate();
+  } else {
+    calculateRates();
+  }
+});
+document.getElementById('resetBtn')!.addEventListener('click', resetAll);
+document.addEventListener('DOMContentLoaded', function() {
+  calculateRates();
+});
+
+(window as any).switchMode = switchMode;
+</script>

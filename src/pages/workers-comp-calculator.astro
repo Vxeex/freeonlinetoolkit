@@ -1,0 +1,194 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['workers-comp-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate a Workers Compensation Settlement",
+    "description": "Estimate the value of a workers' compensation claim including temporary total disability, permanent partial disability, and medical costs.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your weekly wage before the injury" },
+      { "@type": "HowToStep", "text": "Select your injury type and enter your permanent partial disability rating" },
+      { "@type": "HowToStep", "text": "Enter the number of weeks of temporary total disability" },
+      { "@type": "HowToStep", "text": "Input your medical costs to date and select your state" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your estimated settlement and net after attorney fee" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate the value of your workers' compensation claim. This calculator considers your weekly wage, injury type, permanent partial disability rating, and medical costs to give you a realistic settlement figure.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Workers Comp Settlement Calculator</h2>
+      <div class="form-group">
+        <label for="weeklyWage">Weekly Wage ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="weeklyWage" class="prefixed" value="1000" min="0" step="50">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="injuryType">Injury Type</label>
+          <select id="injuryType">
+            <option value="minor">Minor (muscle strains, contusions) &mdash;5% impairment</option>
+            <option value="moderate" selected>Moderate (fractures, sprains) &mdash;15% impairment</option>
+            <option value="severe">Severe (herniated disc, torn ligaments) &mdash;30% impairment</option>
+            <option value="catastrophic">Catastrophic (spinal cord, brain injury) &mdash;60% impairment</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ppdRating">PPD Rating (%) <span class="optional">0-100</span></label>
+          <input type="number" id="ppdRating" value="15" min="0" max="100" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ttdWeeks">Weeks of TTD</label>
+          <input type="number" id="ttdWeeks" value="12" min="0" max="520">
+        </div>
+        <div class="form-group">
+          <label for="medicalCosts">Medical Costs to Date ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="medicalCosts" class="prefixed" value="5000" min="0" step="500">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="wcState">State</label>
+        <select id="wcState">
+          <option value="CA" selected>California (max 104 TTD weeks)</option>
+          <option value="FL">Florida (max 104 TTD weeks)</option>
+          <option value="NY">New York (max 260 TTD weeks)</option>
+          <option value="TX">Texas (max 104 TTD weeks)</option>
+          <option value="IL">Illinois (max 130 TTD weeks)</option>
+        </select>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="wcResult">
+        <div class="result-value" id="wcTotal">$0.00</div>
+        <div class="result-label">Total Estimated Settlement</div>
+        <div class="result-details">
+          <div><span class="label">Temporary Total Disability Payment</span><span class="value" id="wcTTD">$0</span></div>
+          <div><span class="label">Permanent Partial Disability Award</span><span class="value" id="wcPPD">$0</span></div>
+          <div><span class="label">Medical Cost Reimbursement</span><span class="value" id="wcMedical">$0</span></div>
+          <div><span class="label">Net After Attorney Fee (15%)</span><span class="value" id="wcNetAfterFee">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Workers Comp Settlement Estimator</h2>
+      <p>Start by entering your <strong>weekly wage</strong> before the injury. Select your <strong>injury type</strong> from the dropdown &mdash;each type has a preset impairment rating that serves as a starting point. You can also manually enter a <strong>PPD rating</strong> (permanent partial disability percentage from 0 to 100) if you have one from your doctor.</p>
+      <p>Enter the number of <strong>weeks of temporary total disability (TTD)</strong> &mdash;this is the time you were completely unable to work. Add your <strong>medical costs to date</strong> including hospital bills, surgery, therapy, and medications. Select your <strong>state</strong> to apply the correct maximum TTD benefit duration.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Workers Comp Settlement Formula</h2>
+      <div class="formula-box">
+        TTD Benefit = Weekly Wage &times; 66.7% (capped at state maximum)
+      </div>
+      <div class="formula-box">
+        TTD Payment = TTD Benefit &times; TTD Weeks (capped at state max weeks)
+      </div>
+      <div class="formula-box">
+        PPD Value = PPD Rating% &times; 500 weeks &times; Weekly Wage &times; 66.7%
+      </div>
+      <div class="formula-box">
+        Total Settlement = TTD Payment + PPD Value + Medical Costs
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a permanent partial disability (PPD) rating?", answer: "A PPD rating is a percentage assigned by your doctor that measures the permanent impairment caused by your work injury. It is based on medical guidelines and considers factors like loss of range of motion, pain, and functional limitations. The rating is used to calculate your permanent disability award." },
+      { question: "Do I need a lawyer for a workers comp claim?", answer: "For straightforward claims with clear liability and prompt payment of benefits, you may not need a lawyer. However, if your claim is denied, you have a permanent disability, your employer disputes the injury, or you are being pressured to settle for less than you deserve, a workers' compensation attorney can be invaluable." },
+      { question: "How are workers comp attorney fees calculated?", answer: "Workers' comp attorney fees are typically lower than personal injury fees. Many states cap workers comp attorney fees at 10-20% of the settlement or award, often around 15%. In some states, the fee must be approved by the workers' compensation board." },
+      { question: "Can I receive both workers comp and Social Security disability?", answer: "Yes, you can receive both, but there may be offsets. Social Security Disability Insurance (SSDI) benefits may be reduced if your workers comp payments exceed 80% of your average current earnings. This is known as the workers comp offset." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="workers-comp-calculator" category="legal" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+const STATE_MAX_TTD: Record<string, number> = {
+  CA: 104,
+  FL: 104,
+  NY: 260,
+  TX: 104,
+  IL: 130
+};
+
+const INJURY_IMPAIRMENT: Record<string, number> = {
+  minor: 5,
+  moderate: 15,
+  severe: 30,
+  catastrophic: 60
+};
+
+function calcWorkersComp(): void {
+  const wage = parseFloat((document.getElementById('weeklyWage') as HTMLInputElement).value) || 0;
+  const injuryType = (document.getElementById('injuryType') as HTMLSelectElement).value;
+  const ppdInput = parseFloat((document.getElementById('ppdRating') as HTMLInputElement).value) || 0;
+  const ttdWeeks = parseFloat((document.getElementById('ttdWeeks') as HTMLInputElement).value) || 0;
+  const medical = parseFloat((document.getElementById('medicalCosts') as HTMLInputElement).value) || 0;
+  const state = (document.getElementById('wcState') as HTMLSelectElement).value;
+
+  const ppdRating = ppdInput > 0 ? ppdInput : INJURY_IMPAIRMENT[injuryType];
+
+  const ttdBenefitRate = wage * 0.667;
+  const maxTtdWeeks = STATE_MAX_TTD[state];
+  const cappedTtdWeeks = Math.min(ttdWeeks, maxTtdWeeks);
+  const ttdPayment = ttdBenefitRate * cappedTtdWeeks;
+
+  const ppdValue = (ppdRating / 100) * 500 * ttdBenefitRate;
+
+  const total = ttdPayment + ppdValue + medical;
+  const netAfterFee = total * 0.85;
+
+  document.getElementById('wcTotal')!.textContent = '$' + total.toFixed(2);
+  document.getElementById('wcTTD')!.textContent = '$' + ttdPayment.toFixed(2);
+  document.getElementById('wcPPD')!.textContent = '$' + ppdValue.toFixed(2);
+  document.getElementById('wcMedical')!.textContent = '$' + medical.toFixed(2);
+  document.getElementById('wcNetAfterFee')!.textContent = '$' + netAfterFee.toFixed(2);
+
+  showResult('wcResult');
+}
+
+function resetWorkersComp(): void {
+  (document.getElementById('weeklyWage') as HTMLInputElement).value = '1000';
+  (document.getElementById('injuryType') as HTMLSelectElement).value = 'moderate';
+  (document.getElementById('ppdRating') as HTMLInputElement).value = '15';
+  (document.getElementById('ttdWeeks') as HTMLInputElement).value = '12';
+  (document.getElementById('medicalCosts') as HTMLInputElement).value = '5000';
+  (document.getElementById('wcState') as HTMLSelectElement).value = 'CA';
+  hideResult('wcResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcWorkersComp);
+document.getElementById('resetBtn')!.addEventListener('click', resetWorkersComp);
+document.addEventListener('DOMContentLoaded', calcWorkersComp);
+</script>

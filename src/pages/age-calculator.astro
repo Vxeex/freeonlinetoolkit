@@ -1,0 +1,122 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['age-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Age",
+    "description": "Calculate exact age in years, months, and days between any two dates.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your date of birth" },
+      { "@type": "HowToStep", "text": "Optionally set a second date for age calculation" },
+      { "@type": "HowToStep", "text": "Click Calculate to see the exact age" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Calculate your exact age in years, months, and days. This free age calculator also works for calculating the time between any two dates.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Age Calculator</h2>
+      <div class="form-group">
+        <label for="ageBirth">Date of Birth</label>
+        <input type="date" id="ageBirth">
+      </div>
+      <div class="form-group">
+        <label for="ageAsOf">As of Date (optional, defaults to today)</label>
+        <input type="date" id="ageAsOf">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate Age</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="ageResult">
+        <div class="result-value" id="ageDisplay">0 years</div>
+        <div class="result-label">Exact Age</div>
+        <div class="result-details">
+          <div><span class="label">Years</span><span class="value" id="ageYears">0</span></div>
+          <div><span class="label">Months</span><span class="value" id="ageMonths">0</span></div>
+          <div><span class="label">Days</span><span class="value" id="ageDays">0</span></div>
+          <div><span class="label">Total Days</span><span class="value" id="ageTotalDays">0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Age Calculator</h2>
+      <p>Using this age calculator is simple. Enter your <strong>date of birth</strong> and click Calculate to see your exact age. You can also enter a second date to calculate the age between any two dates — useful for anniversaries, project timelines, or historical events.</p>
+      <p>The calculator shows the age in <strong>years</strong>, <strong>months</strong>, and <strong>days</strong>, as well as the total number of days.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How is age calculated exactly?", answer: "Age is calculated by finding the difference between two dates. The calculator accounts for leap years and different month lengths to give the most accurate result." },
+      { question: "Is the date of birth included in the age?", answer: "Yes, the calculator uses a precise day-by-day calculation. If today is your birthday, you are exactly X years old." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="age-calculator" category="health-wellness" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcAge() {
+  const birthStr = (document.getElementById('ageBirth') as HTMLInputElement).value;
+  if (!birthStr) return;
+
+  const birth = new Date(birthStr);
+  const asOfStr = (document.getElementById('ageAsOf') as HTMLInputElement).value;
+  const asOf = asOfStr ? new Date(asOfStr) : new Date();
+
+  if (isNaN(birth.getTime()) || isNaN(asOf.getTime())) return;
+
+  let years = asOf.getFullYear() - birth.getFullYear();
+  let months = asOf.getMonth() - birth.getMonth();
+  let days = asOf.getDate() - birth.getDate();
+
+  if (days < 0) {
+    months--;
+    const prevMonth = new Date(asOf.getFullYear(), asOf.getMonth(), 0);
+    days += prevMonth.getDate();
+  }
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  const totalDays = Math.floor((asOf.getTime() - birth.getTime()) / (1000 * 60 * 60 * 24));
+
+  document.getElementById('ageDisplay')!.textContent = years + ' years, ' + months + ' months, ' + days + ' days';
+  document.getElementById('ageYears')!.textContent = years.toString();
+  document.getElementById('ageMonths')!.textContent = months.toString();
+  document.getElementById('ageDays')!.textContent = days.toString();
+  document.getElementById('ageTotalDays')!.textContent = totalDays.toString();
+  showResult('ageResult');
+}
+
+function resetAge() {
+  (document.getElementById('ageBirth') as HTMLInputElement).value = '';
+  (document.getElementById('ageAsOf') as HTMLInputElement).value = '';
+  hideResult('ageResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcAge);
+document.getElementById('resetBtn')!.addEventListener('click', resetAge);
+</script>

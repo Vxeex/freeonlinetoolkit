@@ -1,0 +1,204 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['salary-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Take-Home Pay",
+    "description": "Calculate your net salary after federal taxes and FICA deductions.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your annual gross salary" },
+      { "@type": "HowToStep", "text": "Select your filing status" },
+      { "@type": "HowToStep", "text": "Choose your pay frequency" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your take-home pay" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What deductions are not included?", "acceptedAnswer": { "@type": "Answer", "text": "This calculator does not include state income tax, pre-tax benefit deductions (health insurance, 401k, FSA/HSA), or local taxes." } },
+      { "@type": "Question", "name": "How do pre-tax 401k contributions affect my taxes?", "acceptedAnswer": { "@type": "Answer", "text": "Pre-tax 401k contributions reduce your taxable income dollar-for-dollar, lowering your federal tax bill, potentially dropping you into a lower bracket." } },
+      { "@type": "Question", "name": "What is marginal vs effective tax rate?", "acceptedAnswer": { "@type": "Answer", "text": "Your marginal rate is the rate on your last dollar of income. Your effective rate is total tax divided by total income — always lower due to progressive brackets and the standard deduction." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Salary Calculator &mdash; Take-Home Pay Estimator</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your net take-home pay after federal income tax and FICA deductions. Based on 2025 federal tax brackets and standard deduction. Results are estimates — actual deductions may vary.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Salary Calculator</h2>
+      <div class="form-group">
+        <label for="salaryGross">Annual Gross Salary</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="salaryGross" class="prefixed" value="75000" min="0" step="1000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="salaryStatus">Filing Status</label>
+          <select id="salaryStatus">
+            <option value="single">Single</option>
+            <option value="married-joint">Married Filing Jointly</option>
+            <option value="head-household">Head of Household</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="salaryFrequency">Pay Frequency</label>
+          <select id="salaryFrequency">
+            <option value="weekly">Weekly (52/year)</option>
+            <option value="bi-weekly" selected>Bi-Weekly (26/year)</option>
+            <option value="semi-monthly">Semi-Monthly (24/year)</option>
+            <option value="monthly">Monthly (12/year)</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="salaryResult">
+        <div class="result-value" id="salaryNetPeriod">$0.00</div>
+        <div class="result-label" id="salaryPeriodLabel">Net Pay Per Period</div>
+        <div class="result-details">
+          <div><span class="label">Net Monthly</span><span class="value" id="salaryNetMonthly">$0</span></div>
+          <div><span class="label">Net Annual</span><span class="value" id="salaryNetAnnual">$0</span></div>
+          <div><span class="label">Federal Income Tax</span><span class="value" id="salaryFedTax">$0</span></div>
+          <div><span class="label">Social Security (6.2%)</span><span class="value" id="salarySS">$0</span></div>
+          <div><span class="label">Medicare (1.45%)</span><span class="value" id="salaryMedicare">$0</span></div>
+          <div><span class="label">Effective Tax Rate</span><span class="value" id="salaryEffRate">0%</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Enter your <strong>annual gross salary</strong>, select your <strong>filing status</strong>, and choose your <strong>pay frequency</strong> to see your take-home pay per period. The calculator applies the 2025 federal standard deduction and marginal tax brackets, then subtracts FICA taxes.</p>
+      <p><strong>Important:</strong> This is a simplified estimator. Actual payroll deductions may include pre-tax benefits, state taxes, and other withholdings.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>2025 Tax Brackets Used</h2>
+      <table class="comparison-table">
+        <thead><tr><th>Rate</th><th>Single</th><th>Married Joint</th><th>Head of Household</th></tr></thead>
+        <tbody>
+          <tr><td>10%</td><td>$0 &ndash;$11,925</td><td>$0 &ndash;$23,850</td><td>$0 &ndash;$17,000</td></tr>
+          <tr><td>12%</td><td>$11,925 &ndash;$48,475</td><td>$23,850 &ndash;$96,950</td><td>$17,000 &ndash;$64,850</td></tr>
+          <tr><td>22%</td><td>$48,475 &ndash;$103,350</td><td>$96,950 &ndash;$206,700</td><td>$64,850 &ndash;$103,350</td></tr>
+          <tr><td>24%</td><td>$103,350 &ndash;$197,300</td><td>$206,700 &ndash;$394,600</td><td>$103,350 &ndash;$197,300</td></tr>
+          <tr><td>32%</td><td>$197,300 &ndash;$250,525</td><td>$394,600 &ndash;$501,050</td><td>$197,300 &ndash;$250,500</td></tr>
+          <tr><td>35%</td><td>$250,525+</td><td>$501,050+</td><td>$250,500+</td></tr>
+          <tr><td>37%</td><td>$626,350+</td><td>$751,600+</td><td>$626,350+</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px;">Standard deduction 2025: <strong>$15,000</strong> (Single), <strong>$30,000</strong> (Married Joint), <strong>$22,500</strong> (Head of Household).</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What deductions are not included?", answer: "This calculator does not include state income tax, pre-tax benefit deductions (health insurance, 401k contributions, FSA/HSA), or local taxes. Your actual take-home pay will be lower if you have these deductions." },
+      { question: "How do pre-tax 401k contributions affect my taxes?", answer: "Pre-tax 401k contributions reduce your taxable income dollar-for-dollar, lowering your federal tax bill, potentially dropping you into a lower bracket." },
+      { question: "What is marginal vs effective tax rate?", answer: "Your marginal rate is the rate you pay on your last dollar of income. Your effective rate is your total tax divided by your total income — it's always lower because of the progressive bracket system and standard deduction." },
+      { question: "Does the calculator include the standard deduction?", answer: "Yes. The calculator automatically subtracts the 2025 standard deduction based on your filing status before computing federal tax." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="salary-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+const TAX_BRACKETS: Record<string, { min: number; rate: number }[]> = {
+  'single': [
+    { min: 0, rate: 0.10 }, { min: 11925, rate: 0.12 }, { min: 48475, rate: 0.22 },
+    { min: 103350, rate: 0.24 }, { min: 197300, rate: 0.32 }, { min: 250525, rate: 0.35 }, { min: 626350, rate: 0.37 }
+  ],
+  'married-joint': [
+    { min: 0, rate: 0.10 }, { min: 23850, rate: 0.12 }, { min: 96950, rate: 0.22 },
+    { min: 206700, rate: 0.24 }, { min: 394600, rate: 0.32 }, { min: 501050, rate: 0.35 }, { min: 751600, rate: 0.37 }
+  ],
+  'head-household': [
+    { min: 0, rate: 0.10 }, { min: 17000, rate: 0.12 }, { min: 64850, rate: 0.22 },
+    { min: 103350, rate: 0.24 }, { min: 197300, rate: 0.32 }, { min: 250500, rate: 0.35 }, { min: 626350, rate: 0.37 }
+  ]
+};
+
+const STD_DEDUCTION: Record<string, number> = { 'single': 15000, 'married-joint': 30000, 'head-household': 22500 };
+const PERIODS: Record<string, number> = { 'weekly': 52, 'bi-weekly': 26, 'semi-monthly': 24, 'monthly': 12 };
+const SS_WAGE_BASE = 176100;
+const SS_RATE = 0.062;
+const MEDICARE_RATE = 0.0145;
+
+function calcSalary() {
+  const gross = getNum('salaryGross')!;
+  const status = (document.getElementById('salaryStatus') as HTMLSelectElement).value;
+  const freq = (document.getElementById('salaryFrequency') as HTMLSelectElement).value;
+
+  if (!gross || gross < 0) return;
+
+  const taxable = Math.max(0, gross - STD_DEDUCTION[status]);
+
+  let federalTax = 0;
+  const brackets = TAX_BRACKETS[status];
+  for (let i = brackets.length - 1; i >= 0; i--) {
+    const bracket = brackets[i];
+    const nextBracket = brackets[i + 1];
+    const upper = nextBracket ? nextBracket.min : Infinity;
+    if (taxable > bracket.min) {
+      const amt = Math.min(taxable - bracket.min, upper - bracket.min);
+      federalTax += amt * bracket.rate;
+    }
+  }
+
+  const ssTax = Math.min(gross, SS_WAGE_BASE) * SS_RATE;
+  const medicareTax = gross * MEDICARE_RATE;
+
+  const totalTax = federalTax + ssTax + medicareTax;
+  const netAnnual = gross - totalTax;
+  const netMonthly = netAnnual / 12;
+  const periodsPerYear = PERIODS[freq];
+  const netPerPeriod = netAnnual / periodsPerYear;
+  const effRate = gross > 0 ? (federalTax / gross) * 100 : 0;
+
+  const periodNames: Record<string, string> = { 'weekly': 'Weekly', 'bi-weekly': 'Bi-Weekly', 'semi-monthly': 'Semi-Monthly', 'monthly': 'Monthly' };
+
+  document.getElementById('salaryNetPeriod')!.textContent = formatCurrency(netPerPeriod);
+  document.getElementById('salaryPeriodLabel')!.textContent = 'Net Pay (' + periodNames[freq] + ')';
+  document.getElementById('salaryNetMonthly')!.textContent = formatCurrency(netMonthly);
+  document.getElementById('salaryNetAnnual')!.textContent = formatCurrency(netAnnual);
+  document.getElementById('salaryFedTax')!.textContent = formatCurrency(federalTax) + ' /yr';
+  document.getElementById('salarySS')!.textContent = formatCurrency(ssTax) + ' /yr';
+  document.getElementById('salaryMedicare')!.textContent = formatCurrency(medicareTax) + ' /yr';
+  document.getElementById('salaryEffRate')!.textContent = effRate.toFixed(1) + '%';
+  showResult('salaryResult');
+}
+
+function resetSalary() {
+  (document.getElementById('salaryGross') as HTMLInputElement).value = '75000';
+  (document.getElementById('salaryStatus') as HTMLSelectElement).value = 'single';
+  (document.getElementById('salaryFrequency') as HTMLSelectElement).value = 'bi-weekly';
+  hideResult('salaryResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcSalary);
+document.getElementById('resetBtn')!.addEventListener('click', resetSalary);
+document.addEventListener('DOMContentLoaded', calcSalary);
+</script>

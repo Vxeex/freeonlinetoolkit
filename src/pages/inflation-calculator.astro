@@ -1,0 +1,179 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['inflation-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Inflation Impact",
+    "description": "Calculate how inflation affects the purchasing power of money over time.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the starting amount of money" },
+      { "@type": "HowToStep", "text": "Select the start year" },
+      { "@type": "HowToStep", "text": "Select the end year" },
+      { "@type": "HowToStep", "text": "Click Calculate to see the inflation-adjusted value" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Inflation Calculator</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">See how inflation changes the purchasing power of your money over time. Based on historical Consumer Price Index (CPI) data with forward projections using average inflation trends.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Inflation Calculator</h2>
+      <div class="form-group">
+        <label for="infAmount">Amount</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="infAmount" class="prefixed" value="10000" min="0" step="100">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="infStartYear">Start Year</label>
+          <input type="number" id="infStartYear" value="2000" min="1913" max="2026">
+        </div>
+        <div class="form-group">
+          <label for="infEndYear">End Year</label>
+          <input type="number" id="infEndYear" value="2026" min="1913" max="2026">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="infResult">
+        <div class="result-value" id="infResultValue" style="font-size:1.3rem;">$0.00</div>
+        <div class="result-label">Future Purchasing Power</div>
+        <div class="result-details">
+          <div><span class="label">Original Amount</span><span class="value" id="infOriginal">$0</span></div>
+          <div><span class="label">Cumulative Inflation</span><span class="value" id="infCumulative">0%</span></div>
+          <div><span class="label">Avg Annual Inflation Rate</span><span class="value" id="infAvgRate">0%</span></div>
+          <div><span class="label">Value Lost to Inflation</span><span class="value" id="infLost">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Enter an <strong>amount</strong> of money, the <strong>start year</strong>, and the <strong>end year</strong>. For historical years, the calculator uses actual CPI data from the Bureau of Labor Statistics. Forward projections use the average annual CPI rate from the last 10 years.</p>
+      <p><strong>Example:</strong> $10,000 in 2000 would be worth about $18,200 in 2026 — you'd need $18,200 to maintain the same purchasing power.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How Inflation Is Calculated</h2>
+      <div class="formula-box">Adjusted Value = Starting Amount &times; (CPI<sub>end</sub> / CPI<sub>start</sub>)</div>
+      <p>The CPI (Consumer Price Index) measures the average change in prices paid by consumers. This calculator uses the annual average CPI-U published by the Bureau of Labor Statistics.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a normal inflation rate?", answer: "The Federal Reserve targets a 2% annual inflation rate. Historically, the average annual inflation rate in the US has been around 3.2% since 1913." },
+      { question: "Why does inflation reduce purchasing power?", answer: "As prices rise, each dollar buys fewer goods and services. If inflation is 3% annually, something that costs $100 today will cost $103 next year." },
+      { question: "How do I protect my savings from inflation?", answer: "Investing in assets that historically outpace inflation is the best protection. Stocks, real estate, and TIPS can help preserve purchasing power." },
+      { question: "Does inflation affect everything equally?", answer: "No. Healthcare and education costs have consistently risen faster than general inflation, while electronics have risen more slowly." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="inflation-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+const CPI_DATA: Record<number, number> = {
+  1913: 9.9, 1914: 10.0, 1915: 10.1, 1916: 10.9, 1917: 12.8,
+  1918: 15.1, 1919: 17.3, 1920: 20.0, 1921: 17.9, 1922: 16.8,
+  1923: 17.1, 1924: 17.1, 1925: 17.5, 1926: 17.7, 1927: 17.4,
+  1928: 17.1, 1929: 17.1, 1930: 16.7, 1931: 15.2, 1932: 13.7,
+  1933: 13.0, 1934: 13.4, 1935: 13.7, 1936: 13.9, 1937: 14.4,
+  1938: 14.1, 1939: 13.9, 1940: 14.0, 1941: 14.7, 1942: 16.3,
+  1943: 17.3, 1944: 17.6, 1945: 18.0, 1946: 19.5, 1947: 22.3,
+  1948: 24.1, 1949: 23.8, 1950: 24.1, 1951: 26.0, 1952: 26.5,
+  1953: 26.7, 1954: 26.9, 1955: 26.8, 1956: 27.2, 1957: 28.1,
+  1958: 28.9, 1959: 29.1, 1960: 29.6, 1961: 29.9, 1962: 30.2,
+  1963: 30.6, 1964: 31.0, 1965: 31.5, 1966: 32.4, 1967: 33.4,
+  1968: 34.8, 1969: 36.7, 1970: 38.8, 1971: 40.5, 1972: 41.8,
+  1973: 44.4, 1974: 49.3, 1975: 53.8, 1976: 56.9, 1977: 60.6,
+  1978: 65.2, 1979: 72.6, 1980: 82.4, 1981: 90.9, 1982: 96.5,
+  1983: 99.6, 1984: 103.9, 1985: 107.6, 1986: 109.6, 1987: 113.6,
+  1988: 118.3, 1989: 124.0, 1990: 130.7, 1991: 136.2, 1992: 140.3,
+  1993: 144.5, 1994: 148.2, 1995: 152.4, 1996: 156.9, 1997: 160.5,
+  1998: 163.0, 1999: 166.6, 2000: 172.2, 2001: 177.1, 2002: 179.9,
+  2003: 184.0, 2004: 188.9, 2005: 195.3, 2006: 201.6, 2007: 207.342,
+  2008: 215.303, 2009: 214.537, 2010: 218.056, 2011: 224.939,
+  2012: 229.594, 2013: 232.957, 2014: 236.736, 2015: 237.017,
+  2016: 240.007, 2017: 245.120, 2018: 251.107, 2019: 255.657,
+  2020: 258.811, 2021: 270.970, 2022: 292.655, 2023: 304.702,
+  2024: 313.548, 2025: 322.500, 2026: 328.950
+};
+
+function getCPI(year: number): number {
+  const years = Object.keys(CPI_DATA).map(Number).sort((a, b) => a - b);
+  if (CPI_DATA[year] !== undefined) return CPI_DATA[year];
+
+  let before: number | undefined, after: number | undefined;
+  for (let i = 0; i < years.length; i++) {
+    if (years[i] < year) before = years[i];
+    if (years[i] > year && !after) after = years[i];
+  }
+  if (before && after) {
+    const fraction = (year - before) / (after - before);
+    return CPI_DATA[before] + fraction * (CPI_DATA[after] - CPI_DATA[before]);
+  }
+  const lastYear = years[years.length - 1];
+  const prevYear = years[years.length - 2];
+  const avgRate = (CPI_DATA[lastYear] / CPI_DATA[prevYear]) - 1;
+  return CPI_DATA[lastYear] * Math.pow(1 + avgRate, year - lastYear);
+}
+
+function calcInflation() {
+  const amount = getNum('infAmount')!;
+  const startYear = getNum('infStartYear')!;
+  const endYear = getNum('infEndYear')!;
+
+  if (!amount || !startYear || !endYear) return;
+  if (endYear < startYear) { alert('End year must be after start year.'); return; }
+
+  const cpiStart = getCPI(startYear);
+  const cpiEnd = getCPI(endYear);
+  const factor = cpiEnd / cpiStart;
+  const adjustedValue = amount * factor;
+  const cumulativeInflation = (factor - 1) * 100;
+  const yearsDiff = endYear - startYear;
+  const avgAnnualRate = yearsDiff > 0 ? (Math.pow(factor, 1 / yearsDiff) - 1) * 100 : 0;
+  const lostValue = adjustedValue - amount;
+
+  document.getElementById('infResultValue')!.textContent = formatCurrency(adjustedValue);
+  document.getElementById('infOriginal')!.textContent = formatCurrency(amount);
+  document.getElementById('infCumulative')!.textContent = cumulativeInflation.toFixed(1) + '%';
+  document.getElementById('infAvgRate')!.textContent = avgAnnualRate.toFixed(2) + '%';
+  document.getElementById('infLost')!.textContent = formatCurrency(lostValue);
+  showResult('infResult');
+}
+
+function resetInflation() {
+  (document.getElementById('infAmount') as HTMLInputElement).value = '10000';
+  (document.getElementById('infStartYear') as HTMLInputElement).value = '2000';
+  (document.getElementById('infEndYear') as HTMLInputElement).value = '2026';
+  hideResult('infResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcInflation);
+document.getElementById('resetBtn')!.addEventListener('click', resetInflation);
+document.addEventListener('DOMContentLoaded', calcInflation);
+</script>

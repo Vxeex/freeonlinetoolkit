@@ -1,0 +1,251 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['student-loan-payoff-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Student Loan Payoff",
+    "description": "Calculate student loan repayment with standard and extra payment strategies to see how much you can save.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your total student loan balance and average interest rate" },
+      { "@type": "HowToStep", "text": "Set your standard loan term in years" },
+      { "@type": "HowToStep", "text": "Enter any extra amount you can pay each month" },
+      { "@type": "HowToStep", "text": "Choose your repayment strategy" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your potential interest savings" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Take control of your student debt. This student loan payoff calculator shows how extra payments, avalanche, and snowball strategies can save you money and help you become debt-free faster.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Student Loan Payoff Calculator</h2>
+      <div class="form-group">
+        <label for="loanBalance">Total Loan Balance ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="loanBalance" class="prefixed" value="35000" min="0" step="1000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="interestRate">Average Interest Rate (%)</label>
+          <input type="number" id="interestRate" value="5.5" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="loanTerm">Standard Term (Years)</label>
+          <input type="number" id="loanTerm" value="10" min="1" max="30">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="extraPayment">Extra Monthly Payment ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="extraPayment" class="prefixed" value="100" min="0" step="25">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="strategy">Repayment Strategy</label>
+          <select id="strategy">
+            <option value="standard" selected>Standard (extra to principal)</option>
+            <option value="avalanche">Avalanche (highest rate first)</option>
+            <option value="snowball">Snowball (smallest balance first)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="studentLoanResult">
+        <div class="result-value" id="studentLoanStdPayment">$0.00</div>
+        <div class="result-label">Standard Monthly Payment</div>
+        <div class="result-details">
+          <div><span class="label">Standard Total Interest</span><span class="value" id="studentLoanStdInterest">$0</span></div>
+          <div><span class="label">Your Monthly Payment (with extra)</span><span class="value" id="studentLoanYourPayment">$0</span></div>
+          <div><span class="label">Your Total Interest</span><span class="value" id="studentLoanYourInterest">$0</span></div>
+          <div><span class="label">Interest Savings</span><span class="value" id="studentLoanSavings" style="color:var(--color-success);">$0</span></div>
+          <div><span class="label">Payoff Time Reduction</span><span class="value" id="studentLoanTimeReduction">--</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section" id="studentLoanAmortSection" style="display:none;">
+      <h2>Amortization Comparison</h2>
+      <div class="table-wrap">
+        <table class="amort-table">
+          <thead>
+            <tr><th>Year</th><th>Standard Balance</th><th>Standard Paid</th><th>With Extra Balance</th><th>With Extra Paid</th></tr>
+          </thead>
+          <tbody id="studentLoanAmortBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Student Loan Payoff Calculator</h2>
+      <p>Enter your <strong>total student loan balance</strong> and the <strong>average interest rate</strong> across all your loans. If you have multiple federal loans with different rates, use the weighted average. Set the <strong>standard term</strong> to match your repayment plan - the standard federal repayment term is 10 years.</p>
+      <p>Add an <strong>extra monthly payment</strong> amount you can realistically afford. Even $25 or $50 extra per month can save hundreds in interest. Choose a <strong>repayment strategy</strong>: Standard applies extra to principal; Avalanche targets the highest-rate loan first; Snowball focuses on the smallest balance first for psychological wins.</p>
+      <p>Click "Calculate" to compare standard repayment against your accelerated plan. You will see the monthly payment difference, total interest savings, and how much sooner you can become debt-free.</p>
+      <p>Pro tip: The avalanche strategy saves the most money mathematically, but the snowball strategy has a higher success rate for many borrowers because of the motivation from early wins.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Student Loan Payoff Formula</h2>
+      <p>The standard monthly payment is calculated using the amortization formula:</p>
+      <div class="formula-box">M = P &times; [r(1+r)^n] / [(1+r)^n &minus; 1]</div>
+      <p>Where <strong>M</strong> is the monthly payment, <strong>P</strong> is the loan principal, <strong>r</strong> is the monthly interest rate (annual rate / 12), and <strong>n</strong> is the total number of monthly payments.</p>
+      <p>With extra payments, the additional amount is applied directly to the principal each month, reducing the total interest and shortening the payoff period.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "Should I pay off student loans early or invest?", answer: "If your student loan interest rate is below 4-5%, investing in the market may yield better returns. If your rate is above 6-7%, prioritizing loan payoff is usually better. Consider your emergency fund first - aim for 3-6 months of expenses saved before making extra payments." },
+      { question: "What is the avalanche vs. snowball method?", answer: "The avalanche method pays off loans with the highest interest rate first, saving the most money. The snowball method pays off the smallest balance first, building momentum. Studies show snowball has higher completion rates, while avalanche is mathematically optimal." },
+      { question: "Does making extra payments affect my credit score?", answer: "Paying off student loans early typically doesn't hurt your credit score. Your payment history remains positive, and while closing an account may temporarily lower your credit mix, the impact is usually small and short-lived compared to the financial benefit of being debt-free." },
+      { question: "What happens if I can't afford my student loan payments?", answer: "Federal student loans offer income-driven repayment plans (IDR) that cap payments at 10-20% of discretionary income. You can also request deferment or forbearance. Never ignore your loans - contact your loan servicer immediately to discuss options before missing payments." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="student-loan-payoff-calculator" category="education" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcStudentLoan() {
+  const P = getNum('loanBalance') || 0;
+  const annualRate = getNum('interestRate') || 0;
+  const term = getNum('loanTerm') || 10;
+  const extra = getNum('extraPayment') || 0;
+  const strategy = (document.getElementById('strategy') as HTMLSelectElement).value;
+
+  if (!P || !annualRate) return;
+
+  const r = annualRate / 100 / 12;
+  const n = term * 12;
+
+  const stdM = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const stdTotalRepayment = stdM * n;
+  const stdTotalInterest = stdTotalRepayment - P;
+
+  document.getElementById('studentLoanStdPayment')!.textContent = formatCurrency(stdM);
+  document.getElementById('studentLoanStdInterest')!.textContent = formatCurrency(stdTotalInterest);
+
+  const yourPayment = stdM + extra;
+  let balance = P;
+  let totalPaid = 0;
+  let months = 0;
+  const maxMonths = n * 2;
+
+  while (balance > 0 && months < maxMonths) {
+    const interestPmt = balance * r;
+    const principalPmt = yourPayment - interestPmt;
+    if (principalPmt <= 0) break;
+    if (principalPmt > balance) {
+      totalPaid += balance + interestPmt;
+      balance = 0;
+      months++;
+      break;
+    }
+    balance -= principalPmt;
+    totalPaid += yourPayment;
+    months++;
+  }
+
+  const yourTotalInterest = totalPaid - P;
+  const savings = Math.max(0, stdTotalInterest - yourTotalInterest);
+  const timeReduction = n - months;
+  const timeReductionYears = Math.floor(timeReduction / 12);
+  const timeReductionMonths = timeReduction % 12;
+
+  document.getElementById('studentLoanYourPayment')!.textContent = formatCurrency(yourPayment);
+  document.getElementById('studentLoanYourInterest')!.textContent = formatCurrency(yourTotalInterest);
+  document.getElementById('studentLoanSavings')!.textContent = formatCurrency(savings);
+
+  let timeStr = '';
+  if (timeReductionYears > 0) timeStr += timeReductionYears + 'y ';
+  timeStr += timeReductionMonths + 'mo';
+  document.getElementById('studentLoanTimeReduction')!.textContent = timeStr;
+
+  showResult('studentLoanResult');
+
+  // Build amortization comparison table
+  const years = Math.ceil(Math.max(n, months) / 12);
+  let stdBal = P;
+  let extBal = P;
+  let extMonthsCount = 0;
+  let extDone = false;
+  const body = document.getElementById('studentLoanAmortBody')!;
+  body.innerHTML = '';
+
+  for (let y = 1; y <= years; y++) {
+    const stdStart = stdBal;
+    const extStart = extBal;
+    let yrStdPaid = 0;
+    let yrExtPaid = 0;
+
+    for (let m = 0; m < 12; m++) {
+      if (stdBal > 0) {
+        const sInt = stdBal * r;
+        let sPrin = stdM - sInt;
+        if (sPrin > stdBal) sPrin = stdBal;
+        stdBal -= sPrin;
+        yrStdPaid += stdM;
+        if (stdBal < 0) stdBal = 0;
+      }
+
+      if (extBal > 0 && !extDone) {
+        const eInt = extBal * r;
+        const ePrin = yourPayment - eInt;
+        if (ePrin > extBal) {
+          yrExtPaid += extBal + eInt;
+          extBal = 0;
+          extDone = true;
+        } else {
+          extBal -= ePrin;
+          yrExtPaid += yourPayment;
+        }
+      }
+    }
+
+    const row = document.createElement('tr');
+    row.innerHTML = '<td>' + y + '</td><td>' + formatCurrency(stdStart) + '</td><td>' + formatCurrency(yrStdPaid) + '</td><td>' + formatCurrency(extStart) + '</td><td>' + formatCurrency(yrExtPaid) + '</td>';
+    body.appendChild(row);
+  }
+
+  document.getElementById('studentLoanAmortSection')!.style.display = 'block';
+}
+
+function resetStudentLoan() {
+  (document.getElementById('loanBalance') as HTMLInputElement).value = '35000';
+  (document.getElementById('interestRate') as HTMLInputElement).value = '5.5';
+  (document.getElementById('loanTerm') as HTMLInputElement).value = '10';
+  (document.getElementById('extraPayment') as HTMLInputElement).value = '100';
+  (document.getElementById('strategy') as HTMLSelectElement).value = 'standard';
+  document.getElementById('studentLoanAmortSection')!.style.display = 'none';
+  hideResult('studentLoanResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcStudentLoan);
+document.getElementById('resetBtn')!.addEventListener('click', resetStudentLoan);
+document.addEventListener('DOMContentLoaded', calcStudentLoan);
+</script>

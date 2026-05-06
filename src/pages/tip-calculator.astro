@@ -1,0 +1,126 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['tip-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate a Tip",
+    "description": "Calculate the tip amount and split the bill among multiple people.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the total bill amount" },
+      { "@type": "HowToStep", "text": "Select the tip percentage" },
+      { "@type": "HowToStep", "text": "Enter the number of people splitting the bill" },
+      { "@type": "HowToStep", "text": "Click Calculate to see per-person amounts" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Split bills and calculate tips with ease. Perfect for restaurants, group dining, and service tips. Customize the tip percentage and number of people.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Tip Calculator</h2>
+      <div class="form-group">
+        <label for="tipBill">Bill Amount ($)</label>
+        <input type="number" id="tipBill" value="85.50" min="0" step="0.01">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="tipPercent">Tip (%)</label>
+          <input type="number" id="tipPercent" value="15" min="0" max="100" step="1">
+        </div>
+        <div class="form-group">
+          <label for="tipPeople">Number of People</label>
+          <input type="number" id="tipPeople" value="2" min="1" max="100">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="tipResult">
+        <div class="result-value" id="tipTotalPerPerson">$0.00</div>
+        <div class="result-label">Total Per Person</div>
+        <div class="result-details">
+          <div><span class="label">Tip Amount</span><span class="value" id="tipAmount">$0.00</span></div>
+          <div><span class="label">Total Bill (with tip)</span><span class="value" id="tipTotal">$0.00</span></div>
+          <div><span class="label">Tip Per Person</span><span class="value" id="tipPerPerson">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Tip Calculator</h2>
+      <p>Using this tip calculator is straightforward. Enter the <strong>bill amount</strong>, then choose your <strong>tip percentage</strong> — 15% is standard, 18-20% for great service. If you're dining with others, enter the <strong>number of people</strong> to split the bill.</p>
+      <p>The calculator shows the tip amount, total bill with tip, and the per-person breakdown for both the tip and total.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Tipping Guidelines</h2>
+      <ul>
+        <li><strong>Restaurants:</strong> 15-20% of the pre-tax bill</li>
+        <li><strong>Bartenders:</strong> $1-2 per drink or 15-20% of the tab</li>
+        <li><strong>Hotel staff:</strong> $2-5 per night for housekeeping, $1-2 per bag for bellhops</li>
+        <li><strong>Ride-share:</strong> 10-15% of the fare</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "What's the standard tip percentage?", answer: "In the US, 15-20% is standard for restaurant service. Many people tip 18% as a default and adjust up or down based on service quality." },
+      { question: "Should I tip on the pre-tax or post-tax amount?", answer: "Most tipping guidelines suggest tipping on the pre-tax amount, though many people tip on the total bill for simplicity." },
+      { question: "How do I calculate tip without a calculator?", answer: "To calculate a 15% tip, move the decimal point one place left (10%) and add half of that (5%). For 20%, calculate 10% and double it." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="tip-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcTip() {
+  const bill = getNum('tipBill')!;
+  const pct = getNum('tipPercent')!;
+  const people = getNum('tipPeople')!;
+
+  if (!bill || !pct || !people) return;
+
+  const tipAmount = bill * (pct / 100);
+  const total = bill + tipAmount;
+  const perPerson = total / people;
+  const tipPerPerson = tipAmount / people;
+
+  document.getElementById('tipTotalPerPerson')!.textContent = formatCurrency(perPerson);
+  document.getElementById('tipAmount')!.textContent = formatCurrency(tipAmount);
+  document.getElementById('tipTotal')!.textContent = formatCurrency(total);
+  document.getElementById('tipPerPerson')!.textContent = formatCurrency(tipPerPerson);
+  showResult('tipResult');
+}
+
+function resetTip() {
+  (document.getElementById('tipBill') as HTMLInputElement).value = '85.50';
+  (document.getElementById('tipPercent') as HTMLInputElement).value = '15';
+  (document.getElementById('tipPeople') as HTMLInputElement).value = '2';
+  hideResult('tipResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcTip);
+document.getElementById('resetBtn')!.addEventListener('click', resetTip);
+document.addEventListener('DOMContentLoaded', calcTip);
+</script>

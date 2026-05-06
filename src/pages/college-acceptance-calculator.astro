@@ -1,0 +1,263 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['college-acceptance-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate College Acceptance Chances",
+    "description": "Estimate your college admission chances based on GPA, test scores, extracurriculars, and other factors.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your GPA on a 4.0 scale" },
+      { "@type": "HowToStep", "text": "Input your SAT and/or ACT scores" },
+      { "@type": "HowToStep", "text": "Select your class rank, extracurricular level, essay quality, and interview quality" },
+      { "@type": "HowToStep", "text": "Indicate legacy status and number of AP/IB courses taken" },
+      { "@type": "HowToStep", "text": "Choose school selectivity and click Calculate to see your acceptance probability" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Get a data-informed estimate of your college admission chances. This acceptance predictor evaluates your GPA, test scores, extracurriculars, and other factors to give you a realistic probability range.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Acceptance Chance Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="gpa">GPA (4.0 Scale)</label>
+          <input type="number" id="gpa" value="3.5" min="0" max="4.0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="satScore">SAT Score (400&ndash;1600)</label>
+          <input type="number" id="satScore" value="1300" min="400" max="1600" step="10">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="actScore">ACT Score (1&ndash;36) <span class="optional">optional</span></label>
+          <input type="number" id="actScore" value="" min="1" max="36" step="1" placeholder="--">
+        </div>
+        <div class="form-group">
+          <label for="classRank">Class Rank (Top %)</label>
+          <input type="number" id="classRank" value="25" min="1" max="100" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ecLevel">Extracurricular Level</label>
+          <select id="ecLevel">
+            <option value="none">None</option>
+            <option value="minimal">Minimal</option>
+            <option value="moderate" selected>Moderate</option>
+            <option value="strong">Strong</option>
+            <option value="exceptional">Exceptional</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="essayQuality">Essay Quality</label>
+          <select id="essayQuality">
+            <option value="poor">Poor</option>
+            <option value="average" selected>Average</option>
+            <option value="good">Good</option>
+            <option value="excellent">Excellent</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="interviewQuality">Interview Quality</label>
+          <select id="interviewQuality">
+            <option value="poor">Poor</option>
+            <option value="average" selected>Average</option>
+            <option value="good">Good</option>
+            <option value="excellent">Excellent</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="legacy">Legacy Status</label>
+          <select id="legacy">
+            <option value="no" selected>No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="selectivity">School Selectivity</label>
+          <select id="selectivity">
+            <option value="reach">Reach School</option>
+            <option value="target" selected>Target School</option>
+            <option value="safety">Safety School</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="apCourses">AP/IB Courses Taken</label>
+          <input type="number" id="apCourses" value="4" min="0" max="30" step="1">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="acceptanceResult">
+        <div class="result-value" id="acceptanceChance">--</div>
+        <div class="result-label">Estimated Acceptance Probability</div>
+        <div class="result-details">
+          <div><span class="label">Overall Score</span><span class="value" id="acceptanceScore">0 / 100</span></div>
+          <div><span class="label">Strengths</span><span class="value" id="acceptanceStrengths">--</span></div>
+          <div><span class="label">Weaknesses</span><span class="value" id="acceptanceWeaknesses">--</span></div>
+          <div><span class="label">Recommendations</span><span class="value" id="acceptanceRecs">--</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the College Acceptance Calculator</h2>
+      <p>Enter your <strong>GPA</strong> on a 4.0 unweighted scale and your highest <strong>SAT score</strong> (400-1600 range). You can optionally include your ACT score for a more complete picture. Provide your <strong>class rank</strong> as a percentage - if you are in the top 10%, enter 10.</p>
+      <p>Rate your <strong>extracurricular involvement</strong> from none to exceptional, along with your <strong>essay</strong> and <strong>interview quality</strong>. Indicate whether you have <strong>legacy status</strong> (a parent who attended the school) and how many <strong>AP or IB courses</strong> you have taken.</p>
+      <p>Choose the <strong>school selectivity</strong> that matches your target: Reach (25% or lower acceptance rate), Target (25-60% acceptance), or Safety (over 60% acceptance). Click "Calculate" to see your estimated acceptance probability along with personalized feedback.</p>
+      <p>Pro tip: This calculator is a general guide. Admissions decisions involve many qualitative factors that cannot be reduced to a single number. Use this as a starting point for your college list, not a definitive prediction.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Acceptance Chance Formula</h2>
+      <p>Your acceptance score is calculated using a weighted scoring model:</p>
+      <div class="formula-box">Score = GPA (30%) + Test (20%) + Class Rank (10%) + EC (15%) + Essay (10%) + Interview (5%) + AP (5%) + Legacy (5%)</div>
+      <p>Each factor is scored on a 0-100 scale. Reach schools receive a 15-point penalty, while safety schools receive a 15-point bonus. The final score is your estimated acceptance probability.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How accurate is this acceptance calculator?", answer: "This calculator provides an estimate based on general admission trends and common weighting factors. Actual admissions decisions depend on many qualitative factors including essays, recommendation letters, demonstrated interest, and institutional priorities that cannot be fully captured by any formula." },
+      { question: "What is the difference between reach, target, and safety schools?", answer: "Reach schools have acceptance rates below 25% where your credentials are below or near their median. Target schools (25-60% acceptance) where your profile is a good match. Safety schools (over 60% acceptance) where your credentials significantly exceed their averages. You should apply to a mix of all three." },
+      { question: "How much does legacy status really help?", answer: "Legacy status can provide a meaningful boost at many private universities, typically increasing admission chances by 5-15% depending on the institution. However, many public universities and some private schools have eliminated legacy preferences in recent years." },
+      { question: "Do AP/IB courses really improve my chances?", answer: "Yes, taking rigorous courses demonstrates academic preparedness. Admissions officers value the strength of your curriculum as much as your GPA. Taking 4-8 AP/IB courses over four years is common for competitive applicants, but quality and performance matter more than quantity." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="college-acceptance-calculator" category="education" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcAcceptance() {
+  const gpa = getNum('gpa') || 0;
+  const sat = getNum('satScore') || 400;
+  const act = getNum('actScore') || null;
+  const rank = getNum('classRank') || 50;
+  const ec = (document.getElementById('ecLevel') as HTMLSelectElement).value;
+  const essay = (document.getElementById('essayQuality') as HTMLSelectElement).value;
+  const interview = (document.getElementById('interviewQuality') as HTMLSelectElement).value;
+  const legacy = (document.getElementById('legacy') as HTMLSelectElement).value;
+  const selectivity = (document.getElementById('selectivity') as HTMLSelectElement).value;
+  const ap = getNum('apCourses') || 0;
+
+  // GPA score (0-100)
+  let gpaScore = 0;
+  if (gpa >= 4.0) gpaScore = 100;
+  else if (gpa >= 3.7) gpaScore = 85;
+  else if (gpa >= 3.3) gpaScore = 65;
+  else if (gpa >= 3.0) gpaScore = 50;
+  else if (gpa >= 2.5) gpaScore = 30;
+  else gpaScore = 20;
+
+  // SAT score (0-100)
+  let satScore = Math.min(100, Math.max(0, (sat - 400) / 12));
+  if (act) {
+    const actScore = Math.min(100, Math.max(0, (act - 1) / 35 * 100));
+    satScore = Math.max(satScore, actScore);
+  }
+
+  const rankScore = Math.max(0, 100 - rank);
+  const apScore = Math.min(10, ap * 1.5);
+
+  const ecScores: Record<string, number> = { none: 0, minimal: 20, moderate: 50, strong: 75, exceptional: 95 };
+  const ecScore = ecScores[ec] || 0;
+
+  const essayScores: Record<string, number> = { poor: 20, average: 50, good: 75, excellent: 95 };
+  const essayScore = essayScores[essay] || 50;
+
+  const interviewScores: Record<string, number> = { poor: 20, average: 50, good: 70, excellent: 90 };
+  const interviewScore = interviewScores[interview] || 50;
+
+  const legacyBonus = legacy === 'yes' ? 10 : 0;
+
+  let weightedScore = gpaScore * 0.30 + satScore * 0.20 + rankScore * 0.10 + ecScore * 0.15 + essayScore * 0.10 + interviewScore * 0.05 + apScore * 0.05 + legacyBonus * 0.05;
+
+  if (selectivity === 'reach') weightedScore -= 15;
+  else if (selectivity === 'safety') weightedScore += 15;
+
+  weightedScore = Math.max(0, Math.min(100, weightedScore));
+  const prob = weightedScore;
+
+  document.getElementById('acceptanceScore')!.textContent = weightedScore.toFixed(1) + ' / 100';
+  document.getElementById('acceptanceChance')!.textContent = prob.toFixed(0) + '%';
+
+  const strengths: string[] = [];
+  if (gpaScore >= 85) strengths.push('Strong GPA (' + gpa.toFixed(1) + ')');
+  if (satScore >= 75) strengths.push('Competitive test scores');
+  if (ecScore >= 75) strengths.push('Impressive extracurriculars');
+  if (essayScore >= 75) strengths.push('Strong essay writing');
+  if (legacyBonus > 0) strengths.push('Legacy status');
+  if (ap >= 5) strengths.push('Rigorous course load (' + ap + ' AP/IB)');
+  if (strengths.length === 0) strengths.push('Room for improvement across all factors');
+
+  const weaknesses: string[] = [];
+  if (gpa < 3.3) weaknesses.push('Below-average GPA');
+  if (sat < 1100) weaknesses.push('Low SAT score');
+  if (ecScore < 50) weaknesses.push('Limited extracurricular involvement');
+  if (essayScore < 50) weaknesses.push('Essay needs significant work');
+  if (ap < 3) weaknesses.push('Few advanced courses');
+  if (selectivity === 'reach' && weightedScore < 50) weaknesses.push('Reach school with current profile');
+  if (weaknesses.length === 0) weaknesses.push('No major weaknesses identified');
+
+  const recs: string[] = [];
+  if (gpa < 3.7) recs.push('Work on raising your GPA');
+  if (sat < 1300) recs.push('Consider SAT prep to boost score');
+  if (ecScore < 75) recs.push('Deepen involvement in 1-2 activities rather than many shallow ones');
+  if (essayScore < 75) recs.push('Invest significant time in your personal statement');
+  if (ap < 4) recs.push('Take more AP/IB courses if available');
+  if (recs.length === 0) recs.push('Continue what you are doing and focus on essays');
+  if (selectivity === 'reach' && weightedScore < 40) recs.push('Add more target and safety schools to your list');
+
+  document.getElementById('acceptanceStrengths')!.textContent = strengths.join('; ');
+  document.getElementById('acceptanceWeaknesses')!.textContent = weaknesses.join('; ');
+  document.getElementById('acceptanceRecs')!.textContent = recs.join('; ');
+
+  showResult('acceptanceResult');
+}
+
+function resetAcceptance() {
+  (document.getElementById('gpa') as HTMLInputElement).value = '3.5';
+  (document.getElementById('satScore') as HTMLInputElement).value = '1300';
+  (document.getElementById('actScore') as HTMLInputElement).value = '';
+  (document.getElementById('classRank') as HTMLInputElement).value = '25';
+  (document.getElementById('ecLevel') as HTMLSelectElement).value = 'moderate';
+  (document.getElementById('essayQuality') as HTMLSelectElement).value = 'average';
+  (document.getElementById('interviewQuality') as HTMLSelectElement).value = 'average';
+  (document.getElementById('legacy') as HTMLSelectElement).value = 'no';
+  (document.getElementById('selectivity') as HTMLSelectElement).value = 'target';
+  (document.getElementById('apCourses') as HTMLInputElement).value = '4';
+  hideResult('acceptanceResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcAcceptance);
+document.getElementById('resetBtn')!.addEventListener('click', resetAcceptance);
+document.addEventListener('DOMContentLoaded', calcAcceptance);
+</script>

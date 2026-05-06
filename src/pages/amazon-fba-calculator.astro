@@ -1,0 +1,176 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['amazon-fba-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Amazon FBA Profit",
+    "description": "Estimate your Amazon FBA profit by calculating referral fees, fulfillment costs, and net margins.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your product selling price on Amazon" },
+      { "@type": "HowToStep", "text": "Input your product cost from your supplier" },
+      { "@type": "HowToStep", "text": "Enter the Amazon referral fee percentage for your category" },
+      { "@type": "HowToStep", "text": "Add FBA fulfillment fee, monthly storage fee, and estimated monthly sales" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your per-unit and monthly profit estimates" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your true Amazon FBA profit after referral fees, fulfillment costs, and storage fees. This calculator helps Amazon sellers evaluate product profitability before sourcing inventory.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Amazon FBA Profit Calculator</h2>
+      <div class="form-group">
+        <label for="fbaPrice">Product Price ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="fbaPrice" class="prefixed" value="29.99" min="1" step="0.5">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fbaCost">Product Cost ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="fbaCost" class="prefixed" value="8" min="1" step="0.5">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fbaReferral">Amazon Referral Fee (%)</label>
+          <input type="number" id="fbaReferral" value="15" min="1" max="50" step="0.5">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fbaFulfillment">FBA Fulfillment Fee ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="fbaFulfillment" class="prefixed" value="4.75" min="0" step="0.25">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fbaStorage">Monthly Storage Fee ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="fbaStorage" class="prefixed" value="0.50" min="0" step="0.10">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fbaSales">Estimated Monthly Sales</label>
+        <input type="number" id="fbaSales" value="200" min="1" step="10">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="fbaResult">
+        <div class="result-value" id="fbaNetPerUnit">$0.00</div>
+        <div class="result-label">Net Profit Per Unit</div>
+        <div class="result-details">
+          <div><span class="label">Revenue Per Unit</span><span class="value" id="fbaRevenue">$0.00</span></div>
+          <div><span class="label">Amazon Fees Per Unit</span><span class="value" id="fbaFees">$0.00</span></div>
+          <div><span class="label">Net Profit Margin</span><span class="value" id="fbaMargin">0.0%</span></div>
+          <div><span class="label">Estimated Monthly Revenue</span><span class="value" id="fbaMonthlyRev">$0</span></div>
+          <div><span class="label">Estimated Monthly Profit</span><span class="value" id="fbaMonthlyProfit">$0</span></div>
+          <div><span class="label">Estimated Annual Profit</span><span class="value" id="fbaAnnualProfit">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This Amazon FBA calculator gives you a complete profit picture. Start by entering your <strong>product price</strong> and <strong>product cost</strong> (what you pay your supplier). Then input the <strong>Amazon referral fee</strong> for your specific product category &mdash; most categories charge 15%.</p>
+      <p>Add your <strong>FBA fulfillment fee</strong> based on your product's size tier and the <strong>monthly storage fee</strong> per unit. Finally, enter your <strong>estimated monthly sales</strong> to see total revenue and profit projections.</p>
+      <p>The calculator shows your per-unit profit, net margin, monthly revenue, monthly profit, and annual profit.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Fee Breakdown</h2>
+      <div class="formula-box">
+        Amazon Fees = (Price &times; Referral Rate / 100) + FBA Fee + Storage Fee
+      </div>
+      <div class="formula-box">
+        Net Profit Per Unit = Price &minus; Product Cost &minus; Amazon Fees
+      </div>
+      <div class="formula-box">
+        Profit Margin = (Net Profit / Price) &times; 100
+      </div>
+      <div class="formula-box">
+        Monthly Profit = Net Profit Per Unit &times; Monthly Sales
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is Amazon FBA?", answer: "Amazon FBA (Fulfillment by Amazon) is a service where Amazon stores, picks, packs, and ships your products to customers. Amazon handles customer service and returns, while you pay referral fees, fulfillment fees, and storage fees based on product size and weight." },
+      { question: "What is a good profit margin for Amazon FBA?", answer: "A good net profit margin for Amazon FBA is typically 15-25% after all fees and product costs. Margins vary by product category, with lower-margin high-volume items at 10-15% and niche products often achieving 25-40%." },
+      { question: "What are Amazon referral fees?", answer: "Amazon referral fees are a percentage of each sale that Amazon charges as a commission. Referral fees vary by category, typically ranging from 8% to 20%. Most categories charge 15%, which is the default used in this calculator." },
+      { question: "How much does Amazon FBA fulfillment cost?", answer: "FBA fulfillment fees depend on product size and weight. Standard small items typically cost $4.50-$5.50 per unit, standard large items $5.50-$8.50, and oversized items can cost significantly more." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="amazon-fba-calculator" category="ecommerce" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcFBA(): void {
+  var price = parseFloat((document.getElementById('fbaPrice') as HTMLInputElement).value);
+  var cost = parseFloat((document.getElementById('fbaCost') as HTMLInputElement).value);
+  var referral = parseFloat((document.getElementById('fbaReferral') as HTMLInputElement).value);
+  var fulfillment = parseFloat((document.getElementById('fbaFulfillment') as HTMLInputElement).value) || 0;
+  var storage = parseFloat((document.getElementById('fbaStorage') as HTMLInputElement).value) || 0;
+  var sales = parseFloat((document.getElementById('fbaSales') as HTMLInputElement).value);
+
+  if (!price || !cost || !referral || !sales) return;
+
+  var referralFee = price * (referral / 100);
+  var amazonFees = referralFee + fulfillment + storage;
+  var netPerUnit = price - cost - amazonFees;
+  var margin = (netPerUnit / price) * 100;
+  var monthlyRev = price * sales;
+  var monthlyProfit = netPerUnit * sales;
+  var annualProfit = monthlyProfit * 12;
+
+  document.getElementById('fbaNetPerUnit')!.textContent = '$' + netPerUnit.toFixed(2);
+  document.getElementById('fbaRevenue')!.textContent = '$' + price.toFixed(2);
+  document.getElementById('fbaFees')!.textContent = '$' + amazonFees.toFixed(2);
+  document.getElementById('fbaMargin')!.textContent = margin.toFixed(1) + '%';
+  document.getElementById('fbaMonthlyRev')!.textContent = '$' + monthlyRev.toFixed(2);
+  document.getElementById('fbaMonthlyProfit')!.textContent = '$' + monthlyProfit.toFixed(2);
+  document.getElementById('fbaAnnualProfit')!.textContent = '$' + annualProfit.toFixed(2);
+  showResult('fbaResult');
+}
+
+function resetFBA(): void {
+  (document.getElementById('fbaPrice') as HTMLInputElement).value = '29.99';
+  (document.getElementById('fbaCost') as HTMLInputElement).value = '8';
+  (document.getElementById('fbaReferral') as HTMLInputElement).value = '15';
+  (document.getElementById('fbaFulfillment') as HTMLInputElement).value = '4.75';
+  (document.getElementById('fbaStorage') as HTMLInputElement).value = '0.50';
+  (document.getElementById('fbaSales') as HTMLInputElement).value = '200';
+  hideResult('fbaResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcFBA);
+document.getElementById('resetBtn')!.addEventListener('click', resetFBA);
+document.addEventListener('DOMContentLoaded', calcFBA);
+</script>

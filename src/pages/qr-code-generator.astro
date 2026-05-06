@@ -1,0 +1,110 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['qr-code-generator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Generate a QR Code",
+    "description": "Create a QR code for any URL or text in seconds.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the URL or text you want to encode" },
+      { "@type": "HowToStep", "text": "Click Generate to create the QR code" },
+      { "@type": "HowToStep", "text": "Right-click or download the QR code image to save it" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Create QR codes instantly for URLs, text, and more. Download high-quality PNG images, no signup required. Works in your browser — nothing is uploaded to any server.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>QR Code Generator</h2>
+      <div class="form-group">
+        <label for="qrInput">Enter URL or Text</label>
+        <input type="text" id="qrInput" value="https://freeonlinetoolkit.org" placeholder="https://example.com or any text...">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="genBtn">Generate QR Code</button>
+        <button class="btn btn-secondary" id="dlBtn">Download PNG</button>
+      </div>
+      <div style="margin-top:16px;text-align:center;">
+        <div id="qrContainer" style="display:inline-block;background:#fff;padding:16px;border-radius:8px;border:1px solid #e5e7eb;"></div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the QR Code Generator</h2>
+      <p>Type or paste the <strong>URL</strong>, text, or any information you want to encode into the input field. Click <strong>Generate</strong> to create your QR code instantly. The QR code is generated locally in your browser — nothing is sent to any server.</p>
+      <p>Once generated, you can <strong>download</strong> the QR code as a PNG image to use on business cards, flyers, posters, menus, or anywhere else you need a scannable code.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Common QR Code Uses</h2>
+      <ul>
+        <li><strong>Website URLs:</strong> Direct people to your website or landing page</li>
+        <li><strong>Business cards:</strong> Share contact information digitally</li>
+        <li><strong>Restaurant menus:</strong> Contactless menu access</li>
+        <li><strong>Wi-Fi sharing:</strong> Encode network credentials for easy connection</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "Are the QR codes generated on my device?", answer: "Yes, everything runs in your browser using JavaScript. Your data is never sent to any server. You can even use this tool offline after the page has loaded." },
+      { question: "How much data can a QR code hold?", answer: "QR codes can hold up to 3KB of data — roughly 4,289 alphanumeric characters or 2,953 bytes of binary data. This is more than enough for URLs." },
+      { question: "Can I customize the color of my QR code?", answer: "The basic generator creates standard black-and-white codes. Most QR code scanners expect the high-contrast dark-on-light pattern for reliable scanning." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="qr-code-generator" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+declare var QRCode: any;
+let qrCodeInstance: any = null;
+
+function generateQR() {
+  const text = (document.getElementById('qrInput') as HTMLInputElement).value.trim();
+  if (!text) return;
+
+  const container = document.getElementById('qrContainer')!;
+  container.innerHTML = '';
+
+  qrCodeInstance = new QRCode(container, {
+    text: text,
+    width: 256,
+    height: 256,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+}
+
+function downloadQR() {
+  const canvas = document.querySelector('#qrContainer canvas') as HTMLCanvasElement;
+  if (!canvas) { generateQR(); setTimeout(downloadQR, 300); return; }
+  const link = document.createElement('a');
+  link.download = 'qrcode.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+document.getElementById('genBtn')!.addEventListener('click', generateQR);
+document.getElementById('dlBtn')!.addEventListener('click', downloadQR);
+document.addEventListener('DOMContentLoaded', generateQR);
+</script>

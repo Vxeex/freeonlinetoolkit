@@ -1,0 +1,164 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['b2b-lead-value-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate B2B Lead Value",
+    "description": "Calculate the true value of your B2B leads based on marketing spend, conversion rates, and average deal size.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your total marketing spend for the campaign" },
+      { "@type": "HowToStep", "text": "Input the total number of leads generated" },
+      { "@type": "HowToStep", "text": "Set your lead-to-opportunity and opportunity-to-customer conversion rates" },
+      { "@type": "HowToStep", "text": "Enter your average deal size and sales team costs" },
+      { "@type": "HowToStep", "text": "Click Calculate to see CPL, CAC, ROI, and lead value" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>B2B Lead Value &amp; CPL Calculator</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Understand the true value of every lead in your B2B pipeline. This calculator measures cost per lead, customer acquisition cost, marketing ROI, and lead-level revenue to help you make smarter budget decisions.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>B2B Lead Value Calculator</h2>
+
+      <div class="form-group">
+        <label for="b2bSpend">Total Marketing Spend ($)</label>
+        <input type="number" id="b2bSpend" value="50000" min="0" step="100">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="b2bLeads">Total Leads Generated</label>
+          <input type="number" id="b2bLeads" value="1000" min="1" step="1">
+        </div>
+        <div class="form-group">
+          <label for="b2bLeadOppRate">Lead-to-Opportunity Rate (%)</label>
+          <input type="number" id="b2bLeadOppRate" value="20" min="0" step="0.1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="b2bOppCusRate">Opportunity-to-Customer Rate (%)</label>
+          <input type="number" id="b2bOppCusRate" value="25" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="b2bDealSize">Average Deal Size ($)</label>
+          <input type="number" id="b2bDealSize" value="10000" min="0" step="100">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="b2bSalesCost">Sales Team Cost ($)</label>
+        <input type="number" id="b2bSalesCost" value="30000" min="0" step="100">
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="b2bResult">
+        <div class="result-value" id="b2bCPL">$0.00</div>
+        <div class="result-label">Cost Per Lead (CPL)</div>
+        <div class="result-details">
+          <div><span class="label">Cost Per Opportunity (CPO)</span><span class="value" id="b2bCPO">$0.00</span></div>
+          <div><span class="label">Customer Acquisition Cost (CAC)</span><span class="value" id="b2bCAC">$0.00</span></div>
+          <div><span class="label">Total Customers Acquired</span><span class="value" id="b2bCustomers">0</span></div>
+          <div><span class="label">Total Revenue</span><span class="value" id="b2bRevenue">$0.00</span></div>
+          <div><span class="label">Marketing ROI</span><span class="value" id="b2bROI">0%</span></div>
+          <div><span class="label">Lead Value (Avg Revenue Per Lead)</span><span class="value" id="b2bLeadValue">$0.00</span></div>
+          <div><span class="label">Total Profit</span><span class="value" id="b2bProfit">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Enter your <strong>total marketing spend</strong> for the campaign, the <strong>total number of leads</strong> generated, your conversion rates, average deal size, and sales costs. The calculator shows your cost per lead, customer acquisition cost, total revenue, marketing ROI, and the average revenue value of each lead.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>B2B Metrics Explained</h2>
+      <div class="formula-box">CPL = Total Spend / Total Leads</div>
+      <div class="formula-box">Opportunities = Leads &times; (Lead-to-Opportunity% / 100)</div>
+      <div class="formula-box">CPO = Total Spend / Opportunities</div>
+      <div class="formula-box">Customers = Opportunities &times; (Opp-to-Customer% / 100)</div>
+      <div class="formula-box">CAC = (Total Spend + Sales Cost) / Customers</div>
+      <div class="formula-box">Total Revenue = Customers &times; Deal Size</div>
+      <div class="formula-box">ROI = ((Revenue - Total Cost) / Total Cost) &times; 100</div>
+      <div class="formula-box">Lead Value = Total Revenue / Total Leads</div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is Cost Per Lead (CPL)?", answer: "Cost Per Lead (CPL) is the total marketing spend divided by the number of leads generated. It tells you how much you are paying to acquire a single lead. A lower CPL means more efficient lead generation, but quality should also be considered." },
+      { question: "What is the difference between CPL and CAC?", answer: "CPL measures the cost to generate a lead, while CAC (Customer Acquisition Cost) includes both marketing and sales costs divided by the number of actual customers acquired. CAC is always higher than CPL because it accounts for conversion losses and sales team expenses." },
+      { question: "What is a good lead value in B2B?", answer: "A good lead value varies by industry, but generally your lead value should be significantly higher than your CPL. A healthy ratio is at least 3:1 (lead value to CPL). If your cost per lead exceeds the expected lead value, you are losing money on every lead." },
+      { question: "How can I improve my B2B lead value?", answer: "Focus on better targeting to attract higher-intent leads, improve your lead nurturing process, optimize your sales funnel conversion rates, increase deal sizes through upselling, and reduce marketing spend on low-performing channels." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="b2b-lead-value-calculator" category="ecommerce" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult, getNum, formatCurrency } from '../utils/calculator-utils';
+
+function calcB2B() {
+  const spend = getNum('b2bSpend');
+  const leads = getNum('b2bLeads');
+  const leadOppRate = getNum('b2bLeadOppRate') || 0;
+  const oppCusRate = getNum('b2bOppCusRate') || 0;
+  const dealSize = getNum('b2bDealSize');
+  const salesCost = getNum('b2bSalesCost') || 0;
+
+  if (!spend || !leads || !dealSize) return;
+
+  const cpl = spend / leads;
+  const opportunities = leads * (leadOppRate / 100);
+  const cpo = opportunities > 0 ? spend / opportunities : 0;
+  const customers = opportunities * (oppCusRate / 100);
+  const totalCost = spend + salesCost;
+  const cac = customers > 0 ? totalCost / customers : 0;
+  const revenue = customers * dealSize;
+  const roi = totalCost > 0 ? ((revenue - totalCost) / totalCost) * 100 : 0;
+  const leadValue = revenue / leads;
+
+  document.getElementById('b2bCPL')!.textContent = formatCurrency(cpl);
+  document.getElementById('b2bCPO')!.textContent = formatCurrency(cpo);
+  document.getElementById('b2bCAC')!.textContent = formatCurrency(cac);
+  document.getElementById('b2bCustomers')!.textContent = Math.round(customers).toString();
+  document.getElementById('b2bRevenue')!.textContent = formatCurrency(revenue);
+  document.getElementById('b2bROI')!.textContent = roi.toFixed(0) + '%';
+  document.getElementById('b2bLeadValue')!.textContent = formatCurrency(leadValue);
+  document.getElementById('b2bProfit')!.textContent = formatCurrency(revenue - totalCost);
+  showResult('b2bResult');
+}
+
+function resetB2B() {
+  (document.getElementById('b2bSpend') as HTMLInputElement).value = '50000';
+  (document.getElementById('b2bLeads') as HTMLInputElement).value = '1000';
+  (document.getElementById('b2bLeadOppRate') as HTMLInputElement).value = '20';
+  (document.getElementById('b2bOppCusRate') as HTMLInputElement).value = '25';
+  (document.getElementById('b2bDealSize') as HTMLInputElement).value = '10000';
+  (document.getElementById('b2bSalesCost') as HTMLInputElement).value = '30000';
+  hideResult('b2bResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcB2B);
+document.getElementById('resetBtn')!.addEventListener('click', resetB2B);
+document.addEventListener('DOMContentLoaded', calcB2B);
+</script>

@@ -1,0 +1,347 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['startup-valuation-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Your Startup Valuation",
+    "description": "Calculate your startup's pre-money and post-money valuation using Berkus, Scorecard, and VC methods.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select a valuation method (Berkus, Scorecard, or VC Method)" },
+      { "@type": "HowToStep", "text": "Enter your annual revenue and revenue growth rate" },
+      { "@type": "HowToStep", "text": "Rate your team quality, product stage, market size, and competitive position" },
+      { "@type": "HowToStep", "text": "Enter the investment amount you are seeking" },
+      { "@type": "HowToStep", "text": "Review your pre-money and post-money valuation estimates" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Get a data-driven estimate of your startup's value using three industry-standard methods. Built for founders preparing for seed rounds, Series A, and investor conversations.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Valuation Estimator</h2>
+
+      <div class="form-group">
+        <label for="valuationMethod">Method</label>
+        <select id="valuationMethod" onchange="switchValuationMethod()">
+          <option value="berkus">Berkus Method</option>
+          <option value="scorecard" selected>Scorecard Method</option>
+          <option value="vc">VC Method</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="annualRevenue">Annual Revenue ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="annualRevenue" class="prefixed" value="500000" min="0" step="10000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="revenueGrowth">Revenue Growth Rate (%)</label>
+          <input type="number" id="revenueGrowth" value="50" min="0" step="5">
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Year over year %</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="industrySelect">Industry</label>
+        <select id="industrySelect">
+          <option value="saas">SaaS</option>
+          <option value="fintech">Fintech</option>
+          <option value="healthtech">HealthTech</option>
+          <option value="ecommerce">E-commerce</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div id="scorecardFields">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="teamQuality">Team Quality (1-5)</label>
+            <input type="number" id="teamQuality" value="3" min="1" max="5" step="1">
+          </div>
+          <div class="form-group">
+            <label for="productStage">Product Stage (1-5)</label>
+            <input type="number" id="productStage" value="3" min="1" max="5" step="1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="marketSize">Market Size (1-5)</label>
+            <input type="number" id="marketSize" value="3" min="1" max="5" step="1">
+          </div>
+          <div class="form-group">
+            <label for="competitivePos">Competitive Position (1-5)</label>
+            <input type="number" id="competitivePos" value="3" min="1" max="5" step="1">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" id="investmentField" style="display:none;">
+        <label for="investmentAmount">Investment Amount Sought ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="investmentAmount" class="prefixed" value="500000" min="0" step="50000">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="valuationResult">
+        <div class="val-panel" id="berkusPanel">
+          <div class="result-value" id="berkusTotal">$0</div>
+          <div class="result-label">Pre-Money Valuation (Berkus Method)</div>
+          <div class="result-details">
+            <div><span class="label">Sound Idea</span><span class="value" id="berkusIdea">$0</span></div>
+            <div><span class="label">Quality Prototype</span><span class="value" id="berkusPrototype">$0</span></div>
+            <div><span class="label">Quality Team</span><span class="value" id="berkusTeam">$0</span></div>
+            <div><span class="label">Strategic Relationships</span><span class="value" id="berkusStrategic">$0</span></div>
+            <div><span class="label">Product Rollout / Sales</span><span class="value" id="berkusSales">$0</span></div>
+          </div>
+        </div>
+
+        <div class="val-panel" id="scorecardPanel">
+          <div class="result-value" id="scorecardValue">$0</div>
+          <div class="result-label">Pre-Money Valuation (Scorecard Method)</div>
+          <div class="result-details">
+            <div><span class="label">Relative Comparison</span><span class="value" id="scorecardComparison">0.0 out of 5</span></div>
+          </div>
+          <div class="rate-breakdown" style="margin-top:16px;">
+            <h3 style="font-size:0.9rem;margin-bottom:10px;">Factor Scores</h3>
+            <div class="factor-bar"><span class="f-label">Team (30%)</span><span class="f-score" id="scFactorTeam">0.0</span></div>
+            <div class="factor-bar"><span class="f-label">Product (25%)</span><span class="f-score" id="scFactorProduct">0.0</span></div>
+            <div class="factor-bar"><span class="f-label">Market (10%)</span><span class="f-score" id="scFactorMarket">0.0</span></div>
+            <div class="factor-bar"><span class="f-label">Competitive (15%)</span><span class="f-score" id="scFactorCompetitive">0.0</span></div>
+            <div class="factor-bar"><span class="f-label">Other (20%)</span><span class="f-score" id="scFactorOther">0.0</span></div>
+            <div class="factor-bar" style="border-bottom:none;font-weight:600;"><span class="f-label">Weighted Average</span><span class="f-score" id="scWeightedAvg" style="color:var(--color-primary-dark);">0.0</span></div>
+          </div>
+        </div>
+
+        <div class="val-panel" id="vcPanel">
+          <div class="result-value" id="vcPreMoney">$0</div>
+          <div class="result-label">Pre-Money Valuation (VC Method)</div>
+          <div class="result-details">
+            <div><span class="label">Terminal Value (Year 5)</span><span class="value" id="vcTerminalValue">$0</span></div>
+            <div><span class="label">Target Return</span><span class="value" id="vcTargetReturn">10x</span></div>
+            <div><span class="label">Post-Money Valuation</span><span class="value" id="vcPostMoney">$0</span></div>
+            <div><span class="label">Investment Amount</span><span class="value" id="vcInvestment">$0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Select a valuation method and enter your startup's key metrics. Each method uses different inputs:</p>
+      <ul>
+        <li><strong>Berkus Method</strong> &mdash; best for pre-revenue startups. Assigns up to $500K to each of five value categories (sound idea, prototype, team, strategic relationships, sales). Total capped at $2.5M.</li>
+        <li><strong>Scorecard Method</strong> &mdash; compares your startup to average companies in your region. Uses weighted factors: team (30%), product (25%), market (10%), competitive position (15%), and other (20%). Based on a $2M baseline.</li>
+        <li><strong>VC Method</strong> &mdash; calculates valuation by projecting revenue 5 years out, applying an industry multiple, and discounting back at a 10x target return.</li>
+      </ul>
+      <p>Enter your annual revenue, growth rate, and industry for all methods. The extra fields adapt based on your selected method. Use all three to get a valuation range rather than a single number.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Valuation Methods Explained</h2>
+      <h3 style="font-size:0.95rem;margin:12px 0 6px;">Berkus Method</h3>
+      <p>Developed by angel investor Dave Berkus for pre-revenue startups. Assigns up to $500K to each of five risk categories, with a maximum of $2.5M. The actual amount per category depends on how strongly your startup scores in each area.</p>
+      <h3 style="font-size:0.95rem;margin:12px 0 6px;">Scorecard Method</h3>
+      <p>Also called the Bill Payne method. Starts with the average pre-money valuation for seed-stage startups in your region ($2M baseline), then adjusts it based on how your startup compares to the average across five weighted factors.</p>
+      <h3 style="font-size:0.95rem;margin:12px 0 6px;">VC Method</h3>
+      <p>Projects your startup's revenue 5 years into the future using your growth rate, applies an industry-specific revenue multiple to calculate terminal value, then discounts back using a 10x target return. Industry multiples: SaaS 5.0x, Fintech 4.0x, HealthTech 3.0x, E-commerce 2.0x, Other 3.0x.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the difference between pre-money and post-money valuation?", answer: "Pre-money valuation is the value of your startup before receiving new investment. Post-money valuation is pre-money plus the investment amount. For example, if your pre-money valuation is $4M and you raise $1M, your post-money valuation is $5M. The investor gets 20% ownership ($1M / $5M)." },
+      { question: "Which valuation method is most accurate for early-stage startups?", answer: "No single method is perfectly accurate for early-stage startups. The Berkus method works well for pre-revenue startups with significant risk. The Scorecard method is best when you have some traction and comparable companies. The VC method is most useful when you have revenue data and a clear exit strategy. Use all three to get a valuation range." },
+      { question: "How does industry affect startup valuation?", answer: "Industry affects valuation through comparable company multiples and market size. SaaS companies typically command higher multiples (5x revenue) due to recurring revenue and scalability. Fintech averages 4x, HealthTech 3x, and E-commerce 2x. Larger addressable markets also support higher valuations." },
+      { question: "What is a reasonable pre-money valuation for a seed-stage startup?", answer: "Seed-stage pre-money valuations typically range from $2M to $10M depending on team quality, traction, market size, and investor demand. The average seed round in the US is around $6-8M pre-money as of 2025. Pre-revenue startups tend to fall in the $2-5M range, while those with revenue may reach $5-10M+." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="startup-valuation-calculator" category="business-finance" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function switchValuationMethod() {
+  const method = (document.getElementById('valuationMethod') as HTMLSelectElement).value;
+  const fields = document.getElementById('scorecardFields')!;
+  const invField = document.getElementById('investmentField')!;
+
+  fields.style.display = (method === 'scorecard' || method === 'berkus') ? 'block' : 'none';
+  invField.style.display = (method === 'vc') ? 'block' : 'none';
+
+  if (document.getElementById('valuationResult')!.classList.contains('visible')) {
+    calcValuation();
+  }
+}
+
+function calcValuation() {
+  const method = (document.getElementById('valuationMethod') as HTMLSelectElement).value;
+  let revenue = getNum('annualRevenue');
+  let growth = getNum('revenueGrowth');
+  const industry = (document.getElementById('industrySelect') as HTMLSelectElement).value;
+
+  if (!revenue || revenue < 0) { revenue = 0; (document.getElementById('annualRevenue') as HTMLInputElement).value = '0'; }
+  if (!growth || growth < 0) { growth = 0; (document.getElementById('revenueGrowth') as HTMLInputElement).value = '0'; }
+
+  document.getElementById('berkusPanel')!.classList.remove('visible');
+  document.getElementById('scorecardPanel')!.classList.remove('visible');
+  document.getElementById('vcPanel')!.classList.remove('visible');
+
+  if (method === 'berkus') {
+    calcBerkus();
+  } else if (method === 'scorecard') {
+    calcScorecard();
+  } else if (method === 'vc') {
+    calcVCMethod(revenue, growth, industry);
+  }
+
+  showResult('valuationResult');
+}
+
+function calcBerkus() {
+  let teamScore = getNum('teamQuality');
+  let productScore = getNum('productStage');
+  let marketScore = getNum('marketSize');
+  let compScore = getNum('competitivePos');
+
+  if (!teamScore || teamScore < 1) { teamScore = 3; (document.getElementById('teamQuality') as HTMLInputElement).value = '3'; }
+  if (!productScore || productScore < 1) { productScore = 3; (document.getElementById('productStage') as HTMLInputElement).value = '3'; }
+  if (!marketScore || marketScore < 1) { marketScore = 3; (document.getElementById('marketSize') as HTMLInputElement).value = '3'; }
+  if (!compScore || compScore < 1) { compScore = 3; (document.getElementById('competitivePos') as HTMLInputElement).value = '3'; }
+
+  const maxPerCategory = 500000;
+  const ideaVal = maxPerCategory;
+  const prototypeVal = (productScore / 5) * maxPerCategory;
+  const teamVal = (teamScore / 5) * maxPerCategory;
+  const strategicVal = (marketScore / 5) * maxPerCategory;
+  const salesVal = (compScore / 5) * maxPerCategory;
+  const total = ideaVal + prototypeVal + teamVal + strategicVal + salesVal;
+
+  document.getElementById('berkusIdea')!.textContent = formatCurrency(ideaVal);
+  document.getElementById('berkusPrototype')!.textContent = formatCurrency(prototypeVal);
+  document.getElementById('berkusTeam')!.textContent = formatCurrency(teamVal);
+  document.getElementById('berkusStrategic')!.textContent = formatCurrency(strategicVal);
+  document.getElementById('berkusSales')!.textContent = formatCurrency(salesVal);
+  document.getElementById('berkusTotal')!.textContent = formatCurrency(total);
+  document.getElementById('berkusPanel')!.classList.add('visible');
+}
+
+function calcScorecard() {
+  let teamScore = getNum('teamQuality');
+  let productScore = getNum('productStage');
+  let marketScore = getNum('marketSize');
+  let compScore = getNum('competitivePos');
+
+  if (!teamScore || teamScore < 1) { teamScore = 3; (document.getElementById('teamQuality') as HTMLInputElement).value = '3'; }
+  if (!productScore || productScore < 1) { productScore = 3; (document.getElementById('productStage') as HTMLInputElement).value = '3'; }
+  if (!marketScore || marketScore < 1) { marketScore = 3; (document.getElementById('marketSize') as HTMLInputElement).value = '3'; }
+  if (!compScore || compScore < 1) { compScore = 3; (document.getElementById('competitivePos') as HTMLInputElement).value = '3'; }
+
+  const teamFactor = teamScore / 5;
+  const productFactor = productScore / 5;
+  const marketFactor = marketScore / 5;
+  const compFactor = compScore / 5;
+  const otherFactor = 0.5;
+
+  const weightedAvg = (teamFactor * 0.30) + (productFactor * 0.25) + (marketFactor * 0.10) + (compFactor * 0.15) + (otherFactor * 0.20);
+  const baseline = 2000000;
+  const preMoney = baseline * weightedAvg;
+  const overallScore = weightedAvg * 5;
+
+  document.getElementById('scFactorTeam')!.textContent = teamFactor.toFixed(2);
+  document.getElementById('scFactorProduct')!.textContent = productFactor.toFixed(2);
+  document.getElementById('scFactorMarket')!.textContent = marketFactor.toFixed(2);
+  document.getElementById('scFactorCompetitive')!.textContent = compFactor.toFixed(2);
+  document.getElementById('scFactorOther')!.textContent = otherFactor.toFixed(2);
+  document.getElementById('scWeightedAvg')!.textContent = weightedAvg.toFixed(2);
+  document.getElementById('scorecardComparison')!.textContent = overallScore.toFixed(1) + ' out of 5';
+  document.getElementById('scorecardValue')!.textContent = formatCurrency(preMoney);
+  document.getElementById('scorecardPanel')!.classList.add('visible');
+}
+
+function calcVCMethod(revenue: number, growth: number, industry: string) {
+  let investment = getNum('investmentAmount');
+  if (!investment || investment < 0) { investment = 0; (document.getElementById('investmentAmount') as HTMLInputElement).value = '0'; }
+
+  const multiples: Record<string, number> = { saas: 5, fintech: 4, healthtech: 3, ecommerce: 2, other: 3 };
+  const multiple = multiples[industry] || 3;
+  const growthDecimal = growth / 100;
+  const projectedRevenue = revenue * Math.pow(1 + growthDecimal, 5);
+  const terminalValue = projectedRevenue * multiple;
+  const targetReturn = 10;
+  const postMoney = terminalValue / targetReturn;
+  const preMoney = Math.max(0, postMoney - investment);
+
+  document.getElementById('vcTerminalValue')!.textContent = formatCurrency(terminalValue);
+  document.getElementById('vcTargetReturn')!.textContent = targetReturn + 'x';
+  document.getElementById('vcPostMoney')!.textContent = formatCurrency(postMoney);
+  document.getElementById('vcInvestment')!.textContent = formatCurrency(investment);
+  document.getElementById('vcPreMoney')!.textContent = formatCurrency(preMoney);
+  document.getElementById('vcPanel')!.classList.add('visible');
+}
+
+function resetValuation() {
+  (document.getElementById('valuationMethod') as HTMLSelectElement).value = 'scorecard';
+  (document.getElementById('annualRevenue') as HTMLInputElement).value = '500000';
+  (document.getElementById('revenueGrowth') as HTMLInputElement).value = '50';
+  (document.getElementById('industrySelect') as HTMLSelectElement).value = 'saas';
+  (document.getElementById('teamQuality') as HTMLInputElement).value = '3';
+  (document.getElementById('productStage') as HTMLInputElement).value = '3';
+  (document.getElementById('marketSize') as HTMLInputElement).value = '3';
+  (document.getElementById('competitivePos') as HTMLInputElement).value = '3';
+  (document.getElementById('investmentAmount') as HTMLInputElement).value = '500000';
+  document.getElementById('scorecardFields')!.style.display = 'block';
+  document.getElementById('investmentField')!.style.display = 'none';
+  document.getElementById('berkusPanel')!.classList.remove('visible');
+  document.getElementById('scorecardPanel')!.classList.remove('visible');
+  document.getElementById('vcPanel')!.classList.remove('visible');
+  hideResult('valuationResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcValuation);
+document.getElementById('resetBtn')!.addEventListener('click', resetValuation);
+document.addEventListener('DOMContentLoaded', function() {
+  switchValuationMethod();
+  calcValuation();
+});
+</script>
+
+<style>
+.val-panel { display: none; }
+.val-panel.visible { display: block; }
+.factor-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--color-border-light);
+}
+.factor-bar:last-child { border-bottom: none; }
+.factor-bar .f-label { color: var(--color-text-secondary); }
+.factor-bar .f-score { font-weight: 600; color: var(--color-primary); font-family: var(--font-mono); }
+</style>

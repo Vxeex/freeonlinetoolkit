@@ -1,0 +1,134 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['ideal-weight-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Ideal Weight",
+    "description": "Find your ideal weight range using multiple scientific formulas.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select your gender" },
+      { "@type": "HowToStep", "text": "Enter your height" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your ideal weight range from multiple formulas" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Find your ideal weight range based on your height and gender. This calculator uses four scientific formulas (Devine, Robinson, Miller, Hamwi) and shows a consensus range.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Ideal Weight Calculator</h2>
+      <div class="form-group">
+        <label>Gender</label>
+        <div style="display:flex;gap:14px;">
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="iwGender" value="male" checked> Male</label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="iwGender" value="female"> Female</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="iwHeight">Height (cm)</label>
+        <input type="number" id="iwHeight" value="175" min="50" max="300">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="iwResult">
+        <div class="result-value" id="iwRange">—</div>
+        <div class="result-label">Ideal Weight Range (consensus)</div>
+        <div class="result-details">
+          <div><span class="label">Devine Formula</span><span class="value" id="iwDevine">—</span></div>
+          <div><span class="label">Robinson Formula</span><span class="value" id="iwRobinson">—</span></div>
+          <div><span class="label">Miller Formula</span><span class="value" id="iwMiller">—</span></div>
+          <div><span class="label">Hamwi Formula</span><span class="value" id="iwHamwi">—</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Select your <strong>gender</strong> and enter your <strong>height</strong> in centimeters. The calculator shows your ideal weight according to four different medical formulas, plus a consensus range.</p>
+      <p>These formulas were developed for medical use to estimate ideal body weight for dosage calculations. They provide a general guideline, not an exact target.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Formulas Used</h2>
+      <ul>
+        <li><strong>Devine (1974):</strong> Male: 50 + 0.9 × (height - 152), Female: 45.5 + 0.9 × (height - 152)</li>
+        <li><strong>Robinson (1983):</strong> Male: 52 + 0.75 × (height - 152), Female: 49 + 0.67 × (height - 152)</li>
+        <li><strong>Miller (1983):</strong> Male: 56.2 + 0.56 × (height - 152), Female: 53.1 + 0.56 × (height - 152)</li>
+        <li><strong>Hamwi (1964):</strong> Male: 48 + 1.1 × (height - 152), Female: 45.5 + 0.9 × (height - 152)</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "What is ideal body weight?", answer: "Ideal body weight is a weight range associated with the lowest health risks. These formulas were originally developed for medical dosing but are commonly used as general health guidelines." },
+      { question: "Which formula is most accurate?", answer: "No single formula is universally most accurate. The Devine formula is most commonly used in clinical settings. Your ideal weight depends on your body composition, frame size, and muscle mass." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="ideal-weight-calculator" category="health-wellness" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcIdealWeight() {
+  const gender = (document.querySelector('input[name="iwGender"]:checked') as HTMLInputElement).value;
+  const height = parseFloat((document.getElementById('iwHeight') as HTMLInputElement).value);
+  if (!height) return;
+
+  const overInches = height - 152;
+
+  let devine: number, robinson: number, miller: number, hamwi: number;
+  if (gender === 'male') {
+    devine = 50 + 0.9 * overInches;
+    robinson = 52 + 0.75 * overInches;
+    miller = 56.2 + 0.56 * overInches;
+    hamwi = 48 + 1.1 * overInches;
+  } else {
+    devine = 45.5 + 0.9 * overInches;
+    robinson = 49 + 0.67 * overInches;
+    miller = 53.1 + 0.56 * overInches;
+    hamwi = 45.5 + 0.9 * overInches;
+  }
+
+  const values = [devine, robinson, miller, hamwi];
+  const min = Math.min(...values).toFixed(1);
+  const max = Math.max(...values).toFixed(1);
+
+  document.getElementById('iwRange')!.textContent = min + ' - ' + max + ' kg';
+  document.getElementById('iwDevine')!.textContent = devine.toFixed(1) + ' kg';
+  document.getElementById('iwRobinson')!.textContent = robinson.toFixed(1) + ' kg';
+  document.getElementById('iwMiller')!.textContent = miller.toFixed(1) + ' kg';
+  document.getElementById('iwHamwi')!.textContent = hamwi.toFixed(1) + ' kg';
+  showResult('iwResult');
+}
+
+function resetIW() {
+  (document.querySelector('input[name="iwGender"][value="male"]') as HTMLInputElement).checked = true;
+  (document.getElementById('iwHeight') as HTMLInputElement).value = '175';
+  hideResult('iwResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcIdealWeight);
+document.getElementById('resetBtn')!.addEventListener('click', resetIW);
+document.addEventListener('DOMContentLoaded', calcIdealWeight);
+</script>

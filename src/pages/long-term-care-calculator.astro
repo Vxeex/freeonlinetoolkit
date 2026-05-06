@@ -1,0 +1,201 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['long-term-care-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Long-Term Care Costs",
+    "description": "Estimate future long-term care costs based on current age, care type, and inflation.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your current age and the age you expect to begin needing care" },
+      { "@type": "HowToStep", "text": "Select the type of care you anticipate needing" },
+      { "@type": "HowToStep", "text": "Enter the daily cost, inflation rate, and years of care needed" },
+      { "@type": "HowToStep", "text": "Click Calculate to see projected costs and a yearly breakdown" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Plan for future long-term care expenses by estimating costs based on your age, care type, and inflation. Use this free tool to set a realistic savings target for your long-term care needs.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>LTC Cost Estimator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="currentAge">Current Age</label>
+          <input type="number" id="currentAge" value="55" min="18" max="100">
+        </div>
+        <div class="form-group">
+          <label for="careStartAge">Age Care Begins</label>
+          <input type="number" id="careStartAge" value="75" min="50" max="110">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="careType">Type of Care</label>
+          <select id="careType" onchange="updateCarePreset()">
+            <option value="nursing">Nursing Home</option>
+            <option value="assisted">Assisted Living</option>
+            <option value="home">Home Health Aide</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dailyCost">Daily Cost ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="dailyCost" class="prefixed" value="300" min="0" step="10">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="inflationRate">Annual Inflation Rate for Care (%)</label>
+          <input type="number" id="inflationRate" value="3" min="0" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="yearsOfCare">Years of Care Needed</label>
+          <input type="number" id="yearsOfCare" value="3" min="0.5" step="0.5">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="ltcResult">
+        <div class="result-value" id="totalCostInflated">$0.00</div>
+        <div class="result-label">Total Estimated Cost (with inflation)</div>
+        <div class="result-details">
+          <div><span class="label">Future Daily Cost</span><span class="value" id="futureDailyCost">$0</span></div>
+          <div><span class="label">Monthly Cost at Care Start</span><span class="value" id="monthlyCost">$0</span></div>
+          <div><span class="label">Total Cost (today's dollars)</span><span class="value" id="totalCostToday">$0</span></div>
+          <div><span class="label">Years Until Care Needed</span><span class="value" id="yearsUntilCare">0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section" id="ltcTableSection" style="display:none;">
+      <h2>Projected Annual Costs</h2>
+      <div class="table-wrap">
+        <table class="amort-table" id="ltcProjectionTable">
+          <thead>
+            <tr><th>Year</th><th>Age</th><th>Daily Cost</th><th>Annual Cost</th><th>Cumulative Total</th></tr>
+          </thead>
+          <tbody id="ltcProjectionBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the LTC Cost Calculator</h2>
+      <p>Enter your <strong>current age</strong> and the <strong>age you expect to begin needing care</strong>. Select the <strong>type of care</strong> — the calculator automatically fills in a typical daily cost based on national averages, or choose "Custom" to enter your own amount. Set the <strong>annual inflation rate</strong> and <strong>years of care</strong> expected.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Long-Term Care Cost Formula</h2>
+      <div class="formula-box">Future Daily Cost = Current Daily Cost &times; (1 + Inflation)<sup>Years Until Care</sup></div>
+      <p>Where <strong>Years Until Care</strong> = Care Start Age &minus; Current Age. The total estimated cost is the sum of all annual costs over the full care period, each inflated to its future value.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "Does Medicare cover long-term care costs?", answer: "Original Medicare does not cover long-term custodial care. It only covers short-term skilled nursing care (up to 100 days) after a qualifying hospital stay. Medicaid may cover long-term care, but only after you have spent down most of your assets." },
+      { question: "What are the national average costs for long-term care?", answer: "A private nursing home room averages about $300 per day ($9,000+ per month). Assisted living averages around $150 per day. Home health aide services average about $200 per day for 8 hours of daily care." },
+      { question: "When should I buy long-term care insurance?", answer: "The ideal time to purchase long-term care insurance is typically between ages 55 and 65. Premiums are lower when you are younger and healthier, and you are more likely to qualify medically." },
+      { question: "How long do most people need long-term care?", answer: "About 70% of people turning age 65 will need some form of long-term care. The average duration is approximately 3 years, but about 20% will need care for more than 5 years." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="long-term-care-calculator" category="health-insurance" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function updateCarePreset() {
+  const type = (document.getElementById('careType') as HTMLSelectElement).value;
+  const presets: Record<string, number> = { nursing: 300, assisted: 150, home: 200 };
+  if (presets[type] !== undefined) {
+    (document.getElementById('dailyCost') as HTMLInputElement).value = presets[type].toString();
+  }
+}
+
+function calcLTC() {
+  const currentAge = getNum('currentAge');
+  const careStartAge = getNum('careStartAge');
+  const dailyCost = getNum('dailyCost');
+  const inflation = getNum('inflationRate');
+  const yearsNeeded = getNum('yearsOfCare');
+
+  if (!currentAge || !careStartAge || !dailyCost || inflation === null || !yearsNeeded) return;
+
+  let yearsUntilCare = careStartAge - currentAge;
+  if (yearsUntilCare < 0) yearsUntilCare = 0;
+
+  const currentAnnualCost = dailyCost * 365;
+  const futureDailyCost = dailyCost * Math.pow(1 + inflation / 100, yearsUntilCare);
+  const futureAnnualCost = futureDailyCost * 365;
+  const monthlyCostProjection = futureAnnualCost / 12;
+
+  let totalWithInflation = 0;
+  for (let y = 0; y < yearsNeeded; y++) {
+    totalWithInflation += currentAnnualCost * Math.pow(1 + inflation / 100, yearsUntilCare + y);
+  }
+
+  const totalToday = currentAnnualCost * yearsNeeded;
+
+  document.getElementById('futureDailyCost')!.textContent = formatCurrency(futureDailyCost);
+  document.getElementById('monthlyCost')!.textContent = formatCurrency(monthlyCostProjection);
+  document.getElementById('totalCostToday')!.textContent = formatCurrency(totalToday);
+  document.getElementById('totalCostInflated')!.textContent = formatCurrency(totalWithInflation);
+  document.getElementById('yearsUntilCare')!.textContent = yearsUntilCare.toString();
+  showResult('ltcResult');
+
+  const tableBody = document.getElementById('ltcProjectionBody')!;
+  tableBody.innerHTML = '';
+
+  let cumulative = 0;
+  for (let y = 0; y < Math.ceil(yearsNeeded); y++) {
+    const ageThisYear = careStartAge + y;
+    const yearDailyCost = dailyCost * Math.pow(1 + inflation / 100, yearsUntilCare + y);
+    const yearAnnualCost = yearDailyCost * 365;
+    cumulative += yearAnnualCost;
+
+    const row = document.createElement('tr');
+    row.innerHTML = '<td>' + (y + 1) + '</td><td>' + ageThisYear + '</td><td>' + formatCurrency(yearDailyCost) + '</td><td>' + formatCurrency(yearAnnualCost) + '</td><td>' + formatCurrency(cumulative) + '</td>';
+    tableBody.appendChild(row);
+  }
+
+  document.getElementById('ltcTableSection')!.style.display = 'block';
+}
+
+function resetLTC() {
+  (document.getElementById('currentAge') as HTMLInputElement).value = '55';
+  (document.getElementById('careStartAge') as HTMLInputElement).value = '75';
+  (document.getElementById('careType') as HTMLSelectElement).value = 'nursing';
+  (document.getElementById('dailyCost') as HTMLInputElement).value = '300';
+  (document.getElementById('inflationRate') as HTMLInputElement).value = '3';
+  (document.getElementById('yearsOfCare') as HTMLInputElement).value = '3';
+  document.getElementById('ltcTableSection')!.style.display = 'none';
+  hideResult('ltcResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcLTC);
+document.getElementById('resetBtn')!.addEventListener('click', resetLTC);
+document.addEventListener('DOMContentLoaded', calcLTC);
+</script>

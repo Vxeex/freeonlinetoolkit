@@ -1,0 +1,199 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['marketing-split-tester'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Use the Marketing Split Tester",
+    "description": "Compare conversion rates between two marketing channels and determine if the difference is statistically significant.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the name, visitor count, and conversion count for Channel A" },
+      { "@type": "HowToStep", "text": "Enter the name, visitor count, and conversion count for Channel B" },
+      { "@type": "HowToStep", "text": "Select your desired confidence level (90%, 95%, or 99%)" },
+      { "@type": "HowToStep", "text": "Click Calculate to see which channel is winning and whether the result is statistically significant" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Marketing Channel Split Tester</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Compare two marketing channels and determine if the difference in conversion rates is statistically significant. Make data-driven budget decisions with confidence.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Split Tester</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="chanAName">Channel A Name</label>
+          <input type="text" id="chanAName" value="Google Ads">
+        </div>
+        <div class="form-group">
+          <label for="chanAVisitors">Channel A Visitors</label>
+          <input type="number" id="chanAVisitors" value="5000" min="0" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="chanAConversions">Channel A Conversions</label>
+          <input type="number" id="chanAConversions" value="100" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="chanBName">Channel B Name</label>
+          <input type="text" id="chanBName" value="Facebook Ads">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="chanBVisitors">Channel B Visitors</label>
+          <input type="number" id="chanBVisitors" value="4000" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="chanBConversions">Channel B Conversions</label>
+          <input type="number" id="chanBConversions" value="60" min="0" step="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confLevel">Confidence Level</label>
+        <select id="confLevel">
+          <option value="90">90%</option>
+          <option value="95" selected>95%</option>
+          <option value="99">99%</option>
+        </select>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="splitResult">
+        <div class="result-value" id="splitWinner">Channel A</div>
+        <div class="result-label">Winner</div>
+        <div class="result-details">
+          <div><span class="label">Channel A Conv. Rate</span><span class="value" id="splitRateA">0.00%</span></div>
+          <div><span class="label">Channel B Conv. Rate</span><span class="value" id="splitRateB">0.00%</span></div>
+          <div><span class="label">Difference</span><span class="value" id="splitDiff">0.00%</span></div>
+          <div><span class="label">Z-Score</span><span class="value" id="splitZ">0.000</span></div>
+          <div><span class="label">P-Value</span><span class="value" id="splitP">0.000</span></div>
+          <div><span class="label">Statistically Significant?</span><span class="value" id="splitSignificant">No</span></div>
+          <div><span class="label">Recommended Action</span><span class="value" id="splitAction">Gather more data</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Name your two marketing channels and enter the <strong>number of visitors</strong> and <strong>conversions</strong> for each. The calculator uses a two-proportion z-test to compare the conversion rates. Select your desired <strong>confidence level</strong> — 95% is standard for most marketing decisions.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Statistical Significance Explained</h2>
+      <div class="formula-box">pA = ConversionsA / VisitorsA</div>
+      <div class="formula-box">pB = ConversionsB / VisitorsB</div>
+      <div class="formula-box">pPooled = (ConversionsA + ConversionsB) / (VisitorsA + VisitorsB)</div>
+      <div class="formula-box">SE = &radic;(pPooled &times; (1 - pPooled) &times; (1/VisitorsA + 1/VisitorsB))</div>
+      <div class="formula-box">Z = (pA - pB) / SE</div>
+      <p>If the absolute z-score exceeds the critical value (1.645 for 90%, 1.96 for 95%, 2.576 for 99%), the difference is statistically significant.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is statistical significance in marketing?", answer: "Statistical significance tells you whether the difference in conversion rates between two channels is likely due to a real performance difference rather than random chance. A 95% confidence level means there is only a 5% probability that the observed difference is due to luck." },
+      { question: "What confidence level should I use?", answer: "95% is the standard confidence level for most marketing tests. Use 90% for exploratory testing where you want to identify potential winners quickly. Use 99% when the stakes are high, such as making a large budget reallocation." },
+      { question: "How many visitors do I need for a split test?", answer: "For reliable results, aim for at least 100 conversions per channel. The more traffic and conversions you have, the smaller the difference you can detect. Small sample sizes can lead to false positives or missed opportunities." },
+      { question: "What should I do if there is no clear winner?", answer: "If there is no statistically significant winner, continue running both channels and gather more data. You can also try improving your ad creatives, targeting, or landing pages before testing again." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="marketing-split-tester" category="ecommerce" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult, getNum } from '../utils/calculator-utils';
+
+function calcSplit() {
+  const nameA = (document.getElementById('chanAName') as HTMLInputElement).value || 'Channel A';
+  const nameB = (document.getElementById('chanBName') as HTMLInputElement).value || 'Channel B';
+  const visitorsA = getNum('chanAVisitors');
+  const convA = getNum('chanAConversions');
+  const visitorsB = getNum('chanBVisitors');
+  const convB = getNum('chanBConversions');
+  const confLevel = parseInt((document.getElementById('confLevel') as HTMLSelectElement).value);
+
+  if (!visitorsA || !convA || !visitorsB || !convB) return;
+
+  const pA = convA / visitorsA;
+  const pB = convB / visitorsB;
+  const pPooled = (convA + convB) / (visitorsA + visitorsB);
+  const se = Math.sqrt(pPooled * (1 - pPooled) * (1 / visitorsA + 1 / visitorsB));
+  const z = se > 0 ? (pA - pB) / se : 0;
+  const absZ = Math.abs(z);
+
+  const critical = confLevel === 99 ? 2.576 : confLevel === 95 ? 1.96 : 1.645;
+  const significant = absZ > critical;
+
+  let pValue: string;
+  if (absZ > 2.576) {
+    pValue = '< 0.01';
+  } else if (absZ > 1.96) {
+    pValue = '< 0.05';
+  } else if (absZ > 1.645) {
+    pValue = '< 0.10';
+  } else {
+    pValue = '> 0.10';
+  }
+
+  const diff = Math.abs(pA - pB) * 100;
+  let winner: string;
+  let action: string;
+
+  if (!significant) {
+    winner = 'No clear winner';
+    action = 'Gather more data before reallocating budget. The observed difference may be due to random chance.';
+  } else if (pA > pB) {
+    winner = nameA;
+    action = nameA + ' is statistically outperforming ' + nameB + '. Consider reallocating more budget to ' + nameA + '.';
+  } else {
+    winner = nameB;
+    action = nameB + ' is statistically outperforming ' + nameA + '. Consider reallocating more budget to ' + nameB + '.';
+  }
+
+  document.getElementById('splitRateA')!.textContent = (pA * 100).toFixed(2) + '%';
+  document.getElementById('splitRateB')!.textContent = (pB * 100).toFixed(2) + '%';
+  document.getElementById('splitDiff')!.textContent = diff.toFixed(2) + '%';
+  document.getElementById('splitZ')!.textContent = z.toFixed(3);
+  document.getElementById('splitP')!.textContent = pValue;
+  document.getElementById('splitSignificant')!.textContent = significant ? 'Yes' : 'No';
+  document.getElementById('splitWinner')!.textContent = winner;
+  document.getElementById('splitAction')!.textContent = action;
+  showResult('splitResult');
+}
+
+function resetSplit() {
+  (document.getElementById('chanAName') as HTMLInputElement).value = 'Google Ads';
+  (document.getElementById('chanAVisitors') as HTMLInputElement).value = '5000';
+  (document.getElementById('chanAConversions') as HTMLInputElement).value = '100';
+  (document.getElementById('chanBName') as HTMLInputElement).value = 'Facebook Ads';
+  (document.getElementById('chanBVisitors') as HTMLInputElement).value = '4000';
+  (document.getElementById('chanBConversions') as HTMLInputElement).value = '60';
+  (document.getElementById('confLevel') as HTMLSelectElement).value = '95';
+  hideResult('splitResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcSplit);
+document.getElementById('resetBtn')!.addEventListener('click', resetSplit);
+document.addEventListener('DOMContentLoaded', calcSplit);
+</script>

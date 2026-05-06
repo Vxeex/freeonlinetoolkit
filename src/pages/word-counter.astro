@@ -1,0 +1,123 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['word-counter'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Count Words",
+    "description": "Count words, characters, and other text statistics in real time.",
+    "step": [
+      { "@type": "HowToStep", "text": "Type or paste your text into the input area" },
+      { "@type": "HowToStep", "text": "View real-time statistics: word count, character count, sentences, and paragraphs" },
+      { "@type": "HowToStep", "text": "Use the Clear button to reset and start over" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Count words, characters, sentences, and paragraphs in real time. Perfect for writers, students, SEO professionals, and anyone who needs to track text length.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Word Counter</h2>
+      <div class="form-group">
+        <label for="wordText">Type or paste your text below</label>
+        <textarea id="wordText" style="width:100%;min-height:200px;padding:12px;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;font-size:0.95rem;line-height:1.6;resize:vertical;" placeholder="Start typing or paste your text here...">The quick brown fox jumps over the lazy dog. This is a sample text to demonstrate the word counter tool. It counts words, characters, and more in real time.</textarea>
+      </div>
+      <button class="btn btn-secondary" id="clearBtn">Clear</button>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:16px;">
+        <div style="background:#eff6ff;padding:14px;border-radius:8px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:700;color:#2563eb;" id="wcCount">24</div>
+          <div style="font-size:0.8rem;color:#6b7280;">Words</div>
+        </div>
+        <div style="background:#f0fdf4;padding:14px;border-radius:8px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:700;color:#059669;" id="wcChars">154</div>
+          <div style="font-size:0.8rem;color:#6b7280;">Characters</div>
+        </div>
+        <div style="background:#fef3c7;padding:14px;border-radius:8px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:700;color:#d97706;" id="wcCharsNoSpace">128</div>
+          <div style="font-size:0.8rem;color:#6b7280;">Characters (no spaces)</div>
+        </div>
+        <div style="background:#fdf2f8;padding:14px;border-radius:8px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:700;color:#db2777;" id="wcSentences">3</div>
+          <div style="font-size:0.8rem;color:#6b7280;">Sentences</div>
+        </div>
+        <div style="background:#f5f3ff;padding:14px;border-radius:8px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:700;color:#7c3aed;" id="wcParagraphs">1</div>
+          <div style="font-size:0.8rem;color:#6b7280;">Paragraphs</div>
+        </div>
+        <div style="background:#fff7ed;padding:14px;border-radius:8px;text-align:center;">
+          <div style="font-size:1.5rem;font-weight:700;color:#ea580c;" id="wcReadingTime">0.1</div>
+          <div style="font-size:0.8rem;color:#6b7280;">Reading Time (min)</div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Word Counter</h2>
+      <p>Simply <strong>type</strong> or <strong>paste</strong> your text into the text area, and the statistics update automatically in real time. The tool shows: <strong>word count</strong>, <strong>character count</strong> (with and without spaces), <strong>sentence count</strong>, <strong>paragraph count</strong>, and estimated <strong>reading time</strong>.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Writing Tips for Word Counts</h2>
+      <ul>
+        <li><strong>Essays & assignments:</strong> Most academic papers have specific word count requirements.</li>
+        <li><strong>Blog posts:</strong> Aim for 1,500-2,500 words for SEO-optimized blog content.</li>
+        <li><strong>Meta descriptions:</strong> Keep between 150-160 characters for optimal search engine display.</li>
+        <li><strong>Social media:</strong> Twitter/X has a 280-character limit. LinkedIn posts perform best at 1,200-1,500 characters.</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "What counts as a word?", answer: "A word is defined as any sequence of characters separated by spaces or line breaks. Hyphenated words count as one word. Numbers are also counted as words." },
+      { question: "How is reading time calculated?", answer: "Reading time is calculated by dividing the total word count by 200 (average adult reading speed). The result is rounded to one decimal place." },
+      { question: "Is my text saved or stored anywhere?", answer: "No. All text processing happens entirely in your browser. Your text is never sent to any server, stored, or logged." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="word-counter" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script>
+function countWords() {
+  const text = (document.getElementById('wordText') as HTMLTextAreaElement).value;
+  const trimmed = text.trim();
+  const words = trimmed ? trimmed.split(/\s+/).length : 0;
+  const chars = text.length;
+  const charsNoSpace = text.replace(/\s/g, '').length;
+  const sentences = trimmed ? (trimmed.match(/[.!?]+/g) || []).length : 0;
+  const paragraphs = trimmed ? text.split(/\n\s*\n/).filter(p => p.trim()).length : 0;
+  const readingTime = Math.max(0.1, words / 200);
+
+  document.getElementById('wcCount')!.textContent = words.toString();
+  document.getElementById('wcChars')!.textContent = chars.toString();
+  document.getElementById('wcCharsNoSpace')!.textContent = charsNoSpace.toString();
+  document.getElementById('wcSentences')!.textContent = (sentences || (trimmed ? 1 : 0)).toString();
+  if (trimmed) (document.getElementById('wcParagraphs') as HTMLElement).textContent = (paragraphs || 1).toString();
+  document.getElementById('wcReadingTime')!.textContent = readingTime.toFixed(1);
+}
+
+function clearText() {
+  (document.getElementById('wordText') as HTMLTextAreaElement).value = '';
+  countWords();
+}
+
+document.getElementById('wordText')!.addEventListener('input', countWords);
+document.getElementById('clearBtn')!.addEventListener('click', clearText);
+document.addEventListener('DOMContentLoaded', countWords);
+</script>

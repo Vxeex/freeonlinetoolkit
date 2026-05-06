@@ -1,0 +1,50 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Compound Interest Guide' },
+];
+---
+
+<GuideLayout
+  title="Compound Interest Explained: Make Your Money Work Harder | FreeOnlineToolkit"
+  description="Understand how compound interest works, the power of compounding, and how you can use it to grow your wealth over time."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Compound Interest Explained: Make Your Money Work Harder</h1>
+  </fragment>
+
+  <h2>What Is Compound Interest?</h2>
+  <p>Compound interest is interest earned on both your initial principal and the interest that accumulates over time. Albert Einstein reportedly called it the "eighth wonder of the world." Unlike simple interest (which only pays interest on your principal), compounding accelerates your growth exponentially.</p>
+
+  <h2>The Compound Interest Formula</h2>
+  <div class="formula-box">
+    A = P(1 + r/n)^(nt)<br>
+    Where: A = final amount, P = principal, r = annual rate, n = compounds per year, t = years
+  </div>
+
+  <h2>Why Compounding Frequency Matters</h2>
+  <p>The more frequently interest compounds, the faster your money grows:</p>
+  <ul>
+    <li><strong>Daily compounding:</strong> Interest calculated and added every day (365 times per year)</li>
+    <li><strong>Monthly compounding:</strong> Interest added 12 times per year</li>
+    <li><strong>Quarterly compounding:</strong> Interest added 4 times per year</li>
+    <li><strong>Annual compounding:</strong> Interest added once per year</li>
+  </ul>
+
+  <h2>The Power of Starting Early</h2>
+  <p>The biggest factor in compound interest is <strong>time</strong>. Someone who invests $5,000 per year from age 25 to 35 (10 years) and then stops will likely have more at retirement than someone who starts at 35 and invests $5,000 per year for 30 years. This is the power of giving your money more time to compound.</p>
+
+  <h2>Practical Tips</h2>
+  <ul>
+    <li><strong>Start as early as possible</strong> — time is your biggest advantage.</li>
+    <li><strong>Be consistent</strong> — regular contributions amplify compounding.</li>
+    <li><strong>Reinvest dividends</strong> — don't cash them out; let them compound.</li>
+    <li><strong>Be patient</strong> — compounding takes time; don't interrupt it.</li>
+  </ul>
+
+  <p>See the power of compounding with our free <a href="/compound-interest-calculator/">Compound Interest Calculator</a>.</p>
+</GuideLayout>

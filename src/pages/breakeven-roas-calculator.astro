@@ -1,0 +1,168 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['breakeven-roas-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Breakeven ROAS",
+    "description": "Calculate your breakeven Return on Ad Spend and target Cost Per Acquisition for e-commerce products.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your product selling price" },
+      { "@type": "HowToStep", "text": "Input your product cost, shipping cost, and other costs per unit" },
+      { "@type": "HowToStep", "text": "Set your desired profit margin percentage" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your breakeven ROAS, target ROAS, and max CPA" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Know exactly how much you can spend on ads while keeping your profit intact. This breakeven ROAS and CPA calculator helps e-commerce sellers, dropshippers, and ad buyers find their minimum and target return on ad spend.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Breakeven ROAS Calculator</h2>
+      <div class="form-group">
+        <label for="roasPrice">Product Price ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="roasPrice" class="prefixed" value="50" min="1" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="roasCost">Product Cost ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="roasCost" class="prefixed" value="20" min="1" step="1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="roasShipping">Shipping Cost ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="roasShipping" class="prefixed" value="5" min="0" step="0.5">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="roasOther">Other Costs (packaging, fees, etc.) ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="roasOther" class="prefixed" value="2" min="0" step="0.5">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="roasMargin">Desired Profit Margin (%)</label>
+          <input type="number" id="roasMargin" value="20" min="0" max="100" step="1">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="roasResult">
+        <div class="result-value" id="roasBreakeven">0.00</div>
+        <div class="result-label">Breakeven ROAS</div>
+        <div class="result-details">
+          <div><span class="label">Target ROAS (with profit)</span><span class="value" id="roasTarget">0.00</span></div>
+          <div><span class="label">Max CPA ($)</span><span class="value" id="roasMaxCPA">$0.00</span></div>
+          <div><span class="label">Gross Profit Per Unit</span><span class="value" id="roasGross">$0.00</span></div>
+          <div><span class="label">Net Profit Per Unit (at target)</span><span class="value" id="roasNet">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Using this breakeven ROAS calculator takes just a few steps. Start by entering your <strong>product price</strong> &mdash; what you sell the item for. Then enter your <strong>product cost</strong> (what you pay your supplier), <strong>shipping cost</strong>, and any <strong>other costs</strong> like packaging or marketplace fees.</p>
+      <p>Finally, set your <strong>desired profit margin</strong>. This is the profit percentage you want to earn on each sale before ad costs. A 20% margin is a common starting point for most e-commerce businesses.</p>
+      <p>The calculator then shows your breakeven ROAS, target ROAS, maximum CPA (what you can spend to acquire a customer), and your per-unit profits.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>ROAS Formula Explained</h2>
+      <div class="formula-box">
+        Cost Per Unit = Product Cost + Shipping + Other Costs
+      </div>
+      <div class="formula-box">
+        Gross Profit = Price &minus; Cost Per Unit
+      </div>
+      <div class="formula-box">
+        Breakeven ROAS = Price / Cost Per Unit
+      </div>
+      <div class="formula-box">
+        Max CPA = Gross Profit &minus; (Price &times; Desired Margin / 100)
+      </div>
+      <div class="formula-box">
+        Target ROAS = Price / (Price &minus; Max CPA)
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is breakeven ROAS?", answer: "Breakeven ROAS (Return on Ad Spend) is the minimum revenue you need to earn for every dollar spent on advertising to cover your product costs. If your ROAS is below this number, you are losing money on each sale." },
+      { question: "What is a good ROAS for dropshipping?", answer: "A ROAS of 3-5x is considered good for dropshipping and e-commerce. However, the right target depends on your profit margins. This calculator helps you find your specific target ROAS based on your actual costs and desired profit margin." },
+      { question: "What is the difference between breakeven ROAS and target ROAS?", answer: "Breakeven ROAS is the minimum ROAS needed to cover your product costs with zero profit. Target ROAS includes your desired profit margin, so it is the ROAS you need to achieve to hit your profit goals." },
+      { question: "How do I improve my ROAS?", answer: "To improve ROAS, you can increase your product price, reduce product or shipping costs, improve ad targeting to reach higher-intent customers, optimize your ad creatives, or negotiate better rates with suppliers and shipping carriers." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="breakeven-roas-calculator" category="ecommerce" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function calcROAS(): void {
+  var price = parseFloat((document.getElementById('roasPrice') as HTMLInputElement).value);
+  var cost = parseFloat((document.getElementById('roasCost') as HTMLInputElement).value);
+  var shipping = parseFloat((document.getElementById('roasShipping') as HTMLInputElement).value) || 0;
+  var other = parseFloat((document.getElementById('roasOther') as HTMLInputElement).value) || 0;
+  var margin = parseFloat((document.getElementById('roasMargin') as HTMLInputElement).value) || 0;
+
+  if (!price || !cost) return;
+
+  var costPerUnit = cost + shipping + other;
+  var grossProfit = price - costPerUnit;
+  var breakevenROAS = price / costPerUnit;
+  var desiredProfit = price * (margin / 100);
+  var maxCPA = grossProfit - desiredProfit;
+  var targetROAS = price / (price - maxCPA);
+  var netProfit = grossProfit - maxCPA;
+
+  document.getElementById('roasBreakeven')!.textContent = breakevenROAS.toFixed(2);
+  document.getElementById('roasTarget')!.textContent = targetROAS.toFixed(2);
+  document.getElementById('roasMaxCPA')!.textContent = '$' + maxCPA.toFixed(2);
+  document.getElementById('roasGross')!.textContent = '$' + grossProfit.toFixed(2);
+  document.getElementById('roasNet')!.textContent = '$' + netProfit.toFixed(2);
+  showResult('roasResult');
+}
+
+function resetROAS(): void {
+  (document.getElementById('roasPrice') as HTMLInputElement).value = '50';
+  (document.getElementById('roasCost') as HTMLInputElement).value = '20';
+  (document.getElementById('roasShipping') as HTMLInputElement).value = '5';
+  (document.getElementById('roasOther') as HTMLInputElement).value = '2';
+  (document.getElementById('roasMargin') as HTMLInputElement).value = '20';
+  hideResult('roasResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcROAS);
+document.getElementById('resetBtn')!.addEventListener('click', resetROAS);
+document.addEventListener('DOMContentLoaded', calcROAS);
+</script>

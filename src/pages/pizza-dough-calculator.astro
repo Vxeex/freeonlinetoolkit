@@ -1,0 +1,172 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['pizza-dough-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Pizza Dough with Baker's Percentages",
+    "description": "Get exact flour, water, yeast, and salt amounts for perfect pizza dough using baker's percentages.",
+    "step": [
+      { "@type": "HowToStep", "text": "Choose your pizza style (Neapolitan, New York, Sicilian, Pan, or Custom)" },
+      { "@type": "HowToStep", "text": "Enter the number of pizzas and select hydration level" },
+      { "@type": "HowToStep", "text": "Click Calculate to see exact ingredient amounts" },
+      { "@type": "HowToStep", "text": "Weigh ingredients and follow the recommended rise time" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Get the perfect pizza dough recipe using baker's percentages. Choose your style, dough ball size, and number of pizzas for exact ingredient amounts.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Pizza Dough &amp; Baker's Percentage Calculator</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pizzaStyle">Pizza Style</label>
+          <select id="pizzaStyle">
+            <option value="neapolitan">Neapolitan (12", 250g ball)</option>
+            <option value="ny" selected>New York (14", 350g ball)</option>
+            <option value="sicilian">Sicilian / Detroit (10x14", 600g)</option>
+            <option value="pan">Pan / Deep Dish (10", 400g ball)</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="pizzaCount">Number of Pizzas</label>
+          <input type="number" id="pizzaCount" value="2" min="1" max="50" step="1">
+        </div>
+      </div>
+
+      <div id="customRow" style="display:none;">
+        <div class="form-group">
+          <label for="ballWeight">Dough Ball Weight (grams)</label>
+          <input type="number" id="ballWeight" value="350" min="100" max="1000" step="10">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="hydration">Hydration (%)</label>
+        <select id="hydration">
+          <option value="60">60% (firm, easy to handle)</option>
+          <option value="65" selected>65% (balanced)</option>
+          <option value="70">70% (airy, slightly sticky)</option>
+          <option value="75">75% (high hydration, advanced)</option>
+          <option value="80">80% (very high, expert level)</option>
+        </select>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="doughResult">
+        <div class="result-value" id="doughResultValue">Recipe</div>
+        <div class="result-label" id="doughResultLabel">Ingredients for your dough</div>
+        <div class="result-details" id="doughResultDetails"></div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Pizza Dough Calculator</h2>
+      <p>Baker's percentages are based on the flour weight being 100%. All other ingredients are calculated as a percentage of the flour. This method scales perfectly to any batch size.</p>
+      <ul>
+        <li><strong>Flour:</strong> 100% (your base amount)</li>
+        <li><strong>Water:</strong> 60-80% depending on style (hydration)</li>
+        <li><strong>Yeast:</strong> ~0.5-1% (active dry or instant)</li>
+        <li><strong>Salt:</strong> ~2-3% for flavor and gluten structure</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Pizza Styles Compared</h2>
+      <p><strong>Neapolitan</strong> is the classic thin-crust style cooked at very high heat (800-900&deg;F). <strong>New York style</strong> is hand-tossed with a foldable slice. <strong>Sicilian/Detroit</strong> is a thick, rectangular pan pizza. <strong>Pan/Deep dish</strong> uses higher hydration dough baked in a deep pan with lots of oil.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is baker's percentage?", answer: "Baker's percentage expresses every ingredient's weight as a percentage of the total flour weight. So 65% hydration means the water weighs 65% of the flour weight. This makes it easy to scale recipes up or down." },
+      { question: "Can I use bread flour instead of pizza flour?", answer: "Yes. Bread flour (12-13% protein) works great for pizza dough and gives excellent structure. '00' flour is finer-milled and traditional for Neapolitan, but bread flour is a fine substitute for home ovens." },
+      { question: "How long should the dough rise?", answer: "Room temperature: 2-4 hours. Cold ferment in the fridge: 24-72 hours for better flavor and digestibility. Cold fermentation develops more complex flavors as the yeast slowly breaks down the dough." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="pizza-dough-calculator" category="food" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+const styles: Record<string, { weight: number }> = {
+  neapolitan: { weight: 250 },
+  ny: { weight: 350 },
+  sicilian: { weight: 600 },
+  pan: { weight: 400 },
+  custom: { weight: 350 }
+};
+
+function updateStyle() {
+  const style = (document.getElementById('pizzaStyle') as HTMLSelectElement).value;
+  document.getElementById('customRow')!.style.display = style === 'custom' ? 'block' : 'none';
+  if (style !== 'custom' && styles[style]) {
+    (document.getElementById('ballWeight') as HTMLInputElement).value = String(styles[style].weight);
+  }
+}
+
+function calcDough() {
+  const style = (document.getElementById('pizzaStyle') as HTMLSelectElement).value;
+  const count = parseInt((document.getElementById('pizzaCount') as HTMLInputElement).value) || 1;
+  const hydration = parseInt((document.getElementById('hydration') as HTMLSelectElement).value);
+  const ballWeight = style === 'custom'
+    ? parseFloat((document.getElementById('ballWeight') as HTMLInputElement).value)
+    : styles[style].weight;
+
+  if (isNaN(ballWeight) || ballWeight < 50) return;
+
+  const totalDough = ballWeight * count;
+  const totalPercent = 100 + hydration + 2 + 0.6;
+  const flour = totalDough / (totalPercent / 100);
+  const water = flour * (hydration / 100);
+  const salt = flour * 0.02;
+  const yeast = flour * 0.006;
+
+  document.getElementById('doughResultValue')!.textContent = Math.round(flour / 10) * 10 + 'g flour';
+  document.getElementById('doughResultLabel')!.textContent = 'For ' + count + ' pizza' + (count > 1 ? 's' : '') + ' (' + Math.round(totalDough) + 'g total)';
+  document.getElementById('doughResultDetails')!.innerHTML =
+    '<div><span class="label">Flour (100%)</span><span class="value">' + Math.round(flour) + ' g</span></div>' +
+    '<div><span class="label">Water (' + hydration + '%)</span><span class="value">' + Math.round(water) + ' g</span></div>' +
+    '<div><span class="label">Salt (2%)</span><span class="value">' + Math.round(salt * 10) / 10 + ' g</span></div>' +
+    '<div><span class="label">Yeast (0.6%)</span><span class="value">' + (yeast < 1 ? (yeast * 10).toFixed(1) + ' g (use pinch)' : Math.round(yeast) + ' g') + '</span></div>' +
+    '<div><span class="label">Dough balls</span><span class="value">' + count + ' &times; ' + Math.round(ballWeight) + ' g</span></div>';
+  showResult('doughResult');
+}
+
+function resetDough() {
+  (document.getElementById('pizzaStyle') as HTMLSelectElement).value = 'ny';
+  (document.getElementById('pizzaCount') as HTMLInputElement).value = '2';
+  (document.getElementById('hydration') as HTMLSelectElement).value = '65';
+  (document.getElementById('ballWeight') as HTMLInputElement).value = '350';
+  updateStyle();
+  hideResult('doughResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcDough);
+document.getElementById('resetBtn')!.addEventListener('click', resetDough);
+document.getElementById('pizzaStyle')!.addEventListener('change', updateStyle);
+document.addEventListener('DOMContentLoaded', function() { updateStyle(); calcDough(); });
+</script>

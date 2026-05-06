@@ -1,0 +1,57 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Mortgage Calculator Guide' },
+];
+---
+
+<GuideLayout
+  title="How to Use a Mortgage Calculator to Plan Your Home Purchase | FreeOnlineToolkit"
+  description="Learn how to use a mortgage calculator effectively, understand interest rates, amortization, and plan your home purchase with confidence."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>How to Use a Mortgage Calculator to Plan Your Home Purchase</h1>
+  </fragment>
+
+  <h2>What Is a Mortgage Calculator?</h2>
+  <p>A mortgage calculator is a financial tool that estimates your monthly mortgage payments based on the loan amount, interest rate, and loan term. It helps you understand how much house you can afford and how different loan parameters affect your payments.</p>
+
+  <h2>Key Inputs Explained</h2>
+  <h3>Loan Amount</h3>
+  <p>This is the total amount you plan to borrow, typically the home price minus your down payment. For example, if you're buying a $400,000 home with a 20% down payment ($80,000), your loan amount would be $320,000.</p>
+
+  <h3>Interest Rate</h3>
+  <p>The annual interest rate on your mortgage. This is expressed as a percentage and can be fixed (stays the same for the loan term) or variable (adjustable rate mortgage or ARM). Even a 0.5% difference can significantly impact your monthly payment and total interest paid over the life of the loan.</p>
+
+  <h3>Loan Term</h3>
+  <p>The length of time you have to repay the loan. Common terms are 15, 20, and 30 years. A shorter term means higher monthly payments but less total interest. A 30-year term offers lower monthly payments but more total interest.</p>
+
+  <h2>Understanding Your Results</h2>
+  <h3>Monthly Payment</h3>
+  <p>Your monthly payment consists of principal and interest. This does not typically include property taxes, homeowners insurance, or PMI (private mortgage insurance), which are often escrowed into your payment.</p>
+
+  <h3>Total Interest</h3>
+  <p>The total amount of interest you'll pay over the full loan term. For a 30-year loan, the total interest can often exceed half of the loan amount. Making extra payments can significantly reduce this cost.</p>
+
+  <h3>Amortization Schedule</h3>
+  <p>An amortization schedule shows each payment's breakdown between principal and interest over time. Early payments are mostly interest; later payments are mostly principal.</p>
+
+  <div class="formula-box">
+    M = P × [r(1+r)^n] / [(1+r)^n - 1]<br>
+    Where: M = monthly payment, P = loan amount, r = monthly interest rate, n = number of payments
+  </div>
+
+  <h2>Tips for Using a Mortgage Calculator</h2>
+  <ul>
+    <li><strong>Include all costs:</strong> Remember to factor in property taxes, insurance, and PMI when budgeting.</li>
+    <li><strong>Compare scenarios:</strong> Try different down payments, interest rates, and loan terms to find what works best.</li>
+    <li><strong>Consider extra payments:</strong> See how paying extra each month reduces total interest and shortens your loan term.</li>
+    <li><strong>Check your DTI:</strong> Lenders typically prefer a debt-to-income ratio below 43%.</li>
+  </ul>
+
+  <p>Ready to calculate? Try our <a href="/mortgage-calculator/">Mortgage Calculator</a> for free.</p>
+</GuideLayout>

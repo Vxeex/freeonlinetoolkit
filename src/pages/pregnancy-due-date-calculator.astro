@@ -1,0 +1,191 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['pregnancy-due-date-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Your Pregnancy Due Date",
+    "description": "Calculate your estimated due date using the first day of your last menstrual period.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the first day of your last menstrual period (LMP)" },
+      { "@type": "HowToStep", "text": "Enter your average cycle length (default 28 days)" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your estimated due date and pregnancy timeline" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How accurate is the due date calculation?", "acceptedAnswer": { "@type": "Answer", "text": "Only about 5% of babies arrive on their exact due date. Most babies arrive between 38 and 42 weeks." } },
+      { "@type": "Question", "name": "What is Naegele's rule?", "acceptedAnswer": { "@type": "Answer", "text": "Naegele's rule adds 280 days (40 weeks) to the first day of your LMP, then adjusts for cycle length." } },
+      { "@type": "Question", "name": "How are trimesters divided?", "acceptedAnswer": { "@type": "Answer", "text": "First trimester: weeks 1-12. Second trimester: weeks 13-27. Third trimester: week 28 until birth." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Pregnancy Due Date Calculator</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your due date based on your last menstrual period or conception date. See your current pregnancy week, trimester, and key milestones — fast and free.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Due Date Calculator</h2>
+
+      <div class="form-group">
+        <label>Calculate based on</label>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="radio" name="calcMethod" value="lmp" checked> Last Menstrual Period (LMP)
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="radio" name="calcMethod" value="conception"> Conception Date
+          </label>
+        </div>
+      </div>
+
+      <div id="lmpGroup">
+        <div class="form-group">
+          <label for="lmpDate">First day of last menstrual period</label>
+          <input type="date" id="lmpDate">
+        </div>
+        <div class="form-group">
+          <label for="cycleLength">Average cycle length (days)</label>
+          <input type="number" id="cycleLength" value="28" min="20" max="45">
+          <div style="font-size:0.78rem;color:var(--color-text-muted);margin-top:4px;">Typical range: 21—35 days. Default is 28.</div>
+        </div>
+      </div>
+
+      <div id="conceptionGroup" style="display:none;">
+        <div class="form-group">
+          <label for="conceptionDate">Conception date (if known)</label>
+          <input type="date" id="conceptionDate">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="dueDateResult">
+        <div class="result-value" id="dueDateDisplay">—</div>
+        <div class="result-label">Estimated Due Date</div>
+        <div class="result-details">
+          <div><span class="label">Current Week</span><span class="value" id="currentWeek">—</span></div>
+          <div><span class="label">Trimester</span><span class="value" id="trimester">—</span></div>
+          <div><span class="label">Weeks Remaining</span><span class="value" id="weeksRemaining">—</span></div>
+          <div><span class="label">Conception Date (estimated)</span><span class="value" id="estConception">—</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Select whether to calculate based on your <strong>LMP</strong> or <strong>conception date</strong>. If using LMP, enter the first day of your last period and your average cycle length. The calculator uses <strong>Naegele's rule</strong>: 280 days from LMP, adjusted for cycle length.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How accurate is the due date calculation?", answer: "Only about 5% of babies arrive on their exact due date. The due date is an estimate — most babies arrive between 38 and 42 weeks." },
+      { question: "What is Naegele's rule?", answer: "Naegele's rule is the standard method for estimating due dates. It adds 280 days (40 weeks) to the first day of your LMP, then adjusts for cycle length." },
+      { question: "How are trimesters divided?", answer: "First trimester: weeks 1-12. Second trimester: weeks 13-27. Third trimester: week 28 until birth." },
+      { question: "Does cycle length affect the due date?", answer: "Yes. If your cycle is longer than 28 days, ovulation happens later, so the due date shifts forward. If shorter, it shifts backward." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="pregnancy-due-date-calculator" category="health-wellness" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function toggleMethod() {
+  const method = (document.querySelector('input[name="calcMethod"]:checked') as HTMLInputElement).value;
+  (document.getElementById('lmpGroup') as HTMLElement).style.display = method === 'lmp' ? '' : 'none';
+  (document.getElementById('conceptionGroup') as HTMLElement).style.display = method === 'conception' ? '' : 'none';
+}
+
+function calcDueDate() {
+  const method = (document.querySelector('input[name="calcMethod"]:checked') as HTMLInputElement).value;
+  let dueDate: Date, conceptionDate: Date, lmpDateObj: Date;
+
+  if (method === 'lmp') {
+    const lmp = (document.getElementById('lmpDate') as HTMLInputElement).value;
+    if (!lmp) { alert('Please enter the date of your last menstrual period.'); return; }
+    const cycle = parseInt((document.getElementById('cycleLength') as HTMLInputElement).value) || 28;
+    lmpDateObj = new Date(lmp + 'T12:00:00');
+    const cycleAdjust = cycle - 28;
+    dueDate = new Date(lmpDateObj);
+    dueDate.setDate(dueDate.getDate() + 280 + cycleAdjust);
+    conceptionDate = new Date(lmpDateObj);
+    conceptionDate.setDate(conceptionDate.getDate() + 14 + cycleAdjust);
+  } else {
+    const conc = (document.getElementById('conceptionDate') as HTMLInputElement).value;
+    if (!conc) { alert('Please enter the conception date.'); return; }
+    dueDate = new Date(conc + 'T12:00:00');
+    dueDate.setDate(dueDate.getDate() + 266);
+    conceptionDate = new Date(conc + 'T12:00:00');
+    lmpDateObj = new Date(conc + 'T12:00:00');
+    lmpDateObj.setDate(lmpDateObj.getDate() - 14);
+  }
+
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('dueDateDisplay')!.textContent = dueDate.toLocaleDateString('en-US', options);
+  document.getElementById('estConception')!.textContent = conceptionDate.toLocaleDateString('en-US', options);
+
+  const today = new Date();
+  const startDate = new Date(method === 'lmp' ? lmpDateObj : conceptionDate);
+  startDate.setDate(startDate.getDate() - 14);
+  const diffMs = today.getTime() - startDate.getTime();
+  const totalDaysPregnant = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+
+  if (totalDaysPregnant >= 294) {
+    document.getElementById('currentWeek')!.textContent = '42+ (past due date)';
+    document.getElementById('trimester')!.textContent = 'Post-term';
+    document.getElementById('weeksRemaining')!.textContent = '0 — baby may arrive any day';
+  } else {
+    const weeks = Math.floor(totalDaysPregnant / 7);
+    const days = totalDaysPregnant % 7;
+    document.getElementById('currentWeek')!.textContent = weeks + ' weeks, ' + days + ' days';
+
+    if (totalDaysPregnant < 84) {
+      document.getElementById('trimester')!.textContent = 'First Trimester (weeks 1-12)';
+    } else if (totalDaysPregnant < 196) {
+      document.getElementById('trimester')!.textContent = 'Second Trimester (weeks 13-27)';
+    } else {
+      document.getElementById('trimester')!.textContent = 'Third Trimester (weeks 28-40)';
+    }
+
+    const remaining = 280 - totalDaysPregnant;
+    const remWeeks = Math.floor(remaining / 7);
+    const remDays = remaining % 7;
+    document.getElementById('weeksRemaining')!.textContent = remWeeks + ' weeks, ' + remDays + ' days';
+  }
+
+  showResult('dueDateResult');
+}
+
+function resetDueDate() {
+  (document.getElementById('lmpDate') as HTMLInputElement).value = '';
+  (document.getElementById('cycleLength') as HTMLInputElement).value = '28';
+  (document.getElementById('conceptionDate') as HTMLInputElement).value = '';
+  hideResult('dueDateResult');
+}
+
+document.querySelectorAll('input[name="calcMethod"]').forEach(el => el.addEventListener('change', toggleMethod));
+document.getElementById('calcBtn')!.addEventListener('click', calcDueDate);
+document.getElementById('resetBtn')!.addEventListener('click', resetDueDate);
+document.addEventListener('DOMContentLoaded', () => { toggleMethod(); });
+</script>

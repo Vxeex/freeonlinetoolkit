@@ -1,0 +1,153 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['prime-number-checker'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Check if a Number Is Prime",
+    "description": "Check any number for primality and find its prime factors.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter any whole number greater than 1" },
+      { "@type": "HowToStep", "text": "Click Check to test if the number is prime" },
+      { "@type": "HowToStep", "text": "View the prime factorization and number properties" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Check whether any number is prime, find its prime factorization, and explore properties like divisors and digit sum. A fast, educational tool for students and math enthusiasts.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Prime Checker</h2>
+      <div class="form-group">
+        <label for="primeNum">Enter a Number</label>
+        <input type="number" id="primeNum" value="97" min="2" step="1">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Check</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="primeResult">
+        <div class="result-value" id="primeVerdict" style="font-size:1.1rem;">97 is prime</div>
+        <div class="result-details">
+          <div><span class="label">Prime Factors</span><span class="value" id="primeFactors">97</span></div>
+          <div><span class="label">Number of Divisors</span><span class="value" id="primeDivisors">2</span></div>
+          <div><span class="label">Digit Sum</span><span class="value" id="primeDigitSum">16</span></div>
+          <div><span class="label">Is Even</span><span class="value" id="primeIsEven">No</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Enter any whole number greater than 1 and click <strong>Check</strong>. The calculator will tell you if it's prime and provide a complete prime factorization. You'll also see the number of divisors, digit sum, and whether it's even or odd.</p>
+      <p>A <strong>prime number</strong> is a whole number greater than 1 that can only be divided evenly by 1 and itself. The first few primes are 2, 3, 5, 7, 11, 13, 17, 19, 23, and 29.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How It Works</h2>
+      <p>The calculator uses trial division up to the square root of the number. If the number has no divisors other than 1 and itself, it's prime. For factorization, it repeatedly divides by the smallest possible prime factor until the result is 1.</p>
+      <div class="formula-box">
+        Check divisors up to &radic;n<br>
+        97 &rarr; no divisors found &rarr; prime
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "Is 1 a prime number?", answer: "No. A prime number must have exactly two distinct divisors (1 and itself). The number 1 has only one divisor (itself), so it is neither prime nor composite. It's called a unit." },
+      { question: "What is the largest known prime?", answer: "As of 2025, the largest known prime is 2^136,279,841 &minus; 1, a Mersenne prime with over 41 million digits. It was discovered by the Great Internet Mersenne Prime Search (GIMPS)." },
+      { question: "Why are prime numbers important?", answer: "Primes are the building blocks of all numbers (every number has a unique prime factorization). They're essential in cryptography (RSA encryption), random number generation, and many areas of mathematics and computer science." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="prime-number-checker" category="developer" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+function isPrime(n: number): boolean {
+  if (n < 2) return false;
+  if (n === 2) return true;
+  if (n % 2 === 0) return false;
+  var limit = Math.sqrt(n);
+  for (var i = 3; i <= limit; i += 2) {
+    if (n % i === 0) return false;
+  }
+  return true;
+}
+
+function primeFactors(n: number): number[] {
+  var factors: number[] = [];
+  var num = n;
+  for (var i = 2; i * i <= num; i++) {
+    while (num % i === 0) {
+      factors.push(i);
+      num = num / i;
+    }
+  }
+  if (num > 1) factors.push(num);
+  return factors;
+}
+
+function countDivisors(n: number): number {
+  var count = 0;
+  var limit = Math.sqrt(n);
+  for (var i = 1; i <= limit; i++) {
+    if (n % i === 0) {
+      count++;
+      if (i !== n / i) count++;
+    }
+  }
+  return count;
+}
+
+function digitSum(n: number): number {
+  return n.toString().split('').reduce(function(s: number, d: string) { return s + parseInt(d); }, 0);
+}
+
+function checkPrime(): void {
+  var n = parseInt((document.getElementById('primeNum') as HTMLInputElement).value);
+  if (!n || n < 2) return;
+
+  var prime = isPrime(n);
+  var factors = primeFactors(n);
+  var divisors = countDivisors(n);
+  var dSum = digitSum(n);
+
+  var verdictEl = document.getElementById('primeVerdict') as HTMLElement;
+  verdictEl.textContent = n.toLocaleString() + (prime ? ' is prime' : ' is not prime');
+  verdictEl.style.color = prime ? 'var(--color-primary)' : 'var(--color-accent)';
+
+  document.getElementById('primeFactors')!.textContent = factors.join(' &times; ') || 'None';
+  document.getElementById('primeDivisors')!.textContent = divisors.toString();
+  document.getElementById('primeDigitSum')!.textContent = dSum.toString();
+  document.getElementById('primeIsEven')!.textContent = n % 2 === 0 ? 'Yes' : 'No';
+  showResult('primeResult');
+}
+
+function resetPrime(): void {
+  (document.getElementById('primeNum') as HTMLInputElement).value = '97';
+  hideResult('primeResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', checkPrime);
+document.getElementById('resetBtn')!.addEventListener('click', resetPrime);
+document.addEventListener('DOMContentLoaded', checkPrime);
+</script>

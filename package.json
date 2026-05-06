@@ -1,0 +1,17 @@
+{
+  "name": "freeonlinetoolkit",
+  "version": "1.0.0",
+  "description": "Free online calculators and tools",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^5.7.0",
+    "@astrojs/cloudflare": "^12.3.0",
+    "@astrojs/sitemap": "^3.3.0"
+  }
+}

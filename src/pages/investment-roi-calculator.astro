@@ -1,0 +1,155 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['investment-roi-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Return on Investment",
+    "description": "Calculate ROI and annualized return for any investment using initial investment, final value, and holding period.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your initial investment amount" },
+      { "@type": "HowToStep", "text": "Enter the final value of your investment" },
+      { "@type": "HowToStep", "text": "Input the holding period in years" },
+      { "@type": "HowToStep", "text": "Optionally add monthly contributions for DCA scenarios" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your ROI and annualized return" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Measure the performance of any investment. This free ROI calculator shows your total return, ROI percentage, annualized return (CAGR), and compares the result against a standard savings account.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>ROI Calculator</h2>
+      <div class="form-group">
+        <label for="initialInvestment">Initial Investment ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="initialInvestment" class="prefixed" value="10000" min="0" step="500">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="finalValue">Final Value ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="finalValue" class="prefixed" value="18000" min="0" step="500">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="holdingPeriod">Holding Period (Years)</label>
+          <input type="number" id="holdingPeriod" value="5" min="1" max="60">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="monthlyContribution">Monthly Contribution ($) <span class="optional">optional</span></label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="monthlyContribution" class="prefixed" value="0" min="0" step="100">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="savingsRate">Savings Account Rate (%)</label>
+          <input type="number" id="savingsRate" value="4.0" min="0" step="0.1">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="roiResult">
+        <div class="result-value" id="roiPercent">0.00%</div>
+        <div class="result-label">Total Return on Investment</div>
+        <div class="result-details">
+          <div><span class="label">Total Profit</span><span class="value" id="roiProfit">$0</span></div>
+          <div><span class="label">Annualized Return (CAGR)</span><span class="value" id="roiCAGR">0.00%</span></div>
+          <div><span class="label">vs. Savings Account</span><span class="value" id="roiSavingsCompare">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Investment ROI Calculator</h2>
+      <p>First, enter your <strong>initial investment</strong> &mdash; the amount you originally put into the investment. Next, enter the <strong>final value</strong> &mdash; what the investment is worth now. Then input your <strong>holding period</strong> in years.</p>
+      <p>For dollar-cost averaging (DCA) scenarios, add a <strong>monthly contribution</strong> amount. The <strong>savings account rate</strong> lets you compare what your money would have earned in a standard savings account.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>ROI and CAGR Formulas</h2>
+      <div class="formula-box">ROI = [(Final Value &minus; Total Invested) / Total Invested] &times; 100</div>
+      <div class="formula-box">CAGR = (Final Value / Total Invested)^(1 / Years) &minus; 1</div>
+      <p>Where: <strong>Total Invested</strong> = Initial Investment + (Monthly Contribution &times; 12 &times; Years). <strong>CAGR</strong> stands for Compound Annual Growth Rate.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a good ROI for an investment?", answer: "A good ROI depends on the investment type and risk level. The S&P 500 historically averages 7-10% annualized return. Real estate typically yields 8-12%. Higher-risk investments should offer higher potential returns." },
+      { question: "What is the difference between ROI and CAGR?", answer: "ROI is the total percentage gain over the entire holding period. CAGR is the average annual return, accounting for compounding. CAGR is more useful for comparing investments of different lengths." },
+      { question: "How do monthly contributions affect my ROI?", answer: "Monthly contributions increase your total invested capital, which can boost your total profit but may lower your ROI percentage if later contributions haven't had time to grow. This is normal in DCA strategies." },
+      { question: "What is dollar-cost averaging (DCA)?", answer: "Dollar-cost averaging is an investment strategy where you invest a fixed amount at regular intervals (e.g., monthly) regardless of market conditions. This reduces the impact of market volatility." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="investment-roi-calculator" category="business-finance" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcROI() {
+  const initial = getNum('initialInvestment');
+  const finalVal = getNum('finalValue');
+  const years = getNum('holdingPeriod');
+  const monthly = getNum('monthlyContribution') || 0;
+  const savingsRate = getNum('savingsRate');
+
+  if (!initial || !finalVal || !years) return;
+
+  const totalInvested = initial + (monthly * 12 * years);
+  const profit = finalVal - totalInvested;
+  const roi = (profit / totalInvested) * 100;
+  const cagr = (Math.pow(finalVal / totalInvested, 1 / years) - 1) * 100;
+
+  document.getElementById('roiPercent')!.textContent = roi.toFixed(2) + '%';
+  document.getElementById('roiProfit')!.textContent = formatCurrency(profit);
+  document.getElementById('roiCAGR')!.textContent = cagr.toFixed(2) + '%';
+
+  const savingsMonthly = savingsRate / 100 / 12;
+  let savingsValue = initial;
+  for (let m = 0; m < years * 12; m++) {
+    savingsValue = savingsValue * (1 + savingsMonthly) + monthly;
+  }
+  document.getElementById('roiSavingsCompare')!.textContent = formatCurrency(savingsValue);
+
+  showResult('roiResult');
+}
+
+function resetROI() {
+  (document.getElementById('initialInvestment') as HTMLInputElement).value = '10000';
+  (document.getElementById('finalValue') as HTMLInputElement).value = '18000';
+  (document.getElementById('holdingPeriod') as HTMLInputElement).value = '5';
+  (document.getElementById('monthlyContribution') as HTMLInputElement).value = '0';
+  (document.getElementById('savingsRate') as HTMLInputElement).value = '4.0';
+  hideResult('roiResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcROI);
+document.getElementById('resetBtn')!.addEventListener('click', resetROI);
+document.addEventListener('DOMContentLoaded', calcROI);
+</script>

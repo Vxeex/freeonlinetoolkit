@@ -1,0 +1,263 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['wedding-budget-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Plan a Wedding Budget",
+    "description": "Create a detailed wedding budget with category-by-category allocation and cost breakdown.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your total wedding budget and estimated guest count" },
+      { "@type": "HowToStep", "text": "Optionally enter a specific venue cost or use default category percentages" },
+      { "@type": "HowToStep", "text": "Adjust category percentages to match your priorities" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your complete budget breakdown" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Plan your dream wedding without financial stress. This wedding budget calculator breaks down your total budget by category, highlights overages, and helps you allocate funds wisely based on your guest count and priorities.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Wedding Budget Calculator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="totalBudget">Total Wedding Budget ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="totalBudget" class="prefixed" value="30000" min="0" step="1000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="guestCount">Estimated Guest Count</label>
+          <input type="number" id="guestCount" value="100" min="1" max="1000" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="venueCost">Venue Cost ($) <span class="optional">optional override</span></label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="venueCost" class="prefixed" value="0" min="0" step="500">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <p style="font-size:0.85rem;color:var(--color-text-muted);margin-top:0;">Leave at 0 to use default percentage</p>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem;color:var(--color-primary);margin:1rem 0 0.75rem;">Category Percentages (% of Total Budget)</h3>
+      <p style="font-size:0.85rem;color:var(--color-text-muted);margin-bottom:0.75rem;">Adjust these to match your priorities. Total should equal 100%.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="venuePct">Venue &amp; Catering (%)</label>
+          <input type="number" id="venuePct" value="30" min="0" max="100" step="1">
+        </div>
+        <div class="form-group">
+          <label for="cateringPct">Catering &amp; Bar (%)</label>
+          <input type="number" id="cateringPct" value="25" min="0" max="100" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="photoPct">Photography &amp; Video (%)</label>
+          <input type="number" id="photoPct" value="12" min="0" max="100" step="1">
+        </div>
+        <div class="form-group">
+          <label for="attirePct">Attire &amp; Beauty (%)</label>
+          <input type="number" id="attirePct" value="8" min="0" max="100" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="flowersPct">Flowers &amp; Decor (%)</label>
+          <input type="number" id="flowersPct" value="8" min="0" max="100" step="1">
+        </div>
+        <div class="form-group">
+          <label for="entertainmentPct">Entertainment &amp; Music (%)</label>
+          <input type="number" id="entertainmentPct" value="7" min="0" max="100" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="plannerPct">Planner &amp; Coordinator (%)</label>
+          <input type="number" id="plannerPct" value="5" min="0" max="100" step="1">
+        </div>
+        <div class="form-group">
+          <label for="stationeryPct">Stationery &amp; Invitations (%)</label>
+          <input type="number" id="stationeryPct" value="3" min="0" max="100" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="favorsPct">Favors &amp; Gifts (%)</label>
+          <input type="number" id="favorsPct" value="2" min="0" max="100" step="1">
+        </div>
+        <div class="form-group">
+          <label for="contingencyPct">Contingency / Buffer (%)</label>
+          <input type="number" id="contingencyPct" value="10" min="0" max="100" step="1">
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="weddingResult">
+        <div class="result-value" id="weddingTotalAllocated">$0.00</div>
+        <div class="result-label">Total Allocated Budget</div>
+        <div class="result-details">
+          <div><span class="label">Amount per Guest</span><span class="value" id="weddingPerGuest">$0</span></div>
+          <div><span class="label">Allocated</span><span class="value" id="weddingAllocatedPct">0%</span></div>
+          <div><span class="label">Unallocated / Remaining</span><span class="value" id="weddingRemaining">$0</span></div>
+          <div><span class="label">Over-Budget Warnings</span><span class="value" id="weddingWarnings" style="color:var(--color-danger);">None</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section" id="weddingTableSection" style="display:none;">
+      <h2>Category Budget Breakdown</h2>
+      <div class="table-wrap">
+        <table class="amort-table" id="weddingBreakdownTable">
+          <thead>
+            <tr><th>Category</th><th>Percentage</th><th>Allocated Amount</th><th>Status</th></tr>
+          </thead>
+          <tbody id="weddingBreakdownBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Wedding Budget Calculator</h2>
+      <p>Start by entering your <strong>total wedding budget</strong> and <strong>estimated guest count</strong>. If you already know your venue cost, enter it as an override. The default <strong>category percentages</strong> reflect typical wedding industry averages. Adjust each percentage to match your personal priorities.</p>
+      <p>Click "Calculate" to see your complete budget breakdown, amount per guest, and any over-budget warnings. Use the table to see exactly where every dollar is going.</p>
+      <p>Pro tip: Always keep a 5-10% contingency buffer for unexpected costs. Weddings almost always have surprise expenses.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Wedding Budget Formula</h2>
+      <div class="formula-box">Category Amount = Total Budget &times; Category Percentage / 100</div>
+      <p>If a venue cost override is provided, it replaces the venue percentage allocation. The <strong>cost per guest</strong> is Total Budget / Guest Count.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the average wedding budget breakdown?", answer: "According to industry data, venue and catering typically consume 45-55% of the total budget. Photography (10-12%), attire (5-10%), flowers (8-10%), entertainment (5-10%), and planner (5-8%) are the next largest categories. The defaults in this calculator reflect these averages." },
+      { question: "How much should I budget per guest?", answer: "The average cost per guest varies widely by location and style, ranging from $100 for a casual backyard wedding to $400+ for a formal city celebration. Use this calculator to determine your per-guest cost." },
+      { question: "Should I hire a wedding planner?", answer: "A wedding planner typically costs 5-15% of your total budget but can often save you money through vendor relationships. If your budget is over $20,000 or you have limited time, a planner is generally worth the investment." },
+      { question: "What is a realistic contingency for unexpected costs?", answer: "Industry experts recommend setting aside 5-10% of your total budget as a contingency fund for last-minute changes, vendor overtime, and weather-related adjustments." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="wedding-budget-calculator" category="lifestyle" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcWedding() {
+  const total = getNum('totalBudget') || 0;
+  const guests = getNum('guestCount') || 1;
+  const venueOverride = getNum('venueCost') || 0;
+
+  const categoryConfigs = [
+    { id: 'venuePct', name: 'Venue & Catering' },
+    { id: 'cateringPct', name: 'Catering & Bar' },
+    { id: 'photoPct', name: 'Photography & Video' },
+    { id: 'attirePct', name: 'Attire & Beauty' },
+    { id: 'flowersPct', name: 'Flowers & Decor' },
+    { id: 'entertainmentPct', name: 'Entertainment & Music' },
+    { id: 'plannerPct', name: 'Planner & Coordinator' },
+    { id: 'stationeryPct', name: 'Stationery & Invitations' },
+    { id: 'favorsPct', name: 'Favors & Gifts' },
+    { id: 'contingencyPct', name: 'Contingency / Buffer' }
+  ];
+
+  const categories = categoryConfigs.map(c => ({
+    ...c,
+    pct: getNum(c.id) || 0
+  }));
+
+  const totalPct = categories.reduce((sum, c) => sum + c.pct, 0);
+  let totalAllocated = 0;
+  const items: { name: string; pct: number; amount: number; status: string }[] = [];
+  const warnings: string[] = [];
+
+  categories.forEach((c, i) => {
+    let amount = total * c.pct / 100;
+    if (i === 0 && venueOverride > 0) {
+      amount = venueOverride;
+      if (venueOverride > total * c.pct / 100) {
+        warnings.push('Venue cost exceeds venue category allocation by ' + formatCurrency(venueOverride - total * c.pct / 100));
+      }
+    }
+    totalAllocated += amount;
+    const status = (i === 0 && venueOverride > 0 && venueOverride > total * c.pct / 100) ? 'OVER BUDGET' : 'OK';
+    items.push({ name: c.name, pct: c.pct, amount, status });
+  });
+
+  const remaining = total - totalAllocated;
+  const perGuest = total / guests;
+
+  if (remaining < 0) warnings.push('Over budget by ' + formatCurrency(Math.abs(remaining)));
+  if (totalPct > 100) warnings.push('Category percentages total ' + totalPct.toFixed(0) + '% (exceeds 100%)');
+
+  document.getElementById('weddingTotalAllocated')!.textContent = formatCurrency(totalAllocated);
+  document.getElementById('weddingPerGuest')!.textContent = formatCurrency(perGuest) + ' / guest';
+  document.getElementById('weddingAllocatedPct')!.textContent = (total > 0 ? (totalAllocated / total * 100).toFixed(1) : 0) + '%';
+  document.getElementById('weddingRemaining')!.textContent = formatCurrency(Math.max(0, remaining));
+  document.getElementById('weddingWarnings')!.textContent = warnings.length > 0 ? warnings.join('; ') : 'None';
+
+  showResult('weddingResult');
+
+  const body = document.getElementById('weddingBreakdownBody')!;
+  body.innerHTML = '';
+  items.forEach(it => {
+    const row = document.createElement('tr');
+    if (it.status === 'OVER BUDGET') { row.style.color = 'var(--color-danger)'; row.style.fontWeight = 'bold'; }
+    row.innerHTML = '<td>' + it.name + '</td><td>' + it.pct.toFixed(0) + '%</td><td>' + formatCurrency(it.amount) + '</td><td>' + it.status + '</td>';
+    body.appendChild(row);
+  });
+
+  document.getElementById('weddingTableSection')!.style.display = 'block';
+}
+
+function resetWedding() {
+  (document.getElementById('totalBudget') as HTMLInputElement).value = '30000';
+  (document.getElementById('guestCount') as HTMLInputElement).value = '100';
+  (document.getElementById('venueCost') as HTMLInputElement).value = '0';
+  (document.getElementById('venuePct') as HTMLInputElement).value = '30';
+  (document.getElementById('cateringPct') as HTMLInputElement).value = '25';
+  (document.getElementById('photoPct') as HTMLInputElement).value = '12';
+  (document.getElementById('attirePct') as HTMLInputElement).value = '8';
+  (document.getElementById('flowersPct') as HTMLInputElement).value = '8';
+  (document.getElementById('entertainmentPct') as HTMLInputElement).value = '7';
+  (document.getElementById('plannerPct') as HTMLInputElement).value = '5';
+  (document.getElementById('stationeryPct') as HTMLInputElement).value = '3';
+  (document.getElementById('favorsPct') as HTMLInputElement).value = '2';
+  (document.getElementById('contingencyPct') as HTMLInputElement).value = '10';
+  document.getElementById('weddingTableSection')!.style.display = 'none';
+  hideResult('weddingResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcWedding);
+document.getElementById('resetBtn')!.addEventListener('click', resetWedding);
+document.addEventListener('DOMContentLoaded', calcWedding);
+</script>

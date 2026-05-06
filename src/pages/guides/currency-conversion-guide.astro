@@ -1,0 +1,48 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Currency Conversion Guide' },
+];
+---
+
+<GuideLayout
+  title="Currency Conversion: A Complete Guide for Travelers | FreeOnlineToolkit"
+  description="Learn how currency exchange rates work, understand conversion fees, and get tips for getting the best rates when traveling abroad."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Currency Conversion: A Complete Guide for Travelers</h1>
+  </fragment>
+
+  <h2>How Currency Exchange Rates Work</h2>
+  <p>Currency exchange rates represent the value of one currency relative to another. These rates fluctuate constantly based on supply and demand, economic indicators, interest rates, political stability, and market sentiment. Most currencies use a floating exchange rate system where the market determines the value.</p>
+
+  <h2>Types of Exchange Rates</h2>
+  <ul>
+    <li><strong>Mid-market rate:</strong> The "true" exchange rate — the midpoint between buy and sell prices. This is the rate you see on Google or our converter.</li>
+    <li><strong>Buy rate:</strong> The rate at which a provider buys foreign currency from you (always less favorable).</li>
+    <li><strong>Sell rate:</strong> The rate at which a provider sells foreign currency to you (always less favorable).</li>
+  </ul>
+
+  <h2>Hidden Fees to Watch For</h2>
+  <ul>
+    <li><strong>Spread markup:</strong> Some providers add a markup to the exchange rate itself.</li>
+    <li><strong>Transaction fees:</strong> Flat or percentage-based fees per conversion.</li>
+    <li><strong>ATM fees:</strong> Fees for withdrawing foreign cash from ATMs.</li>
+    <li><strong>Dynamic currency conversion:</strong> Avoid paying in your home currency when abroad — the rate is almost always worse.</li>
+  </ul>
+
+  <h2>Tips for Getting the Best Rates</h2>
+  <ul>
+    <li><strong>Compare multiple providers</strong> before converting large amounts.</li>
+    <li><strong>Avoid airport currency exchange kiosks</strong> — they typically offer the worst rates.</li>
+    <li><strong>Use a fee-free travel card</strong> for international spending.</li>
+    <li><strong>Monitor rates over time</strong> and convert when the rate is favorable.</li>
+    <li><strong>Consider peer-to-peer currency platforms</strong> for better mid-market rates.</li>
+  </ul>
+
+  <p>Check live rates with our free <a href="/currency-converter/">Currency Converter</a>.</p>
+</GuideLayout>

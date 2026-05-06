@@ -1,0 +1,147 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['car-loan-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Car Loan Payments",
+    "description": "Calculate your monthly auto loan payment based on vehicle price, down payment, interest rate, and loan term.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the total vehicle price" },
+      { "@type": "HowToStep", "text": "Input your down payment amount" },
+      { "@type": "HowToStep", "text": "Enter the annual interest rate" },
+      { "@type": "HowToStep", "text": "Select the loan term in months" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your monthly payment" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Plan your auto purchase with confidence. This car loan calculator shows your estimated monthly payment, total interest, and full payment breakdown for any vehicle loan.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Car Loan Calculator</h2>
+      <div class="form-group">
+        <label for="vehiclePrice">Vehicle Price ($)</label>
+        <input type="number" id="vehiclePrice" value="35000" min="0" step="1000">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="downPayment">Down Payment ($)</label>
+          <input type="number" id="downPayment" value="5000" min="0" step="500">
+        </div>
+        <div class="form-group">
+          <label for="tradeIn">Trade-In Value ($)</label>
+          <input type="number" id="tradeIn" value="0" min="0" step="500">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="carRate">Annual Interest Rate (%)</label>
+          <input type="number" id="carRate" value="6.9" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="carTerm">Loan Term (Months)</label>
+          <select id="carTerm">
+            <option value="24">24 months (2 years)</option>
+            <option value="36">36 months (3 years)</option>
+            <option value="48">48 months (4 years)</option>
+            <option value="60" selected>60 months (5 years)</option>
+            <option value="72">72 months (6 years)</option>
+            <option value="84">84 months (7 years)</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="carLoanResult">
+        <div class="result-value" id="carPayment">$0.00</div>
+        <div class="result-label">Monthly Payment</div>
+        <div class="result-details">
+          <div><span class="label">Loan Amount</span><span class="value" id="carLoanAmt">$0</span></div>
+          <div><span class="label">Total Interest Paid</span><span class="value" id="carTotalInterest">$0</span></div>
+          <div><span class="label">Total Cost</span><span class="value" id="carTotalCost">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Car Loan Calculator</h2>
+      <p>Using this auto loan calculator is easy. First, enter the <strong>vehicle price</strong> — the total cost of the car you're considering. Then add your <strong>down payment</strong> and any <strong>trade-in value</strong> if you're trading an existing vehicle.</p>
+      <p>Next, input the <strong>annual interest rate</strong> you've been quoted. Finally, choose your preferred <strong>loan term</strong> in months. Shorter terms mean higher payments but less interest; longer terms lower the monthly payment but cost more in interest.</p>
+      <p>Pro tip: A larger down payment (20% or more) can help you qualify for a better interest rate and avoid being upside down on your loan.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Car Loan Payment Formula</h2>
+      <div class="formula-box">M = P × [r(1+r)^n] / [(1+r)^n - 1]</div>
+      <p>Where: <strong>M</strong> = monthly payment, <strong>P</strong> = loan amount (price - down payment - trade-in), <strong>r</strong> = monthly interest rate, <strong>n</strong> = total number of months.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What credit score do I need for a car loan?", answer: "Generally, a credit score of 660 or higher qualifies you for competitive auto loan rates. Scores above 740 typically receive the best rates. Even with lower scores, you can still get a loan, though rates will be higher." },
+      { question: "Is a 72-month car loan a good idea?", answer: "A 72-month loan lowers your monthly payment but increases total interest paid. It also means you'll be paying off the car longer, which could leave you owing more than the car is worth." },
+      { question: "Should I finance through the dealer or my bank?", answer: "Always compare offers from both. Dealers sometimes offer promotional rates, but credit unions and banks often provide better rates on used cars. Get pre-approved before visiting the dealership." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="car-loan-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcCarLoan() {
+  const price = getNum('vehiclePrice')!;
+  const down = getNum('downPayment') || 0;
+  const trade = getNum('tradeIn') || 0;
+  const rate = getNum('carRate')!;
+  const term = parseInt((document.getElementById('carTerm') as HTMLSelectElement).value);
+
+  if (!price || !rate) return;
+  const loanAmt = price - down - trade;
+  if (loanAmt <= 0) return;
+
+  const r = rate / 100 / 12;
+  const M = loanAmt * (r * Math.pow(1 + r, term)) / (Math.pow(1 + r, term) - 1);
+  const totalInt = M * term - loanAmt;
+  const totalCost = price + totalInt;
+
+  document.getElementById('carPayment')!.textContent = formatCurrency(M);
+  document.getElementById('carLoanAmt')!.textContent = formatCurrency(loanAmt);
+  document.getElementById('carTotalInterest')!.textContent = formatCurrency(totalInt);
+  document.getElementById('carTotalCost')!.textContent = formatCurrency(totalCost);
+  showResult('carLoanResult');
+}
+
+function resetCarLoan() {
+  (document.getElementById('vehiclePrice') as HTMLInputElement).value = '35000';
+  (document.getElementById('downPayment') as HTMLInputElement).value = '5000';
+  (document.getElementById('tradeIn') as HTMLInputElement).value = '0';
+  (document.getElementById('carRate') as HTMLInputElement).value = '6.9';
+  (document.getElementById('carTerm') as HTMLSelectElement).value = '60';
+  hideResult('carLoanResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcCarLoan);
+document.getElementById('resetBtn')!.addEventListener('click', resetCarLoan);
+document.addEventListener('DOMContentLoaded', calcCarLoan);
+</script>

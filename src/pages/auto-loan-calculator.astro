@@ -1,0 +1,134 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['auto-loan-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Auto Loan Payments",
+    "description": "Calculate monthly auto loan payments and compare financing options.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the vehicle price" },
+      { "@type": "HowToStep", "text": "Input your down payment and trade-in value" },
+      { "@type": "HowToStep", "text": "Enter the interest rate and loan term" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your monthly payment" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Calculate monthly car payments and total interest. Compare different loan terms and down payments to find the best auto financing option for your budget.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Auto Loan Calculator</h2>
+      <div class="form-group">
+        <label for="autoPrice">Vehicle Price ($)</label>
+        <input type="number" id="autoPrice" value="35000" min="0" step="1000">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="autoDown">Down Payment ($)</label>
+          <input type="number" id="autoDown" value="5000" min="0" step="500">
+        </div>
+        <div class="form-group">
+          <label for="autoRate">Annual Interest Rate (%)</label>
+          <input type="number" id="autoRate" value="6.9" min="0" step="0.1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="autoTerm">Loan Term (Months)</label>
+        <select id="autoTerm">
+          <option value="36">36 months (3 years)</option>
+          <option value="48">48 months (4 years)</option>
+          <option value="60" selected>60 months (5 years)</option>
+          <option value="72">72 months (6 years)</option>
+          <option value="84">84 months (7 years)</option>
+        </select>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="autoResult">
+        <div class="result-value" id="autoPayment">$0.00</div>
+        <div class="result-label">Monthly Payment</div>
+        <div class="result-details">
+          <div><span class="label">Loan Amount</span><span class="value" id="autoLoanAmt">$0</span></div>
+          <div><span class="label">Total Interest</span><span class="value" id="autoInterest">$0</span></div>
+          <div><span class="label">Total Cost</span><span class="value" id="autoTotal">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Enter the <strong>vehicle price</strong>, your <strong>down payment</strong>, the <strong>interest rate</strong>, and <strong>loan term</strong>. The calculator shows your monthly payment, total interest, and total cost of the vehicle after financing.</p>
+      <p>Compare different down payment amounts and loan terms to find the best balance between affordable monthly payments and total interest cost.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Auto Loan Formula</h2>
+      <div class="formula-box">M = P × [r(1+r)^n] / [(1+r)^n - 1]</div>
+      <p>Where <strong>M</strong> = monthly payment, <strong>P</strong> = loan amount, <strong>r</strong> = monthly interest rate, <strong>n</strong> = total months.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is a good APR for an auto loan?", answer: "Rates vary by credit score. Excellent credit (740+) can get 4-6%, good credit (680-739) 6-9%, and fair credit (620-679) 9-14% on new cars." },
+      { question: "How much should I put down on a car?", answer: "A down payment of 20% is recommended to avoid being upside down on your loan. Even 10% can make a significant difference in your monthly payment." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="auto-loan-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcAuto() {
+  const price = getNum('autoPrice')!;
+  const down = getNum('autoDown') || 0;
+  const rate = getNum('autoRate')!;
+  const term = parseInt((document.getElementById('autoTerm') as HTMLSelectElement).value);
+
+  if (!price || !rate) return;
+  const loanAmt = Math.max(0, price - down);
+  if (loanAmt <= 0) return;
+
+  const r = rate / 100 / 12;
+  const M = loanAmt * (r * Math.pow(1 + r, term)) / (Math.pow(1 + r, term) - 1);
+  const totalInt = M * term - loanAmt;
+
+  document.getElementById('autoPayment')!.textContent = formatCurrency(M);
+  document.getElementById('autoLoanAmt')!.textContent = formatCurrency(loanAmt);
+  document.getElementById('autoInterest')!.textContent = formatCurrency(totalInt);
+  document.getElementById('autoTotal')!.textContent = formatCurrency(price + totalInt);
+  showResult('autoResult');
+}
+
+function resetAuto() {
+  (document.getElementById('autoPrice') as HTMLInputElement).value = '35000';
+  (document.getElementById('autoDown') as HTMLInputElement).value = '5000';
+  (document.getElementById('autoRate') as HTMLInputElement).value = '6.9';
+  (document.getElementById('autoTerm') as HTMLSelectElement).value = '60';
+  hideResult('autoResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcAuto);
+document.getElementById('resetBtn')!.addEventListener('click', resetAuto);
+document.addEventListener('DOMContentLoaded', calcAuto);
+</script>

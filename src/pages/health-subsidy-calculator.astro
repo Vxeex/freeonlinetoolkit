@@ -1,0 +1,220 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['health-subsidy-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Your ACA Health Insurance Subsidy",
+    "description": "Estimate your ACA premium tax credit by entering income, household size, and plan cost.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your annual household income and household size" },
+      { "@type": "HowToStep", "text": "Select your state and the age of the oldest household member" },
+      { "@type": "HowToStep", "text": "Choose your plan type and enter the monthly plan premium" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your estimated subsidy and net premium" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your Affordable Care Act (ACA) premium tax credit and health insurance subsidy based on your income, household size, and plan cost. Use this tool to understand how much financial help you may qualify for when shopping for 2025 marketplace plans.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>ACA Subsidy Estimator</h2>
+      <div class="form-group">
+        <label for="annualIncome">Annual Household Income ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="annualIncome" class="prefixed" value="55000" min="0" step="1000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="householdSize">Household Size</label>
+          <input type="number" id="householdSize" value="1" min="1" max="20">
+        </div>
+        <div class="form-group">
+          <label for="fplState">State</label>
+          <select id="fplState">
+            <option value="contiguous">48 Contiguous States</option>
+            <option value="alaska">Alaska</option>
+            <option value="hawaii">Hawaii</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ageOldest">Age of Oldest Member</label>
+          <input type="number" id="ageOldest" value="35" min="18" max="120">
+        </div>
+        <div class="form-group">
+          <label for="planType">Plan Type (Metal Tier)</label>
+          <select id="planType" onchange="updatePlanPremium()">
+            <option value="bronze">Bronze</option>
+            <option value="silver" selected>Silver</option>
+            <option value="gold">Gold</option>
+            <option value="platinum">Platinum</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="planPremium">Monthly Plan Premium ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="planPremium" class="prefixed" value="500" min="0" step="10">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="subsidyResult">
+        <div class="result-value" id="monthlySubsidy">$0.00</div>
+        <div class="result-label">Estimated Monthly Subsidy</div>
+        <div class="result-details">
+          <div><span class="label">FPL Percentage</span><span class="value" id="fplPercent">0%</span></div>
+          <div><span class="label">Expected Monthly Contribution</span><span class="value" id="expectedContrib">$0</span></div>
+          <div><span class="label">Net Monthly Premium</span><span class="value" id="netPremium">$0</span></div>
+          <div><span class="label">Annual Savings from Subsidy</span><span class="value" id="annualSavings">$0</span></div>
+          <div><span class="label">Recommended Metal Tier</span><span class="value" id="tierRec">--</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the ACA Subsidy Calculator</h2>
+      <p>Enter your <strong>annual household income</strong>, <strong>household size</strong>, <strong>state</strong>, and the <strong>age of the oldest household member</strong>. Choose your <strong>plan type</strong> and enter the <strong>monthly plan premium</strong>. Click Calculate to see your estimated subsidy, net monthly premium, and annual savings.</p>
+      <p>The calculator also shows your <strong>FPL percentage</strong> and a <strong>metal tier recommendation</strong> based on your income level. Generally, Silver plans offer the best value for subsidy-eligible households.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>ACA Subsidy Formula</h2>
+      <div class="formula-box">
+        Expected Contribution = Household Income &times; Cap Percentage / 12<br>
+        Monthly Subsidy = Plan Premium &minus; Expected Contribution<br>
+        Net Premium = Plan Premium &minus; Monthly Subsidy
+      </div>
+      <p>The <strong>cap percentage</strong> is based on your FPL ratio using the 2025 ACA sliding scale: 100-150% FPL (0%), 150-200% FPL (0-2%), 200-250% FPL (2-4%), 250-300% FPL (4-6%), 300-400% FPL (6-8.5%), Above 400% FPL (no subsidy).</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the Federal Poverty Level (FPL) for 2025?", answer: "For 2025, the FPL for a single-person household in the 48 contiguous states is $15,650. It increases by $5,550 for each additional household member. Alaska and Hawaii have higher FPL thresholds." },
+      { question: "How is my subsidy amount calculated?", answer: "The ACA limits what you pay for a benchmark health plan to a percentage of your income. The government pays the difference between your plan's premium and your expected contribution as a tax credit." },
+      { question: "Which metal tier should I choose?", answer: "If you qualify for subsidies, Silver plans often provide the best overall value because they also offer cost-sharing reductions. Bronze plans have lower premiums but higher out-of-pocket costs." },
+      { question: "What happens if my income changes during the year?", answer: "The premium tax credit is reconciled when you file your taxes. Report income changes to the marketplace during the year to adjust your subsidy and avoid a large tax bill at year-end." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="health-subsidy-calculator" category="health-insurance" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, formatNumber, showResult, hideResult } from '../utils/calculator-utils';
+
+function updatePlanPremium() {
+  const tier = (document.getElementById('planType') as HTMLSelectElement).value;
+  const defaults: Record<string, number> = { bronze: 400, silver: 500, gold: 650, platinum: 800 };
+  (document.getElementById('planPremium') as HTMLInputElement).value = (defaults[tier] || 500).toString();
+}
+
+function calcSubsidy() {
+  const income = getNum('annualIncome');
+  const household = getNum('householdSize');
+  const age = getNum('ageOldest');
+  const planPremium = getNum('planPremium');
+  const state = (document.getElementById('fplState') as HTMLSelectElement).value;
+
+  if (!income || !household || !age || !planPremium) return;
+
+  let fplBase: number, fplPerPerson: number;
+  if (state === 'alaska') {
+    fplBase = 19550; fplPerPerson = 6930;
+  } else if (state === 'hawaii') {
+    fplBase = 18000; fplPerPerson = 6380;
+  } else {
+    fplBase = 15650; fplPerPerson = 5550;
+  }
+
+  const fpl = fplBase + fplPerPerson * (household - 1);
+  const fplPercent = income / fpl * 100;
+
+  let capPercent: number | null;
+  if (fplPercent <= 150) {
+    capPercent = 0;
+  } else if (fplPercent <= 200) {
+    capPercent = (fplPercent - 150) / 50 * 2;
+  } else if (fplPercent <= 250) {
+    capPercent = 2 + (fplPercent - 200) / 50 * 2;
+  } else if (fplPercent <= 300) {
+    capPercent = 4 + (fplPercent - 250) / 50 * 2;
+  } else if (fplPercent <= 400) {
+    capPercent = 6 + (fplPercent - 300) / 100 * 2.5;
+  } else {
+    capPercent = null;
+  }
+
+  let monthlySubsidy: number, netPremium: number, expectedContrib: number;
+  if (capPercent === null) {
+    expectedContrib = planPremium;
+    monthlySubsidy = 0;
+    netPremium = planPremium;
+  } else {
+    expectedContrib = income / 12 * capPercent / 100;
+    monthlySubsidy = Math.max(0, planPremium - expectedContrib);
+    netPremium = planPremium - monthlySubsidy;
+  }
+
+  const annualSavings = monthlySubsidy * 12;
+
+  let tierRec: string;
+  if (fplPercent < 200) {
+    tierRec = 'Silver (qualifies for cost-sharing reductions)';
+  } else if (fplPercent < 300) {
+    tierRec = 'Silver or Gold (balanced value)';
+  } else if (fplPercent <= 400) {
+    tierRec = 'Bronze or Silver (lower premium focus)';
+  } else {
+    tierRec = 'Bronze (no subsidy eligible, minimize premium)';
+  }
+
+  document.getElementById('monthlySubsidy')!.textContent = formatCurrency(monthlySubsidy);
+  document.getElementById('fplPercent')!.textContent = formatNumber(fplPercent, 1) + '%';
+  document.getElementById('expectedContrib')!.textContent = formatCurrency(expectedContrib);
+  document.getElementById('netPremium')!.textContent = formatCurrency(netPremium);
+  document.getElementById('annualSavings')!.textContent = formatCurrency(annualSavings);
+  document.getElementById('tierRec')!.textContent = tierRec;
+  showResult('subsidyResult');
+}
+
+function resetSubsidy() {
+  (document.getElementById('annualIncome') as HTMLInputElement).value = '55000';
+  (document.getElementById('householdSize') as HTMLInputElement).value = '1';
+  (document.getElementById('fplState') as HTMLSelectElement).value = 'contiguous';
+  (document.getElementById('ageOldest') as HTMLInputElement).value = '35';
+  (document.getElementById('planType') as HTMLSelectElement).value = 'silver';
+  (document.getElementById('planPremium') as HTMLInputElement).value = '500';
+  hideResult('subsidyResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcSubsidy);
+document.getElementById('resetBtn')!.addEventListener('click', resetSubsidy);
+document.addEventListener('DOMContentLoaded', function() {
+  updatePlanPremium();
+  calcSubsidy();
+});
+</script>

@@ -1,0 +1,109 @@
+---
+import { tools } from '../data/tools';
+import { guides } from '../data/guides';
+
+const footerTools = tools.slice(0, 5);
+const footerGuides = guides.slice(0, 4);
+---
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
+        <p>FreeOnlineToolkit — fast, accurate, and completely free online calculators and tools for everyday tasks. No signup required. Bookmark us!</p>
+      </div>
+      <div>
+        <h3>Tools</h3>
+        <ul>
+          {footerTools.map(t => <li><a href={`/${t.slug}/`}>{t.shortTitle || t.title}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h3>Guides</h3>
+        <ul>
+          {footerGuides.map(g => <li><a href={`/guides/${g.slug}/`}>{g.title.replace(/^(How to Use |Understanding Your |A Complete |Compound Interest Explained: |Password Security: |Currency Conversion: |Calorie Counting: )/, '').split(':')[0].split(' to')[0].trim().substring(0, 25)}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+          <li><a href="/privacy-policy/">Privacy Policy</a></li>
+          <li><a href="/terms/">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FreeOnlineToolkit.org. All rights reserved.</span>
+      <span>Free online tools and calculators</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #292524;
+    color: #a8a29e;
+    padding: 60px 0 0;
+    margin-top: auto;
+  }
+  .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  .footer .logo {
+    font-family: var(--font-display);
+    font-size: 1.1rem; font-weight: 700;
+    color: #f5f0eb;
+    display: flex; align-items: center; gap: 10px;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+  }
+  .footer .logo:hover { color: var(--color-primary); text-decoration: none; }
+  .footer .logo .logo-icon {
+    width: 34px; height: 34px;
+    background: var(--color-primary);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: var(--font-body);
+    font-size: 0.95rem; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .footer-brand p {
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin-top: 14px;
+    max-width: 320px;
+  }
+  .footer h3 {
+    font-family: var(--font-display);
+    color: #f5f0eb;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 18px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .footer ul { list-style: none; }
+  .footer ul li { margin-bottom: 10px; }
+  .footer ul li a { color: #a8a29e; font-size: 0.85rem; transition: color var(--duration-fast) var(--ease-out); }
+  .footer ul li a:hover { color: #f5f0eb; text-decoration: none; }
+  .footer-bottom {
+    border-top: 1px solid #44403c;
+    padding: 20px 0;
+    font-size: 0.8rem;
+    color: #a8a29e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-grid > :first-child { grid-column: 1 / -1; }
+  }
+  @media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>

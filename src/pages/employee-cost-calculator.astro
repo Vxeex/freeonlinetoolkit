@@ -1,0 +1,222 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['employee-cost-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate the True Cost of an Employee",
+    "description": "Calculate the full annual cost of an employee including salary, taxes, benefits, equipment, and overhead.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the employee's base annual salary" },
+      { "@type": "HowToStep", "text": "Input bonus percentage, payroll tax rate, and monthly health insurance costs" },
+      { "@type": "HowToStep", "text": "Add retirement contributions, training budget, equipment costs, and office overhead" },
+      { "@type": "HowToStep", "text": "Click Calculate to see the total annual cost and effective hourly rate" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is the true cost of an employee?", "acceptedAnswer": { "@type": "Answer", "text": "The true cost of an employee includes base salary plus payroll taxes, health insurance, retirement contributions, training, equipment, office space, and other benefits. Studies show the total cost is typically 1.25 to 1.4 times the base salary." } },
+      { "@type": "Question", "name": "What is the employer payroll tax rate?", "acceptedAnswer": { "@type": "Answer", "text": "In the US, the standard employer payroll tax rate is 7.65% of gross wages, covering Social Security (6.2%) and Medicare (1.45%). Some states also have additional state unemployment taxes (SUTA) that can add 1-6%." } },
+      { "@type": "Question", "name": "How much does health insurance cost employers?", "acceptedAnswer": { "@type": "Answer", "text": "Employers pay an average of $500-$700 per month per employee for health insurance premiums. The exact cost varies by plan type, location, employee age, and contribution strategy." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Find out the true annual cost of an employee beyond their base salary. This tool accounts for payroll taxes, benefits, equipment, and overhead so you can make informed hiring and budgeting decisions.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Employee Cost Calculator</h2>
+      <div class="form-group">
+        <label for="empSalary">Base Annual Salary ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="empSalary" class="prefixed" value="75000" min="0" step="1000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="empBonus">Bonus % of Salary</label>
+          <input type="number" id="empBonus" value="10" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="empTaxRate">Employer Payroll Tax Rate (%)</label>
+          <input type="number" id="empTaxRate" value="7.65" min="0" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="empInsurance">Health Insurance ($/month)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="empInsurance" class="prefixed" value="500" min="0" step="50">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="emp401k">401k Match ($/year)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="emp401k" class="prefixed" value="3000" min="0" step="100">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="empTraining">Training & Development ($/year)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="empTraining" class="prefixed" value="2000" min="0" step="100">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="empEquipment">Equipment & Software ($/year)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="empEquipment" class="prefixed" value="3000" min="0" step="100">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="empOffice">Office Space & Overhead ($/month)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="empOffice" class="prefixed" value="500" min="0" step="50">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="empOther">Other Benefits ($/year)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="empOther" class="prefixed" value="1000" min="0" step="100">
+          </div>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="empResult">
+        <div class="result-value" id="empTotalCost">$0.00</div>
+        <div class="result-label">Total Annual Cost</div>
+        <div class="result-details">
+          <div><span class="label">Base Salary</span><span class="value" id="empSalaryDisplay">$0.00</span></div>
+          <div><span class="label">Bonus</span><span class="value" id="empBonusDisplay">$0.00</span></div>
+          <div><span class="label">Payroll Taxes</span><span class="value" id="empTaxDisplay">$0.00</span></div>
+          <div><span class="label">Health Insurance</span><span class="value" id="empInsuranceDisplay">$0.00</span></div>
+          <div><span class="label">Benefits Total</span><span class="value" id="empBenefitsTotal">$0.00</span></div>
+          <div><span class="label">Equipment & Overhead</span><span class="value" id="empOverheadDisplay">$0.00</span></div>
+          <div><span class="label">Cost Over Base Salary</span><span class="value" id="empCostOver">0.0%</span></div>
+          <div><span class="label">Effective Monthly Cost</span><span class="value" id="empMonthly">$0.00</span></div>
+          <div><span class="label">Effective Hourly Cost (2080 hrs)</span><span class="value" id="empHourly">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Start by entering the <strong>base annual salary</strong> for the position. Then add the expected <strong>bonus percentage</strong> and the <strong>employer payroll tax rate</strong> (default 7.65% covers Social Security and Medicare in the US).</p>
+      <p>Next, enter your costs for <strong>health insurance</strong> (employer portion per month), <strong>401k match</strong> or retirement contributions, <strong>training and development</strong> budget, <strong>equipment and software</strong> costs, <strong>office space and overhead</strong> per month, and any <strong>other benefits</strong>.</p>
+      <p>The calculator shows the total annual cost broken down by category, plus effective monthly and hourly costs. The cost over base salary percentage shows how much more you are spending beyond the base salary.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Understanding Employer Costs</h2>
+      <div class="formula-box">
+        Bonus = Salary &times; (Bonus% / 100)<br>
+        Payroll Tax = (Salary + Bonus) &times; (Tax Rate / 100)<br>
+        Benefits Total = Insurance + 401k + Training + Other Benefits<br>
+        Overhead = Equipment + (Office Rent &times; 12)<br>
+        Total Cost = Salary + Bonus + Payroll Tax + Benefits Total + Overhead<br>
+        Cost Over Base = ((Total &minus; Salary) / Salary) &times; 100<br>
+        Hourly Cost = Total Cost / 2080 hours
+      </div>
+      <p>The standard work year is 2,080 hours. Total cost can often be 25-40% higher than base salary once all factors are included.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the true cost of an employee?", answer: "The true cost of an employee includes base salary plus payroll taxes, health insurance, retirement contributions, training, equipment, office space, and other benefits. Studies show the total cost is typically 1.25 to 1.4 times the base salary." },
+      { question: "What is the employer payroll tax rate?", answer: "In the US, the standard employer payroll tax rate is 7.65% of gross wages, covering Social Security (6.2%) and Medicare (1.45%). Some states also have additional state unemployment taxes (SUTA) that can add 1-6%." },
+      { question: "How much does health insurance cost employers?", answer: "Employers pay an average of $500-$700 per month per employee for health insurance premiums. The exact cost varies by plan type, location, employee age, and contribution strategy." },
+      { question: "Why should I calculate the full cost of an employee?", answer: "Knowing the full cost helps with budgeting, pricing your products or services, determining whether to hire full-time versus contractors, evaluating the ROI of new hires, and ensuring your business maintains healthy profit margins." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="employee-cost-calculator" category="hr" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcEmp() {
+  var salary = getNum('empSalary');
+  var bonusPct = getNum('empBonus') || 0;
+  var taxRate = getNum('empTaxRate') || 0;
+  var insurance = getNum('empInsurance') || 0;
+  var ret401k = getNum('emp401k') || 0;
+  var training = getNum('empTraining') || 0;
+  var equipment = getNum('empEquipment') || 0;
+  var office = getNum('empOffice') || 0;
+  var other = getNum('empOther') || 0;
+
+  if (!salary) return;
+
+  var bonus = salary * (bonusPct / 100);
+  var grossPay = salary + bonus;
+  var payrollTax = grossPay * (taxRate / 100);
+  var insuranceAnnual = insurance * 12;
+  var benefitsTotal = insuranceAnnual + ret401k + training + other;
+  var overheadTotal = equipment + (office * 12);
+  var totalCost = salary + bonus + payrollTax + benefitsTotal + overheadTotal;
+  var costOverBase = ((totalCost - salary) / salary) * 100;
+  var monthlyCost = totalCost / 12;
+  var hourlyCost = totalCost / 2080;
+
+  document.getElementById('empSalaryDisplay').textContent = formatCurrency(salary);
+  document.getElementById('empBonusDisplay').textContent = formatCurrency(bonus);
+  document.getElementById('empTaxDisplay').textContent = formatCurrency(payrollTax);
+  document.getElementById('empInsuranceDisplay').textContent = formatCurrency(insuranceAnnual);
+  document.getElementById('empBenefitsTotal').textContent = formatCurrency(benefitsTotal);
+  document.getElementById('empOverheadDisplay').textContent = formatCurrency(overheadTotal);
+  document.getElementById('empTotalCost').textContent = formatCurrency(totalCost);
+  document.getElementById('empCostOver').textContent = costOverBase.toFixed(1) + '%';
+  document.getElementById('empMonthly').textContent = formatCurrency(monthlyCost);
+  document.getElementById('empHourly').textContent = formatCurrency(hourlyCost);
+  showResult('empResult');
+}
+
+function resetEmp() {
+  (document.getElementById('empSalary') as HTMLInputElement).value = '75000';
+  (document.getElementById('empBonus') as HTMLInputElement).value = '10';
+  (document.getElementById('empTaxRate') as HTMLInputElement).value = '7.65';
+  (document.getElementById('empInsurance') as HTMLInputElement).value = '500';
+  (document.getElementById('emp401k') as HTMLInputElement).value = '3000';
+  (document.getElementById('empTraining') as HTMLInputElement).value = '2000';
+  (document.getElementById('empEquipment') as HTMLInputElement).value = '3000';
+  (document.getElementById('empOffice') as HTMLInputElement).value = '500';
+  (document.getElementById('empOther') as HTMLInputElement).value = '1000';
+  hideResult('empResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcEmp);
+document.getElementById('resetBtn')!.addEventListener('click', resetEmp);
+document.addEventListener('DOMContentLoaded', calcEmp);
+</script>

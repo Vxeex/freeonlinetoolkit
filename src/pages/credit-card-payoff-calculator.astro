@@ -1,0 +1,170 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['credit-card-payoff-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Credit Card Payoff",
+    "description": "Calculate how long it takes to pay off credit card debt and how much interest you can save.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your current credit card balance" },
+      { "@type": "HowToStep", "text": "Input your APR and minimum payment percentage" },
+      { "@type": "HowToStep", "text": "Enter any extra monthly payment amount" },
+      { "@type": "HowToStep", "text": "Click Calculate to see payoff time and interest saved" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Credit Card Payoff Calculator</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">See exactly how long it will take to pay off your credit card balance and how much interest you'll pay. Compare making minimum payments vs. adding extra each month — the difference could save you thousands.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Credit Card Payoff Calculator</h2>
+      <div class="form-group">
+        <label for="ccBalance">Current Balance</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="ccBalance" class="prefixed" value="5000" min="0" step="100">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ccApr">APR (%)</label>
+          <input type="number" id="ccApr" value="22.9" min="0" max="100" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="ccMinPct">Minimum Payment (%)</label>
+          <input type="number" id="ccMinPct" value="3" min="1" max="10" step="0.5">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="ccExtra">Extra Monthly Payment</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="ccExtra" class="prefixed" value="50" min="0" step="10">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="ccResult">
+        <div class="result-value" id="ccPayoffExtra" style="color:var(--color-primary);font-size:1.1rem;"></div>
+        <div class="result-label">Payoff Time (with extra payment)</div>
+        <div class="result-details">
+          <div><span class="label">Payoff Time (minimum only)</span><span class="value" id="ccPayoffMin"></span></div>
+          <div><span class="label">Total Interest (minimum only)</span><span class="value" id="ccInterestMin"></span></div>
+          <div><span class="label">Total Interest (with extra)</span><span class="value" id="ccInterestExtra"></span></div>
+          <div><span class="label highlight-accent">Interest Saved</span><span class="value highlight-accent" id="ccInterestSaved"></span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>Enter your current <strong>credit card balance</strong>, your card's <strong>APR</strong>, and the <strong>minimum payment percentage</strong> (typically 2-4%). Then add any <strong>extra amount</strong> you can pay each month above the minimum.</p>
+      <p>The calculator simulates two scenarios: paying only the minimum, and paying the minimum plus your extra amount. You'll see the difference in payoff time and total interest paid.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How Credit Card Interest Works</h2>
+      <p>Credit card interest compounds daily but is typically billed monthly. If you only make the minimum payment, more of your payment goes toward interest and less toward the principal.</p>
+      <div class="formula-box">
+        Monthly Interest = Balance × (APR / 12)<br>
+        Minimum Payment = max(Balance × Min%, $25)
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "Should I pay off my credit card or save money?", answer: "High-interest credit card debt (18%+) should generally be paid off before building savings, since the interest you're paying almost certainly exceeds what you'd earn on savings." },
+      { question: "How does a balance transfer help?", answer: "A balance transfer to a 0% APR card lets your full payment go toward the principal. Even with a 3-5% transfer fee, you can save significantly if you pay off the balance during the promotional period." },
+      { question: "What happens if I only pay the minimum?", answer: "Paying only the minimum can keep you in debt for decades. A $5,000 balance at 22% APR with a 3% minimum payment would take over 20 years and cost more than $7,000 in interest." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="credit-card-payoff-calculator" category="financial" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcPayoff() {
+  const balance = getNum('ccBalance')!;
+  const apr = getNum('ccApr')!;
+  const minPct = getNum('ccMinPct')!;
+  const extra = getNum('ccExtra') || 0;
+
+  if (!balance || !apr || !minPct) return;
+
+  const monthlyRate = apr / 100 / 12;
+  const minPaymentFloor = 25;
+
+  let bal1 = balance, months1 = 0, interest1 = 0;
+  while (bal1 > 0 && months1 < 600) {
+    const int1 = bal1 * monthlyRate;
+    let pay1 = Math.max(bal1 * minPct / 100, minPaymentFloor);
+    if (pay1 > bal1 + int1) pay1 = bal1 + int1;
+    bal1 = bal1 + int1 - pay1;
+    interest1 += int1;
+    months1++;
+  }
+
+  let bal2 = balance, months2 = 0, interest2 = 0;
+  while (bal2 > 0 && months2 < 600) {
+    const int2 = bal2 * monthlyRate;
+    const minPay2 = Math.max(bal2 * minPct / 100, minPaymentFloor);
+    const pay2 = Math.min(minPay2 + extra, bal2 + int2);
+    bal2 = bal2 + int2 - pay2;
+    interest2 += int2;
+    months2++;
+  }
+
+  const saved = interest1 - interest2;
+
+  function fmtMonths(m: number): string {
+    if (m >= 600) return '20+ years';
+    const yrs = Math.floor(m / 12);
+    const mos = m % 12;
+    if (yrs === 0) return mos + ' months';
+    return yrs + ' yr ' + mos + ' mo';
+  }
+
+  document.getElementById('ccPayoffMin')!.textContent = fmtMonths(months1);
+  document.getElementById('ccPayoffExtra')!.textContent = fmtMonths(months2);
+  document.getElementById('ccInterestMin')!.textContent = formatCurrency(interest1);
+  document.getElementById('ccInterestExtra')!.textContent = formatCurrency(interest2);
+
+  const savedEl = document.getElementById('ccInterestSaved')!;
+  savedEl.textContent = formatCurrency(saved);
+  (savedEl as HTMLElement).style.color = saved > 0 ? 'var(--color-accent)' : '';
+  showResult('ccResult');
+}
+
+function resetPayoff() {
+  (document.getElementById('ccBalance') as HTMLInputElement).value = '5000';
+  (document.getElementById('ccApr') as HTMLInputElement).value = '22.9';
+  (document.getElementById('ccMinPct') as HTMLInputElement).value = '3';
+  (document.getElementById('ccExtra') as HTMLInputElement).value = '50';
+  hideResult('ccResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcPayoff);
+document.getElementById('resetBtn')!.addEventListener('click', resetPayoff);
+document.addEventListener('DOMContentLoaded', calcPayoff);
+</script>

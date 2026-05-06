@@ -1,0 +1,139 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['json-formatter'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const defaultJson = `{"users":[{"id":1,"name":"John Doe","email":"john@example.com","active":true},{"id":2,"name":"Jane Smith","email":"jane@example.com","active":false}],"total":2}`;
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Format JSON",
+    "description": "Format, validate, and beautify JSON data.",
+    "step": [
+      { "@type": "HowToStep", "text": "Paste your JSON data into the input area" },
+      { "@type": "HowToStep", "text": "Click Format to beautify and validate the JSON" },
+      { "@type": "HowToStep", "text": "Use Minify to compress the JSON, or Copy to copy the result" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free JSON Formatter & Validator</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Format, validate, and beautify JSON data instantly. Perfect for developers debugging APIs, configuration files, or any JSON data. Syntax highlighting and clear error messages included.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>JSON Formatter</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <label style="font-size:0.88rem;font-weight:500;color:var(--color-text-secondary);margin-bottom:4px;display:block;">Input JSON</label>
+          <textarea id="jsonInput" style="width:100%;min-height:350px;padding:12px;border:1px solid var(--color-border);border-radius:8px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.5;resize:vertical;background:var(--color-surface);color:var(--color-text);" placeholder='Paste your JSON here...'>{defaultJson}</textarea>
+        </div>
+        <div>
+          <label style="font-size:0.88rem;font-weight:500;color:var(--color-text-secondary);margin-bottom:4px;display:block;">Formatted Output</label>
+          <textarea id="jsonOutput" style="width:100%;min-height:350px;padding:12px;border:1px solid var(--color-border);border-radius:8px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.5;resize:vertical;background:var(--color-bg);color:var(--color-text);" readonly placeholder="Formatted JSON will appear here..."></textarea>
+        </div>
+      </div>
+      <div id="jsonError" style="color:#dc2626;font-size:0.88rem;margin-top:8px;display:none;"></div>
+      <div class="btn-group" style="margin-top:12px;">
+        <button class="btn btn-primary" id="formatBtn">Format</button>
+        <button class="btn btn-secondary" id="minifyBtn">Minify</button>
+        <button class="btn btn-secondary" id="copyBtn">Copy Output</button>
+        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the JSON Formatter</h2>
+      <p><strong>Paste</strong> your JSON data into the left text area and click <strong>Format</strong> to beautify it with proper indentation. If your JSON is invalid, the tool shows a clear error message. Use <strong>Minify</strong> to compress into a single line, or <strong>Copy</strong> to copy the output.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>What is JSON?</h2>
+      <p>JSON (JavaScript Object Notation) is a lightweight data-interchange format. It supports strings, numbers, booleans, null, arrays, and objects. Valid JSON requires double quotes around keys and strings, and no trailing commas.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What makes JSON invalid?", answer: "Common JSON errors include: trailing commas, using single quotes instead of double quotes, missing quotes around keys, extra commas, unescaped special characters, and mismatched brackets or braces." },
+      { question: "What's the difference between Format and Minify?", answer: "Format adds proper indentation and line breaks to make JSON human-readable. Minify removes all whitespace and compresses the JSON into the smallest possible form for faster network transmission." },
+      { question: "Is my JSON data sent to any server?", answer: "No. All processing happens in your browser. Your JSON data is never transmitted to any server." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <a href="/password-generator/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <div style="width:36px;height:36px;border-radius:8px;background:#f0fdfa;color:#0d9488;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-key" style="font-size:1rem;"></i></div>
+        <div><div style="font-weight:600;font-size:0.88rem;">Password Generator</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Secure passwords</div></div>
+      </a>
+      <a href="/word-counter/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <div style="width:36px;height:36px;border-radius:8px;background:#fef9c3;color:#a16207;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-file-lines" style="font-size:1rem;"></i></div>
+        <div><div style="font-weight:600;font-size:0.88rem;">Word Counter</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Count words &amp; characters</div></div>
+      </a>
+      <a href="/qr-code-generator/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <div style="width:36px;height:36px;border-radius:8px;background:#faf5ff;color:#9333ea;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-qrcode" style="font-size:1rem;"></i></div>
+        <div><div style="font-weight:600;font-size:0.88rem;">QR Code Generator</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Create QR codes</div></div>
+      </a>
+    </div>
+  </fragment>
+</ToolLayout>
+
+<script>
+function formatJSON() {
+  const input = (document.getElementById('jsonInput') as HTMLTextAreaElement).value;
+  const errorEl = document.getElementById('jsonError') as HTMLElement;
+  const output = document.getElementById('jsonOutput') as HTMLTextAreaElement;
+
+  try {
+    const parsed = JSON.parse(input);
+    output.value = JSON.stringify(parsed, null, 2);
+    errorEl.style.display = 'none';
+  } catch (e: any) {
+    errorEl.textContent = 'JSON Error: ' + e.message;
+    errorEl.style.display = 'block';
+    output.value = '';
+  }
+}
+
+function minifyJSON() {
+  const input = (document.getElementById('jsonInput') as HTMLTextAreaElement).value;
+  const errorEl = document.getElementById('jsonError') as HTMLElement;
+  const output = document.getElementById('jsonOutput') as HTMLTextAreaElement;
+
+  try {
+    const parsed = JSON.parse(input);
+    output.value = JSON.stringify(parsed);
+    errorEl.style.display = 'none';
+  } catch (e: any) {
+    errorEl.textContent = 'JSON Error: ' + e.message;
+    errorEl.style.display = 'block';
+    output.value = '';
+  }
+}
+
+function copyJSON() {
+  const output = document.getElementById('jsonOutput') as HTMLTextAreaElement;
+  if (!output.value) return;
+  navigator.clipboard.writeText(output.value);
+}
+
+function clearJSON() {
+  (document.getElementById('jsonInput') as HTMLTextAreaElement).value = '';
+  (document.getElementById('jsonOutput') as HTMLTextAreaElement).value = '';
+  (document.getElementById('jsonError') as HTMLElement).style.display = 'none';
+}
+
+document.getElementById('formatBtn')!.addEventListener('click', formatJSON);
+document.getElementById('minifyBtn')!.addEventListener('click', minifyJSON);
+document.getElementById('copyBtn')!.addEventListener('click', copyJSON);
+document.getElementById('clearBtn')!.addEventListener('click', clearJSON);
+document.addEventListener('DOMContentLoaded', formatJSON);
+</script>

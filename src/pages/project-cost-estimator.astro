@@ -1,0 +1,212 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['project-cost-estimator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Your Project Costs",
+    "description": "Calculate total project costs including labor, tools, and expenses for freelancers and agencies.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter your estimated billable hours and hourly rate" },
+      { "@type": "HowToStep", "text": "Input the number of team members" },
+      { "@type": "HowToStep", "text": "Add software/tools subscription costs and other expenses" },
+      { "@type": "HowToStep", "text": "Set the project timeline in months" },
+      { "@type": "HowToStep", "text": "Review your total project cost including recommended contingency" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is the recommended contingency percentage?", "acceptedAnswer": { "@type": "Answer", "text": "A 15% contingency is standard across most industries. It covers unexpected scope changes, delays, and unforeseen expenses. For complex or high-risk projects, consider increasing it to 20-25%." } },
+      { "@type": "Question", "name": "Should I include software subscriptions in my project estimate?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, always include software and tools costs in your project estimate. If you use specific tools only for this client, bill the full cost. For shared tools, allocate a fair percentage based on usage time." } },
+      { "@type": "Question", "name": "How do I estimate hours accurately for a project?", "acceptedAnswer": { "@type": "Answer", "text": "Break the project into phases (discovery, design, development, testing, delivery). Estimate each phase separately and add a 20% buffer for revisions and communication." } },
+      { "@type": "Question", "name": "What is the difference between project cost and project price?", "acceptedAnswer": { "@type": "Answer", "text": "Project cost is what it costs you to deliver the work (labor, tools, expenses). Project price is what you charge the client, which includes your cost plus profit margin." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Know exactly what a project will cost before you quote. This estimator accounts for labor, team size, tools, expenses, and timeline so you can price confidently and protect your margins.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Cost Estimator</h2>
+      <div class="form-group">
+        <label for="projectName">Project Name <span style="font-weight:400;font-size:0.8rem;color:var(--color-text-muted);">optional</span></label>
+        <input type="text" id="projectName" value="" placeholder="e.g. Website Redesign">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="estHours">Estimated Hours</label>
+          <input type="number" id="estHours" value="80" min="1" step="1">
+        </div>
+        <div class="form-group">
+          <label for="hourlyRate">Hourly Rate ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="hourlyRate" class="prefixed" value="100" min="0" step="1">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="teamMembers">Number of Team Members</label>
+          <input type="number" id="teamMembers" value="1" min="1" step="1">
+        </div>
+        <div class="form-group">
+          <label for="toolsCost">Software/Tools Cost ($) <span style="font-weight:400;font-size:0.8rem;color:var(--color-text-muted);">per month</span></label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="toolsCost" class="prefixed" value="100" min="0" step="10">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="otherExpenses">Other Expenses ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="otherExpenses" class="prefixed" value="200" min="0" step="10">
+          </div>
+          <span style="font-size:0.72rem;color:var(--color-text-muted);margin-top:3px;display:block;">Travel, stock assets, printing, etc.</span>
+        </div>
+        <div class="form-group">
+          <label for="projectTimeline">Project Timeline (months)</label>
+          <input type="number" id="projectTimeline" value="2" min="0.5" step="0.5">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn"><i class="fa-solid fa-calculator"></i> Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="projectCostResult">
+        <div class="result-value" id="totalProjectCost">$0</div>
+        <div class="result-label">Total Project Cost</div>
+        <div class="result-details">
+          <div><span class="label">Total Labor Cost</span><span class="value" id="totalLaborCost">$0</span></div>
+          <div><span class="label">Total Tools Cost</span><span class="value" id="totalToolsCost">$0</span></div>
+          <div><span class="label">Total Other Expenses</span><span class="value" id="totalOtherExpenses">$0</span></div>
+          <div><span class="label">Cost Per Month</span><span class="value" id="costPerMonth">$0</span></div>
+          <div><span class="label">Recommended Contingency (15%)</span><span class="value" id="contingencyAmount">$0</span></div>
+          <div><span class="label">Total with Contingency</span><span class="value" id="totalWithContingency" style="font-weight:700;color:var(--color-primary);">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use</h2>
+      <p>This project cost estimator helps you calculate the true cost of delivering a project. Here is how each input works:</p>
+      <ol>
+        <li><strong>Project Name</strong> — a label to help you identify the estimate. Optional but useful if comparing multiple projects.</li>
+        <li><strong>Estimated Hours</strong> — the total billable hours you expect to spend.</li>
+        <li><strong>Hourly Rate</strong> — your effective hourly rate or the rate you pay team members.</li>
+        <li><strong>Team Members</strong> — how many people will work on the project.</li>
+        <li><strong>Software/Tools Cost</strong> — monthly subscriptions for tools used on this project.</li>
+        <li><strong>Other Expenses</strong> — one-time costs like stock photography, travel, or third-party services.</li>
+        <li><strong>Project Timeline</strong> — how many months the project will run.</li>
+      </ol>
+      <p>The result shows your total cost broken down by category plus a <strong>15% contingency</strong> recommendation.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Why Add Contingency?</h2>
+      <p>A contingency buffer protects your profit margin. Here is why 15% is standard:</p>
+      <ul>
+        <li><strong>Scope creep</strong> — clients almost always request additional features or revisions.</li>
+        <li><strong>Underestimation</strong> — research shows project hours are underestimated by 20-40% on average.</li>
+        <li><strong>Delays</strong> — client feedback, approvals, and third-party dependencies cause timeline extensions.</li>
+        <li><strong>Unforeseen costs</strong> — emergency software licenses or rush fees for deliverables.</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Cost Estimation Formula</h2>
+      <div class="formula-box">
+        Labor = Hours &times; Rate &times; Team Members<br>
+        Tools Cost = Monthly Tools Cost &times; Timeline (months)<br>
+        Total Cost = Labor + Tools + Other Expenses<br>
+        Cost Per Month = Total Cost / Timeline<br>
+        Contingency = Total Cost &times; 0.15<br>
+        Grand Total = Total Cost + Contingency
+      </div>
+    </div>
+
+    <FAQ items={[
+      { question: "What is the recommended contingency percentage?", answer: "A 15% contingency is standard across most industries. It covers unexpected scope changes, delays, and unforeseen expenses. For complex or high-risk projects, consider increasing it to 20-25%." },
+      { question: "Should I include software subscriptions in my project estimate?", answer: "Yes, always include software and tools costs in your project estimate. If you use specific tools only for this client, bill the full cost. For shared tools, allocate a fair percentage based on usage time." },
+      { question: "How do I estimate hours accurately for a project?", answer: "Break the project into phases (discovery, design, development, testing, delivery). Estimate each phase separately and add a 20% buffer for revisions and communication." },
+      { question: "What is the difference between project cost and project price?", answer: "Project cost is what it costs you to deliver the work (labor, tools, expenses). Project price is what you charge the client, which includes your cost plus profit margin." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="project-cost-estimator" category="freelancing" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcProjectCost() {
+  var hours = getNum('estHours');
+  var rate = getNum('hourlyRate');
+  var members = getNum('teamMembers');
+  var tools = getNum('toolsCost');
+  var expenses = getNum('otherExpenses');
+  var timeline = getNum('projectTimeline');
+
+  if (!hours || hours <= 0) { hours = 80; (document.getElementById('estHours') as HTMLInputElement).value = '80'; }
+  if (!rate || rate < 0) { rate = 100; (document.getElementById('hourlyRate') as HTMLInputElement).value = '100'; }
+  if (!members || members < 1) { members = 1; (document.getElementById('teamMembers') as HTMLInputElement).value = '1'; }
+  if (!tools || tools < 0) { tools = 0; (document.getElementById('toolsCost') as HTMLInputElement).value = '0'; }
+  if (!expenses || expenses < 0) { expenses = 0; (document.getElementById('otherExpenses') as HTMLInputElement).value = '0'; }
+  if (!timeline || timeline < 0.5) { timeline = 2; (document.getElementById('projectTimeline') as HTMLInputElement).value = '2'; }
+
+  var labor = hours * rate * members;
+  var totalTools = tools * timeline;
+  var totalExpenses = expenses;
+  var total = labor + totalTools + totalExpenses;
+  var perMonth = total / timeline;
+  var contingency = total * 0.15;
+  var grandTotal = total + contingency;
+
+  document.getElementById('totalLaborCost').textContent = formatCurrency(labor);
+  document.getElementById('totalToolsCost').textContent = formatCurrency(totalTools);
+  document.getElementById('totalOtherExpenses').textContent = formatCurrency(totalExpenses);
+  document.getElementById('totalProjectCost').textContent = formatCurrency(total);
+  document.getElementById('costPerMonth').textContent = formatCurrency(perMonth);
+  document.getElementById('contingencyAmount').textContent = formatCurrency(contingency);
+  document.getElementById('totalWithContingency').textContent = formatCurrency(grandTotal);
+
+  showResult('projectCostResult');
+}
+
+function resetProjectCost() {
+  (document.getElementById('projectName') as HTMLInputElement).value = '';
+  (document.getElementById('estHours') as HTMLInputElement).value = '80';
+  (document.getElementById('hourlyRate') as HTMLInputElement).value = '100';
+  (document.getElementById('teamMembers') as HTMLInputElement).value = '1';
+  (document.getElementById('toolsCost') as HTMLInputElement).value = '100';
+  (document.getElementById('otherExpenses') as HTMLInputElement).value = '200';
+  (document.getElementById('projectTimeline') as HTMLInputElement).value = '2';
+  hideResult('projectCostResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcProjectCost);
+document.getElementById('resetBtn')!.addEventListener('click', resetProjectCost);
+document.addEventListener('DOMContentLoaded', calcProjectCost);
+</script>

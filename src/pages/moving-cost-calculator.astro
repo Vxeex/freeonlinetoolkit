@@ -1,0 +1,615 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['moving-cost-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Moving Costs",
+    "description": "Estimate the total cost of your move based on distance, home size, services needed, and additional items.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select your moving distance: local, short, long, or cross-country" },
+      { "@type": "HowToStep", "text": "Choose your home size from studio to 5-bedroom" },
+      { "@type": "HowToStep", "text": "Select the type of moving service you need" },
+      { "@type": "HowToStep", "text": "Indicate whether you need packing services" },
+      { "@type": "HowToStep", "text": "Add any special items that require extra handling" },
+      { "@type": "HowToStep", "text": "Review your estimated moving costs with breakdown" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "How accurate is this moving cost estimate?", "acceptedAnswer": { "@type": "Answer", "text": "This calculator provides a reasonable cost estimate based on industry averages and common pricing models. Actual moving costs depend on your specific location, the time of year (summer moves cost more), access conditions (stairs vs. elevator), parking availability, and the company you hire. Use this as a budgeting tool, then get quotes from at least three movers." } },
+      { "@type": "Question", "name": "What is the cheapest way to move?", "acceptedAnswer": { "@type": "Answer", "text": "The most affordable option is a DIY move where you rent a truck, pack your belongings, and enlist friends or family to help load and unload. A container service is a good middle-ground option where you pack the container yourself but the company handles transport. For local moves, renting a truck and doing the labor yourself can save 50% or more compared to full-service movers." } },
+      { "@type": "Question", "name": "How much do movers cost per hour?", "acceptedAnswer": { "@type": "Answer", "text": "Professional moving companies typically charge $100 to $160 per hour for a crew of two movers and a truck. The hourly rate varies by city and season. Most moves have a minimum of 2-3 hours. Travel time to and from the moving site is usually included in the hourly charge." } },
+      { "@type": "Question", "name": "Do I need moving insurance?", "acceptedAnswer": { "@type": "Answer", "text": "Basic valuation coverage is often included for free but provides minimal protection (typically $0.60 per pound per item). For valuable belongings, consider purchasing full-value protection, which costs about 1-2% of the declared value of your goods. This covers repair, replacement, or cash settlement for lost or damaged items." } },
+      { "@type": "Question", "name": "How far in advance should I book movers?", "acceptedAnswer": { "@type": "Answer", "text": "For local moves, book 4-6 weeks in advance. For long-distance or cross-country moves, book 6-8 weeks ahead. If moving during peak season (May-September), book even earlier. Last-minute bookings can cost 20-30% more and have limited availability." } },
+      { "@type": "Question", "name": "What affects moving costs the most?", "acceptedAnswer": { "@type": "Answer", "text": "Three factors have the biggest impact: (1) Distance — long-distance moves cost significantly more than local moves. (2) Home size — the volume of belongings determines crew size and time needed. (3) Service level — full-service moving with packing can cost 2-3 times more than a DIY move. Special items like pianos and hot tubs add $250-500 each." } },
+    ],
+  },
+];
+---
+
+<style is:global>
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 6px 0;
+  }
+  .checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    flex-shrink: 0;
+  }
+  .checkbox-group input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  .radio-group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 18px;
+  }
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    cursor: pointer;
+  }
+  .radio-group input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .result-total-main {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 2px;
+    letter-spacing: -0.02em;
+  }
+  .result-total-label {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 20px;
+  }
+
+  .breakdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+  .breakdown-table th {
+    text-align: left;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .breakdown-table td {
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .breakdown-table td:last-child {
+    text-align: right;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .breakdown-total td {
+    font-weight: 700;
+    color: var(--color-primary);
+    border-bottom: none;
+    padding-top: 12px;
+  }
+  .breakdown-total td:last-child {
+    font-size: 1rem;
+    color: var(--color-primary);
+  }
+
+  .breakdown-bars {
+    margin-top: 16px;
+  }
+  .breakdown-bar-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .breakdown-bar-label {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    min-width: 90px;
+    flex-shrink: 0;
+  }
+  .breakdown-bar-track {
+    flex: 1;
+    height: 20px;
+    background: var(--color-border-light);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .breakdown-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s var(--ease-out);
+    min-width: 0;
+  }
+  .breakdown-bar-amount {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    min-width: 80px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .range-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .range-box {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    text-align: center;
+  }
+  .range-box .range-value {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  .range-box .range-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .range-box.low .range-value { color: var(--color-success); }
+  .range-box.mid .range-value { color: var(--color-primary); }
+  .range-box.high .range-value { color: var(--color-danger); }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  @media (max-width: 600px) {
+    .comparison-grid { grid-template-columns: 1fr; }
+  }
+  .comparison-card {
+    border-radius: var(--radius-md);
+    padding: 20px;
+    border: 1px solid var(--color-border-light);
+    position: relative;
+  }
+  .comparison-card.diy {
+    background: var(--color-success-bg);
+    border-color: var(--color-success-border);
+  }
+  .comparison-card.full-service {
+    background: var(--color-primary-bg);
+    border-color: rgba(194, 65, 12, 0.15);
+  }
+  .comparison-card h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--color-text);
+  }
+  .comparison-card .comp-total {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .comparison-card.diy .comp-total { color: var(--color-success); }
+  .comparison-card.full-service .comp-total { color: var(--color-primary); }
+  .comparison-card .comp-per-hour {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 12px;
+  }
+  .comparison-card .comp-savings {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-success);
+    padding: 6px 12px;
+    background: rgba(5, 150, 105, 0.1);
+    border-radius: var(--radius-sm);
+    display: inline-block;
+  }
+  .comp-details {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--color-border-light);
+  }
+  .comp-details div {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    padding: 3px 0;
+    color: var(--color-text-secondary);
+  }
+  .comp-details div span:last-child {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .distance-note {
+    background: var(--color-accent-bg);
+    border: 1px solid rgba(180, 83, 9, 0.15);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-top: 18px;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+  .distance-note i {
+    color: var(--color-accent);
+    margin-right: 6px;
+  }
+</style>
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Planning a move? Get an instant cost estimate based on your distance, home size, and the services you need. Whether you are moving locally or across the country, this calculator helps you budget with confidence.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2><i class="fa-solid fa-truck-moving" style="margin-right:8px;color:var(--color-primary);"></i> Moving Cost Calculator</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="moveDistance">Moving Distance</label>
+          <select id="moveDistance">
+            <option value="local">Local (&lt; 50 miles)</option>
+            <option value="short">Short Distance (50-200 miles)</option>
+            <option value="long">Long Distance (200-1000 miles)</option>
+            <option value="cross">Cross-Country (1000+ miles)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="homeSize">Home Size</label>
+          <select id="homeSize">
+            <option value="0">Studio / Efficiency</option>
+            <option value="1">1-Bedroom</option>
+            <option value="2" selected>2-Bedroom</option>
+            <option value="3">3-Bedroom</option>
+            <option value="4">4-Bedroom</option>
+            <option value="5">5-Bedroom+</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="serviceType">Moving Service</label>
+        <select id="serviceType">
+          <option value="full">Full-Service Moving (load, transport, unload)</option>
+          <option value="loading">Loading Only (load + unload, you drive)</option>
+          <option value="truck">Truck Only (you do everything)</option>
+          <option value="container">Container Service (pack it yourself, we ship)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Packing Service</label>
+        <div class="radio-group">
+          <label><input type="radio" name="packing" id="packingNo" value="no" checked> No, I will pack</label>
+          <label><input type="radio" name="packing" id="packingYes" value="yes"> Yes, pack for me</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Items (requires special handling)</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="extraPiano"> <i class="fa-solid fa-music fa-fw" style="width:20px;color:var(--color-text-muted);"></i> Piano <span style="color:var(--color-text-muted);font-size:0.8rem;">(+$350)</span></label>
+          <label><input type="checkbox" id="extraPool"> <i class="fa-solid fa-border-all fa-fw" style="width:20px;color:var(--color-text-muted);"></i> Pool Table <span style="color:var(--color-text-muted);font-size:0.8rem;">(+$400)</span></label>
+          <label><input type="checkbox" id="extraExercise"> <i class="fa-solid fa-dumbbell fa-fw" style="width:20px;color:var(--color-text-muted);"></i> Exercise Equipment <span style="color:var(--color-text-muted);font-size:0.8rem;">(+$250)</span></label>
+          <label><input type="checkbox" id="extraHotTub"> <i class="fa-solid fa-bath fa-fw" style="width:20px;color:var(--color-text-muted);"></i> Hot Tub <span style="color:var(--color-text-muted);font-size:0.8rem;">(+$500)</span></label>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn"><i class="fa-solid fa-calculator"></i> Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+      </div>
+
+      <div class="result-box" id="moveResult">
+        <div id="resultContent"></div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Moving Cost Estimator</h2>
+      <p>This calculator gives you a realistic estimate of your moving costs. Simply select your <strong>moving distance</strong> and <strong>home size</strong>, then choose the type of service you need. The calculator accounts for:</p>
+      <ul style="margin-left:20px;line-height:2;color:var(--color-text-secondary);">
+        <li><strong>Distance</strong> &mdash; Local moves are charged by the hour; long-distance moves are flat-rate based on mileage and volume.</li>
+        <li><strong>Home size</strong> &mdash; Larger homes mean more belongings, more movers, and more time.</li>
+        <li><strong>Service type</strong> &mdash; Full-service movers handle everything; truck-only means you rent a truck and do the work yourself.</li>
+        <li><strong>Packing</strong> &mdash; Professional packing adds about 20% to your cost but saves days of work.</li>
+        <li><strong>Special items</strong> &mdash; Pianos, pool tables, and hot tubs require extra equipment and expertise.</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>How Moving Costs Are Calculated</h2>
+      <p>Moving companies base their quotes on several key factors. Here is how each one affects your final cost:</p>
+      <div class="formula-box">
+        <strong>Local Move:</strong> Cost = (Hours of Work) x (Hourly Rate)<br>
+        <strong>Long-Distance:</strong> Cost = Base Rate by Home Size + Distance Surcharge<br>
+        <strong>Full-Service:</strong> Includes loading, transport, unloading, and equipment<br>
+        <strong>Packing:</strong> Adds ~20% to labor and transport costs<br>
+        <strong>Insurance:</strong> ~1.5% of total (based on estimated value of goods)<br>
+        <strong>Total Range:</strong> Estimated Cost &plusmn; 15%
+      </div>
+      <p style="margin-top:12px;font-size:0.9rem;color:var(--color-text-secondary);">Your actual cost may vary based on your location, the season, stair access, elevator availability, and the moving company you choose. We recommend getting at least three in-home quotes.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How accurate is this moving cost estimate?", answer: "This calculator provides a reasonable cost estimate based on industry averages and common pricing models. Actual moving costs depend on your specific location, the time of year (summer moves cost more), access conditions (stairs vs. elevator), parking availability, and the company you hire. Use this as a budgeting tool, then get quotes from at least three movers." },
+      { question: "What is the cheapest way to move?", answer: "The most affordable option is a DIY move where you rent a truck, pack your belongings, and enlist friends or family to help load and unload. A container service is a good middle-ground option — you pack the container yourself but the company handles the transport. For local moves, renting a truck and doing the labor yourself can save 50% or more compared to full-service movers." },
+      { question: "How much do movers cost per hour?", answer: "Professional moving companies typically charge $100 to $160 per hour for a crew of two movers and a truck. The hourly rate varies by city and season. Most moves have a minimum of 2-3 hours. Travel time to and from the moving site is usually included in the hourly charge." },
+      { question: "Do I need moving insurance?", answer: "Basic valuation coverage is often included for free but provides minimal protection (typically $0.60 per pound per item). For valuable belongings, consider purchasing full-value protection, which costs about 1-2% of the declared value of your goods. This covers repair, replacement, or cash settlement for lost or damaged items." },
+      { question: "How far in advance should I book movers?", answer: "For local moves, book 4-6 weeks in advance. For long-distance or cross-country moves, book 6-8 weeks ahead. If moving during peak season (May-September), book even earlier. Last-minute bookings can cost 20-30% more and have limited availability." },
+      { question: "What affects moving costs the most?", answer: "Three factors have the biggest impact: (1) Distance — long-distance moves cost significantly more than local moves. (2) Home size — the volume of belongings determines crew size and time needed. (3) Service level — full-service moving with packing can cost 2-3 times more than a DIY move. Special items like pianos and hot tubs add $250-500 each." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="moving-cost-calculator" category="moving" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+// ===== Cost Data =====
+var costMatrix = {
+  local: [260, 390, 650, 910, 1300, 1820],
+  short: [1200, 1500, 1800, 2200, 2600, 3000],
+  long:  [2500, 3000, 3500, 4200, 5000, 6000],
+  cross: [4000, 5000, 6000, 7000, 8000, 9500]
+};
+
+var serviceMultipliers = {
+  full:      1.00,
+  loading:   0.70,
+  truck:     0.40,
+  container: 0.75
+};
+
+var homeLabels = ['Studio', '1-Bedroom', '2-Bedroom', '3-Bedroom', '4-Bedroom', '5-Bedroom+'];
+
+var distanceLabels = {
+  local: 'Local (< 50 mi)',
+  short: 'Short (50-200 mi)',
+  long:  'Long (200-1000 mi)',
+  cross: 'Cross-Country (1000+ mi)'
+};
+
+var extraItems = [
+  { id: 'extraPiano', label: 'Piano', cost: 350 },
+  { id: 'extraPool', label: 'Pool Table', cost: 400 },
+  { id: 'extraExercise', label: 'Exercise Equipment', cost: 250 },
+  { id: 'extraHotTub', label: 'Hot Tub', cost: 500 }
+];
+
+var diyFuelEstimate = {
+  local: 50,
+  short: 120,
+  long:  280,
+  cross: 500
+};
+
+function calculateMove() {
+  var distance = (document.getElementById('moveDistance') as HTMLSelectElement).value;
+  var homeIdx = parseInt((document.getElementById('homeSize') as HTMLSelectElement).value);
+  var service = (document.getElementById('serviceType') as HTMLSelectElement).value;
+  var packing = (document.getElementById('packingYes') as HTMLInputElement).checked;
+
+  if (isNaN(homeIdx)) return;
+  if (homeIdx < 0 || homeIdx > 5) return;
+
+  var baseCost = costMatrix[distance][homeIdx];
+  var serviceMult = serviceMultipliers[service];
+
+  // Full Service Calculation
+  var laborTransport = baseCost * serviceMult;
+  var packingCost = packing ? laborTransport * 0.20 : 0;
+  var subtotal = laborTransport + packingCost;
+  var insurance = subtotal * 0.015;
+  var extrasTotal = 0;
+  var extrasList = [];
+
+  for (var i = 0; i < extraItems.length; i++) {
+    var item = extraItems[i];
+    var checked = (document.getElementById(item.id) as HTMLInputElement).checked;
+    if (checked) {
+      extrasTotal += item.cost;
+      extrasList.push({ label: item.label, cost: item.cost });
+    }
+  }
+
+  var total = subtotal + insurance + extrasTotal;
+  var lowEstimate = total * 0.85;
+  var highEstimate = total * 1.15;
+
+  // DIY Comparison
+  var diyTruck = costMatrix[distance][homeIdx] * 0.40;
+  var diyFuel = diyFuelEstimate[distance] || 100;
+  var diyPacking = 200;
+  var diyTotal = diyTruck + diyFuel + diyPacking + extrasTotal;
+
+  var fsBase = costMatrix[distance][homeIdx] * 1.00;
+  var fsPacking = fsBase * 0.20;
+  var fsSub = fsBase + fsPacking;
+  var fsIns = fsSub * 0.015;
+  var fsTotal = fsSub + fsIns + extrasTotal;
+
+  var savings = fsTotal - diyTotal;
+  var savingsPercent = fsTotal > 0 ? Math.round((savings / fsTotal) * 100) : 0;
+
+  // Build Results HTML
+  var html = '';
+
+  html += '<div class="result-total-main">' + formatCurrency(total) + '</div>';
+  html += '<div class="result-total-label">Estimated Moving Cost</div>';
+
+  html += '<div class="range-display">';
+  html += '  <div class="range-box low"><div class="range-value">' + formatCurrency(lowEstimate) + '</div><div class="range-label">Low Estimate</div></div>';
+  html += '  <div class="range-box mid"><div class="range-value">' + formatCurrency(total) + '</div><div class="range-label">Mid Estimate</div></div>';
+  html += '  <div class="range-box high"><div class="range-value">' + formatCurrency(highEstimate) + '</div><div class="range-label">High Estimate</div></div>';
+  html += '</div>';
+
+  html += '<h3 style="font-size:0.95rem;font-weight:600;margin-top:20px;margin-bottom:4px;">Cost Breakdown</h3>';
+  html += '<div class="breakdown-bars">';
+
+  var barItems = [
+    { val: laborTransport, label: 'Labor & Transport', bg: '#c2410c' },
+    { val: packingCost, label: 'Packing Service', bg: '#d97706' },
+    { val: insurance, label: 'Insurance', bg: '#059669' },
+    { val: extrasTotal, label: 'Extra Items', bg: '#6366f1' }
+  ];
+
+  for (var b = 0; b < barItems.length; b++) {
+    var itemVal = barItems[b].val;
+    if (itemVal <= 0) continue;
+    var pct = Math.max(3, (itemVal / total) * 100);
+
+    html += '<div class="breakdown-bar-item">';
+    html += '  <span class="breakdown-bar-label">' + barItems[b].label + '</span>';
+    html += '  <div class="breakdown-bar-track"><div class="breakdown-bar-fill" style="width:' + pct + '%;background:' + barItems[b].bg + ';"></div></div>';
+    html += '  <span class="breakdown-bar-amount">' + formatCurrency(itemVal) + '</span>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+
+  html += '<table class="breakdown-table">';
+  html += '  <tr><th>Category</th><th>Amount</th></tr>';
+  html += '  <tr><td>Labor & Transport</td><td>' + formatCurrency(laborTransport) + '</td></tr>';
+  if (packingCost > 0) {
+    html += '  <tr><td>Packing Service</td><td>' + formatCurrency(packingCost) + '</td></tr>';
+  }
+  html += '  <tr><td>Insurance (1.5%)</td><td>' + formatCurrency(insurance) + '</td></tr>';
+  if (extrasList.length > 0) {
+    for (var e = 0; e < extrasList.length; e++) {
+      html += '  <tr><td style="padding-left:16px;">&mdash; ' + extrasList[e].label + '</td><td>' + formatCurrency(extrasList[e].cost) + '</td></tr>';
+    }
+  }
+  html += '  <tr class="breakdown-total"><td><strong>Total</strong></td><td>' + formatCurrency(total) + '</td></tr>';
+  html += '</table>';
+
+  html += '<h3 style="font-size:0.95rem;font-weight:600;margin-top:24px;margin-bottom:4px;">DIY vs Full Service Comparison</h3>';
+  html += '<div class="comparison-grid">';
+
+  html += '<div class="comparison-card diy">';
+  html += '  <h4><i class="fa-solid fa-truck" style="margin-right:6px;"></i> DIY Move</h4>';
+  html += '  <div class="comp-total">' + formatCurrency(diyTotal) + '</div>';
+  html += '  <div class="comp-per-hour">You do the work</div>';
+  html += '  <div class="comp-details">';
+  html += '    <div><span>Truck Rental</span><span>' + formatCurrency(diyTruck) + '</span></div>';
+  html += '    <div><span>Fuel Estimate</span><span>' + formatCurrency(diyFuel) + '</span></div>';
+  html += '    <div><span>Packing Materials</span><span>' + formatCurrency(diyPacking) + '</span></div>';
+  html += '    <div><span>Extra Items</span><span>' + formatCurrency(extrasTotal) + '</span></div>';
+  html += '    <div style="font-weight:700;color:var(--color-success);border-top:1px solid var(--color-success-border);padding-top:6px;margin-top:6px;"><span>Your Cost</span><span>' + formatCurrency(diyTotal) + '</span></div>';
+  html += '  </div>';
+  html += '</div>';
+
+  html += '<div class="comparison-card full-service">';
+  html += '  <h4><i class="fa-solid fa-truck-moving" style="margin-right:6px;"></i> Full Service</h4>';
+  html += '  <div class="comp-total">' + formatCurrency(fsTotal) + '</div>';
+  html += '  <div class="comp-per-hour">Professionals handle everything</div>';
+  if (savings > 0) {
+    html += '  <div class="comp-savings"><i class="fa-solid fa-circle-check"></i> Save ' + formatCurrency(savings) + ' (' + savingsPercent + '%) with DIY</div>';
+  }
+  html += '  <div class="comp-details">';
+  html += '    <div><span>Labor & Transport</span><span>' + formatCurrency(fsBase) + '</span></div>';
+  html += '    <div><span>Packing Service</span><span>' + formatCurrency(fsPacking) + '</span></div>';
+  html += '    <div><span>Insurance</span><span>' + formatCurrency(fsIns) + '</span></div>';
+  html += '    <div><span>Extra Items</span><span>' + formatCurrency(extrasTotal) + '</span></div>';
+  html += '    <div style="font-weight:700;color:var(--color-primary);border-top:1px solid rgba(194,65,12,0.15);padding-top:6px;margin-top:6px;"><span>Your Cost</span><span>' + formatCurrency(fsTotal) + '</span></div>';
+  html += '  </div>';
+  html += '</div>';
+
+  html += '</div>';
+
+  var serviceSelect = document.getElementById('serviceType') as HTMLSelectElement;
+  html += '<div class="distance-note">';
+  html += '  <i class="fa-solid fa-circle-info"></i> ';
+  html += '  <strong>Estimate for:</strong> ' + distanceLabels[distance] + ', ';
+  html += homeLabels[homeIdx] + ', ';
+  html += serviceSelect.options[serviceSelect.selectedIndex].text;
+  html += '. Actual costs depend on your location, season, and specific moving company rates.';
+  html += '</div>';
+
+  document.getElementById('resultContent').innerHTML = html;
+  showResult('moveResult');
+}
+
+function resetMove() {
+  (document.getElementById('moveDistance') as HTMLSelectElement).value = 'local';
+  (document.getElementById('homeSize') as HTMLSelectElement).value = '2';
+  (document.getElementById('serviceType') as HTMLSelectElement).value = 'full';
+  (document.getElementById('packingNo') as HTMLInputElement).checked = true;
+  (document.getElementById('packingYes') as HTMLInputElement).checked = false;
+  (document.getElementById('extraPiano') as HTMLInputElement).checked = false;
+  (document.getElementById('extraPool') as HTMLInputElement).checked = false;
+  (document.getElementById('extraExercise') as HTMLInputElement).checked = false;
+  (document.getElementById('extraHotTub') as HTMLInputElement).checked = false;
+  hideResult('moveResult');
+  calculateMove();
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calculateMove);
+document.getElementById('resetBtn')!.addEventListener('click', resetMove);
+document.addEventListener('DOMContentLoaded', function () {
+  calculateMove();
+  var inputs = document.querySelectorAll('#moveDistance, #homeSize, #serviceType, input[name="packing"], input[type="checkbox"]');
+  for (var i = 0; i < inputs.length; i++) {
+    inputs[i].addEventListener('change', calculateMove);
+  }
+});
+</script>

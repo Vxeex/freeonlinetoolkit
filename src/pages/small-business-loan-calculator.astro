@@ -1,0 +1,202 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['small-business-loan-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Calculate Small Business Loan Payments",
+    "description": "Calculate your small business loan EMI, total interest, and debt-to-income ratio using loan amount, interest rate, and term.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the total loan amount you wish to borrow" },
+      { "@type": "HowToStep", "text": "Input the annual interest rate as a percentage" },
+      { "@type": "HowToStep", "text": "Select the loan term in months or years" },
+      { "@type": "HowToStep", "text": "Optionally enter your monthly revenue to calculate debt-to-income ratio" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your monthly payment and amortization schedule" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Plan your business financing with confidence. This small business loan calculator shows your monthly EMI, total interest, full amortization schedule, and debt-to-income ratio based on your monthly revenue.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Business Loan Calculator</h2>
+      <div class="form-group">
+        <label for="loanAmount">Loan Amount ($)</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="loanAmount" class="prefixed" value="100000" min="0" step="1000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="interestRate">Annual Interest Rate (%)</label>
+          <input type="number" id="interestRate" value="8.5" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="loanTerm">Loan Term</label>
+          <input type="number" id="loanTerm" value="5" min="1" max="30">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="termUnit">Term Unit</label>
+          <select id="termUnit">
+            <option value="years" selected>Years</option>
+            <option value="months">Months</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="monthlyRevenue">Monthly Revenue ($) <span class="optional">optional</span></label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="monthlyRevenue" class="prefixed" value="0" min="0" step="1000">
+          </div>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="bizLoanResult">
+        <div class="result-value" id="bizMonthlyPayment">$0.00</div>
+        <div class="result-label">Monthly Payment (EMI)</div>
+        <div class="result-details">
+          <div><span class="label">Total Interest</span><span class="value" id="bizTotalInterest">$0</span></div>
+          <div><span class="label">Total Repayment</span><span class="value" id="bizTotalRepayment">$0</span></div>
+          <div><span class="label">Number of Payments</span><span class="value" id="bizNumPayments">0</span></div>
+          <div><span class="label">Debt-to-Income Ratio</span><span class="value" id="bizDTI">--</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section" id="bizAmortSection" style="display:none;">
+      <h2>Yearly Amortization Schedule</h2>
+      <div class="table-wrap">
+        <table class="amort-table" id="bizAmortTable">
+          <thead>
+            <tr><th>Year</th><th>Beginning Balance</th><th>Total Paid</th><th>Total Interest</th><th>Ending Balance</th></tr>
+          </thead>
+          <tbody id="bizAmortBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Small Business Loan Calculator</h2>
+      <p>Using this business loan calculator is straightforward. Start by entering the <strong>loan amount</strong> you plan to borrow for your business. Then input the <strong>annual interest rate</strong> your lender has quoted. Business loan rates typically range from 6% to 30% depending on your creditworthiness, business history, and loan type.</p>
+      <p>Choose your <strong>loan term</strong> in years or months &mdash; most small business loans range from 1 to 10 years. You can switch between years and months using the dropdown. If you enter your <strong>monthly revenue</strong>, the calculator will also show your debt-to-income (DTI) ratio, which lenders use to assess your ability to repay.</p>
+      <p>Click "Calculate" and you'll see your monthly EMI payment, total interest, and total repayment amount. The yearly amortization schedule breaks down how much of each year's payments go toward principal versus interest.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Business Loan EMI Formula</h2>
+      <p>The monthly payment is calculated using the standard amortization formula:</p>
+      <div class="formula-box">EMI = P &times; [r(1+r)^n] / [(1+r)^n &minus; 1]</div>
+      <p>Where: <strong>EMI</strong> = monthly payment, <strong>P</strong> = loan principal, <strong>r</strong> = monthly interest rate (annual rate / 12), and <strong>n</strong> = total number of monthly payments.</p>
+      <p>The <strong>debt-to-income ratio</strong> is calculated as: DTI = (Monthly Payment / Monthly Revenue) &times; 100.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "What types of small business loans are available?", answer: "Common types include term loans (lump sum repaid over a fixed period), SBA loans (government-backed with competitive rates), business lines of credit (flexible borrowing up to a limit), and equipment financing. Each has different rates, terms, and qualification requirements." },
+      { question: "What is a good interest rate for a small business loan?", answer: "Rates vary widely based on your credit score, business revenue, time in business, and loan type. SBA loans typically range from 7-10%, traditional bank loans from 6-12%, and online lenders from 10-30%. Compare multiple offers to find the best rate." },
+      { question: "How is my debt-to-income ratio calculated for a business loan?", answer: "Lenders calculate DTI by dividing your total monthly debt payments (including this loan) by your monthly business revenue. A DTI below 35% is considered healthy, 36-50% may require explanation, and above 50% often leads to loan denial." },
+      { question: "Can I pay off my business loan early?", answer: "Many business loans allow early repayment, but some charge prepayment penalties. Check your loan agreement before making extra payments. Paying early saves on interest but may come with a fee (typically 1-3% of the remaining balance)." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="small-business-loan-calculator" category="business-finance" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcBizLoan() {
+  const P = getNum('loanAmount');
+  const annualRate = getNum('interestRate');
+  let term = getNum('loanTerm');
+  const unit = (document.getElementById('termUnit') as HTMLSelectElement).value;
+  const revenue = getNum('monthlyRevenue') || 0;
+
+  if (!P || !annualRate || !term) return;
+  if (unit === 'years') term = term * 12;
+
+  const r = annualRate / 100 / 12;
+  const n = term;
+  const M = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  const totalRepayment = M * n;
+  const totalInterest = totalRepayment - P;
+
+  document.getElementById('bizMonthlyPayment')!.textContent = formatCurrency(M);
+  document.getElementById('bizTotalInterest')!.textContent = formatCurrency(totalInterest);
+  document.getElementById('bizTotalRepayment')!.textContent = formatCurrency(totalRepayment);
+  document.getElementById('bizNumPayments')!.textContent = n.toString();
+
+  if (revenue > 0) {
+    const dti = (M / revenue) * 100;
+    document.getElementById('bizDTI')!.textContent = dti.toFixed(1) + '%';
+  } else {
+    document.getElementById('bizDTI')!.textContent = '--';
+  }
+
+  showResult('bizLoanResult');
+
+  const years = Math.ceil(n / 12);
+  let balance = P;
+  const yearlyBody = document.getElementById('bizAmortBody')!;
+  yearlyBody.innerHTML = '';
+
+  for (let y = 1; y <= years; y++) {
+    const startBal = balance;
+    let yearlyTotalPaid = 0;
+    let yearlyTotalInterest = 0;
+    const monthsInYear = (y === years && n % 12 !== 0) ? n % 12 : 12;
+
+    for (let m = 0; m < monthsInYear; m++) {
+      const interestPmt = balance * r;
+      const principalPmt = M - interestPmt;
+      balance = balance - principalPmt;
+      yearlyTotalPaid += M;
+      yearlyTotalInterest += interestPmt;
+    }
+
+    if (balance < 0) balance = 0;
+
+    const row = document.createElement('tr');
+    row.innerHTML = '<td>' + y + '</td><td>' + formatCurrency(startBal) + '</td><td>' + formatCurrency(yearlyTotalPaid) + '</td><td>' + formatCurrency(yearlyTotalInterest) + '</td><td>' + formatCurrency(balance) + '</td>';
+    yearlyBody.appendChild(row);
+  }
+
+  document.getElementById('bizAmortSection')!.style.display = 'block';
+}
+
+function resetBizLoan() {
+  (document.getElementById('loanAmount') as HTMLInputElement).value = '100000';
+  (document.getElementById('interestRate') as HTMLInputElement).value = '8.5';
+  (document.getElementById('loanTerm') as HTMLInputElement).value = '5';
+  (document.getElementById('termUnit') as HTMLSelectElement).value = 'years';
+  (document.getElementById('monthlyRevenue') as HTMLInputElement).value = '0';
+  document.getElementById('bizAmortSection')!.style.display = 'none';
+  hideResult('bizLoanResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcBizLoan);
+document.getElementById('resetBtn')!.addEventListener('click', resetBizLoan);
+document.addEventListener('DOMContentLoaded', calcBizLoan);
+</script>

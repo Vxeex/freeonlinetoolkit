@@ -1,0 +1,235 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['ride-sharing-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Ride-Sharing Fares",
+    "description": "Estimate Uber and Lyft fares by entering distance, time, and service type.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the distance in miles for your trip" },
+      { "@type": "HowToStep", "text": "Enter the estimated duration in minutes" },
+      { "@type": "HowToStep", "text": "Select the service type and adjust the surge multiplier" },
+      { "@type": "HowToStep", "text": "Enter wait time and tip percentage" },
+      { "@type": "HowToStep", "text": "Click Calculate to see your estimated fare and service comparison" },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Why do ride-sharing prices vary so much?", "acceptedAnswer": { "@type": "Answer", "text": "Ride-sharing companies use dynamic pricing that adjusts based on supply and demand. When many people request rides in the same area during concerts, rush hour, or bad weather, prices increase due to surge pricing to attract more drivers. The same trip can cost very different amounts depending on when you book." } },
+      { "@type": "Question", "name": "Which ride-sharing service type is the best value?", "acceptedAnswer": { "@type": "Answer", "text": "Economy (or UberX/Lyft Standard) is typically the best value for solo riders or pairs without much luggage. Comfort offers more legroom and a newer car for about 20-30% more. XL is best for groups of 4-5 people. Premium (Uber Black/Lyft Lux) costs significantly more but provides luxury vehicles and professional drivers." } },
+      { "@type": "Question", "name": "How does surge pricing work?", "acceptedAnswer": { "@type": "Answer", "text": "Surge pricing multiplies the standard fare by a factor (typically 1.2x to 2.5x, sometimes higher) during periods of high demand. The app shows the surge multiplier before you confirm your ride. You can avoid surge pricing by waiting a few minutes for demand to decrease, walking to a less busy area, or choosing a different service type." } },
+      { "@type": "Question", "name": "Is ride-sharing cheaper than owning a car?", "acceptedAnswer": { "@type": "Answer", "text": "For most people, ride-sharing is cheaper than car ownership if you drive less than about 5,000-7,000 miles per year. Car ownership costs include the monthly payment, insurance, fuel, maintenance, parking, and depreciation, which average around $700-1,000 per month. If you spend less than that on ride-sharing, it may be more economical." } },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate your Uber or Lyft fare based on distance, time, and service type. Adjust for surge pricing and tip percentage to get a complete cost picture for your trip.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Ride Fare Estimator</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="distance">Distance (miles)</label>
+          <input type="number" id="distance" value="10" min="0.1" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="tripDuration">Estimated Duration (minutes)</label>
+          <input type="number" id="tripDuration" value="20" min="1" step="5">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="serviceType">Service Type</label>
+          <select id="serviceType">
+            <option value="economy">Economy</option>
+            <option value="comfort">Comfort</option>
+            <option value="premium">Premium</option>
+            <option value="xl">XL</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="surgeMultiplier">Surge Multiplier</label>
+          <input type="number" id="surgeMultiplier" value="1.0" min="1.0" max="3.0" step="0.1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="waitTime">Wait Time (minutes)</label>
+          <input type="number" id="waitTime" value="3" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <label for="tipPercent">Tip Percentage (%)</label>
+          <input type="number" id="tipPercent" value="15" min="0" max="100" step="5">
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn"><i class="fa-solid fa-calculator"></i> Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="rideResult">
+        <div class="result-value" id="totalCharge">$0.00</div>
+        <div class="result-label">Total Charge (including tip)</div>
+        <div class="result-details">
+          <div><span class="label">Estimated Fare</span><span class="value" id="estimatedFare">$0</span></div>
+          <div><span class="label">Per-Mile Charge</span><span class="value" id="perMileCharge">$0</span></div>
+          <div><span class="label">Per-Minute Charge</span><span class="value" id="perMinCharge">$0</span></div>
+          <div><span class="label">Surge Multiplier Applied</span><span class="value" id="surgeApplied">1.0x</span></div>
+          <div><span class="label">Booking Fee</span><span class="value" id="bookingFeeDisplay">$0</span></div>
+          <div><span class="label">Tip Amount</span><span class="value" id="tipAmount">$0</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section" id="comparisonSection" style="display:none;">
+      <h2>Service Type Comparison</h2>
+      <div class="table-wrap">
+        <table class="amort-table" id="comparisonTable">
+          <thead>
+            <tr><th>Service</th><th>Base Fare</th><th>Distance</th><th>Time</th><th>Total Fare</th><th>After Tip</th></tr>
+          </thead>
+          <tbody id="comparisonBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>How to Use the Ride-Sharing Fare Estimator</h2>
+      <p>Enter your trip <strong>distance in miles</strong> and the <strong>estimated duration in minutes</strong> (use Google Maps or your preferred navigation app for the estimate). Select the <strong>service type</strong> that matches your ride preference &mdash; Economy, Comfort, Premium, or XL. Each service has different base fares, per-mile rates, and per-minute rates.</p>
+      <p>Adjust the <strong>surge multiplier</strong> based on current demand. A value of 1.0 means no surge, 1.5 means 50% higher pricing, and 2.0 means double the normal rate. Enter <strong>wait time</strong> in minutes, which covers the time the driver waits for you after arriving. Set your <strong>tip percentage</strong> to see the total charge including gratuity.</p>
+      <p>Click "Calculate" to see your fare breakdown. The comparison table shows what the same trip would cost with each service type, helping you choose the best option for your budget.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Ride-Sharing Fare Formula</h2>
+      <p>The fare is calculated using the following formula:</p>
+      <div class="formula-box">
+        Fare = (Base Fare + Distance Charge + Time Charge + Wait Charge) &times; Surge + Booking Fee<br>
+        Total = Fare + Tip
+      </div>
+      <p>Where:</p>
+      <ul>
+        <li><strong>Base Fare</strong> = fixed amount for the service type</li>
+        <li><strong>Distance Charge</strong> = per-mile rate &times; distance</li>
+        <li><strong>Time Charge</strong> = per-minute rate &times; duration</li>
+        <li><strong>Wait Charge</strong> = per-minute rate &times; wait time</li>
+        <li><strong>Surge</strong> = multiplier applied to the subtotal before fees</li>
+        <li><strong>Booking Fee</strong> = $2.00 fixed fee per trip</li>
+        <li><strong>Tip</strong> = fare &times; tip percentage / 100</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "Why do ride-sharing prices vary so much?", answer: "Ride-sharing companies use dynamic pricing that adjusts based on supply and demand. When many people request rides in the same area — after concerts, during rush hour, or in bad weather — prices increase due to surge pricing to attract more drivers. The same trip can cost very different amounts depending on when you book." },
+      { question: "Which ride-sharing service type is the best value?", answer: "Economy (or UberX/Lyft Standard) is typically the best value for solo riders or pairs without much luggage. Comfort offers more legroom and a newer car for about 20-30% more. XL is best for groups of 4-5 people. Premium (Uber Black/Lyft Lux) costs significantly more but provides luxury vehicles and professional drivers." },
+      { question: "How does surge pricing work?", answer: "Surge pricing multiplies the standard fare by a factor (typically 1.2x to 2.5x, sometimes higher) during periods of high demand. The app shows the surge multiplier before you confirm your ride. You can avoid surge pricing by waiting a few minutes for demand to decrease, walking to a less busy area, or choosing a different service type." },
+      { question: "Is ride-sharing cheaper than owning a car?", answer: "For most people, ride-sharing is cheaper than car ownership if you drive less than about 5,000-7,000 miles per year. Car ownership costs include the monthly payment, insurance, fuel, maintenance, parking, and depreciation, which average around $700-1,000 per month. If you spend less than that on ride-sharing, it may be more economical." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="ride-sharing-calculator" category="automotive" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+var rates = {
+  economy: { base: 1.50, mile: 0.90, min: 0.15 },
+  comfort: { base: 2.50, mile: 1.30, min: 0.20 },
+  premium: { base: 5.00, mile: 2.50, min: 0.35 },
+  xl: { base: 3.00, mile: 1.50, min: 0.25 }
+};
+
+function calcRide() {
+  var distance = getNum('distance');
+  var duration = getNum('tripDuration');
+  var surge = getNum('surgeMultiplier');
+  var waitTime = getNum('waitTime');
+  var tipPercent = getNum('tipPercent');
+  var serviceType = (document.getElementById('serviceType') as HTMLSelectElement).value;
+
+  if (!distance || !duration || !surge || waitTime === null || tipPercent === null) return;
+
+  var r = rates[serviceType];
+  var bookingFee = 2.00;
+
+  var baseFare = r.base;
+  var distCharge = r.mile * distance;
+  var timeCharge = r.min * duration;
+  var waitCharge = r.min * waitTime;
+  var fareBeforeSurge = baseFare + distCharge + timeCharge + waitCharge;
+  var fareAfterSurge = fareBeforeSurge * surge;
+  var fare = fareAfterSurge + bookingFee;
+
+  var tip = fare * tipPercent / 100;
+  var total = fare + tip;
+
+  document.getElementById('estimatedFare').textContent = formatCurrency(fare);
+  document.getElementById('perMileCharge').textContent = formatCurrency(distCharge);
+  document.getElementById('perMinCharge').textContent = formatCurrency(timeCharge);
+  document.getElementById('surgeApplied').textContent = surge.toFixed(1) + 'x';
+  document.getElementById('bookingFeeDisplay').textContent = formatCurrency(bookingFee);
+  document.getElementById('tipAmount').textContent = formatCurrency(tip);
+  document.getElementById('totalCharge').textContent = formatCurrency(total);
+  showResult('rideResult');
+
+  // Build comparison table
+  var body = document.getElementById('comparisonBody');
+  body.innerHTML = '';
+  var types = ['economy', 'comfort', 'premium', 'xl'];
+  var labels = { economy: 'Economy', comfort: 'Comfort', premium: 'Premium', xl: 'XL' };
+
+  for (var i = 0; i < types.length; i++) {
+    var t = types[i];
+    var rt = rates[t];
+    var fBase = rt.base;
+    var fDist = rt.mile * distance;
+    var fTime = rt.min * duration;
+    var fWait = rt.min * waitTime;
+    var fSub = (fBase + fDist + fTime + fWait) * surge;
+    var fFare = fSub + bookingFee;
+    var fTip = fFare * tipPercent / 100;
+    var fTotal = fFare + fTip;
+
+    var row = document.createElement('tr');
+    row.innerHTML = '<td>' + labels[t] + '</td><td>' + formatCurrency(fBase) + '</td><td>' + formatCurrency(fDist) + '</td><td>' + formatCurrency(fTime) + '</td><td>' + formatCurrency(fFare) + '</td><td>' + formatCurrency(fTotal) + '</td>';
+    body.appendChild(row);
+  }
+
+  document.getElementById('comparisonSection').style.display = 'block';
+}
+
+function resetRide() {
+  (document.getElementById('distance') as HTMLInputElement).value = '10';
+  (document.getElementById('tripDuration') as HTMLInputElement).value = '20';
+  (document.getElementById('serviceType') as HTMLSelectElement).value = 'economy';
+  (document.getElementById('surgeMultiplier') as HTMLInputElement).value = '1.0';
+  (document.getElementById('waitTime') as HTMLInputElement).value = '3';
+  (document.getElementById('tipPercent') as HTMLInputElement).value = '15';
+  document.getElementById('comparisonSection').style.display = 'none';
+  hideResult('rideResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcRide);
+document.getElementById('resetBtn')!.addEventListener('click', resetRide);
+document.addEventListener('DOMContentLoaded', calcRide);
+</script>

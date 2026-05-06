@@ -1,0 +1,277 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['rent-vs-buy-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Compare Renting vs Buying a Home",
+    "description": "Compare the total costs of renting versus buying a home over time, including the opportunity cost of your down payment.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter the home price and your down payment percentage" },
+      { "@type": "HowToStep", "text": "Input the mortgage interest rate and property tax rate" },
+      { "@type": "HowToStep", "text": "Enter closing costs as a percentage and your monthly rent" },
+      { "@type": "HowToStep", "text": "Enter expected rent growth and investment return rates" },
+      { "@type": "HowToStep", "text": "Click Calculate to see the total cost comparison and break-even year" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Should you rent or buy your next home? This calculator compares the total costs of both options over time, including mortgage payments, taxes, maintenance, rent, and the opportunity cost of your down payment. Find your break-even year and make an informed decision.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Rent vs Buy Comparison</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="homePrice">Home Price ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="homePrice" class="prefixed" value="350000" min="0" step="10000">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="downPct">Down Payment (%)</label>
+          <input type="number" id="downPct" value="20" min="0" max="100" step="1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="interestRate">Interest Rate (%)</label>
+          <input type="number" id="interestRate" value="6.5" min="0" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="taxRate">Property Tax Rate (%)</label>
+          <input type="number" id="taxRate" value="1.0" min="0" step="0.1">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="closingCosts">Closing Costs (%)</label>
+          <input type="number" id="closingCosts" value="3" min="0" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="monthlyRent">Monthly Rent ($)</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="monthlyRent" class="prefixed" value="1800" min="0" step="100">
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="rentGrowth">Rent Growth (% per year)</label>
+          <input type="number" id="rentGrowth" value="3" min="0" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="investReturn">Investment Return (%)</label>
+          <input type="number" id="investReturn" value="7" min="0" step="0.5">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="yearsCompare">Years to Compare</label>
+        <input type="number" id="yearsCompare" value="10" min="1" max="40">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="rentBuyResult">
+        <div class="result-value" id="rBuyTotalCost">$0</div>
+        <div class="result-label">Total Cost of Buying</div>
+        <div class="result-details">
+          <div><span class="label">Total Cost of Renting</span><span class="value" id="rRentTotalCost">$0</span></div>
+          <div><span class="label">Difference (Buy - Rent)</span><span class="value" id="rDifference">$0</span></div>
+          <div><span class="label">Break-Even Year</span><span class="value" id="rBreakEven">--</span></div>
+          <div><span class="label">Net Worth if Buying</span><span class="value" id="rBuyNetWorth">$0</span></div>
+          <div><span class="label">Net Worth if Renting</span><span class="value" id="rRentNetWorth">$0</span></div>
+        </div>
+      </div>
+
+      <div class="content-section" id="rComparisonSection" style="display:none;">
+        <h2>Year-by-Year Comparison</h2>
+        <div class="table-wrap">
+          <table class="amort-table" id="rComparisonTable">
+            <thead>
+              <tr><th>Year</th><th>Buy Cost</th><th>Buy Equity</th><th>Buy Net Worth</th><th>Rent Cost</th><th>Rent Invested</th><th>Rent Net Worth</th></tr>
+            </thead>
+            <tbody id="rComparisonBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Rent vs Buy Calculator</h2>
+      <p>Enter the <strong>home price</strong>, <strong>down payment percentage</strong>, <strong>mortgage interest rate</strong>, and <strong>property tax rate</strong>. Add <strong>closing costs</strong>, <strong>monthly rent</strong>, expected <strong>rent growth</strong>, and <strong>investment return rate</strong>. Specify the number of <strong>years to compare</strong>.</p>
+      <p>Buying typically becomes more favorable the longer you stay. If you plan to move within 3-5 years, renting is often better. If you plan to stay 7+ years, buying usually wins.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Rent vs Buy Formula</h2>
+      <div class="formula-box">
+        Buy Total Cost = Mortgage Payments + Taxes + Insurance + Maintenance (1%) + HOA + Closing Costs<br><br>
+        Rent Total Cost = Monthly Rent x 12 (growing at rent growth rate)<br><br>
+        Buy Net Worth = Home Equity - Remaining Mortgage Balance<br><br>
+        Rent Net Worth = Down Payment + Savings (invested at return rate)
+      </div>
+      <p>The <strong>opportunity cost</strong> is calculated by assuming your down payment could be invested at the expected return rate.</p>
+    </div>
+
+    <FAQ items={[
+      { question: "How long do I need to stay in a home for buying to make sense?", answer: "Generally, buying becomes more favorable than renting if you stay for at least 5-7 years. This allows enough time to recover upfront closing costs and build meaningful equity through appreciation and principal paydown." },
+      { question: "What costs are included in the buying scenario?", answer: "The buying scenario includes monthly mortgage payment (principal and interest), property taxes, homeowner's insurance, 1% annual maintenance, upfront closing costs, and a 6% selling commission when you sell." },
+      { question: "What is the opportunity cost of a down payment?", answer: "The opportunity cost is the potential investment return you give up by using your money for a down payment instead of investing it. For example, a $70,000 down payment at 7% could grow to over $137,000 in 10 years." },
+      { question: "Does this calculator account for home appreciation?", answer: "Yes, the calculator assumes the home appreciates at the same rate as the investment return rate. In reality, home appreciation averages 3-5% while stock market returns average 7-10%." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="rent-vs-buy-calculator" category="real-estate" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
+
+function calcRentBuy() {
+  const homePrice = getNum('homePrice');
+  const downPct = getNum('downPct');
+  const annualRate = getNum('interestRate');
+  const taxRate = getNum('taxRate');
+  const closingPct = getNum('closingCosts');
+  const rent = getNum('monthlyRent');
+  const rentGrowth = getNum('rentGrowth');
+  const investReturn = getNum('investReturn');
+  const years = getNum('yearsCompare');
+
+  if (!homePrice || downPct === undefined || !annualRate || !years) return;
+
+  const downPayment = homePrice * (downPct / 100);
+  const loanAmount = homePrice - downPayment;
+  const closingCosts = homePrice * (closingPct / 100);
+  const r = annualRate / 100 / 12;
+  const n = years * 12;
+
+  let monthlyPI = 0;
+  if (loanAmount > 0 && r > 0) {
+    monthlyPI = loanAmount * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  } else if (loanAmount > 0) {
+    monthlyPI = loanAmount / n;
+  }
+
+  const monthlyTax = homePrice * (taxRate / 100) / 12;
+  const monthlyInsurance = homePrice * 0.004 / 12;
+  const monthlyMaint = homePrice * 0.01 / 12;
+
+  const monthlyBuyCost = monthlyPI + monthlyTax + monthlyInsurance + monthlyMaint;
+
+  let buyTotalCost = closingCosts;
+  let rentTotalCost = 0;
+  let currentRent = rent;
+  let buyNetWorth = 0;
+  let rentInvested = downPayment;
+  let remainingBalance = loanAmount;
+  let breakEvenYear: number | null = null;
+
+  const yearData: Array<{ year: number; buyCost: number; buyEquity: number; buyNetWorth: number; rentCost: number; rentInvested: number; rentNetWorth: number }> = [];
+
+  for (let y = 0; y < years; y++) {
+    let yearlyBuyPmt = 0;
+    let yearlyPrincipal = 0;
+
+    for (let m = 0; m < 12; m++) {
+      yearlyBuyPmt += monthlyBuyCost;
+      if (remainingBalance > 0 && monthlyPI > 0) {
+        const interestPmt = remainingBalance * r;
+        const principalPmt = monthlyPI - interestPmt;
+        remainingBalance = Math.max(0, remainingBalance - principalPmt);
+        yearlyPrincipal += principalPmt;
+      }
+    }
+
+    buyTotalCost += yearlyBuyPmt;
+
+    const yearlyRentCost = currentRent * 12;
+    rentTotalCost += yearlyRentCost;
+
+    currentRent = currentRent * (1 + rentGrowth / 100);
+
+    const homeValue = homePrice * Math.pow(1 + investReturn / 100, y + 1);
+    buyNetWorth = homeValue - remainingBalance;
+
+    const rentSaved = yearlyBuyPmt - yearlyRentCost + (monthlyPI * 12 - yearlyPrincipal);
+    const investable = rentSaved > 0 ? rentSaved : 0;
+    rentInvested = rentInvested * (1 + investReturn / 100) + investable;
+
+    const rentNetWorth = rentInvested;
+
+    if (breakEvenYear === null && y > 0 && buyTotalCost <= rentTotalCost) {
+      breakEvenYear = y + 1;
+    }
+
+    yearData.push({ year: y + 1, buyCost: buyTotalCost, buyEquity: homeValue - remainingBalance, buyNetWorth, rentCost: rentTotalCost, rentInvested, rentNetWorth });
+  }
+
+  const finalBuyCost = buyTotalCost;
+  const finalRentCost = rentTotalCost;
+  const sellCost = homePrice * Math.pow(1 + investReturn / 100, years) * 0.06;
+
+  document.getElementById('rBuyTotalCost')!.textContent = formatCurrency(finalBuyCost + sellCost);
+  document.getElementById('rRentTotalCost')!.textContent = formatCurrency(finalRentCost);
+  document.getElementById('rDifference')!.textContent = formatCurrency((finalBuyCost + sellCost) - finalRentCost);
+  document.getElementById('rBreakEven')!.textContent = breakEvenYear ? breakEvenYear.toString() : 'Never';
+  document.getElementById('rBuyNetWorth')!.textContent = formatCurrency(buyNetWorth);
+  document.getElementById('rRentNetWorth')!.textContent = formatCurrency(rentInvested);
+
+  showResult('rentBuyResult');
+
+  const body = document.getElementById('rComparisonBody')!;
+  body.innerHTML = '';
+
+  for (const d of yearData) {
+    const row = document.createElement('tr');
+    row.innerHTML = '<td>' + d.year + '</td>'
+      + '<td>' + formatCurrency(d.buyCost) + '</td>'
+      + '<td>' + formatCurrency(d.buyEquity) + '</td>'
+      + '<td>' + formatCurrency(d.buyNetWorth) + '</td>'
+      + '<td>' + formatCurrency(d.rentCost) + '</td>'
+      + '<td>' + formatCurrency(d.rentInvested) + '</td>'
+      + '<td>' + formatCurrency(d.rentNetWorth) + '</td>';
+    body.appendChild(row);
+  }
+
+  document.getElementById('rComparisonSection')!.style.display = 'block';
+}
+
+function resetRentBuy() {
+  (document.getElementById('homePrice') as HTMLInputElement).value = '350000';
+  (document.getElementById('downPct') as HTMLInputElement).value = '20';
+  (document.getElementById('interestRate') as HTMLInputElement).value = '6.5';
+  (document.getElementById('taxRate') as HTMLInputElement).value = '1.0';
+  (document.getElementById('closingCosts') as HTMLInputElement).value = '3';
+  (document.getElementById('monthlyRent') as HTMLInputElement).value = '1800';
+  (document.getElementById('rentGrowth') as HTMLInputElement).value = '3';
+  (document.getElementById('investReturn') as HTMLInputElement).value = '7';
+  (document.getElementById('yearsCompare') as HTMLInputElement).value = '10';
+  document.getElementById('rComparisonSection')!.style.display = 'none';
+  hideResult('rentBuyResult');
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcRentBuy);
+document.getElementById('resetBtn')!.addEventListener('click', resetRentBuy);
+document.addEventListener('DOMContentLoaded', calcRentBuy);
+</script>
