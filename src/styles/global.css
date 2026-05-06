@@ -630,6 +630,11 @@ ul { list-style: none; }
   font-size: 0.85rem;
   color: var(--color-text-secondary);
   transition: color var(--duration-fast);
+  display: inline-block;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .footer ul li a:hover { color: var(--color-primary); }
 .footer-bottom {

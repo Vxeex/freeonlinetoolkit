@@ -23,7 +23,7 @@ const footerGuides = guides.slice(0, 4);
       <div>
         <h3>Guides</h3>
         <ul>
-          {footerGuides.map(g => <li><a href={`/guides/${g.slug}/`}>{g.title.replace(/^(How to Use |Understanding Your |A Complete |Compound Interest Explained: |Password Security: |Currency Conversion: |Calorie Counting: |Your Guide to )/, '').split(':')[0].split(' to')[0].trim().substring(0, 25)}</a></li>)}
+          {footerGuides.map(g => <li><a href={`/guides/${g.slug}/`} title={g.title}>{g.title.replace(/^(How to Use |Understanding Your |A Complete |Your Guide to )/, '').split(/[:–—]| - /)[0].replace(/^a\s+/i, '').trim()}</a></li>)}
         </ul>
       </div>
       <div>
