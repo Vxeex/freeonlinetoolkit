@@ -1,0 +1,66 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Startup Valuation Guide' },
+];
+---
+
+<GuideLayout
+  title="Startup Valuation Methods: How to Value Your Business | FreeOnlineToolkit"
+  description="Learn the Berkus Method, Scorecard, and VC valuation approaches. Understand what investors look for and how to estimate your startup worth."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Startup Valuation Methods: How to Value Your Business</h1>
+  </fragment>
+
+  <h2>Why Startup Valuation Matters</h2>
+  <p>Startup valuation determines how much your company is worth and directly affects how much equity you give up when raising capital. Unlike established companies with steady revenue and profit history, startups are valued based on potential, team quality, and market opportunity. Understanding the common valuation methods helps you negotiate better with investors.</p>
+
+  <h2>The Berkus Method</h2>
+  <p>Developed by angel investor Dave Berkus, this method assigns a value of up to $500,000 to five key risk categories, for a maximum pre-money valuation of $2.5 million (adjusted for inflation in newer versions):</p>
+  <ul>
+    <li><strong>Sound idea:</strong> The basic concept has value and solves a real problem</li>
+    <li><strong>Prototype:</strong> A working prototype reduces technology risk</li>
+    <li><strong>Quality management team:</strong> Experienced founders with domain expertise</li>
+    <li><strong>Strategic relationships:</strong> Partnerships, distribution agreements, or key customers</li>
+    <li><strong>Product rollout or sales:</strong> Early traction or revenue demonstrates market demand</li>
+  </ul>
+
+  <h2>Scorecard Valuation Method</h2>
+  <p>The Scorecard method, also developed by Berkus, compares your startup to the average pre-money valuation of similar early-stage companies in your region. It adjusts the average based on weighted factors:</p>
+  <ul>
+    <li><strong>Strength of management team (30%):</strong> Experience, track record, and relevant skills</li>
+    <li><strong>Market size and opportunity (25%):</strong> Total addressable market and growth potential</li>
+    <li><strong>Product or technology (15%):</strong> Stage of development, IP, and competitive moat</li>
+    <li><strong>Competitive environment (10%):</strong> Number and strength of direct and indirect competitors</li>
+    <li><strong>Marketing and sales channels (10%):</strong> Go-to-market strategy and customer acquisition cost</li>
+    <li><strong>Need for additional capital (5%):</strong> How much more funding is needed before breakeven</li>
+    <li><strong>Other factors (5%):</strong> Strategic partnerships, board composition, advisory board</li>
+  </ul>
+
+  <h2>Venture Capital Method</h2>
+  <p>This method works backward from the expected exit value to determine the current valuation. The formula is:</p>
+
+  <div class="formula-box">
+    Post-Money Valuation = Exit Value / Expected ROI<br>
+    Pre-Money Valuation = Post-Money Valuation - Investment Amount
+  </div>
+
+  <p>For example, if a VC expects a $50 million exit in 5 years and targets a 10x return, the post-money valuation is $5 million. If they invest $1 million, the pre-money valuation is $4 million.</p>
+
+  <h2>Factors That Increase Valuation</h2>
+  <ul>
+    <li><strong>Revenue traction:</strong> Actual paying customers validate your business model</li>
+    <li><strong>Strong team:</strong> Founders with relevant industry experience and past exits</li>
+    <li><strong>Large addressable market:</strong> A $1B+ market opportunity attracts higher valuations</li>
+    <li><strong>Proprietary technology:</strong> Patents, trade secrets, or hard-to-replicate algorithms</li>
+    <li><strong>Existing partnerships:</strong> Distribution deals or strategic alliances reduce go-to-market risk</li>
+    <li><strong>Competitive advantage:</strong> Network effects, high switching costs, or unique data assets</li>
+  </ul>
+
+  <p>Estimate your startup value with our <a href="/startup-valuation-calculator/">Startup Valuation Calculator</a> and see what your business could be worth.</p>
+</GuideLayout>

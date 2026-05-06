@@ -1,0 +1,73 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Personal Injury Guide' },
+];
+---
+
+<GuideLayout
+  title="How Personal Injury Settlements Are Calculated | FreeOnlineToolkit"
+  description="Understand how personal injury settlement values are determined, including medical damages, lost wages, pain and suffering, and negotiation tips."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>How Personal Injury Settlements Are Calculated</h1>
+  </fragment>
+
+  <h2>Understanding Personal Injury Settlements</h2>
+  <p>A personal injury settlement compensates an injured person for losses caused by someone else negligence or intentional act. Most personal injury cases are resolved through settlements rather than going to trial. Understanding how settlement values are calculated helps you evaluate any offer you receive and negotiate effectively.</p>
+
+  <h2>Components of a Settlement</h2>
+  <h3>Economic Damages (Special Damages)</h3>
+  <p>These are quantifiable financial losses with clear dollar amounts:</p>
+  <ul>
+    <li><strong>Medical expenses:</strong> Hospital bills, doctor visits, surgery, medications, physical therapy, and future medical care related to the injury</li>
+    <li><strong>Lost wages:</strong> Income lost due to time off work for recovery, including sick days and vacation time used</li>
+    <li><strong>Lost earning capacity:</strong> If the injury prevents you from returning to your previous job or reduces your future earning potential</li>
+    <li><strong>Property damage:</strong> Repair or replacement of damaged property, such as a vehicle in a car accident</li>
+    <li><strong>Out-of-pocket expenses:</strong> Transportation to medical appointments, home modifications, and other injury-related costs</li>
+  </ul>
+
+  <h3>Non-Economic Damages (General Damages)</h3>
+  <p>These compensate for intangible losses that are harder to quantify:</p>
+  <ul>
+    <li><strong>Pain and suffering:</strong> Physical pain and discomfort caused by the injury and treatment</li>
+    <li><strong>Emotional distress:</strong> Anxiety, depression, PTSD, and sleep disturbances resulting from the accident</li>
+    <li><strong>Loss of enjoyment of life:</strong> Inability to participate in hobbies, sports, or activities you previously enjoyed</li>
+    <li><strong>Loss of consortium:</strong> Impact on your relationship with your spouse, including companionship and intimacy</li>
+    <li><strong>Disfigurement or permanent disability:</strong> Lasting physical changes or limitations</li>
+  </ul>
+
+  <h2>How Settlement Amounts Are Calculated</h2>
+  <p>The most common method is the multiplier approach:</p>
+
+  <div class="formula-box">
+    Settlement Value = Economic Damages × Multiplier (1.5 to 5)<br>
+    + Economic Damages + Punitive Damages (if applicable)
+  </div>
+
+  <p>The multiplier reflects the severity of the injury:</p>
+  <ul>
+    <li><strong>1.5 to 2:</strong> Minor injuries with full recovery expected (sprains, minor cuts)</li>
+    <li><strong>2 to 3:</strong> Moderate injuries with longer recovery (fractures, moderate soft tissue damage)</li>
+    <li><strong>3 to 4:</strong> Serious injuries with lasting effects (herniated discs, partial disability)</li>
+    <li><strong>4 to 5:</strong> Severe injuries with permanent disability or disfigurement (spinal cord injury, brain injury, amputation)</li>
+  </ul>
+
+  <h2>Factors That Affect Settlement Value</h2>
+  <ul>
+    <li><strong>Insurance policy limits:</strong> The at-fault party insurance policy cap is often the maximum you can recover</li>
+    <li><strong>Comparative negligence:</strong> If you share any fault for the accident, your settlement is reduced by your percentage of fault</li>
+    <li><strong>Strength of liability:</strong> Clear evidence of the other party fault strengthens your case</li>
+    <li><strong>Legal representation:</strong> Plaintiffs with attorneys typically receive higher settlements than those who negotiate alone</li>
+    <li><strong>Jurisdiction:</strong> Some states and counties are known for higher or lower settlement values</li>
+  </ul>
+
+  <h2>How to Use a Personal Injury Calculator</h2>
+  <p>Enter your medical expenses, lost wages, and injury type to get an estimated settlement range. The calculator uses the multiplier method and typical values for your type of injury. Use this estimate as a starting point for negotiations and always consult with a personal injury attorney for a professional evaluation.</p>
+
+  <p>Estimate your potential settlement with our <a href="/personal-injury-calculator/">Personal Injury Settlement Estimator</a> and understand what your case may be worth.</p>
+</GuideLayout>

@@ -1,0 +1,64 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Home Affordability Guide' },
+];
+---
+
+<GuideLayout
+  title="How Much House Can You Afford? A Complete Guide | FreeOnlineToolkit"
+  description="Understand the 28/36 rule, debt-to-income ratios, and how to determine your home buying budget before you start shopping for a home."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>How Much House Can You Afford? A Complete Guide</h1>
+  </fragment>
+
+  <h2>Understanding Home Affordability</h2>
+  <p>One of the most common questions prospective homebuyers ask is, "How much house can I afford?" The answer depends on your income, existing debts, down payment, and the current interest rate environment. Buying more house than you can comfortably afford leads to financial strain, while underestimating your budget may cause you to miss out on your dream home.</p>
+
+  <h2>The 28/36 Rule Explained</h2>
+  <p>Lenders use the 28/36 rule as a guideline to determine how much you can borrow:</p>
+  <ul>
+    <li><strong>Front-end ratio (28%):</strong> Your monthly housing costs — including mortgage principal and interest, property taxes, homeowners insurance, and HOA fees — should not exceed 28% of your gross monthly income.</li>
+    <li><strong>Back-end ratio (36%):</strong> Your total monthly debt payments — including housing costs plus car loans, student loans, credit card payments, and other debts — should not exceed 36% of your gross monthly income.</li>
+  </ul>
+
+  <h2>Key Factors That Affect Affordability</h2>
+  <h3>Down Payment</h3>
+  <p>A larger down payment reduces your loan amount and can eliminate the need for private mortgage insurance (PMI). While 20% is ideal, many conventional loans accept as little as 3-5% down. FHA loans allow down payments as low as 3.5%.</p>
+
+  <h3>Interest Rates</h3>
+  <p>Mortgage rates directly impact your monthly payment. A 1% difference in interest rate can change your monthly payment by hundreds of dollars. For example, on a $350,000 loan, a 6% rate costs roughly $2,098 per month, while a 7% rate costs about $2,328 — a difference of $2,760 per year.</p>
+
+  <h3>Debt-to-Income Ratio (DTI)</h3>
+  <p>Your DTI is the percentage of your gross monthly income that goes toward debt payments. Most lenders prefer a DTI below 36%, though some programs allow up to 43% or even 50% with strong compensating factors like a high credit score or large down payment.</p>
+
+  <h2>Hidden Costs of Homeownership</h2>
+  <p>Many first-time buyers focus only on the mortgage payment and forget to budget for:</p>
+  <ul>
+    <li><strong>Property taxes:</strong> Typically 0.5-2.5% of the home value annually depending on location</li>
+    <li><strong>Homeowners insurance:</strong> $500-$2,000 per year depending on coverage and location</li>
+    <li><strong>PMI:</strong> Required when putting down less than 20%, typically 0.5-1% of the loan annually</li>
+    <li><strong>Maintenance and repairs:</strong> Budget 1-2% of the home value per year</li>
+    <li><strong>HOA fees:</strong> $100-$500+ per month for condos and planned communities</li>
+    <li><strong>Closing costs:</strong> Typically 2-5% of the purchase price</li>
+  </ul>
+
+  <h2>How to Use a Home Affordability Calculator</h2>
+  <p>Enter your annual income, monthly debts, down payment amount, and estimated interest rate to see your maximum home price. The calculator uses the 28/36 rule to give you a realistic budget. Experiment with different down payments and interest rates to see how they affect your buying power.</p>
+
+  <h2>Tips for First-Time Homebuyers</h2>
+  <ul>
+    <li><strong>Get pre-approved:</strong> A pre-approval letter shows sellers you are serious and tells you exactly what you can borrow.</li>
+    <li><strong>Stay within your comfort zone:</strong> Just because a lender approves you for a certain amount does not mean you have to spend it all.</li>
+    <li><strong>Consider future expenses:</strong> Factor in potential rate increases if you choose an adjustable-rate mortgage (ARM).</li>
+    <li><strong>Save extra for closing:</strong> Closing costs often surprise first-time buyers. Aim for an additional 3% of the purchase price.</li>
+    <li><strong>Check your credit early:</strong> A higher credit score qualifies you for better rates. Give yourself 6-12 months to improve your score if needed.</li>
+  </ul>
+
+  <p>Ready to find your budget? Try our <a href="/home-affordability-calculator/">Home Affordability Calculator</a> to see how much house you can afford.</p>
+</GuideLayout>

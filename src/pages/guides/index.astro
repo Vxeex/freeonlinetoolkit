@@ -6,8 +6,9 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import { guides } from '../../data/guides';
 
 const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: 'Guides' }];
-const pageTitle = 'Guides & Resources | FreeOnlineToolkit';
-const pageDesc = 'Learn how to use our calculators effectively with detailed guides on mortgage, BMI, compound interest, password security, and more.';
+
+const pageTitle = `Guides & Resources (${guides.length} Articles) | FreeOnlineToolkit`;
+const pageDesc = `Browse our collection of ${guides.length} in-depth guides covering mortgage calculators, BMI and health, compound interest, car loans, savings goals, and more.`;
 ---
 
 <BaseLayout title={pageTitle} description={pageDesc}>
@@ -18,15 +19,13 @@ const pageDesc = 'Learn how to use our calculators effectively with detailed gui
     <p class="tool-intro">Learn how to use our calculators effectively and understand the concepts behind them. Our guides break down complex topics into simple, actionable advice.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
       {guides.map(g => (
-        <a href={`/guides/${g.slug}/`} style="display:flex;align-items:flex-start;gap:16px;padding:24px;background:var(--color-surface);border:1px solid var(--color-border-light);border-radius:var(--radius-lg);text-decoration:none;color:inherit;transition:all var(--duration-normal) var(--ease-out);"
-          onMouseOver="this.style.boxShadow='var(--shadow-md)';this.style.transform='translateY(-2px)';this.style.borderColor='var(--color-primary)';"
-          onMouseOut="this.style.boxShadow='';this.style.transform='';this.style.borderColor='';">
-          <span style={`width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;background:${g.color}14;color:${g.color};`}>
+        <a href={`/guides/${g.slug}/`} class="guide-card">
+          <span class="guide-card-icon" style={`background:${g.color}18;color:${g.color};`}>
             <i class={`fa-solid ${g.icon}`}></i>
           </span>
           <div>
-            <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--color-text);margin-bottom:6px;">{g.title}</h3>
-            <p style="font-size:0.85rem;color:var(--color-text-secondary);line-height:1.6;">{g.description}</p>
+            <h3>{g.title}</h3>
+            <p>{g.description}</p>
           </div>
         </a>
       ))}

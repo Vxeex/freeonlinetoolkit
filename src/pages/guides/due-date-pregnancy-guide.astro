@@ -1,0 +1,64 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Pregnancy Due Date Guide' },
+];
+---
+
+<GuideLayout
+  title="Your Guide to Pregnancy Due Dates and Fetal Development | FreeOnlineToolkit"
+  description="Understand how due dates are calculated, what to expect each trimester, and key pregnancy milestones from conception to birth."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Your Guide to Pregnancy Due Dates and Fetal Development</h1>
+  </fragment>
+
+  <h2>How Due Dates Are Calculated</h2>
+  <p>The most common method for calculating a due date is Naegele Rule, which estimates the due date by adding 280 days (40 weeks) to the first day of your last menstrual period (LMP). This method assumes a regular 28-day menstrual cycle with ovulation on day 14.</p>
+
+  <div class="formula-box">
+    Due Date = LMP + 280 days (40 weeks)<br>
+    Or: LMP + 7 days - 3 months + 1 year
+  </div>
+
+  <p>It is important to note that only about 4% of babies are born exactly on their due date. A full-term pregnancy is considered anywhere from 37 to 42 weeks. The due date is an estimate of when you are likely to go into labor, not a precise prediction.</p>
+
+  <h2>Pregnancy Timeline: Three Trimesters</h2>
+  <h3>First Trimester (Week 1-12)</h3>
+  <p>This is a period of rapid development. The baby organs, nervous system, and limbs form during these early weeks. Common symptoms include morning sickness, fatigue, and breast tenderness. Your baby grows from a tiny cluster of cells to about 2-3 inches long by week 12.</p>
+
+  <h3>Second Trimester (Week 13-26)</h3>
+  <p>Many women find this the most comfortable trimester. Morning sickness typically subsides, and energy levels increase. The baby begins moving, and you may feel the first fluttering movements (quickening) around weeks 16-20. By week 26, your baby is about 14 inches long and weighs around 2 pounds.</p>
+
+  <h3>Third Trimester (Week 27-40)</h3>
+  <p>The baby continues growing and maturing. Organs finish developing, and the baby settles into a head-down position for birth. Common symptoms include back pain, swelling, and frequent urination. Braxton Hicks contractions (practice contractions) may begin in the later weeks.</p>
+
+  <h2>Key Milestones Throughout Pregnancy</h2>
+  <ul>
+    <li><strong>Week 6-8:</strong> First prenatal visit; heartbeat detectable via ultrasound</li>
+    <li><strong>Week 10-12:</strong> Nuchal translucency screening for chromosomal abnormalities</li>
+    <li><strong>Week 16-20:</strong> Anatomy scan ultrasound; gender can often be determined</li>
+    <li><strong>Week 24-28:</strong> Glucose screening test for gestational diabetes</li>
+    <li><strong>Week 28-32:</strong> Rhogam shot if Rh-negative; Tdap vaccine</li>
+    <li><strong>Week 36-37:</strong> Group B strep test; baby typically moves into position</li>
+    <li><strong>Week 38-40:</strong> Full term; labor could begin any day</li>
+  </ul>
+
+  <h2>Factors That Can Affect Your Due Date</h2>
+  <p>Several factors may cause your due date to be adjusted:</p>
+  <ul>
+    <li><strong>Irregular cycles:</strong> Women with longer or irregular cycles may ovulate later than day 14.</li>
+    <li><strong>Multiple pregnancy:</strong> Twins or triplets often arrive earlier, typically around 36-37 weeks.</li>
+    <li><strong>First pregnancy:</strong> First babies are more likely to arrive after the due date.</li>
+    <li><strong>Early ultrasound:</strong> A first-trimester ultrasound provides the most accurate dating and may adjust your due date.</li>
+  </ul>
+
+  <h2>How to Use a Due Date Calculator</h2>
+  <p>Enter the first day of your last menstrual period and your average cycle length. The calculator will estimate your due date, current week of pregnancy, and which trimester you are in. You can also use it to see key milestones for any given week.</p>
+
+  <p>Calculate your due date with our <a href="/pregnancy-due-date-calculator/">Pregnancy Due Date Calculator</a> and track your pregnancy milestones.</p>
+</GuideLayout>

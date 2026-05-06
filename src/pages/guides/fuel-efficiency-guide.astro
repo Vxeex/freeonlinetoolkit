@@ -1,0 +1,65 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Fuel Efficiency Guide' },
+];
+---
+
+<GuideLayout
+  title="Fuel Costs and Efficiency: Save Money on Every Trip | FreeOnlineToolkit"
+  description="Learn how to calculate fuel costs, improve your vehicle fuel economy, and plan cost-efficient road trips with our complete guide."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Fuel Costs and Efficiency: Save Money on Every Trip</h1>
+  </fragment>
+
+  <h2>Understanding Fuel Costs</h2>
+  <p>Fuel is one of the largest variable expenses for vehicle owners. The average driver spends thousands of dollars on fuel each year. Understanding how fuel costs are calculated and what factors affect them can help you make smarter decisions about when and how you drive.</p>
+
+  <h2>How Fuel Economy Works</h2>
+  <p>Fuel economy is measured in miles per gallon (MPG) or liters per 100 kilometers (L/100km). The higher the MPG, the less fuel you use for the same distance. Factors that affect your fuel economy include:</p>
+  <ul>
+    <li><strong>Driving habits:</strong> Rapid acceleration, hard braking, and speeding reduce fuel efficiency significantly.</li>
+    <li><strong>Vehicle maintenance:</strong> Underinflated tires, dirty air filters, and old spark plugs lower MPG.</li>
+    <li><strong>Load and cargo:</strong> Extra weight and roof racks increase drag and reduce fuel economy.</li>
+    <li><strong>Weather conditions:</strong> Cold weather, rain, and strong headwinds all reduce efficiency.</li>
+    <li><strong>Traffic:</strong> Stop-and-go city driving uses more fuel than steady highway cruising.</li>
+  </ul>
+
+  <h2>How to Calculate Fuel Costs</h2>
+  <p>The basic formula for fuel cost is simple: divide your trip distance by your vehicle MPG, then multiply by the fuel price per gallon or liter.</p>
+
+  <div class="formula-box">
+    Fuel Cost = (Distance / MPG) × Price per Gallon<br>
+    Example: (300 miles / 25 MPG) × $3.50 = $42.00
+  </div>
+
+  <p>A fuel cost calculator does this instantly and lets you compare different vehicles, fuel prices, and trip distances.</p>
+
+  <h2>Tips to Improve Fuel Economy</h2>
+  <ul>
+    <li><strong>Drive smoothly:</strong> Accelerate gently, maintain a steady speed, and anticipate stops to avoid hard braking.</li>
+    <li><strong>Observe speed limits:</strong> Fuel efficiency drops sharply above 50 mph. Driving 65 mph instead of 75 mph can improve MPG by 10-15%.</li>
+    <li><strong>Keep tires properly inflated:</strong> Underinflated tires can lower MPG by 0.2% for every 1 PSI drop.</li>
+    <li><strong>Remove excess weight:</strong> Every 100 pounds of extra weight reduces MPG by about 1%.</li>
+    <li><strong>Use cruise control:</strong> Maintaining a constant speed on highways saves fuel.</li>
+    <li><strong>Avoid excessive idling:</strong> Idling gets 0 MPG. Turn off the engine if you expect to wait more than a minute.</li>
+    <li><strong>Combine trips:</strong> A warm engine runs more efficiently than a cold one, so combining errands reduces total fuel use.</li>
+  </ul>
+
+  <h2>Planning a Road Trip on a Budget</h2>
+  <p>Before a long trip, calculate your estimated fuel cost using current prices. Consider these strategies to save:</p>
+  <ul>
+    <li>Use apps to find the cheapest gas stations along your route</li>
+    <li>Plan your route to minimize distance and avoid traffic congestion</li>
+    <li>Consider a fuel-efficient rental car if your vehicle has poor MPG</li>
+    <li>Pack light — bring only what you need to reduce vehicle weight</li>
+    <li>Check your vehicle maintenance before departure (tire pressure, oil change, air filter)</li>
+  </ul>
+
+  <p>Plan your next trip with our <a href="/fuel-cost-calculator/">Fuel Cost Calculator</a> and see exactly how much you will spend on gas.</p>
+</GuideLayout>

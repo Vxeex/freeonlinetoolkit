@@ -1,0 +1,67 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Ideal Weight Guide' },
+];
+---
+
+<GuideLayout
+  title="Understanding Your Ideal Weight and Healthy Body Ranges | FreeOnlineToolkit"
+  description="Explore different methods for determining healthy weight ranges, including BMI, body fat percentage, and waist-to-height ratio in this comprehensive guide."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Understanding Your Ideal Weight and Healthy Body Ranges</h1>
+  </fragment>
+
+  <h2>What Does "Ideal Weight" Really Mean?</h2>
+  <p>Ideal weight is not a single number but a range based on your height, gender, age, and body composition. Different formulas exist because every body is different. The goal is not to achieve an arbitrary number on the scale, but to find a weight range that supports your overall health and well-being.</p>
+
+  <h2>Common Ideal Weight Formulas</h2>
+  <h3>Devine Formula (1974)</h3>
+  <p>Originally developed to calculate medication dosages, this formula gives: Men: 50 kg + 2.3 kg per inch over 5 feet. Women: 45.5 kg + 2.3 kg per inch over 5 feet.</p>
+
+  <h3>Robinson Formula (1983)</h3>
+  <p>A more conservative formula that tends to give slightly lower ideal weights: Men: 52 kg + 1.9 kg per inch over 5 feet. Women: 49 kg + 1.7 kg per inch over 5 feet.</p>
+
+  <h3>Miller Formula (1983)</h3>
+  <p>Developed to reflect the growing trend toward leaner body types: Men: 56.2 kg + 1.41 kg per inch over 5 feet. Women: 53.1 kg + 1.36 kg per inch over 5 feet.</p>
+
+  <h3>Hamwi Formula (1964)</h3>
+  <p>The oldest and simplest formula: Men: 48 kg + 2.7 kg per inch over 5 feet. Women: 45.5 kg + 2.2 kg per inch over 5 feet.</p>
+
+  <h2>Beyond the Scale: Body Composition Matters</h2>
+  <p>Your weight alone does not tell the full story. Two people at the same height and weight can have very different health profiles based on their body composition. Key metrics to consider:</p>
+  <ul>
+    <li><strong>Body fat percentage:</strong> A healthier indicator than weight alone. Athletes may be heavier due to muscle mass but have low body fat.</li>
+    <li><strong>Waist circumference:</strong> Excess abdominal fat is linked to higher risks of heart disease and diabetes regardless of overall weight.</li>
+    <li><strong>Waist-to-height ratio:</strong> Keeping your waist circumference below half your height is a simple and effective health benchmark.</li>
+    <li><strong>Muscle mass:</strong> Muscle weighs more than fat, so very muscular individuals may fall outside ideal weight ranges while being perfectly healthy.</li>
+  </ul>
+
+  <h2>Limitations of Ideal Weight Calculations</h2>
+  <p>While ideal weight formulas provide useful reference points, they have important limitations:</p>
+  <ul>
+    <li>They do not account for muscle mass versus fat mass</li>
+    <li>They do not consider bone density or frame size</li>
+    <li>They may not be accurate for elderly individuals who have lost muscle mass</li>
+    <li>They do not account for ethnic differences in body composition</li>
+    <li>Athletes and very active individuals may be healthier at weights above the formula range</li>
+  </ul>
+
+  <h2>How to Use the Ideal Weight Calculator</h2>
+  <p>Enter your height, gender, and age to see your ideal weight range across all four formulas. The consensus range shows where most formulas agree, giving you a realistic target. Use this as a starting point for discussions with your healthcare provider, not as a strict prescription.</p>
+
+  <h2>Tips for Healthy Weight Management</h2>
+  <ul>
+    <li><strong>Focus on habits, not numbers:</strong> Eat a balanced diet, exercise regularly, and prioritize sleep. The weight will follow.</li>
+    <li><strong>Use multiple metrics:</strong> Track your weight, waist circumference, and how your clothes fit for a complete picture.</li>
+    <li><strong>Set realistic goals:</strong> Aim to lose or gain 0.5-1 kg per week for sustainable progress.</li>
+    <li><strong>Consult a professional:</strong> Work with a doctor or registered dietitian to set personalized health goals.</li>
+  </ul>
+
+  <p>Find your healthy range with our <a href="/ideal-weight-calculator/">Ideal Weight Calculator</a> and get a personalized consensus from the four major formulas.</p>
+</GuideLayout>
