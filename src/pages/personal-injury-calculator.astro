@@ -152,7 +152,7 @@ function calcInjury(): void {
   document.getElementById('injuryTotal')!.textContent = '$' + total.toFixed(2);
   document.getElementById('injuryEconomic')!.textContent = '$' + economic.toFixed(2);
   document.getElementById('injuryNonEconomic')!.textContent = '$' + nonEconomic.toFixed(2);
-  document.getElementById('injuryRange')!.textContent = '$' + lowEstimate.toFixed(2) + ' &mdash;$' + highEstimate.toFixed(2);
+  document.getElementById('injuryRange')!.textContent = '$' + lowEstimate.toFixed(2) + ' —$' + highEstimate.toFixed(2);
   document.getElementById('injuryAfterFee')!.textContent = '$' + afterFee.toFixed(2);
   showResult('injuryResult');
 }

@@ -191,7 +191,7 @@ function calcDivorce(): void {
   document.getElementById('divorceFilingFee')!.textContent = '$' + filingFee.toFixed(2);
   document.getElementById('divorceAttorneyFee')!.textContent = '$' + attorneyFee.toFixed(2);
   document.getElementById('divorceMediation')!.textContent = '$' + mediationCost.toFixed(2);
-  document.getElementById('divorceRange')!.textContent = '$' + lowRange.toFixed(2) + ' &mdash;$' + highRange.toFixed(2);
+  document.getElementById('divorceRange')!.textContent = '$' + lowRange.toFixed(2) + ' —$' + highRange.toFixed(2);
   document.getElementById('divorceTimeline')!.textContent = timelineMonths + ' months';
 
   showResult('divorceResult');
