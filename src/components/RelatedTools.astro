@@ -1,6 +1,7 @@
 ---
 import { categories } from '../data/categories';
 import { toolBySlug, type Tool } from '../data/tools';
+import { totalToolsCount } from '../data/tools';
 
 interface Props {
   currentSlug: string;
@@ -8,7 +9,7 @@ interface Props {
   max?: number;
 }
 
-const { currentSlug, category, max = 8 } = Astro.props;
+const { currentSlug, category, max = 5 } = Astro.props;
 
 let related: Tool[] = [];
 
@@ -29,46 +30,36 @@ if (related.length === 0) {
 }
 
 related = related.slice(0, max);
+const catObj = categories.find(c => c.id === category);
+const catToolCount = catObj ? catObj.toolSlugs.length : 0;
 ---
 
-<div class="content-section">
-  <h2>Related Tools</h2>
-  <div class="related-tools-list">
+<div class="sidebar-section">
+  <h3>Related Tools</h3>
+  <div class="related-list">
     {related.map(t => (
-      <a href={`/${t.slug}/`} class="related-tool-item">
-        <span class="related-tool-icon" style={`background:${t.color}14;color:${t.color};`}>
-          <i class={`fa-solid ${t.icon}`}></i>
-        </span>
-        <span class="related-tool-name">{t.title}</span>
+      <a href={`/${t.slug}/`} class="related-item">
+        <i class={`fa-solid ${t.icon}`} style={`background:${t.color}14;color:${t.color};`}></i>
+        <span>{t.shortTitle || t.title}</span>
       </a>
     ))}
   </div>
 </div>
 
-<style>
-  .related-tools-list { display: flex; flex-direction: column; gap: 6px; }
-  .related-tool-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    border-radius: var(--radius-sm);
-    transition: background var(--duration-fast) var(--ease-out);
-    text-decoration: none;
-    color: var(--color-text-secondary);
-    font-size: 0.85rem;
-  }
-  .related-tool-item:hover {
-    background: var(--color-bg);
-    color: var(--color-primary);
-    text-decoration: none;
-  }
-  .related-tool-icon {
-    width: 28px; height: 28px;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem;
-    flex-shrink: 0;
-  }
-  .related-tool-name { font-weight: 500; }
-</style>
+<div class="sidebar-section">
+  <h3>Quick Stats</h3>
+  <div class="sidebar-stats-grid">
+    <div class="sidebar-stat">
+      <div class="sidebar-stat-value">{totalToolsCount}</div>
+      <div class="sidebar-stat-label">Free Tools</div>
+    </div>
+    {catToolCount > 0 && (
+      <div class="sidebar-stat">
+        <div class="sidebar-stat-value">{catToolCount}</div>
+        <div class="sidebar-stat-label">{catObj?.name?.split(' ')[0] || ''} Tools</div>
+      </div>
+    )}
+  </div>
+</div>
+
+<!-- Styles are in global.css -->

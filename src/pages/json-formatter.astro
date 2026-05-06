@@ -1,6 +1,7 @@
 ---
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['json-formatter'];
@@ -40,7 +41,7 @@ const jsonLd = [
           <textarea id="jsonOutput" style="width:100%;min-height:350px;padding:12px;border:1px solid var(--color-border);border-radius:8px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.5;resize:vertical;background:var(--color-bg);color:var(--color-text);" readonly placeholder="Formatted JSON will appear here..."></textarea>
         </div>
       </div>
-      <div id="jsonError" style="color:#dc2626;font-size:0.88rem;margin-top:8px;display:none;"></div>
+      <div id="jsonError" style="color:var(--color-danger);font-size:0.88rem;margin-top:8px;display:none;"></div>
       <div class="btn-group" style="margin-top:12px;">
         <button class="btn btn-primary" id="formatBtn">Format</button>
         <button class="btn btn-secondary" id="minifyBtn">Minify</button>
@@ -69,20 +70,7 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="sidebar">
-    <div style="display:flex;flex-direction:column;gap:12px;">
-      <a href="/password-generator/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
-        <div style="width:36px;height:36px;border-radius:8px;background:#f0fdfa;color:#0d9488;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-key" style="font-size:1rem;"></i></div>
-        <div><div style="font-weight:600;font-size:0.88rem;">Password Generator</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Secure passwords</div></div>
-      </a>
-      <a href="/word-counter/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
-        <div style="width:36px;height:36px;border-radius:8px;background:#fef9c3;color:#a16207;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-file-lines" style="font-size:1rem;"></i></div>
-        <div><div style="font-weight:600;font-size:0.88rem;">Word Counter</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Count words &amp; characters</div></div>
-      </a>
-      <a href="/qr-code-generator/" style="padding:14px 16px;border:1px solid var(--color-border-light);border-radius:var(--radius-md);display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
-        <div style="width:36px;height:36px;border-radius:8px;background:#faf5ff;color:#9333ea;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-qrcode" style="font-size:1rem;"></i></div>
-        <div><div style="font-weight:600;font-size:0.88rem;">QR Code Generator</div><div style="font-size:0.78rem;color:var(--color-text-muted);">Create QR codes</div></div>
-      </a>
-    </div>
+    <RelatedTools currentSlug="json-formatter" category="utility" />
   </fragment>
 </ToolLayout>
 

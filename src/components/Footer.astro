@@ -1,16 +1,30 @@
 ---
-import { tools } from '../data/tools';
-import { guides } from '../data/guides';
+import { tools, toolBySlug } from '../data/tools';
+import type { Tool } from '../data/tools';
 
 const footerTools = tools.slice(0, 5);
-const footerGuides = guides.slice(0, 4);
+
+// High-CPC calculators (legal, insurance, finance categories)
+const highCpcSlugs = [
+  'mortgage-calculator',
+  'life-insurance-calculator',
+  'personal-injury-calculator',
+  'home-affordability-calculator',
+  'student-loan-payoff-calculator',
+  'workers-comp-calculator',
+  'divorce-calculator',
+  'long-term-care-calculator',
+];
+const footerTop: Tool[] = highCpcSlugs.map(s => toolBySlug[s]).filter(Boolean) as Tool[];
 ---
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="/" class="logo"><span class="logo-icon">F</span>FreeOnlineToolkit</a>
-        <p>FreeOnlineToolkit — fast, accurate, and completely free online calculators and tools for everyday tasks. No signup required. Bookmark us!</p>
+        <a href="/" class="logo">
+          <span class="logo-icon">F</span>FreeOnlineToolkit
+        </a>
+        <p>Fast, accurate, and completely free online calculators and tools for everyday tasks. No signup required. Bookmark us!</p>
       </div>
       <div>
         <h3>Tools</h3>
@@ -19,9 +33,9 @@ const footerGuides = guides.slice(0, 4);
         </ul>
       </div>
       <div>
-        <h3>Guides</h3>
+        <h3>Top Calculators</h3>
         <ul>
-          {footerGuides.map(g => <li><a href={`/guides/${g.slug}/`}>{g.title.replace(/^(How to Use |Understanding Your |A Complete |Compound Interest Explained: |Password Security: |Currency Conversion: |Calorie Counting: )/, '').split(':')[0].split(' to')[0].trim().substring(0, 25)}</a></li>)}
+          {footerTop.map(t => <li><a href={`/${t.slug}/`}>{t.shortTitle || t.title}</a></li>)}
         </ul>
       </div>
       <div>
@@ -41,69 +55,4 @@ const footerGuides = guides.slice(0, 4);
   </div>
 </footer>
 
-<style>
-  .footer {
-    background: #292524;
-    color: #a8a29e;
-    padding: 60px 0 0;
-    margin-top: auto;
-  }
-  .footer-inner { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-  .footer .logo {
-    font-family: var(--font-display);
-    font-size: 1.1rem; font-weight: 700;
-    color: #f5f0eb;
-    display: flex; align-items: center; gap: 10px;
-    letter-spacing: -0.03em;
-    text-decoration: none;
-  }
-  .footer .logo:hover { color: var(--color-primary); text-decoration: none; }
-  .footer .logo .logo-icon {
-    width: 34px; height: 34px;
-    background: var(--color-primary);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: #fff; font-family: var(--font-body);
-    font-size: 0.95rem; font-weight: 600;
-    flex-shrink: 0;
-  }
-  .footer-brand p {
-    font-size: 0.85rem;
-    line-height: 1.7;
-    margin-top: 14px;
-    max-width: 320px;
-  }
-  .footer h3 {
-    font-family: var(--font-display);
-    color: #f5f0eb;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 18px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .footer ul { list-style: none; }
-  .footer ul li { margin-bottom: 10px; }
-  .footer ul li a { color: #a8a29e; font-size: 0.85rem; transition: color var(--duration-fast) var(--ease-out); }
-  .footer ul li a:hover { color: #f5f0eb; text-decoration: none; }
-  .footer-bottom {
-    border-top: 1px solid #44403c;
-    padding: 20px 0;
-    font-size: 0.8rem;
-    color: #a8a29e;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  @media (max-width: 768px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
-    .footer-grid > :first-child { grid-column: 1 / -1; }
-  }
-  @media (max-width: 480px) {
-    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
-    .footer-bottom { flex-direction: column; text-align: center; }
-  }
-</style>
+<!-- Styles are in global.css -->
