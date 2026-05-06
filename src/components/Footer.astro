@@ -1,21 +1,9 @@
 ---
-import { tools, toolBySlug } from '../data/tools';
-import type { Tool } from '../data/tools';
+import { tools } from '../data/tools';
+import { guides } from '../data/guides';
 
 const footerTools = tools.slice(0, 5);
-
-// High-CPC calculators (legal, insurance, finance categories)
-const highCpcSlugs = [
-  'mortgage-calculator',
-  'life-insurance-calculator',
-  'personal-injury-calculator',
-  'home-affordability-calculator',
-  'student-loan-payoff-calculator',
-  'workers-comp-calculator',
-  'divorce-calculator',
-  'long-term-care-calculator',
-];
-const footerTop: Tool[] = highCpcSlugs.map(s => toolBySlug[s]).filter(Boolean) as Tool[];
+const footerGuides = guides.slice(0, 4);
 ---
 <footer class="footer">
   <div class="footer-inner">
@@ -33,9 +21,9 @@ const footerTop: Tool[] = highCpcSlugs.map(s => toolBySlug[s]).filter(Boolean) a
         </ul>
       </div>
       <div>
-        <h3>Top Calculators</h3>
+        <h3>Guides</h3>
         <ul>
-          {footerTop.map(t => <li><a href={`/${t.slug}/`}>{t.shortTitle || t.title}</a></li>)}
+          {footerGuides.map(g => <li><a href={`/guides/${g.slug}/`}>{g.title.replace(/^(How to Use |Understanding Your |A Complete |Compound Interest Explained: |Password Security: |Currency Conversion: |Calorie Counting: |Your Guide to )/, '').split(':')[0].split(' to')[0].trim().substring(0, 25)}</a></li>)}
         </ul>
       </div>
       <div>
