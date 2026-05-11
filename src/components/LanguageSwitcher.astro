@@ -1,0 +1,238 @@
+---
+import { translations, languages, defaultLang } from '../data/translations';
+
+const translationsJson = JSON.stringify(translations);
+---
+
+<div class="lang-switcher" data-lang-switcher>
+  <button class="lang-toggle" data-lang-toggle aria-label="Select language" aria-haspopup="true" aria-expanded="false">
+    <span class="lang-code" data-lang-label>EN</span>
+    <span class="lang-spinner" data-lang-spinner aria-hidden="true"></span>
+    <svg class="lang-chev" width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+      <path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <div class="lang-dropdown" data-lang-dropdown role="listbox" aria-label="Available languages">
+    {languages.map((lang) => (
+      <button
+        class="lang-option"
+        data-lang-item={lang.code}
+        role="option"
+        aria-selected={lang.code === defaultLang}
+      >
+        <span class="lang-native">{lang.native}</span>
+        <span class="lang-english">{lang.english}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
+<script is:inline set:html={`
+(function () {
+  var STORAGE_KEY = 'fot-lang';
+  var DEFAULT_LANG = '${defaultLang}';
+  var TRANSLATIONS = ${translationsJson};
+  var currentLang = DEFAULT_LANG;
+
+  function getSavedLang() {
+    try { return localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG; }
+    catch (e) { return DEFAULT_LANG; }
+  }
+
+  // ---- Apply overrides for nav/footer/buttons ----
+  function applyOverrides(lang) {
+    var strings = TRANSLATIONS[lang];
+    if (!strings) return;
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var key = els[i].getAttribute('data-i18n');
+      if (strings[key] !== undefined) els[i].textContent = strings[key];
+    }
+    var attrEls = document.querySelectorAll('[data-i18n-attr]');
+    for (var j = 0; j < attrEls.length; j++) {
+      var attrKey = attrEls[j].getAttribute('data-i18n-attr');
+      var attrName = attrEls[j].getAttribute('data-i18n-attr-type') || 'placeholder';
+      if (strings[attrKey] !== undefined) attrEls[j].setAttribute(attrName, strings[attrKey]);
+    }
+    var label = document.querySelector('[data-lang-label]');
+    if (label) label.textContent = lang.toUpperCase();
+    var opts = document.querySelectorAll('[data-lang-item]');
+    for (var k = 0; k < opts.length; k++) {
+      opts[k].setAttribute('aria-selected', opts[k].getAttribute('data-lang-item') === lang);
+    }
+  }
+
+  // ---- Collect all translatable text nodes in the document ----
+  function getTextNodes() {
+    var results = [];
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+    while (walker.nextNode()) {
+      var node = walker.currentNode;
+      var text = node.textContent.trim();
+      if (text.length < 2 || /^[\\d\\s\\W]+$/.test(text)) continue;
+      var parent = node.parentElement;
+      if (!parent ||
+          parent.closest('[data-i18n]') || parent.closest('[data-i18n-attr]') || parent.closest('[data-lang-switcher]') ||
+          parent.closest('script') || parent.closest('style') || parent.closest('noscript') ||
+          parent.closest('code') || parent.closest('pre') || parent.closest('svg') ||
+          parent.tagName === 'INPUT' || parent.tagName === 'TEXTAREA') continue;
+      results.push({ node: node, text: text });
+    }
+    return results;
+  }
+
+  // ---- Translate a single text node via Google Translate API, fallback to MyMemory ----
+  function translateOne(item, lang, onDone) {
+    var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=' + lang + '&dt=t&q=' + encodeURIComponent(item.text);
+    fetch(url)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        try { item.node.nodeValue = data[0][0][0]; } catch (e) {}
+        onDone();
+      })
+      .catch(function () {
+        var mmUrl = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(item.text) + '&langpair=en|' + lang;
+        fetch(mmUrl)
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (d.responseData && d.responseData.translatedText) {
+              item.node.nodeValue = d.responseData.translatedText;
+            }
+          })
+          .catch(function () {})
+          .then(function () { onDone(); });
+      });
+  }
+
+  // ---- Track whether translation has been applied (survives bfcache) ----
+  var translated = window.__fotTranslated;
+
+  // ---- Translate all text nodes with concurrency limit (5 at a time) ----
+  function translatePage(lang) {
+    var nodes = getTextNodes();
+    if (nodes.length === 0) {
+      window.__fotTranslated = lang;
+      return;
+    }
+
+    var sw = document.querySelector('[data-lang-switcher]');
+    if (sw) sw.classList.add('translating');
+
+    var total = nodes.length;
+    var done = 0;
+    var next = 0;
+    var maxActive = 5;
+
+    function startNext() {
+      while (next < total && (next - done) < maxActive) {
+        var idx = next++;
+        translateOne(nodes[idx], lang, function () {
+          done++;
+          if (done >= total) {
+            window.__fotTranslated = lang;
+            if (sw) sw.classList.remove('translating');
+          } else {
+            startNext();
+          }
+        });
+      }
+    }
+
+    startNext();
+    // Safety: remove spinner after 30s even if some requests hang
+    setTimeout(function () {
+      if (sw) sw.classList.remove('translating');
+    }, 30000);
+  }
+
+  // ---- Switch language ----
+  function switchLanguage(lang) {
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+    if (lang === DEFAULT_LANG) {
+      location.reload();
+      return;
+    }
+    applyOverrides(lang);
+    window.__fotTranslated = lang;
+    translatePage(lang);
+  }
+
+  // ---- Init on page load ----
+  function initPage() {
+    var saved = getSavedLang();
+    if (saved !== DEFAULT_LANG) {
+      if (window.__fotTranslated !== saved) {
+        applyOverrides(saved);
+        setTimeout(function () { translatePage(saved); }, 200);
+      } else {
+        // bfcache restore — translation was already applied, just sync UI
+        document.documentElement.lang = saved;
+        var label = document.querySelector('[data-lang-label]');
+        if (label) label.textContent = saved.toUpperCase();
+      }
+    }
+    initSwitcher();
+  }
+
+  // ---- Handle bfcache restores (back/forward navigation) ----
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      var saved = getSavedLang();
+      if (saved !== DEFAULT_LANG && window.__fotTranslated !== saved) {
+        applyOverrides(saved);
+        setTimeout(function () { translatePage(saved); }, 200);
+      }
+    }
+  });
+
+  // ---- Dropdown UI ----
+  function initSwitcher() {
+    var container = document.querySelector('[data-lang-switcher]');
+    var toggle = document.querySelector('[data-lang-toggle]');
+    var dropdown = document.querySelector('[data-lang-dropdown]');
+    if (!container || !toggle || !dropdown) return;
+
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = container.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    dropdown.addEventListener('click', function (e) {
+      var item = e.target.closest('[data-lang-item]');
+      if (!item) return;
+      var lang = item.getAttribute('data-lang-item');
+      if (lang) {
+        switchLanguage(lang);
+        container.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!container.contains(e.target)) {
+        container.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        container.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  // ---- Start ----
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPage);
+  } else {
+    initPage();
+  }
+
+  window.__applyLang = switchLanguage;
+  window.__currentLang = function () { return currentLang; };
+})();
+`} />

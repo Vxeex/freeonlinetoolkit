@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://freeonlinetoolkit.org/sitemap.xml
+Sitemap: https://freeonlinetoolkit.org/sitemap-index.xml

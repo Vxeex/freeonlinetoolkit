@@ -1,0 +1,99 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'Solar Investment Guide' }];
+---
+<GuideLayout title="Is Solar Worth It? Cost, Savings, and ROI Analysis | FreeOnlineToolkit" description="Evaluate whether solar panels make financial sense for your home. Learn about system costs, tax credits, payback periods, and long-term savings." breadcrumbItems={breadcrumbItems}>
+  <fragment slot="heading"><h1>Is Solar Worth It? Cost, Savings, and ROI Analysis</h1></fragment>
+  <p class="guide-date"><em>Last updated: February 2026</em></p>
+
+  <h2>Why Solar Is a Financial Decision</h2>
+  <p>Installing solar panels is one of the few home improvements that can pay for itself over time. But whether solar makes financial sense depends on several factors specific to your situation: your location, electricity rates, home orientation, available incentives, and how long you plan to stay in your home. This guide walks through everything you need to evaluate solar as an investment.</p>
+
+  <h2>How Much Does Solar Cost?</h2>
+  <p>As of 2025-2026, the average cost of residential solar panel installation ranges from <strong>$2.50 to $3.50 per watt</strong> before incentives. For a typical 7.2 kW system (18 panels at 400W each), that translates to:</p>
+  <ul>
+    <li><strong>System price before incentives:</strong> $18,000 - $25,200</li>
+    <li><strong>Federal ITC (30% tax credit):</strong> -$5,400 to -$7,560</li>
+    <li><strong>Net cost after federal credit:</strong> $12,600 - $17,640</li>
+    <li><strong>State/local incentives (varies):</strong> Additional $1,000 - $5,000</li>
+  </ul>
+  <p>Costs have declined dramatically over the past decade. Solar panel prices have fallen by more than 50% since 2014, while panel efficiency has continued to improve, with modern panels converting 20-23% of sunlight into electricity.</p>
+
+  <h2>The Federal Solar Tax Credit (ITC)</h2>
+  <p>The Investment Tax Credit (ITC) is the single most important solar incentive in the United States. It allows you to deduct <strong>30% of your total solar installation cost</strong> from your federal income taxes. There is no cap on the credit amount. Key details:</p>
+  <ul>
+    <li>The credit applies to the full system cost including panels, inverters, wiring, mounting equipment, and installation labor</li>
+    <li>Battery storage installed with solar also qualifies for the 30% credit</li>
+    <li>If your tax liability is less than the credit amount, the remainder rolls over to the next tax year</li>
+    <li>You must own the system (leases and PPAs do not qualify)</li>
+    <li>The 30% rate is locked in through 2032 under the Inflation Reduction Act</li>
+  </ul>
+
+  <h2>How Much Will You Save on Electricity?</h2>
+  <p>Solar savings depend primarily on three factors: your local electricity rates, your home's solar production potential, and your net metering policy.</p>
+
+  <h3>Electricity Rates Matter Most</h3>
+  <p>In states with high electricity rates (California at $0.30+/kWh, Hawaii at $0.40+/kWh, Massachusetts at $0.28+/kWh), solar saves more money faster. In states with low rates (Idaho at $0.10/kWh, Oklahoma at $0.12/kWh, Kentucky at $0.12/kWh), payback periods are longer. The average US residential electricity rate is approximately $0.16/kWh as of early 2026.</p>
+
+  <h3>Net Metering</h3>
+  <p>Net metering allows you to send excess solar power to the grid in exchange for credits on your electric bill. Policies vary dramatically by state:</p>
+  <ul>
+    <li><strong>Full retail net metering:</strong> You get the full retail rate for every kWh you send to the grid (best for solar owners)</li>
+    <li><strong>Net billing:</strong> Excess power is credited at a lower rate (typically wholesale)</li>
+    <li><strong>Time-of-use:</strong> Credit value depends on when power is exported (peak hours earn more)</li>
+  </ul>
+
+  <h2>Payback Period and ROI</h2>
+  <p>The solar payback period — how long it takes for electricity savings to equal your upfront investment — typically ranges from <strong>5 to 12 years</strong> depending on your circumstances.</p>
+  <p>Here is a representative example for a California home:</p>
+  <div class="formula-box">
+    <strong>Scenario:</strong> 7.2 kW system, net cost $15,120 after ITC, $185/month electricity savings<br>
+    <strong>Payback period:</strong> $15,120 / $2,220/year = 6.8 years<br>
+    <strong>25-year savings:</strong> ~$41,880 (assuming 3% annual utility rate increases)<br>
+    <strong>ROI:</strong> ~277% over 25 years (11% annualized)
+  </div>
+
+  <h2>Factors That Affect Solar Performance</h2>
+  <h3>Sunlight Hours</h3>
+  <p>Solar production varies by location. The Southwest (Arizona, New Mexico, Nevada) gets 5.5-6+ peak sun hours per day. The Pacific Northwest (Seattle, Portland) gets 3.5-4.5. Most of the US gets 4-5 peak sun hours. Your system should be sized for your specific location.</p>
+
+  <h3>Roof Orientation and Shading</h3>
+  <ul>
+    <li><strong>South-facing roofs</strong> produce the most energy in the Northern Hemisphere</li>
+    <li><strong>East- and West-facing roofs</strong> produce about 80-85% of south-facing output</li>
+    <li><strong>North-facing roofs</strong> produce about 60-70% of south-facing output</li>
+    <li>Partial shading from trees or nearby buildings can significantly reduce output — even 10% shading can reduce system production by 20-30%</li>
+  </ul>
+
+  <h2>Solar Battery Storage: Is It Worth It?</h2>
+  <p>Battery storage (like Tesla Powerwall, Enphase IQ, or LG Chem) adds $10,000-$15,000 to your system cost but provides backup power and enables greater energy independence. Batteries make the most financial sense when:</p>
+  <ul>
+    <li>Your utility has time-of-use rates (charge battery cheaply, use power during peak expensive hours)</li>
+    <li>Net metering policies are unfavorable (store excess power instead of selling it cheaply to the grid)</li>
+    <li>You experience frequent power outages and want backup power</li>
+  </ul>
+
+  <h2>Solar Lease vs. Purchase</h2>
+  <p>You generally have three options for going solar:</p>
+  <ul>
+    <li><strong>Purchase (cash or loan):</strong> You own the system, claim the tax credit, and keep all savings. Highest long-term return but requires upfront capital.</li>
+    <li><strong>Solar lease:</strong> No upfront cost, but a third party owns the system and you pay a fixed monthly lease payment. Lower savings but no maintenance responsibility.</li>
+    <li><strong>PPA (Power Purchase Agreement):</strong> You pay for the power the system produces at a rate lower than your utility. No ownership, but locked-in lower rates.</li>
+  </ul>
+  <p>For maximum financial return, purchasing (especially with a low-interest loan) is almost always the best option. Leases and PPAs simplify things but typically result in 30-50% less lifetime savings.</p>
+
+  <h2>Frequently Asked Questions</h2>
+  <h3>Do solar panels increase home value?</h3>
+  <p>Yes. Studies from Zillow and the Lawrence Berkeley National Laboratory have found that homes with solar panels sell for approximately 4-6% more than comparable homes without solar. For a $400,000 home, that is $16,000-$24,000 in added value.</p>
+
+  <h3>What happens to solar panels when you sell your home?</h3>
+  <p>If you own your panels, they convey with the home and increase its value. If you have a solar lease or PPA, the new owner must qualify to assume the lease agreement — this can complicate a sale for some buyers.</p>
+
+  <h3>How long do solar panels last?</h3>
+  <p>Most solar panels come with a 25-year performance warranty, guaranteeing at least 80-85% of original output at year 25. Panels often continue producing well beyond 25 years, albeit at reduced efficiency. Inverters typically need replacement after 10-15 years.</p>
+
+  <h2>Use the Solar Panel Calculator</h2>
+  <p>Ready to see the numbers for your specific situation? Our <a href="/solar-calculator/">Solar Panel Calculator</a> provides a personalized ROI analysis based on your system size, location, and electricity costs.</p>
+  <p><a href="/solar-calculator/" class="btn btn-primary">Try the Solar Panel Calculator</a></p>
+  <p><a href="/guides/">← Back to all guides</a></p>
+</GuideLayout>

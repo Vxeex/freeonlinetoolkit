@@ -69,6 +69,7 @@ export const categories: Category[] = [
       'password-generator', 'currency-converter', 'percentage-calculator',
       'qr-code-generator', 'word-counter', 'json-formatter', 'unit-converter',
       'time-zone-converter', 'color-converter', 'reading-time-calculator',
+      'flight-time-calculator', 'knitting-needle-size-converter', 'crochet-hook-size-converter',
     ],
   },
   {

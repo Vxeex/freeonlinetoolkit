@@ -1,0 +1,306 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['knitting-needle-size-converter'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+
+const SYSTEM_LABELS: Record<string, string> = {
+  us: 'US',
+  uk: 'UK (old)',
+  jp: 'Japanese',
+  mm: 'Metric (mm)',
+};
+
+const SYSTEMS = [
+  { id: 'us', label: 'US (United States)' },
+  { id: 'uk', label: 'UK (United Kingdom — old numbering)' },
+  { id: 'jp', label: 'Japanese' },
+  { id: 'mm', label: 'Metric (mm) — Europe, Russia, China, India, Australia/NZ' },
+];
+
+// Standard knitting needle sizes with equivalent in each system
+// mm is the base — all other values map to a specific mm diameter
+interface NeedleSize {
+  mm: number;
+  us: string | null;
+  uk: string | null;
+  jp: string | null;
+}
+
+const SIZES: NeedleSize[] = [
+  { mm: 2.0,  us: '0',   uk: '14', jp: '0' },
+  { mm: 2.25, us: '1',   uk: '13', jp: '1' },
+  { mm: 2.5,  us: null,  uk: null, jp: null },
+  { mm: 2.75, us: '2',   uk: '12', jp: '2' },
+  { mm: 3.0,  us: null,  uk: '11', jp: null },
+  { mm: 3.25, us: '3',   uk: '10', jp: '3' },
+  { mm: 3.5,  us: '4',   uk: null, jp: '4' },
+  { mm: 3.75, us: '5',   uk: '9',  jp: '5' },
+  { mm: 4.0,  us: '6',   uk: '8',  jp: '6' },
+  { mm: 4.5,  us: '7',   uk: '7',  jp: '7' },
+  { mm: 5.0,  us: '8',   uk: '6',  jp: '8' },
+  { mm: 5.5,  us: '9',   uk: '5',  jp: '9' },
+  { mm: 6.0,  us: '10',  uk: '4',  jp: '10' },
+  { mm: 6.5,  us: '10.5',uk: '3',  jp: null },
+  { mm: 7.0,  us: '11',  uk: '2',  jp: '11' },
+  { mm: 7.5,  us: null,  uk: '1',  jp: null },
+  { mm: 8.0,  us: '13',  uk: '0',  jp: '12' },
+  { mm: 8.5,  us: null,  uk: '00', jp: null },
+  { mm: 9.0,  us: '15',  uk: '000',jp: '13' },
+  { mm: 9.5,  us: null,  uk: null, jp: null },
+  { mm: 10.0, us: '17',  uk: null, jp: '14' },
+  { mm: 11.0, us: null,  uk: null, jp: null },
+  { mm: 12.0, us: null,  uk: null, jp: null },
+  { mm: 13.0, us: null,  uk: null, jp: null },
+  { mm: 14.0, us: null,  uk: null, jp: null },
+  { mm: 15.0, us: null,  uk: null, jp: null },
+  { mm: 20.0, us: '35',  uk: null, jp: null },
+  { mm: 25.0, us: '50',  uk: null, jp: null },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: 'Why are US and UK knitting needle sizes opposite?',
+    a: 'The US system assigns larger numbers to thicker needles (e.g., US 15 = 9.0 mm). The old UK system does the reverse — larger numbers mean thinner needles (e.g., UK 14 = 2.0 mm). This historical difference causes the confusion. Most countries now use metric (mm), which is the actual needle diameter.',
+  },
+  {
+    q: 'What size knitting needles do beginners need?',
+    a: 'A good starting size is US 8 (5.0 mm) or US 9 (5.5 mm) with worsted weight yarn. These are comfortable to hold and work with, and the stitches are easy to see.',
+  },
+  {
+    q: 'What systems do different countries use?',
+    a: 'The US uses its own numbering system. The UK has an old numbering system (now rarely used — modern UK uses metric). Japan has its own system close to US but not identical. Europe, Russia, China, India, and Australia/NZ all use metric (mm) directly.',
+  },
+  {
+    q: 'Does my pattern list needle size by gauge, not mm?',
+    a: 'Yes — always knit a gauge swatch first. The needle size on a pattern is a recommendation. Your tension may require going up or down a size to match the pattern gauge, regardless of what system the pattern uses.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to Convert Knitting Needle Sizes',
+    description: tool.description,
+    step: [
+      { '@type': 'HowToStep', text: 'Select your current sizing system (US, UK, Japanese, or metric)' },
+      { '@type': 'HowToStep', text: 'Enter the needle size you want to convert' },
+      { '@type': 'HowToStep', text: 'Instantly see the equivalent sizes across all systems' },
+      { '@type': 'HowToStep', text: 'Use the full reference chart for quick comparisons' },
+    ],
+  },
+];
+
+const relatedTools = [
+  toolBySlug['crochet-hook-size-converter'],
+  toolBySlug['unit-converter'],
+  toolBySlug['percentage-calculator'],
+].filter(Boolean);
+---
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">
+      Knitting needle sizes vary by country — US, UK, and Japanese systems all use different numbers for the same needle.
+      Use this converter to find the exact metric (mm) equivalent across all systems.
+    </p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Knitting Needle Size Converter</h2>
+
+      <div class="form-group">
+        <label for="knitSystem">Your System</label>
+        <select id="knitSystem">
+          {SYSTEMS.map(s => <option value={s.id}>{s.label}</option>)}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="knitSize">Your Needle Size</label>
+        <select id="knitSize"></select>
+      </div>
+
+      <div id="knitResult" class="converter-result">
+        <div class="result-placeholder">Select a size to see conversions</div>
+      </div>
+
+      <div class="chart-section">
+        <h3>Complete Size Reference Chart</h3>
+        <div class="table-wrap">
+          <table class="size-chart" id="knitChart">
+            <thead>
+              <tr>
+                <th>Metric (mm)</th>
+                <th>US</th>
+                <th>UK (old)</th>
+                <th>Japanese</th>
+                <th>Used In</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SIZES.filter(s => s.us || s.uk || s.jp).map(s => (
+                <tr data-mm={s.mm}>
+                  <td><strong>{s.mm.toFixed(2).replace('.00', '')} mm</strong></td>
+                  <td>{s.us ?? '—'}</td>
+                  <td>{s.uk ?? '—'}</td>
+                  <td>{s.jp ?? '—'}</td>
+                  <td class="region-cell">
+                    {s.us ? 'US · ' : ''}
+                    {s.uk ? 'UK · ' : ''}
+                    {s.jp ? 'JP · ' : ''}
+                    Europe<br />Russia · China · India · AU/NZ
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="faq">
+    <FAQ items={FAQ_ITEMS} />
+  </fragment>
+
+  <fragment slot="related">
+    <RelatedTools tools={relatedTools} />
+  </fragment>
+</ToolLayout>
+
+<script>
+  interface SizeRow { mm: number; us: string | null; uk: string | null; jp: string | null; }
+
+  const rows = document.querySelectorAll('#knitChart tbody tr');
+  const allSizes: SizeRow[] = [];
+  rows.forEach(tr => {
+    const tds = tr.querySelectorAll('td');
+    allSizes.push({
+      mm: parseFloat(tr.getAttribute('data-mm')!),
+      us: tds[1].textContent!.trim() === '—' ? null : tds[1].textContent!.trim(),
+      uk: tds[2].textContent!.trim() === '—' ? null : tds[2].textContent!.trim(),
+      jp: tds[3].textContent!.trim() === '—' ? null : tds[3].textContent!.trim(),
+    });
+  });
+  const sysSelect = document.getElementById('knitSystem') as HTMLSelectElement;
+  const sizeSelect = document.getElementById('knitSize') as HTMLSelectElement;
+  const resultDiv = document.getElementById('knitResult')!;
+
+  function getVal(row: SizeRow, sys: string): string | null {
+    if (sys === 'mm') return row.mm.toFixed(2).replace(/\.?0+$/, '');
+    return row[sys as keyof SizeRow] as string | null;
+  }
+
+  function populateSizes() {
+    const sys = sysSelect.value;
+    sizeSelect.innerHTML = '';
+    allSizes.forEach((row, idx) => {
+      const val = getVal(row, sys);
+      if (val !== null && val !== '—') {
+        const opt = document.createElement('option');
+        opt.value = String(idx);
+        opt.textContent = val + (sys === 'mm' ? ' mm' : '');
+        sizeSelect.appendChild(opt);
+      }
+    });
+  }
+
+  function convert() {
+    const idx = parseInt(sizeSelect.value, 10);
+    if (isNaN(idx)) { resultDiv.innerHTML = '<div class="result-placeholder">Select a size to see conversions</div>'; return; }
+    const row = allSizes[idx];
+    const srcSys = sysSelect.value;
+    const srcVal = getVal(row, srcSys);
+
+    // Highlight the matching row in the chart
+    document.querySelectorAll('#knitChart tbody tr').forEach(tr => tr.classList.remove('highlight'));
+    const chartRow = document.querySelector(`#knitChart tbody tr[data-mm="${row.mm}"]`);
+    if (chartRow) chartRow.classList.add('highlight');
+
+    resultDiv.innerHTML = `
+      <div class="result-banner">${srcVal}${srcSys === 'mm' ? ' mm' : ''} = <strong>${row.mm.toFixed(2).replace(/\.?0+$/, '')} mm</strong></div>
+      <div class="result-cards">
+        <div class="result-card ${row.us ? '' : 'na'}">
+          <span class="rc-badge us">US</span>
+          <span class="rc-value">${row.us ?? '—'}</span>
+        </div>
+        <div class="result-card ${row.uk ? '' : 'na'}">
+          <span class="rc-badge uk">UK</span>
+          <span class="rc-value">${row.uk ?? '—'}</span>
+        </div>
+        <div class="result-card ${row.jp ? '' : 'na'}">
+          <span class="rc-badge jp">JP</span>
+          <span class="rc-value">${row.jp ?? '—'}</span>
+        </div>
+        <div class="result-card">
+          <span class="rc-badge">mm</span>
+          <span class="rc-value">${row.mm.toFixed(2).replace(/\.?0+$/, '')}</span>
+          <span class="rc-sub">EU/RU/CN/IN/AU/NZ</span>
+        </div>
+      </div>`;
+  }
+
+  sysSelect.addEventListener('change', () => { populateSizes(); convert(); });
+  sizeSelect.addEventListener('change', convert);
+
+  // Init
+  populateSizes();
+  if (sizeSelect.options.length > 0) convert();
+</script>
+
+<style>
+  .converter-result { margin-top: 1rem; }
+  .result-placeholder { color: var(--color-text-muted); font-style: italic; padding: 1rem 0; text-align: center; }
+
+  .result-banner {
+    background: var(--color-primary);
+    color: var(--color-inverse-fg);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 1.15rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .result-banner strong { font-size: 1.3rem; }
+
+  .result-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.6rem; }
+  .result-card {
+    display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    padding: 0.7rem 0.5rem; border-radius: var(--radius-sm);
+    background: var(--color-surface); border: 1px solid var(--color-border);
+  }
+  .result-card.na { opacity: 0.3; }
+  .rc-badge {
+    font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px;
+    background: var(--color-primary-bg); color: var(--color-primary); letter-spacing: 0.5px;
+  }
+  .rc-badge.us { background: #dbeafe; color: #1d4ed8; }
+  .rc-badge.uk { background: #fef3c7; color: #b45309; }
+  .rc-badge.jp { background: #fce7f3; color: #be185d; }
+  .rc-value { font-size: 1.15rem; font-weight: 700; }
+  .rc-sub { font-size: 0.6rem; color: var(--color-text-muted); margin-top: 0.1rem; }
+
+  .chart-section { margin-top: 2rem; }
+  .chart-section h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+  .size-chart { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .size-chart th { background: var(--color-surface); padding: 0.6rem 0.75rem; text-align: left; font-weight: 600; border-bottom: 2px solid var(--color-border); position: sticky; top: 0; }
+  .size-chart td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--color-border); }
+  .size-chart tbody tr:hover { background: var(--color-surface-hover); }
+  .size-chart tbody tr.highlight { background: var(--color-primary-bg); border-left: 4px solid var(--color-primary); }
+  .size-chart .region-cell { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.4; }
+
+  .table-wrap { overflow-x: auto; max-height: 480px; overflow-y: auto; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+
+  @media (max-width: 640px) {
+    .size-chart { font-size: 0.8rem; }
+    .size-chart th, .size-chart td { padding: 0.4rem 0.5rem; }
+    .result-cards { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

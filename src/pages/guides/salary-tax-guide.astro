@@ -1,0 +1,257 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'Salary & Tax Guide' },
+];
+---
+
+<GuideLayout
+  title="Salary vs Take-Home Pay: Understanding Taxes and Deductions | FreeOnlineToolkit"
+  description="Learn how federal taxes, FICA, and pre-tax deductions affect your paycheck. Understand tax brackets, marginal rates, and how to optimize your take-home pay."
+  breadcrumbItems={breadcrumbItems}
+>
+  <fragment slot="heading">
+    <h1>Salary vs Take-Home Pay: Understanding Taxes and Deductions</h1>
+  </fragment>
+
+  <p class="guide-date"><em>Last updated: February 2026</em></p>
+
+  <h2>Your Salary Is Not Your Take-Home Pay</h2>
+  <p>When you receive a job offer with a salary of $75,000, it is natural to assume you will have $75,000 deposited into your bank account over the course of the year. In reality, the amount you take home — your <strong>net pay</strong> — will be significantly lower than your <strong>gross salary</strong>. Understanding this gap is essential for budgeting, negotiating job offers, and planning your financial future.</p>
+  <p>The difference between gross and net pay comes down to three main categories: <strong>federal income taxes</strong>, <strong>FICA taxes</strong> (Social Security and Medicare), and <strong>pre-tax deductions</strong> such as health insurance premiums and retirement contributions. State income taxes add another layer of complexity depending on where you live. Each of these elements chips away at your gross salary, and knowing how they work empowers you to make informed decisions.</p>
+  <p>For a typical single filer earning $75,000 in 2026, the gap between gross and net pay can range from roughly 22% to over 35% depending on state taxes, benefits elections, and retirement contributions. Your actual take-home could be anywhere from $48,000 to $58,500 per year. The sections below break down each component so you can see exactly where your money goes.</p>
+
+  <h2>Federal Income Tax Brackets</h2>
+  <p>The United States uses a <strong>progressive income tax system</strong>, which means you pay higher rates on higher portions of your income. This is one of the most commonly misunderstood aspects of personal finance, yet it is critical for understanding your paycheck.</p>
+
+  <h3>How Progressive Tax Brackets Work</h3>
+  <p>Under a progressive system, your income is divided into chunks, and each chunk is taxed at a different rate. Earning more money never means you lose money to taxes overall — only the additional dollars above each threshold are taxed at the higher rate. This concept is called a <strong>marginal tax rate</strong>.</p>
+  <p>For example, if you are a single filer in 2026 and your taxable income is $75,000, your income falls across multiple brackets. The first $11,925 is taxed at 10%. The portion from $11,926 to $48,475 is taxed at 12%. The portion from $48,476 to $75,000 is taxed at 22%. You do not pay 22% on your entire salary — only on the portion above $48,475.</p>
+
+  <h3>2026 Federal Income Tax Brackets (Single Filer)</h3>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Tax Rate</th>
+        <th>Income Range</th>
+        <th>Tax on This Bracket</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>10%</td>
+        <td>$0 to $11,925</td>
+        <td>$1,192.50</td>
+      </tr>
+      <tr>
+        <td>12%</td>
+        <td>$11,926 to $48,475</td>
+        <td>$4,386.00</td>
+      </tr>
+      <tr>
+        <td>22%</td>
+        <td>$48,476 to $103,350</td>
+        <td>$5,835.50 (on income up to $75,000)</td>
+      </tr>
+      <tr>
+        <td>24%</td>
+        <td>$103,351 to $197,300</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>32%</td>
+        <td>$197,301 to $250,525</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>35%</td>
+        <td>$250,526 to $626,350</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>37%</td>
+        <td>$626,351 and above</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Marginal Rate vs. Effective Rate</h3>
+  <p>Your <strong>marginal tax rate</strong> is the rate you pay on your last dollar earned — in this example, 22%. Your <strong>effective tax rate</strong> is your total tax divided by your total income. For the $75,000 earner, the total federal income tax would be approximately $11,414 (before credits and deductions), giving an effective tax rate of about 15.2%. This is a much more meaningful number for understanding your overall tax burden.</p>
+  <p>Many people mistakenly believe they will lose money by getting a raise that pushes them into a higher bracket. This is not true. Only the portion of income within the new bracket is taxed at the higher rate. A raise from $48,000 to $50,000, for example, would result in only the extra $1,524 being taxed at 22% instead of 12% — a difference of about $152 in additional tax on the higher portion, while the first $48,476 continues to be taxed exactly as before.</p>
+
+  <h2>FICA Taxes: Social Security and Medicare</h2>
+  <p>Beyond federal income tax, every paycheck is subject to <strong>FICA taxes</strong> — the Federal Insurance Contributions Act. These taxes fund Social Security and Medicare programs and are split equally between you and your employer. Unlike income tax brackets, FICA tax rates are flat percentages of your gross wages, with specific caps and surcharges.</p>
+
+  <h3>Social Security Tax (6.2%)</h3>
+  <p>The Social Security tax rate is 6.2% on gross wages, paid by both the employee and the employer (12.4% total). This tax applies only up to a maximum wage base, which is adjusted annually for inflation. The Social Security Administration has not yet announced the official figure for 2026 as of early 2026, but it is expected to rise to approximately $176,100 based on the Social Security Administration's automatic indexing formula for 2026 (up from $168,600 in 2024 and $176,100 in 2025). Any earnings above this cap are not subject to Social Security tax, though the Medicare portion continues without a cap.</p>
+
+  <h3>Medicare Tax (1.45%)</h3>
+  <p>The Medicare tax rate is 1.45% on all gross wages with <strong>no income cap</strong>. Every dollar you earn is subject to this tax. If you earn $75,000, you pay $1,087.50 per year for Medicare. If you earn $500,000, you pay $7,250.</p>
+
+  <h3>Additional Medicare Surcharge (0.9%)</h3>
+  <p>High earners pay an <strong>Additional Medicare Tax</strong> of 0.9% on wages exceeding $200,000 for single filers ($250,000 for married filing jointly). Unlike the standard 1.45% (which is split with your employer), the 0.9% surcharge is paid entirely by the employee. This means high earners pay a combined Medicare rate of 2.35% on wages above the threshold. For a single filer earning $250,000, the additional Medicare tax adds $450 per year.</p>
+
+  <h3>Combined FICA Impact</h3>
+  <p>For the typical employee earning $75,000, total FICA taxes amount to $5,737.50 per year ($4,650 for Social Security + $1,087.50 for Medicare). This represents about 7.65% of gross income. Remember that your employer pays an equal amount on your behalf, even though you never see that money directly.</p>
+
+  <div class="formula-box">
+    FICA Tax (employee share) = Gross Wages &times; 0.0765<br>
+    On $75,000: $75,000 &times; 0.0765 = $5,737.50<br>
+    (6.2% Social Security + 1.45% Medicare, up to the Social Security wage cap)
+  </div>
+
+  <h2>Pre-Tax Deductions</h2>
+  <p>One of the most powerful ways to reduce your tax burden is through <strong>pre-tax deductions</strong>. These are amounts subtracted from your gross pay before federal income tax and FICA taxes are calculated, effectively lowering your taxable income. The IRS allows several types of pre-tax deductions, each with specific limits and rules.</p>
+
+  <h3>401(k) and Retirement Contributions</h3>
+  <p>A 401(k) retirement plan allows you to contribute pre-tax dollars directly from your paycheck. For 2026, the contribution limit is $23,500 for employees under age 50, with an additional $7,500 catch-up contribution allowed for those aged 50 and older. If you earn $75,000 and contribute 10% ($7,500) to your 401(k), your taxable income drops to $67,500. At a 22% marginal rate, this saves you $1,650 in federal income tax plus $573.75 in FICA taxes — a total tax savings of $2,223.75 for the year. And you still have that $7,500 growing tax-deferred in your retirement account.</p>
+
+  <h3>Health Savings Account (HSA)</h3>
+  <p>If you are enrolled in a high-deductible health plan (HDHP), you can contribute to a <strong>Health Savings Account (HSA)</strong>. HSAs are one of the most tax-advantaged accounts available: contributions are pre-tax, the money grows tax-free, and withdrawals for qualified medical expenses are tax-free. For 2026, the contribution limits are $4,300 for individual coverage and $8,550 for family coverage, with an additional $1,000 catch-up for those 55 and older. An HSA contribution of $4,300 for someone in the 22% bracket saves $946 in federal income tax plus $328.95 in FICA taxes.</p>
+
+  <h3>Flexible Spending Account (FSA)</h3>
+  <p>A <strong>Health Care FSA</strong> allows you to set aside pre-tax dollars for out-of-pocket medical expenses such as copays, prescriptions, and dental work. The 2026 contribution limit is $3,200. Unlike an HSA, FSA funds are typically use-it-or-lose-it within the plan year, though some employers offer a grace period or a limited carryover. For someone in the 22% bracket, maxing out an FSA saves $704 in federal income tax plus $244.80 in FICA taxes.</p>
+
+  <h3>Health Insurance Premiums</h3>
+  <p>If your employer offers health insurance, your share of the premiums is typically deducted from your paycheck on a pre-tax basis. The average annual employee contribution for employer-sponsored single coverage is approximately $1,400 per year, while family coverage averages about $6,600. These premiums reduce your taxable income dollar-for-dollar, providing a tax savings of 22% to 37% of the premium amount depending on your bracket.</p>
+
+  <h3>Commuter Benefits</h3>
+  <p>Many employers offer pre-tax commuter benefits for transit passes and parking. For 2026, the monthly limit for transit and parking combined is $315 each. If you spend $200 per month on public transit, paying pre-tax saves you approximately $528 per year in combined federal and FICA taxes.</p>
+
+  <h2>State Income Taxes</h2>
+  <p>State income taxes add another layer of complexity and vary dramatically depending on where you live or work. Some states impose no income tax at all, while others have progressive systems that rival federal rates. Understanding your state's tax structure is important for accurately estimating your take-home pay.</p>
+
+  <h3>States With No Income Tax</h3>
+  <p>Nine states impose no state income tax on wages: <strong>Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming</strong>. (New Hampshire does not tax wages but does tax interest and dividend income.) Residents of these states keep more of each paycheck, though they may pay higher sales or property taxes to offset the difference.</p>
+
+  <h3>Flat-Rate States</h3>
+  <p>Several states use a single flat income tax rate regardless of income level. As of 2026, these include <strong>Arizona</strong> (2.5%), <strong>Colorado</strong> (4.4%), <strong>Georgia</strong> (5.49%), <strong>Idaho</strong> (5.8%), <strong>Illinois</strong> (4.95%), <strong>Indiana</strong> (3.05%), <strong>Kentucky</strong> (4.0%), <strong>Massachusetts</strong> (9.0%), <strong>Michigan</strong> (4.25%), <strong>Mississippi</strong> (4.7%), <strong>North Carolina</strong> (4.5%), <strong>Pennsylvania</strong> (3.07%), and <strong>Utah</strong> (4.65%). In a flat-tax state, a low earner and a high earner pay the same percentage of their income in state tax.</p>
+
+  <h3>Progressive Tax States</h3>
+  <p>The majority of states with income taxes use progressive brackets similar to the federal system. Notable high-tax states include <strong>California</strong> (top rate of 13.3%), <strong>Hawaii</strong> (top rate of 11.0%), <strong>New York</strong> (top rate of 10.9%), <strong>New Jersey</strong> (top rate of 10.75%), and <strong>Oregon</strong> (top rate of 9.9%). A single filer earning $75,000 in California would owe roughly $3,500 to $4,000 in state income tax, while the same earner in Texas would owe nothing at the state level.</p>
+
+  <p>Note that some cities and counties also impose local income taxes. For example, New York City adds up to 3.876% on top of New York state and federal taxes, while cities in Ohio and parts of Pennsylvania impose local earned income taxes typically ranging from 1% to 3%.</p>
+
+  <h2>How to Optimize Your Take-Home Pay</h2>
+  <p>While you cannot avoid taxes entirely, there are legitimate strategies to reduce your tax burden and maximize the amount you bring home or save for the future. These strategies focus on adjusting withholding, maximizing pre-tax contributions, and timing certain financial decisions.</p>
+
+  <h3>Adjust Your W-4 Withholding</h3>
+  <p>The IRS <strong>Form W-4</strong> tells your employer how much federal income tax to withhold from each paycheck. If you receive a large refund each year, you are giving the government an interest-free loan. If you owe a large amount at tax time, you may face penalties. Use the IRS Tax Withholding Estimator or a paycheck calculator (such as our <a href="/salary-calculator/">Salary Calculator</a>) to dial in your withholding accurately. Adjusting your W-4 when your circumstances change — marriage, a new child, a side business, or a significant raise — ensures your withholding stays aligned with your actual tax liability.</p>
+
+  <h3>Maximize Retirement Contributions</h3>
+  <p>Contributing to a 401(k), traditional IRA, or similar retirement account reduces your taxable income today. If your employer offers a 401(k) match, contribute at least enough to get the full match — that is free money. For 2026, the maximum 401(k) contribution is $23,500 (plus $7,500 catch-up for those 50+). Even a modest 6% contribution on a $75,000 salary saves approximately $1,350 in federal taxes annually.</p>
+
+  <h3>Use an HSA if Eligible</h3>
+  <p>If your health insurance plan qualifies as a high-deductible health plan (HDHP), contribute to a Health Savings Account. HSAs offer a rare triple tax advantage: contributions reduce your taxable income, growth is tax-free, and qualified withdrawals are tax-free. Unlike FSAs, HSA funds roll over year to year and can even be invested for long-term growth. For 2026, an individual can contribute up to $4,300 pre-tax.</p>
+
+  <h3>Consider a Dependent Care FSA</h3>
+  <p>If you pay for childcare or elder care so you can work, a Dependent Care FSA allows you to set aside up to $5,000 per household (or $2,500 if married filing separately) on a pre-tax basis. For a household in the 22% bracket, this saves up to $1,100 in federal income tax plus $382.50 in FICA taxes annually.</p>
+
+  <h3>Review Your Withholding Annually</h3>
+  <p>Tax laws change, life circumstances shift, and your income may fluctuate. Make it a habit to review your W-4 withholding and benefits elections at least once per year, ideally during your employer's open enrollment period. A 15-minute review can save hundreds or even thousands of dollars in over-withholding or unexpected tax bills.</p>
+
+  <h2>Real-World Example: $75,000 Salary Breakdown</h2>
+  <p>Let us walk through a complete example to see how the numbers work together. Meet Alex, a single filer living in Texas (no state income tax) earning a $75,000 salary in 2026. Alex contributes 6% to a 401(k), pays $1,500 per year for employer health insurance, and contributes $2,000 to an HSA. This scenario uses the 2026 federal brackets and the standard deduction of $15,000 (estimated, based on inflation-adjusted projections).</p>
+
+  <h3>Step 1: Calculate Gross Annual Income</h3>
+  <div class="formula-box">
+    Gross Salary: $75,000.00
+  </div>
+
+  <h3>Step 2: Subtract Pre-Tax Deductions</h3>
+  <p>These are taken from Alex's paycheck before taxes are calculated.</p>
+  <div class="formula-box">
+    401(k) Contribution (6%): &minus;$4,500.00<br>
+    Health Insurance Premium: &minus;$1,500.00<br>
+    HSA Contribution: &minus;$2,000.00<br>
+    <strong>Total Pre-Tax Deductions: &minus;$8,000.00</strong>
+  </div>
+
+  <h3>Step 3: Determine Adjusted Gross Income (AGI)</h3>
+  <div class="formula-box">
+    AGI = $75,000 &minus; $8,000 = <strong>$67,000.00</strong>
+  </div>
+
+  <h3>Step 4: Apply the Standard Deduction</h3>
+  <div class="formula-box">
+    AGI: $67,000.00<br>
+    Standard Deduction (2026, single): &minus;$15,000.00<br>
+    <strong>Taxable Income: $52,000.00</strong>
+  </div>
+
+  <h3>Step 5: Calculate Federal Income Tax</h3>
+  <p>Alex's taxable income of $52,000 falls into three brackets:</p>
+  <div class="formula-box">
+    10% bracket: $11,925 &times; 0.10 = $1,192.50<br>
+    12% bracket: ($48,475 &minus; $11,925) &times; 0.12 = $4,386.00<br>
+    22% bracket: ($52,000 &minus; $48,475) &times; 0.22 = $775.50<br>
+    <strong>Total Federal Income Tax: $6,354.00</strong>
+  </div>
+
+  <h3>Step 6: Calculate FICA Taxes</h3>
+  <p>FICA is calculated on Alex's gross wages before pre-tax deductions (for Social Security and Medicare, pre-tax retirement contributions are still subject to FICA, but health insurance and HSA contributions are not — the simplified example below uses the full gross for clarity; actual calculations vary by benefit type).</p>
+  <div class="formula-box">
+    Social Security (6.2% of $75,000): $4,650.00<br>
+    Medicare (1.45% of $75,000): $1,087.50<br>
+    <strong>Total FICA Taxes: $5,737.50</strong>
+  </div>
+
+  <h3>Step 7: State Income Tax</h3>
+  <p>Since Alex lives in Texas, there is no state income tax. If Alex lived in a state with a 5% flat rate, state tax would add approximately $2,600 to $3,350 depending on whether the state uses federal AGI or allows its own deductions.</p>
+
+  <h3>Final Breakdown</h3>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>% of Gross</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Gross Salary</strong></td>
+        <td><strong>$75,000.00</strong></td>
+        <td><strong>100%</strong></td>
+      </tr>
+      <tr>
+        <td>Pre-Tax Deductions (401k + Insurance + HSA)</td>
+        <td>&minus;$8,000.00</td>
+        <td>10.7%</td>
+      </tr>
+      <tr>
+        <td>Federal Income Tax</td>
+        <td>&minus;$6,354.00</td>
+        <td>8.5%</td>
+      </tr>
+      <tr>
+        <td>FICA (Social Security + Medicare)</td>
+        <td>&minus;$5,737.50</td>
+        <td>7.7%</td>
+      </tr>
+      <tr>
+        <td>State Income Tax (Texas: $0)</td>
+        <td>&minus;$0.00</td>
+        <td>0%</td>
+      </tr>
+      <tr>
+        <td><strong>Net Take-Home Pay</strong></td>
+        <td><strong>$54,908.50</strong></td>
+        <td><strong>73.2%</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Alex's net take-home pay is $54,908.50 per year, or approximately <strong>$4,575.71 per month</strong> before any additional voluntary deductions. Of the original $75,000 salary, 26.8% goes to taxes and pre-tax benefits, while the remaining 73.2% arrives in Alex's bank account. Critically, $8,000 of that "missing" money went directly into Alex's 401(k) and HSA — savings that still belong to Alex and will grow over time.</p>
+
+  <h2>Use the Salary Calculator</h2>
+  <p>Your individual situation will differ from Alex's example based on your income level, filing status, state of residence, benefits elections, and retirement contributions. Rather than estimating with rough percentages, use our free <a href="/salary-calculator/">Salary Calculator</a> to get a personalized breakdown of your gross-to-net pay.</p>
+  <p>The calculator lets you input your annual salary, filing status, state, pre-tax deductions, and pay frequency to generate an accurate estimate of your take-home pay, including all federal and state taxes. You can adjust your 401(k) contribution percentage, add health insurance premiums, and see exactly how each change affects your net income. This is a powerful tool for annual financial planning, job offer comparisons, and evaluating the impact of benefits changes during open enrollment.</p>
+
+  <p><a href="/salary-calculator/" class="btn btn-primary">Try the Salary Calculator</a></p>
+  <p><a href="/guides/">&#8592; Back to all guides</a></p>
+</GuideLayout>

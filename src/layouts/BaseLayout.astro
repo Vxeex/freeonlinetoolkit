@@ -11,8 +11,7 @@ export interface Props {
 
 const { title, description, canonical, noIndex, jsonLd } = Astro.props;
 const siteUrl = 'https://freeonlinetoolkit.org';
-const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname.slice(0, -1) : Astro.url.pathname;
-const fullUrl = canonical || `${siteUrl}${path || ''}`;
+const fullUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
 ---
 
 <!DOCTYPE html>
@@ -40,6 +39,22 @@ const fullUrl = canonical || `${siteUrl}${path || ''}`;
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Prevent flash of wrong theme — runs before first paint -->
+  <script is:inline>
+    (function() {
+      var theme = localStorage.getItem('fot-theme');
+      if (!theme) {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <!-- This style ensures nothing shifts the page layout -->
+  <style is:inline>body{position:static!important;top:0!important}</style>
 
   <!-- Global CSS removed — imported in frontmatter -->
 

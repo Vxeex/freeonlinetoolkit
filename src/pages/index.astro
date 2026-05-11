@@ -36,22 +36,23 @@ const jsonLd = [
 <BaseLayout title={pageTitle} description={pageDesc} jsonLd={jsonLd}>
   <Header />
 
+  <main>
   <!-- ============ HERO ============ -->
   <section class="home-hero">
     <div class="container">
       <div class="hero-grid">
         <div>
-          <div class="hero-badge">
+          <div class="hero-badge animate-entrance animate-entrance-delay-1">
             <i class="fa-solid fa-bolt"></i>
             {totalToolsCount} Free Tools &mdash; No Signup Required
           </div>
-          <h1>Your pocket toolkit for <span>everyday math</span></h1>
-          <p>
+          <h1 class="animate-entrance animate-entrance-delay-2">Your pocket toolkit for <span>everyday math</span></h1>
+          <p class="animate-entrance animate-entrance-delay-3">
             FreeOnlineToolkit gives you <strong>{totalToolsCount} free calculators and utilities</strong>
             for life's everyday questions &mdash; mortgage payments, BMI, passwords,
             currency conversions, and more. All 100% free, no signup.
           </p>
-          <div class="hero-actions">
+          <div class="hero-actions animate-entrance animate-entrance-delay-4">
             <a href="#tools" class="btn btn-primary">
               <i class="fa-solid fa-magnifying-glass"></i> Explore Tools
             </a>
@@ -60,7 +61,7 @@ const jsonLd = [
             </a>
           </div>
         </div>
-        <div class="hero-visual">
+        <div class="hero-visual animate-entrance-right animate-entrance-delay-3">
           <div class="hero-card">
             <div class="hero-card-header">
               <div class="hero-card-dots">
@@ -104,18 +105,18 @@ const jsonLd = [
   </section>
 
   <!-- ============ TRUST BAR ============ -->
-  <div class="trust-bar">
+  <div class="trust-bar animate-in">
     <div class="trust-bar-inner">
       <div class="trust-stat">
-        <div class="trust-stat-number">{totalToolsCount}</div>
+        <div class="trust-stat-number" data-count={totalToolsCount}>{totalToolsCount}</div>
         <div class="trust-stat-label">Free Online Tools</div>
       </div>
       <div class="trust-stat">
-        <div class="trust-stat-number">100%</div>
+        <div class="trust-stat-number" data-count="100">100%</div>
         <div class="trust-stat-label">Free &mdash; No Hidden Fees</div>
       </div>
       <div class="trust-stat">
-        <div class="trust-stat-number">0</div>
+        <div class="trust-stat-number" data-count="0">0</div>
         <div class="trust-stat-label">Signups Required</div>
       </div>
     </div>
@@ -143,13 +144,13 @@ const jsonLd = [
     return (
       <section class="cat-section">
         <div class="cat-section-inner">
-          <div class="section-header">
+          <div class="section-header animate-in">
             <div class="section-label"><i class={`fa-solid ${cat.icon}`}></i> {cat.name}</div>
             <h2>{cat.description}</h2>
           </div>
           <div class="tool-grid-home">
-            {catTools.map(t => (
-              <a href={`/${t.slug}/`} class="tool-card">
+            {catTools.map((t, i) => (
+              <a href={`/${t.slug}/`} class:list={['tool-card', 'animate-in', `animate-in-delay-${Math.min(i + 1, 10)}`]}>
                 <div class="tool-card-icon" style={`background:${t.color}18;color:${t.color};`}>
                   <i class={`fa-solid ${t.icon}`}></i>
                 </div>
@@ -165,7 +166,7 @@ const jsonLd = [
   })}
 
   <!-- ============ SEO CONTENT ============ -->
-  <section class="seo-content">
+  <section class="seo-content animate-in">
     <div class="seo-content-inner">
       <h2>Your complete toolkit for everyday calculations</h2>
       <p>FreeOnlineToolkit.org brings together <strong>{totalToolsCount} powerful tools</strong> &mdash; from mortgage calculators to password generators &mdash; all completely free, no signup required. Works on any device with real-time results.</p>
@@ -173,7 +174,7 @@ const jsonLd = [
   </section>
 
   <!-- ============ CTA ============ -->
-  <section class="cta-section">
+  <section class="cta-section animate-in">
     <div class="cta-inner">
       <h2>Ready to simplify your day?</h2>
       <p>Try any tool in seconds &mdash; no account, no cost, no complications. Just fast, accurate results.</p>
@@ -182,6 +183,8 @@ const jsonLd = [
       </a>
     </div>
   </section>
+
+  </main>
 
   <Footer />
 
@@ -216,6 +219,35 @@ const jsonLd = [
           searchInput.dispatchEvent(new Event('input'));
           searchInput.focus();
         });
+      }
+
+      // Trust bar counter animation
+      const trustBar = document.querySelector('.trust-bar');
+      if (trustBar) {
+        const counterObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              const counters = entry.target.querySelectorAll('[data-count]');
+              counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'), 10);
+                if (target === 0) return;
+                const duration = 1200;
+                const start = performance.now();
+                function update(now) {
+                  const elapsed = now - start;
+                  const progress = Math.min(elapsed / duration, 1);
+                  counter.textContent = Math.round(progress * target) + (target === 100 ? '%' : '');
+                  if (progress < 1) requestAnimationFrame(update);
+                  else counter.textContent = target + (target === 100 ? '%' : '');
+                }
+                requestAnimationFrame(update);
+              });
+              counterObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.5 });
+        counterObserver.observe(trustBar);
       }
     }
 

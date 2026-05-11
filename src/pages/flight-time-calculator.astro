@@ -1,0 +1,510 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['flight-time-calculator'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Estimate Flight Time",
+    "description": "Estimate direct flight time between two airports using great-circle distance.",
+    "step": [
+      { "@type": "HowToStep", "text": "Select your departure airport from the list" },
+      { "@type": "HowToStep", "text": "Select your arrival airport from the list" },
+      { "@type": "HowToStep", "text": "Click Calculate to see the estimated flight time and distance" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">Estimate direct flight times between airports worldwide. Uses great-circle distance and average cruise speed. Includes airport codes, timezone differences, and example airlines for reference.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Flight Time Estimator</h2>
+      <div class="form-group">
+        <label for="flightFrom">From (Departure)</label>
+        <select id="flightFrom" class="airport-select"></select>
+      </div>
+      <div class="form-group">
+        <label for="flightTo">To (Arrival)</label>
+        <select id="flightTo" class="airport-select"></select>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="calcBtn"><i class="fas fa-plane"></i> Calculate</button>
+        <button class="btn btn-secondary" id="swapBtn">Swap</button>
+      </div>
+
+      <div class="result-box" id="flightResult">
+        <div class="result-value" id="flightTimeDisplay">—</div>
+        <div class="result-label">Estimated Direct Flight Time</div>
+        <div class="result-details">
+          <div><span class="label">Distance</span><span class="value" id="flightDistance">—</span></div>
+          <div><span class="label">Departure</span><span class="value" id="flightDepDisplay">—</span></div>
+          <div><span class="label">Arrival</span><span class="value" id="flightArrDisplay">—</span></div>
+          <div><span class="label">Time Difference</span><span class="value" id="flightTzDiff">—</span></div>
+          <div><span class="label">Example Airlines</span><span class="value" id="flightAirlines">—</span></div>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How to Use the Flight Time Calculator</h2>
+      <p>Select your <strong>departure airport</strong> and <strong>arrival airport</strong> from the dropdown lists. The calculator uses the <strong>great-circle distance</strong> (the shortest path between two points on a sphere) to estimate the flight time at typical cruise speed.</p>
+      <p>The estimated flight time includes approximately 30 minutes of buffer for takeoff, climb, descent, and landing. Actual flight times may vary based on weather, air traffic, flight path, aircraft type, and wind conditions.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How Flight Time Is Calculated</h2>
+      <div class="formula-box">
+        Distance = Great-circle distance using Haversine formula<br>
+        Flight Time = (Distance / Cruise Speed) + Buffer
+      </div>
+      <p>Where:</p>
+      <ul>
+        <li><strong>Cruise Speed</strong> = 900 km/h (~560 mph) — average commercial jet speed</li>
+        <li><strong>Buffer</strong> = 30 minutes — accounts for takeoff, climb, descent, and landing</li>
+        <li>Great-circle distance is calculated using airport coordinates (latitude/longitude)</li>
+        <li>Actual flight time may differ due to wind, routing, aircraft type, and ATC restrictions</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>What Affects Flight Time?</h2>
+      <ul>
+        <li><strong>Wind:</strong> Headwinds can add 30-60 minutes to long-haul flights; tailwinds can reduce time</li>
+        <li><strong>Aircraft Type:</strong> Different planes have different cruise speeds (787: ~903 km/h, A380: ~912 km/h, A320: ~828 km/h)</li>
+        <li><strong>Flight Path:</strong> ATC may route planes on longer paths for traffic or weather avoidance</li>
+        <li><strong>Season:</strong> Jet streams are stronger in winter, affecting flight times on certain routes</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "How accurate is this flight time estimate?", answer: "The estimate is based on the great-circle distance and average cruise speed with a standard buffer. Actual flight times can vary by 10-20% due to wind, aircraft type, and routing. Use this as a planning reference." },
+      { question: "Does this include layovers or connecting flights?", answer: "No. This calculator estimates direct (non-stop) flight time only. For connecting flights, add the flight time for each segment plus layover time between flights." },
+      { question: "What is great-circle distance?", answer: "The great-circle distance is the shortest distance between two points on the surface of a sphere, measured along the surface. For air travel, this is the most efficient route, though actual flight paths often vary slightly." },
+      { question: "Why does the time difference matter?", answer: "The time difference between departure and arrival cities affects jet lag and arrival planning. Flying eastward (e.g., New York to London) means losing hours, while flying westward (London to New York) means gaining hours." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="flight-time-calculator" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult } from '../utils/calculator-utils';
+
+interface Airport {
+  code: string;
+  name: string;
+  city: string;
+  country: string;
+  lat: number;
+  lng: number;
+  tz: number; // hours from UTC
+}
+
+interface RouteAirline {
+  from: string;
+  to: string;
+  airlines: string[];
+}
+
+const airports: Airport[] = [
+  // North America
+  { code: 'ATL', name: 'Hartsfield-Jackson Atlanta International', city: 'Atlanta', country: 'United States', lat: 33.6367, lng: -84.4281, tz: -5 },
+  { code: 'BOS', name: 'Boston Logan International', city: 'Boston', country: 'United States', lat: 42.3656, lng: -71.0096, tz: -5 },
+  { code: 'BWI', name: 'Baltimore/Washington International', city: 'Baltimore', country: 'United States', lat: 39.1754, lng: -76.6682, tz: -5 },
+  { code: 'CLT', name: 'Charlotte Douglas International', city: 'Charlotte', country: 'United States', lat: 35.2140, lng: -80.9431, tz: -5 },
+  { code: 'DEN', name: 'Denver International', city: 'Denver', country: 'United States', lat: 39.8561, lng: -104.6737, tz: -7 },
+  { code: 'DFW', name: 'Dallas/Fort Worth International', city: 'Dallas', country: 'United States', lat: 32.8998, lng: -97.0403, tz: -6 },
+  { code: 'DTW', name: 'Detroit Metropolitan', city: 'Detroit', country: 'United States', lat: 42.2121, lng: -83.3534, tz: -5 },
+  { code: 'EWR', name: 'Newark Liberty International', city: 'Newark', country: 'United States', lat: 40.6895, lng: -74.1745, tz: -5 },
+  { code: 'FLL', name: 'Fort Lauderdale-Hollywood International', city: 'Fort Lauderdale', country: 'United States', lat: 26.0742, lng: -80.1506, tz: -5 },
+  { code: 'HNL', name: 'Daniel K. Inouye International', city: 'Honolulu', country: 'United States', lat: 21.3187, lng: -157.9224, tz: -10 },
+  { code: 'IAD', name: 'Washington Dulles International', city: 'Washington D.C.', country: 'United States', lat: 38.9445, lng: -77.4558, tz: -5 },
+  { code: 'JFK', name: 'John F. Kennedy International', city: 'New York', country: 'United States', lat: 40.6413, lng: -73.7781, tz: -5 },
+  { code: 'LAS', name: 'Harry Reid International', city: 'Las Vegas', country: 'United States', lat: 36.0840, lng: -115.1537, tz: -8 },
+  { code: 'LAX', name: 'Los Angeles International', city: 'Los Angeles', country: 'United States', lat: 33.9416, lng: -118.4085, tz: -8 },
+  { code: 'MCO', name: 'Orlando International', city: 'Orlando', country: 'United States', lat: 28.4294, lng: -81.3089, tz: -5 },
+  { code: 'MIA', name: 'Miami International', city: 'Miami', country: 'United States', lat: 25.7932, lng: -80.2906, tz: -5 },
+  { code: 'MSP', name: 'Minneapolis-Saint Paul International', city: 'Minneapolis', country: 'United States', lat: 44.8830, lng: -93.2169, tz: -6 },
+  { code: 'ORD', name: "O'Hare International", city: 'Chicago', country: 'United States', lat: 41.9742, lng: -87.9073, tz: -6 },
+  { code: 'PDX', name: 'Portland International', city: 'Portland', country: 'United States', lat: 45.5887, lng: -122.5975, tz: -8 },
+  { code: 'PHL', name: 'Philadelphia International', city: 'Philadelphia', country: 'United States', lat: 39.8729, lng: -75.2430, tz: -5 },
+  { code: 'PHX', name: 'Phoenix Sky Harbor International', city: 'Phoenix', country: 'United States', lat: 33.4352, lng: -112.0101, tz: -7 },
+  { code: 'SAN', name: 'San Diego International', city: 'San Diego', country: 'United States', lat: 32.7338, lng: -117.1933, tz: -8 },
+  { code: 'SEA', name: 'Seattle-Tacoma International', city: 'Seattle', country: 'United States', lat: 47.4502, lng: -122.3088, tz: -8 },
+  { code: 'SFO', name: 'San Francisco International', city: 'San Francisco', country: 'United States', lat: 37.6213, lng: -122.3790, tz: -8 },
+  { code: 'SLC', name: 'Salt Lake City International', city: 'Salt Lake City', country: 'United States', lat: 40.7884, lng: -111.9798, tz: -7 },
+  { code: 'TPA', name: 'Tampa International', city: 'Tampa', country: 'United States', lat: 27.9798, lng: -82.5343, tz: -5 },
+  { code: 'YUL', name: 'Montréal-Trudeau International', city: 'Montreal', country: 'Canada', lat: 45.4704, lng: -73.7408, tz: -5 },
+  { code: 'YVR', name: 'Vancouver International', city: 'Vancouver', country: 'Canada', lat: 49.1947, lng: -123.1792, tz: -8 },
+  { code: 'YYZ', name: 'Toronto Pearson International', city: 'Toronto', country: 'Canada', lat: 43.6772, lng: -79.6306, tz: -5 },
+
+  // Europe
+  { code: 'AMS', name: 'Amsterdam Schiphol', city: 'Amsterdam', country: 'Netherlands', lat: 52.3105, lng: 4.7683, tz: 1 },
+  { code: 'ARN', name: 'Stockholm Arlanda', city: 'Stockholm', country: 'Sweden', lat: 59.6498, lng: 17.9238, tz: 1 },
+  { code: 'BCN', name: 'Barcelona-El Prat', city: 'Barcelona', country: 'Spain', lat: 41.2974, lng: 2.0833, tz: 1 },
+  { code: 'BER', name: 'Berlin Brandenburg', city: 'Berlin', country: 'Germany', lat: 52.3627, lng: 13.5004, tz: 1 },
+  { code: 'BRU', name: 'Brussels Airport', city: 'Brussels', country: 'Belgium', lat: 50.9014, lng: 4.4844, tz: 1 },
+  { code: 'CDG', name: 'Paris Charles de Gaulle', city: 'Paris', country: 'France', lat: 49.0097, lng: 2.5479, tz: 1 },
+  { code: 'CPH', name: 'Copenhagen Airport', city: 'Copenhagen', country: 'Denmark', lat: 55.6180, lng: 12.6508, tz: 1 },
+  { code: 'DUB', name: 'Dublin Airport', city: 'Dublin', country: 'Ireland', lat: 53.4213, lng: -6.2701, tz: 0 },
+  { code: 'FCO', name: 'Rome Leonardo da Vinci–Fiumicino', city: 'Rome', country: 'Italy', lat: 41.8003, lng: 12.2389, tz: 1 },
+  { code: 'FRA', name: 'Frankfurt Airport', city: 'Frankfurt', country: 'Germany', lat: 50.0333, lng: 8.5705, tz: 1 },
+  { code: 'GVA', name: 'Geneva Airport', city: 'Geneva', country: 'Switzerland', lat: 46.2379, lng: 6.1080, tz: 1 },
+  { code: 'HEL', name: 'Helsinki-Vantaa', city: 'Helsinki', country: 'Finland', lat: 60.3172, lng: 24.9633, tz: 2 },
+  { code: 'LGW', name: 'London Gatwick', city: 'London', country: 'United Kingdom', lat: 51.1537, lng: -0.1821, tz: 0 },
+  { code: 'LHR', name: 'London Heathrow', city: 'London', country: 'United Kingdom', lat: 51.4700, lng: -0.4543, tz: 0 },
+  { code: 'LIS', name: 'Lisbon Portela', city: 'Lisbon', country: 'Portugal', lat: 38.7742, lng: -9.1342, tz: 0 },
+  { code: 'MAD', name: 'Madrid-Barajas', city: 'Madrid', country: 'Spain', lat: 40.4936, lng: -3.5668, tz: 1 },
+  { code: 'MAN', name: 'Manchester Airport', city: 'Manchester', country: 'United Kingdom', lat: 53.3537, lng: -2.2752, tz: 0 },
+  { code: 'MUC', name: 'Munich Airport', city: 'Munich', country: 'Germany', lat: 48.3538, lng: 11.7759, tz: 1 },
+  { code: 'MXP', name: 'Milan Malpensa', city: 'Milan', country: 'Italy', lat: 45.6300, lng: 8.7281, tz: 1 },
+  { code: 'NCE', name: 'Nice Côte d\'Azur', city: 'Nice', country: 'France', lat: 43.6653, lng: 7.2152, tz: 1 },
+  { code: 'OSL', name: 'Oslo Gardermoen', city: 'Oslo', country: 'Norway', lat: 60.1217, lng: 11.0502, tz: 1 },
+  { code: 'PRG', name: 'Václav Havel Airport Prague', city: 'Prague', country: 'Czech Republic', lat: 50.1008, lng: 14.2600, tz: 1 },
+  { code: 'VIE', name: 'Vienna International', city: 'Vienna', country: 'Austria', lat: 48.1102, lng: 16.5707, tz: 1 },
+  { code: 'WAW', name: 'Warsaw Chopin', city: 'Warsaw', country: 'Poland', lat: 52.1675, lng: 20.9677, tz: 1 },
+  { code: 'ZRH', name: 'Zurich Airport', city: 'Zurich', country: 'Switzerland', lat: 47.4584, lng: 8.5480, tz: 1 },
+  { code: 'ATH', name: 'Athens International', city: 'Athens', country: 'Greece', lat: 37.9364, lng: 23.9445, tz: 2 },
+  { code: 'BUD', name: 'Budapest Ferenc Liszt', city: 'Budapest', country: 'Hungary', lat: 47.4330, lng: 19.2556, tz: 1 },
+  { code: 'KEF', name: 'Keflavik International', city: 'Reykjavik', country: 'Iceland', lat: 63.9850, lng: -22.6056, tz: 0 },
+  { code: 'AGP', name: 'Málaga-Costa del Sol', city: 'Malaga', country: 'Spain', lat: 36.6749, lng: -4.4991, tz: 1 },
+  { code: 'PMI', name: 'Palma de Mallorca', city: 'Palma', country: 'Spain', lat: 39.5517, lng: 2.7388, tz: 1 },
+
+  // Asia
+  { code: 'BKK', name: 'Suvarnabhumi Airport', city: 'Bangkok', country: 'Thailand', lat: 13.6900, lng: 100.7501, tz: 7 },
+  { code: 'DEL', name: 'Indira Gandhi International', city: 'Delhi', country: 'India', lat: 28.5562, lng: 77.1000, tz: 5.5 },
+  { code: 'DXB', name: 'Dubai International', city: 'Dubai', country: 'UAE', lat: 25.2532, lng: 55.3657, tz: 4 },
+  { code: 'HKG', name: 'Hong Kong International', city: 'Hong Kong', country: 'Hong Kong', lat: 22.3080, lng: 113.9185, tz: 8 },
+  { code: 'ICN', name: 'Seoul Incheon International', city: 'Seoul', country: 'South Korea', lat: 37.4602, lng: 126.4407, tz: 9 },
+  { code: 'KUL', name: 'Kuala Lumpur International', city: 'Kuala Lumpur', country: 'Malaysia', lat: 2.7456, lng: 101.7099, tz: 8 },
+  { code: 'MNL', name: 'Ninoy Aquino International', city: 'Manila', country: 'Philippines', lat: 14.5176, lng: 121.0509, tz: 8 },
+  { code: 'NRT', name: 'Tokyo Narita International', city: 'Tokyo', country: 'Japan', lat: 35.7647, lng: 140.3865, tz: 9 },
+  { code: 'HND', name: 'Tokyo Haneda', city: 'Tokyo', country: 'Japan', lat: 35.5494, lng: 139.7798, tz: 9 },
+  { code: 'PEK', name: 'Beijing Capital International', city: 'Beijing', country: 'China', lat: 40.0799, lng: 116.6031, tz: 8 },
+  { code: 'PVG', name: 'Shanghai Pudong International', city: 'Shanghai', country: 'China', lat: 31.1443, lng: 121.8083, tz: 8 },
+  { code: 'SIN', name: 'Singapore Changi', city: 'Singapore', country: 'Singapore', lat: 1.3644, lng: 103.9915, tz: 8 },
+  { code: 'TPE', name: 'Taiwan Taoyuan International', city: 'Taipei', country: 'Taiwan', lat: 25.0777, lng: 121.2328, tz: 8 },
+  { code: 'CTS', name: 'New Chitose Airport', city: 'Sapporo', country: 'Japan', lat: 42.7752, lng: 141.6923, tz: 9 },
+  { code: 'FUK', name: 'Fukuoka Airport', city: 'Fukuoka', country: 'Japan', lat: 33.5854, lng: 130.4521, tz: 9 },
+  { code: 'HKT', name: 'Phuket International', city: 'Phuket', country: 'Thailand', lat: 8.1132, lng: 98.3168, tz: 7 },
+  { code: 'DPS', name: 'Ngurah Rai International', city: 'Bali', country: 'Indonesia', lat: -8.7483, lng: 115.1672, tz: 8 },
+  { code: 'CGK', name: 'Soekarno-Hatta International', city: 'Jakarta', country: 'Indonesia', lat: -6.1256, lng: 106.6559, tz: 7 },
+  { code: 'SGN', name: 'Tan Son Nhat International', city: 'Ho Chi Minh City', country: 'Vietnam', lat: 10.8190, lng: 106.6520, tz: 7 },
+  { code: 'CAN', name: 'Guangzhou Baiyun International', city: 'Guangzhou', country: 'China', lat: 23.3925, lng: 113.2988, tz: 8 },
+  { code: 'CMB', name: 'Bandaranaike International', city: 'Colombo', country: 'Sri Lanka', lat: 7.1811, lng: 79.8836, tz: 5.5 },
+  { code: 'MLE', name: 'Velana International', city: 'Male', country: 'Maldives', lat: 4.1917, lng: 73.5291, tz: 5 },
+
+  // Middle East
+  { code: 'AUH', name: 'Abu Dhabi International', city: 'Abu Dhabi', country: 'UAE', lat: 24.4280, lng: 54.6491, tz: 4 },
+  { code: 'DOH', name: 'Hamad International', city: 'Doha', country: 'Qatar', lat: 25.2731, lng: 51.6080, tz: 3 },
+  { code: 'IST', name: 'Istanbul Airport', city: 'Istanbul', country: 'Turkey', lat: 41.2608, lng: 28.7421, tz: 3 },
+  { code: 'RUH', name: 'King Khalid International', city: 'Riyadh', country: 'Saudi Arabia', lat: 24.9577, lng: 46.6988, tz: 3 },
+  { code: 'JED', name: 'King Abdulaziz International', city: 'Jeddah', country: 'Saudi Arabia', lat: 21.6793, lng: 39.1565, tz: 3 },
+  { code: 'TLV', name: 'Ben Gurion Airport', city: 'Tel Aviv', country: 'Israel', lat: 32.0055, lng: 34.8854, tz: 2 },
+
+  // Oceania
+  { code: 'AKL', name: 'Auckland Airport', city: 'Auckland', country: 'New Zealand', lat: -37.0067, lng: 174.7919, tz: 12 },
+  { code: 'BNE', name: 'Brisbane Airport', city: 'Brisbane', country: 'Australia', lat: -27.3842, lng: 153.1125, tz: 10 },
+  { code: 'MEL', name: 'Melbourne Airport', city: 'Melbourne', country: 'Australia', lat: -37.6733, lng: 144.8433, tz: 10 },
+  { code: 'PER', name: 'Perth Airport', city: 'Perth', country: 'Australia', lat: -31.9403, lng: 115.9670, tz: 8 },
+  { code: 'SYD', name: 'Sydney Airport', city: 'Sydney', country: 'Australia', lat: -33.9399, lng: 151.1753, tz: 10 },
+  { code: 'CHC', name: 'Christchurch Airport', city: 'Christchurch', country: 'New Zealand', lat: -43.4884, lng: 172.5320, tz: 12 },
+  { code: 'WLG', name: 'Wellington International', city: 'Wellington', country: 'New Zealand', lat: -41.3272, lng: 174.8050, tz: 12 },
+
+  // Africa
+  { code: 'CAI', name: 'Cairo International', city: 'Cairo', country: 'Egypt', lat: 30.1219, lng: 31.4056, tz: 2 },
+  { code: 'CPT', name: 'Cape Town International', city: 'Cape Town', country: 'South Africa', lat: -33.9648, lng: 18.6017, tz: 2 },
+  { code: 'JNB', name: 'O.R. Tambo International', city: 'Johannesburg', country: 'South Africa', lat: -26.1367, lng: 28.2411, tz: 2 },
+  { code: 'LOS', name: 'Murtala Muhammed International', city: 'Lagos', country: 'Nigeria', lat: 6.5774, lng: 3.3211, tz: 1 },
+  { code: 'NBO', name: 'Jomo Kenyatta International', city: 'Nairobi', country: 'Kenya', lat: -1.3192, lng: 36.9278, tz: 3 },
+  { code: 'DAR', name: 'Julius Nyerere International', city: 'Dar es Salaam', country: 'Tanzania', lat: -6.8781, lng: 39.2026, tz: 3 },
+  { code: 'ADD', name: 'Bole International', city: 'Addis Ababa', country: 'Ethiopia', lat: 8.9778, lng: 38.7993, tz: 3 },
+  { code: 'TUN', name: 'Tunis-Carthage International', city: 'Tunis', country: 'Tunisia', lat: 36.8510, lng: 10.2272, tz: 1 },
+
+  // South America
+  { code: 'BOG', name: 'El Dorado International', city: 'Bogota', country: 'Colombia', lat: 4.7016, lng: -74.1469, tz: -5 },
+  { code: 'EZE', name: 'Ministro Pistarini International', city: 'Buenos Aires', country: 'Argentina', lat: -34.8222, lng: -58.5358, tz: -3 },
+  { code: 'GIG', name: 'Rio de Janeiro–Galeão International', city: 'Rio de Janeiro', country: 'Brazil', lat: -22.8090, lng: -43.2486, tz: -3 },
+  { code: 'GRU', name: 'São Paulo–Guarulhos International', city: 'Sao Paulo', country: 'Brazil', lat: -23.4282, lng: -46.4720, tz: -3 },
+  { code: 'LIM', name: 'Jorge Chávez International', city: 'Lima', country: 'Peru', lat: -12.0219, lng: -77.1143, tz: -5 },
+  { code: 'SCL', name: 'Arturo Merino Benítez International', city: 'Santiago', country: 'Chile', lat: -33.3928, lng: -70.7858, tz: -4 },
+  { code: 'MEX', name: 'Mexico City International', city: 'Mexico City', country: 'Mexico', lat: 19.4361, lng: -99.0719, tz: -6 },
+  { code: 'PTY', name: 'Tocumen International', city: 'Panama City', country: 'Panama', lat: 9.0712, lng: -79.3835, tz: -5 },
+  { code: 'UIO', name: 'Mariscal Sucre International', city: 'Quito', country: 'Ecuador', lat: -0.1411, lng: -78.4883, tz: -5 },
+];
+
+const routeAirlines: RouteAirline[] = [
+  { from: 'JFK', to: 'LHR', airlines: ['American Airlines', 'British Airways', 'Delta', 'Virgin Atlantic'] },
+  { from: 'JFK', to: 'CDG', airlines: ['Air France', 'Delta', 'American Airlines'] },
+  { from: 'JFK', to: 'HND', airlines: ['Japan Airlines', 'ANA', 'Delta'] },
+  { from: 'JFK', to: 'DXB', airlines: ['Emirates'] },
+  { from: 'JFK', to: 'FRA', airlines: ['Lufthansa', 'Delta', 'United'] },
+  { from: 'JFK', to: 'MAD', airlines: ['Iberia', 'American Airlines', 'Delta'] },
+  { from: 'JFK', to: 'MUC', airlines: ['Lufthansa', 'Delta'] },
+  { from: 'JFK', to: 'ZRH', airlines: ['Swiss', 'Delta'] },
+  { from: 'JFK', to: 'AMS', airlines: ['KLM', 'Delta'] },
+  { from: 'JFK', to: 'BOM', airlines: ['Air India'] },
+  { from: 'JFK', to: 'DEL', airlines: ['Air India', 'American Airlines'] },
+  { from: 'JFK', to: 'LAX', airlines: ['JetBlue', 'Delta', 'American Airlines', 'United', 'Alaska Airlines'] },
+  { from: 'JFK', to: 'SFO', airlines: ['JetBlue', 'Delta', 'American Airlines', 'United', 'Alaska Airlines'] },
+  { from: 'JFK', to: 'MIA', airlines: ['American Airlines', 'Delta', 'JetBlue'] },
+  { from: 'JFK', to: 'ORD', airlines: ['American Airlines', 'United', 'Delta'] },
+  { from: 'JFK', to: 'SEA', airlines: ['Delta', 'Alaska Airlines', 'JetBlue'] },
+  { from: 'JFK', to: 'FLL', airlines: ['Delta', 'JetBlue', 'American Airlines'] },
+  { from: 'JFK', to: 'MCO', airlines: ['Delta', 'JetBlue', 'American Airlines'] },
+  { from: 'JFK', to: 'HND', airlines: ['Japan Airlines', 'ANA'] },
+  { from: 'JFK', to: 'NRT', airlines: ['Japan Airlines', 'ANA', 'United'] },
+  { from: 'JFK', to: 'ICN', airlines: ['Korean Air', 'Delta'] },
+  { from: 'JFK', to: 'PVG', airlines: ['China Eastern', 'China Southern'] },
+  { from: 'JFK', to: 'YYZ', airlines: ['Air Canada', 'Delta', 'American Airlines'] },
+  { from: 'JFK', to: 'MEX', airlines: ['Aeromexico', 'Delta'] },
+  { from: 'LHR', to: 'JFK', airlines: ['British Airways', 'American Airlines', 'Delta', 'Virgin Atlantic'] },
+  { from: 'LHR', to: 'DXB', airlines: ['British Airways', 'Emirates'] },
+  { from: 'LHR', to: 'HKG', airlines: ['British Airways', 'Cathay Pacific', 'Virgin Atlantic'] },
+  { from: 'LHR', to: 'SIN', airlines: ['Singapore Airlines', 'British Airways'] },
+  { from: 'LHR', to: 'BKK', airlines: ['Thai Airways', 'British Airways'] },
+  { from: 'LHR', to: 'NRT', airlines: ['British Airways', 'Japan Airlines', 'ANA'] },
+  { from: 'LHR', to: 'LAX', airlines: ['British Airways', 'Virgin Atlantic', 'American Airlines', 'United'] },
+  { from: 'LHR', to: 'SFO', airlines: ['British Airways', 'United', 'Virgin Atlantic'] },
+  { from: 'LHR', to: 'ORD', airlines: ['British Airways', 'American Airlines', 'United'] },
+  { from: 'LHR', to: 'ATL', airlines: ['British Airways', 'Delta', 'Virgin Atlantic'] },
+  { from: 'LHR', to: 'CDG', airlines: ['British Airways', 'Air France'] },
+  { from: 'LHR', to: 'FRA', airlines: ['British Airways', 'Lufthansa'] },
+  { from: 'LHR', to: 'IST', airlines: ['British Airways', 'Turkish Airlines'] },
+  { from: 'LHR', to: 'YYZ', airlines: ['Air Canada', 'British Airways'] },
+  { from: 'LHR', to: 'DOH', airlines: ['Qatar Airways', 'British Airways'] },
+  { from: 'LHR', to: 'AUH', airlines: ['Etihad', 'British Airways'] },
+  { from: 'LHR', to: 'MIA', airlines: ['British Airways', 'American Airlines', 'Virgin Atlantic'] },
+  { from: 'LAX', to: 'NRT', airlines: ['Japan Airlines', 'ANA', 'United', 'Delta'] },
+  { from: 'LAX', to: 'HND', airlines: ['Japan Airlines', 'ANA', 'Delta', 'United'] },
+  { from: 'LAX', to: 'SYD', airlines: ['Qantas', 'United', 'Delta', 'Virgin Australia'] },
+  { from: 'LAX', to: 'ICN', airlines: ['Korean Air', 'Asiana', 'Delta'] },
+  { from: 'LAX', to: 'TPE', airlines: ['EVA Air', 'China Airlines', 'Starlux'] },
+  { from: 'LAX', to: 'LHR', airlines: ['American Airlines', 'British Airways', 'Virgin Atlantic', 'United'] },
+  { from: 'LAX', to: 'SFO', airlines: ['United', 'Alaska Airlines', 'Delta', 'American Airlines', 'Southwest'] },
+  { from: 'LAX', to: 'HNL', airlines: ['Hawaiian Airlines', 'Delta', 'United', 'Alaska Airlines'] },
+  { from: 'SFO', to: 'NRT', airlines: ['United', 'ANA', 'Japan Airlines'] },
+  { from: 'SFO', to: 'HND', airlines: ['United', 'ANA', 'Japan Airlines'] },
+  { from: 'SFO', to: 'ICN', airlines: ['Korean Air', 'Asiana', 'United'] },
+  { from: 'SFO', to: 'SIN', airlines: ['Singapore Airlines', 'United'] },
+  { from: 'SFO', to: 'HKG', airlines: ['Cathay Pacific', 'United'] },
+  { from: 'SFO', to: 'LHR', airlines: ['United', 'British Airways', 'Virgin Atlantic'] },
+  { from: 'SFO', to: 'LAX', airlines: ['United', 'Alaska Airlines', 'Delta', 'American Airlines', 'Southwest'] },
+  { from: 'ORD', to: 'NRT', airlines: ['ANA', 'Japan Airlines', 'United'] },
+  { from: 'ORD', to: 'HND', airlines: ['ANA', 'Japan Airlines'] },
+  { from: 'ORD', to: 'LHR', airlines: ['American Airlines', 'British Airways', 'United'] },
+  { from: 'ORD', to: 'FRA', airlines: ['Lufthansa', 'United'] },
+  { from: 'ATL', to: 'LHR', airlines: ['Delta', 'British Airways', 'Virgin Atlantic'] },
+  { from: 'MIA', to: 'LHR', airlines: ['American Airlines', 'British Airways', 'Virgin Atlantic'] },
+  { from: 'SEA', to: 'NRT', airlines: ['ANA', 'Japan Airlines', 'Delta'] },
+  { from: 'SEA', to: 'ICN', airlines: ['Korean Air', 'Asiana', 'Delta'] },
+  { from: 'SEA', to: 'LHR', airlines: ['British Airways', 'Delta', 'Virgin Atlantic'] },
+  { from: 'SIN', to: 'HKG', airlines: ['Singapore Airlines', 'Cathay Pacific'] },
+  { from: 'SIN', to: 'NRT', airlines: ['Singapore Airlines', 'ANA'] },
+  { from: 'SIN', to: 'ICN', airlines: ['Singapore Airlines', 'Korean Air'] },
+  { from: 'SIN', to: 'BKK', airlines: ['Singapore Airlines', 'Thai Airways', 'Bangkok Airways', 'Scoot'] },
+  { from: 'SIN', to: 'KUL', airlines: ['AirAsia', 'Malaysia Airlines', 'Singapore Airlines', 'Scoot', 'Jetstar Asia'] },
+  { from: 'SIN', to: 'DPS', airlines: ['Singapore Airlines', 'Garuda Indonesia', 'Scoot'] },
+  { from: 'SIN', to: 'DXB', airlines: ['Emirates', 'Singapore Airlines'] },
+  { from: 'SIN', to: 'LHR', airlines: ['Singapore Airlines', 'British Airways'] },
+  { from: 'HKG', to: 'TPE', airlines: ['Cathay Pacific', 'China Airlines', 'EVA Air', 'Hong Kong Express'] },
+  { from: 'HKG', to: 'NRT', airlines: ['Cathay Pacific', 'Japan Airlines', 'ANA', 'Hong Kong Express'] },
+  { from: 'HKG', to: 'ICN', airlines: ['Cathay Pacific', 'Korean Air', 'Hong Kong Express'] },
+  { from: 'HKG', to: 'BKK', airlines: ['Cathay Pacific', 'Thai Airways', 'Hong Kong Express'] },
+  { from: 'HKG', to: 'SIN', airlines: ['Cathay Pacific', 'Singapore Airlines'] },
+  { from: 'HKG', to: 'KUL', airlines: ['Cathay Pacific', 'Malaysia Airlines', 'AirAsia'] },
+  { from: 'DXB', to: 'LHR', airlines: ['Emirates', 'British Airways'] },
+  { from: 'DXB', to: 'SIN', airlines: ['Emirates', 'Singapore Airlines'] },
+  { from: 'DXB', to: 'BKK', airlines: ['Emirates', 'Thai Airways'] },
+  { from: 'DXB', to: 'HKG', airlines: ['Cathay Pacific', 'Emirates'] },
+  { from: 'DXB', to: 'SYD', airlines: ['Emirates', 'Qantas'] },
+  { from: 'DOH', to: 'LHR', airlines: ['Qatar Airways', 'British Airways'] },
+  { from: 'DOH', to: 'SIN', airlines: ['Qatar Airways', 'Singapore Airlines'] },
+  { from: 'DOH', to: 'BKK', airlines: ['Qatar Airways', 'Thai Airways'] },
+  { from: 'AUH', to: 'LHR', airlines: ['Etihad', 'British Airways'] },
+  { from: 'IST', to: 'LHR', airlines: ['Turkish Airlines', 'British Airways'] },
+  { from: 'IST', to: 'DXB', airlines: ['Turkish Airlines', 'Emirates'] },
+  { from: 'IST', to: 'BKK', airlines: ['Turkish Airlines', 'Thai Airways'] },
+  { from: 'ICN', to: 'NRT', airlines: ['Korean Air', 'Asiana', 'ANA'] },
+  { from: 'ICN', to: 'HKG', airlines: ['Korean Air', 'Cathay Pacific', 'Asiana'] },
+  { from: 'ICN', to: 'BKK', airlines: ['Korean Air', 'Thai Airways', 'Asiana'] },
+  { from: 'NRT', to: 'SYD', airlines: ['Qantas', 'ANA', 'Jetstar'] },
+  { from: 'NRT', to: 'HNL', airlines: ['Hawaiian Airlines', 'ANA', 'Japan Airlines'] },
+  { from: 'SYD', to: 'AKL', airlines: ['Qantas', 'Air New Zealand', 'Jetstar', 'Virgin Australia'] },
+  { from: 'SYD', to: 'HND', airlines: ['Qantas', 'ANA', 'Japan Airlines'] },
+  { from: 'MEL', to: 'AKL', airlines: ['Qantas', 'Air New Zealand', 'Jetstar'] },
+  { from: 'BNE', to: 'AKL', airlines: ['Qantas', 'Air New Zealand', 'Jetstar'] },
+  { from: 'BKK', to: 'HKT', airlines: ['Thai Airways', 'Bangkok Airways', 'AirAsia'] },
+  { from: 'BKK', to: 'HND', airlines: ['Thai Airways', 'ANA', 'Japan Airlines'] },
+  { from: 'CDG', to: 'JFK', airlines: ['Air France', 'Delta', 'American Airlines'] },
+  { from: 'CDG', to: 'LAX', airlines: ['Air France', 'Delta'] },
+  { from: 'AMS', to: 'JFK', airlines: ['KLM', 'Delta'] },
+  { from: 'AMS', to: 'LAX', airlines: ['KLM', 'Delta'] },
+  { from: 'FRA', to: 'JFK', airlines: ['Lufthansa', 'Delta', 'United'] },
+  { from: 'FRA', to: 'LAX', airlines: ['Lufthansa', 'United'] },
+  { from: 'FRA', to: 'HND', airlines: ['Lufthansa', 'ANA'] },
+  { from: 'MUC', to: 'JFK', airlines: ['Lufthansa', 'Delta'] },
+  { from: 'ZRH', to: 'JFK', airlines: ['Swiss', 'Delta'] },
+  { from: 'YYZ', to: 'LHR', airlines: ['Air Canada', 'British Airways'] },
+  { from: 'YYZ', to: 'HND', airlines: ['Air Canada', 'ANA'] },
+  { from: 'YVR', to: 'HND', airlines: ['Air Canada', 'ANA', 'Japan Airlines'] },
+  { from: 'YVR', to: 'ICN', airlines: ['Korean Air', 'Air Canada', 'WestJet'] },
+  { from: 'YVR', to: 'SYD', airlines: ['Qantas', 'Air Canada'] },
+  { from: 'GRU', to: 'MIA', airlines: ['American Airlines', 'Delta', 'Latam'] },
+  { from: 'GRU', to: 'JFK', airlines: ['Delta', 'American Airlines', 'Latam'] },
+  { from: 'GRU', to: 'LHR', airlines: ['British Airways', 'Latam'] },
+  { from: 'BOG', to: 'MIA', airlines: ['American Airlines', 'Avianca', 'Delta'] },
+  { from: 'BOG', to: 'JFK', airlines: ['Avianca', 'Delta', 'American Airlines'] },
+  { from: 'SCL', to: 'JFK', airlines: ['Delta', 'American Airlines', 'Latam'] },
+  { from: 'CPT', to: 'LHR', airlines: ['British Airways', 'Virgin Atlantic'] },
+  { from: 'CPT', to: 'DXB', airlines: ['Emirates', 'Qatar Airways'] },
+  { from: 'JNB', to: 'LHR', airlines: ['British Airways', 'Virgin Atlantic', 'South African Airways'] },
+  { from: 'JNB', to: 'DXB', airlines: ['Emirates', 'Qatar Airways', 'South African Airways'] },
+  { from: 'NBO', to: 'LHR', airlines: ['British Airways', 'Kenya Airways'] },
+  { from: 'CAI', to: 'LHR', airlines: ['British Airways', 'Egyptair'] },
+  { from: 'CAI', to: 'DXB', airlines: ['Egyptair', 'Emirates'] },
+  { from: 'LOS', to: 'LHR', airlines: ['British Airways', 'Virgin Atlantic'] },
+  { from: 'ADD', to: 'LHR', airlines: ['Ethiopian Airlines', 'British Airways'] },
+];
+
+function toRad(deg: number): number {
+  return deg * Math.PI / 180;
+}
+
+function haversine(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371; // Earth's radius in km
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function fmtDuration(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = Math.round(minutes % 60);
+  return h + 'h ' + m + 'min';
+}
+
+function getRouteKey(from: string, to: string): string {
+  return from + '-' + to;
+}
+
+function findAirlines(fromCode: string, toCode: string): string[] | null {
+  // Check both directions
+  const fwd = routeAirlines.find(r => r.from === fromCode && r.to === toCode);
+  if (fwd) return fwd.airlines;
+  const rev = routeAirlines.find(r => r.from === toCode && r.to === fromCode);
+  if (rev) return rev.airlines;
+  return null;
+}
+
+function formatTzOffset(hours: number): string {
+  if (hours === 0) return 'UTC';
+  const abs = Math.abs(hours);
+  const whole = Math.floor(abs);
+  const frac = Math.round((abs - whole) * 60);
+  const sign = hours > 0 ? '+' : '-';
+  return 'UTC' + sign + whole + (frac ? ':' + String(frac).padStart(2, '0') : '');
+}
+
+function calcFlight() {
+  const fromCode = (document.getElementById('flightFrom') as HTMLSelectElement).value;
+  const toCode = (document.getElementById('flightTo') as HTMLSelectElement).value;
+
+  if (!fromCode || !toCode) return;
+  if (fromCode === toCode) { alert('Departure and arrival airports must be different.'); return; }
+
+  const fromAirport = airports.find(a => a.code === fromCode);
+  const toAirport = airports.find(a => a.code === toCode);
+  if (!fromAirport || !toAirport) return;
+
+  const distKm = haversine(fromAirport.lat, fromAirport.lng, toAirport.lat, toAirport.lng);
+  const distMi = distKm * 0.621371;
+
+  // Flight time at 900 km/h cruise + 30 min buffer
+  const cruiseSpeed = 900; // km/h
+  const buffer = 30; // minutes
+  const flightMin = (distKm / cruiseSpeed) * 60 + buffer;
+
+  const airlines = findAirlines(fromCode, toCode);
+  const tzDiff = toAirport.tz - fromAirport.tz;
+  const tzStr = (tzDiff >= 0 ? '+' : '') + tzDiff + 'h (' + formatTzOffset(toAirport.tz) + ' vs ' + formatTzOffset(fromAirport.tz) + ')';
+
+  (document.getElementById('flightTimeDisplay') as HTMLElement).textContent = fmtDuration(flightMin);
+  (document.getElementById('flightDistance') as HTMLElement).textContent = distKm.toFixed(0) + ' km (' + distMi.toFixed(0) + ' mi)';
+  (document.getElementById('flightDepDisplay') as HTMLElement).textContent = fromAirport.code + ' — ' + fromAirport.city + ', ' + fromAirport.country;
+  (document.getElementById('flightArrDisplay') as HTMLElement).textContent = toAirport.code + ' — ' + toAirport.city + ', ' + toAirport.country;
+  (document.getElementById('flightTzDiff') as HTMLElement).textContent = tzStr;
+  (document.getElementById('flightAirlines') as HTMLElement).textContent = airlines ? airlines.join(', ') : 'Multiple airlines available — check with your preferred carrier';
+
+  showResult('flightResult');
+}
+
+function swapAirports() {
+  const from = document.getElementById('flightFrom') as HTMLSelectElement;
+  const to = document.getElementById('flightTo') as HTMLSelectElement;
+  const tmp = from.value;
+  from.value = to.value;
+  to.value = tmp;
+  calcFlight();
+}
+
+function populateAirports() {
+  const fromSel = document.getElementById('flightFrom') as HTMLSelectElement;
+  const toSel = document.getElementById('flightTo') as HTMLSelectElement;
+  let fromHtml = '<option value="">Select departure airport...</option>';
+  let toHtml = '<option value="">Select arrival airport...</option>';
+
+  // Group by continent/region for better UX
+  const regions: { label: string; codes: string[] }[] = [
+    { label: 'North America', codes: ['ATL','BOS','BWI','CLT','DEN','DFW','DTW','EWR','FLL','HNL','IAD','JFK','LAS','LAX','MCO','MIA','MSP','ORD','PDX','PHL','PHX','SAN','SEA','SFO','SLC','TPA','YUL','YVR','YYZ','MEX'] },
+    { label: 'Europe', codes: ['AMS','ARN','BCN','BER','BRU','CDG','CPH','DUB','FCO','FRA','GVA','HEL','LGW','LHR','LIS','MAD','MAN','MUC','MXP','NCE','OSL','PRG','VIE','WAW','ZRH','ATH','BUD','KEF','AGP','PMI'] },
+    { label: 'Asia', codes: ['BKK','DEL','DXB','HKG','ICN','KUL','MNL','NRT','HND','PEK','PVG','SIN','TPE','CTS','FUK','HKT','DPS','CGK','SGN','CAN','CMB','MLE'] },
+    { label: 'Middle East', codes: ['AUH','DOH','IST','RUH','JED','TLV'] },
+    { label: 'Oceania', codes: ['AKL','BNE','MEL','PER','SYD','CHC','WLG'] },
+    { label: 'Africa', codes: ['CAI','CPT','JNB','LOS','NBO','DAR','ADD','TUN'] },
+    { label: 'South America', codes: ['BOG','EZE','GIG','GRU','LIM','SCL','PTY','UIO'] },
+  ];
+
+  for (const region of regions) {
+    fromHtml += '<optgroup label="' + region.label + '">';
+    toHtml += '<optgroup label="' + region.label + '">';
+    for (const code of region.codes) {
+      const ap = airports.find(a => a.code === code);
+      if (ap) {
+        const label = ap.code + ' — ' + ap.city + ', ' + ap.country;
+        fromHtml += '<option value="' + ap.code + '">' + label + '</option>';
+        toHtml += '<option value="' + ap.code + '">' + label + '</option>';
+      }
+    }
+    fromHtml += '</optgroup>';
+    toHtml += '</optgroup>';
+  }
+
+  fromSel.innerHTML = fromHtml;
+  toSel.innerHTML = toHtml;
+  fromSel.value = 'JFK';
+  toSel.value = 'LHR';
+}
+
+document.getElementById('calcBtn')!.addEventListener('click', calcFlight);
+document.getElementById('swapBtn')!.addEventListener('click', swapAirports);
+document.addEventListener('DOMContentLoaded', () => { populateAirports(); calcFlight(); });
+</script>

@@ -48,9 +48,10 @@ const jsonLd = [
           <input type="number" id="infEndYear" value="2026" min="1913" max="2026">
         </div>
       </div>
+      <div style="margin-bottom:12px;font-size:0.82rem;color:var(--color-text-muted);" id="cpiStatus">Fetching latest CPI data...</div>
       <div class="btn-group">
-        <button class="btn btn-primary" id="calcBtn">Calculate</button>
-        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+        <button class="btn btn-primary" id="calcBtn" data-i18n="common.calculate">Calculate</button>
+        <button class="btn btn-secondary" id="resetBtn" data-i18n="common.reset">Reset</button>
       </div>
 
       <div class="result-box" id="infResult">
@@ -95,6 +96,49 @@ const jsonLd = [
 <script>
 import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';
 
+let liveCPI: Record<number, number> | null = null;
+
+async function fetchCPI() {
+  const statusEl = document.getElementById('cpiStatus');
+  if (statusEl) statusEl.textContent = 'Fetching latest CPI data from BLS...';
+
+  try {
+    const resp = await fetch('https://api.bls.gov/publicAPI/v2/timeseries/data/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        seriesid: ['CUUR0000SA0'],
+        startyear: '1913',
+        endyear: new Date().getFullYear().toString(),
+        annualaverage: true
+      })
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (data.status === 'REQUEST_SUCCEEDED' && data.Results?.series?.[0]?.data) {
+        const entries = data.Results.series[0].data;
+        const parsed: Record<number, number> = {};
+        for (const entry of entries) {
+          if (entry.period === 'M13') {
+            const year = parseInt(entry.year);
+            const value = parseFloat(entry.value);
+            if (!isNaN(year) && !isNaN(value)) {
+              parsed[year] = value;
+            }
+          }
+        }
+        if (Object.keys(parsed).length > 0) {
+          liveCPI = parsed;
+          if (statusEl) statusEl.textContent = 'Using live CPI data from Bureau of Labor Statistics';
+          return;
+        }
+      }
+    }
+  } catch (_e) { /* fall back to hardcoded data */ }
+
+  if (statusEl) statusEl.textContent = 'Using built-in CPI data (offline fallback)';
+}
+
 const CPI_DATA: Record<number, number> = {
   1913: 9.9, 1914: 10.0, 1915: 10.1, 1916: 10.9, 1917: 12.8,
   1918: 15.1, 1919: 17.3, 1920: 20.0, 1921: 17.9, 1922: 16.8,
@@ -123,8 +167,9 @@ const CPI_DATA: Record<number, number> = {
 };
 
 function getCPI(year: number): number {
-  const years = Object.keys(CPI_DATA).map(Number).sort((a, b) => a - b);
-  if (CPI_DATA[year] !== undefined) return CPI_DATA[year];
+  const source = liveCPI || CPI_DATA;
+  const years = Object.keys(source).map(Number).sort((a, b) => a - b);
+  if (source[year] !== undefined) return source[year];
 
   let before: number | undefined, after: number | undefined;
   for (let i = 0; i < years.length; i++) {
@@ -133,12 +178,12 @@ function getCPI(year: number): number {
   }
   if (before && after) {
     const fraction = (year - before) / (after - before);
-    return CPI_DATA[before] + fraction * (CPI_DATA[after] - CPI_DATA[before]);
+    return source[before] + fraction * (source[after] - source[before]);
   }
   const lastYear = years[years.length - 1];
   const prevYear = years[years.length - 2];
-  const avgRate = (CPI_DATA[lastYear] / CPI_DATA[prevYear]) - 1;
-  return CPI_DATA[lastYear] * Math.pow(1 + avgRate, year - lastYear);
+  const avgRate = (source[lastYear] / source[prevYear]) - 1;
+  return source[lastYear] * Math.pow(1 + avgRate, year - lastYear);
 }
 
 function calcInflation() {
@@ -175,5 +220,5 @@ function resetInflation() {
 
 document.getElementById('calcBtn')!.addEventListener('click', calcInflation);
 document.getElementById('resetBtn')!.addEventListener('click', resetInflation);
-document.addEventListener('DOMContentLoaded', calcInflation);
+document.addEventListener('DOMContentLoaded', () => { fetchCPI().then(() => calcInflation()); });
 </script>

@@ -6,5 +6,7 @@ export default defineConfig({
   output: 'static',
   site: 'https://freeonlinetoolkit.org',
   adapter: cloudflare(),
-  integrations: [sitemap()],
+  integrations: [sitemap({
+    filter: (page) => !page.includes('/404'),
+  })],
 });

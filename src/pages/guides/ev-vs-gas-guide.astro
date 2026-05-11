@@ -1,0 +1,107 @@
+---
+import GuideLayout from '../../layouts/GuideLayout.astro';
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: 'Guides', href: '/guides/' }, { label: 'EV vs Gas Guide' }];
+---
+<GuideLayout title="EV vs Gas Cars: Total Cost of Ownership Comparison | FreeOnlineToolkit" description="Compare electric vehicles vs gasoline cars on purchase price, fuel/charging costs, maintenance, and long-term value. Make an informed decision." breadcrumbItems={breadcrumbItems}>
+  <fragment slot="heading"><h1>EV vs Gas Cars: Total Cost of Ownership Comparison</h1></fragment>
+  <p class="guide-date"><em>Last updated: February 2026</em></p>
+
+  <h2>The Big Question: Are EVs Cheaper Overall?</h2>
+  <p>The answer depends on your specific situation. While electric vehicles typically have higher upfront purchase prices, they often cost significantly less to fuel and maintain. Over 5-10 years of ownership, an EV can save thousands of dollars compared to a comparable gas-powered vehicle.</p>
+  <p>This guide breaks down every cost component — purchase price, fuel/charging, maintenance, insurance, depreciation, and incentives — so you can make an informed decision based on your driving habits and local conditions.</p>
+
+  <h2>Upfront Purchase Price</h2>
+  <p>As of 2025-2026, the average new EV still costs $5,000-$10,000 more than a comparable gas-powered car. However, the gap is narrowing rapidly. Here is a comparison of popular models:</p>
+  <ul>
+    <li><strong>Budget EVs (Chevy Bolt, Nissan Leaf):</strong> $27,000 - $32,000</li>
+    <li><strong>Mid-range EVs (Tesla Model 3, Hyundai Ioniq 6):</strong> $38,000 - $47,000</li>
+    <li><strong>SUVs (Tesla Model Y, Ford Mustang Mach-E, Hyundai Ioniq 5):</strong> $43,000 - $55,000</li>
+    <li><strong>Comparable gas SUVs (Honda CR-V, Toyota RAV4):</strong> $29,000 - $38,000</li>
+  </ul>
+  <p>Price premiums are offset by federal tax credits of up to <strong>$7,500</strong> (for qualifying vehicles under the Inflation Reduction Act) and state-level incentives that can add another $1,500-$5,000.</p>
+
+  <h2>Fuel vs Charging Costs</h2>
+  <p>This is where EVs have the biggest advantage. The cost to "fuel" an EV is typically 30-60% less than the cost of gasoline for equivalent miles driven.</p>
+
+  <h3>Home Charging (Cheapest Option)</h3>
+  <p>The national average residential electricity rate is approximately $0.14/kWh. A typical EV gets 3-4 miles per kWh. So:</p>
+  <div class="formula-box">
+    <strong>Cost per mile (EV, home charging):</strong> $0.14 / 3.5 miles = $0.04/mile<br>
+    <strong>Cost per mile (gas, 30 MPG):</strong> $3.50 / 30 miles = $0.117/mile<br>
+    <strong>Annual savings (12,000 miles):</strong> ($0.117 - $0.04) × 12,000 = <strong>$924/year</strong>
+  </div>
+
+  <h3>Public Fast Charging</h3>
+  <p>DC fast charging (like Tesla Superchargers, Electrify America, EVgo) costs $0.30-$0.56/kWh, depending on location and membership plans. At $0.40/kWh, the cost per mile is approximately $0.11/mile — comparable to gasoline. For maximum savings, do most of your charging at home.</p>
+
+  <h3>Gas Prices by Region</h3>
+  <p>The savings from driving electric vary significantly by region because both electricity and gas prices differ. In California (high gas prices: $4.50+/gallon, moderate electricity: $0.25/kWh), EV savings are substantial. In states with cheap gas ($2.80/gallon) and expensive electricity ($0.20/kWh), the savings are smaller.</p>
+
+  <h2>Maintenance Costs</h2>
+  <p>EVs have far fewer moving parts than gas-powered vehicles. There is no engine oil to change, no transmission, no timing belt, no exhaust system, no spark plugs, and no fuel system. The result is significantly lower maintenance costs:</p>
+  <ul>
+    <li><strong>EV maintenance:</strong> ~$300-500/year (tire rotations, cabin air filter, brake fluid, windshield wipers)</li>
+    <li><strong>Gas car maintenance:</strong> ~$800-1,200/year (oil changes, transmission service, belts, hoses, more complex brake systems)</li>
+    <li><strong>Brake savings:</strong> EVs use regenerative braking, which dramatically extends brake pad life — often 100,000+ miles between brake replacements</li>
+    <li><strong>No emissions inspections:</strong> In many states, EVs are exempt from emissions testing requirements</li>
+  </ul>
+
+  <h2>Insurance Costs</h2>
+  <p>EVs typically cost 15-25% more to insure than comparable gas vehicles. This is because:</p>
+  <ul>
+    <li>EVs have higher repair costs (specialized parts, certified repair shops)</li>
+    <li>EVs are heavier, which can cause more damage in collisions</li>
+    <li>Battery replacement is extremely expensive ($5,000-$20,000)</li>
+  </ul>
+  <p>On average, expect to pay $200-$500 more per year for EV insurance compared to a similar gas car. Shop around — some insurers offer EV-specific policies with better rates.</p>
+
+  <h2>Depreciation</h2>
+  <p>EV depreciation has been a concern as prices drop and technology improves rapidly. Early EVs lost value faster than gas cars. However, this is changing:</p>
+  <ul>
+    <li>Some EVs (Tesla Model 3/Y, Porsche Taycan) hold value well — comparable to or better than gas equivalents</li>
+    <li>Lower-priced EVs with access to the Tesla Supercharger network tend to depreciate more slowly</li>
+    <li>The federal used EV tax credit (up to $4,000) has stabilized the used EV market</li>
+    <li>As EV adoption grows and battery technology matures, depreciation is normalizing</li>
+  </ul>
+
+  <h2>Total Cost of Ownership: 5-Year Comparison</h2>
+  <p>Here is a realistic 5-year total cost comparison between a Tesla Model 3 ($42,000) and a Honda Accord ($33,000), each driven 12,000 miles per year:</p>
+  <div class="formula-box">
+    <strong>Tesla Model 3 (5 years):</strong><br>
+    Purchase: $42,000 - $7,500 tax credit = $34,500<br>
+    Charging (80% home, 20% public): $3,024<br>
+    Maintenance: $2,000<br>
+    Insurance (premium): $10,500<br>
+    <strong>Total 5-year cost: ~$50,024</strong><br><br>
+    <strong>Honda Accord (5 years):</strong><br>
+    Purchase: $33,000<br>
+    Fuel (30 MPG, $3.50/gal): $7,000<br>
+    Maintenance: $5,000<br>
+    Insurance: $8,750<br>
+    <strong>Total 5-year cost: ~$53,750</strong>
+  </div>
+  <p>In this scenario, the EV saves approximately <strong>$3,726 over 5 years</strong>. With home charging and higher gas prices, the savings increase. With mostly public fast charging, the savings shrink.</p>
+
+  <h2>When an EV Makes Sense</h2>
+  <ul>
+    <li>You have a home with off-street parking for level 1 or level 2 charging</li>
+    <li>Your daily commute is within the EV's range (most EVs offer 250-350+ miles)</li>
+    <li>You live in an area with high gas prices and average or below-average electricity rates</li>
+    <li>You plan to keep the car for 5+ years to maximize fuel savings</li>
+    <li>Your state offers additional EV incentives or HOV lane access</li>
+  </ul>
+
+  <h2>When a Gas Car Still Makes Sense</h2>
+  <ul>
+    <li>You cannot install home charging (apartment, street parking, rental)</li>
+    <li>You regularly drive long distances in areas with limited fast-charging infrastructure</li>
+    <li>You live in an area with cheap gas and expensive electricity</li>
+    <li>You only plan to keep the car for 2-3 years</li>
+    <li>You need a heavy-duty truck for towing (though EV trucks like the Ford F-150 Lightning are changing this)</li>
+  </ul>
+
+  <h2>Use the EV Charging Calculator</h2>
+  <p>Run the numbers for your specific situation with our <a href="/ev-charging-calculator/">EV Charging Cost Calculator</a>. Compare charging costs at home vs public stations, and see how much you could save by switching to electric.</p>
+  <p><a href="/ev-charging-calculator/" class="btn btn-primary">Try the EV Charging Calculator</a></p>
+  <p><a href="/guides/">← Back to all guides</a></p>
+</GuideLayout>

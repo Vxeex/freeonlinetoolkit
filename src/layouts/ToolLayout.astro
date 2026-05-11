@@ -3,6 +3,9 @@ import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
+import SeoContent from '../components/SeoContent.astro';
+import EmailCapture from '../components/EmailCapture.astro';
+import { toolBySlug } from '../data/tools';
 
 export interface Props {
   title: string;
@@ -12,6 +15,9 @@ export interface Props {
 }
 
 const { title, description, breadcrumbItems, jsonLd } = Astro.props;
+const toolSlug = Astro.url.pathname.replace(/\/$/, '').split('/').pop() || '';
+const tool = toolBySlug[toolSlug];
+const toolTitle = tool?.title || 'Calculator';
 ---
 
 <BaseLayout title={title} description={description} jsonLd={jsonLd}>
@@ -23,6 +29,8 @@ const { title, description, breadcrumbItems, jsonLd } = Astro.props;
     <div class="tool-layout">
       <main class="tool-main">
         <slot name="calculator" />
+        <EmailCapture toolSlug={toolSlug} toolTitle={toolTitle} />
+        <SeoContent slug={toolSlug} />
         <slot name="content" />
       </main>
       <aside class="tool-sidebar">

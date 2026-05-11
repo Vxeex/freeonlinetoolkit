@@ -1,0 +1,201 @@
+---
+interface Props {
+  toolSlug: string;
+  toolTitle: string;
+}
+const { toolSlug, toolTitle } = Astro.props;
+---
+
+<div class="email-capture" data-slug={toolSlug}>
+  <div class="email-capture-inner">
+    <i class="fa-regular fa-envelope email-capture-icon"></i>
+    <h3>Get Your Results Emailed</h3>
+    <p class="email-capture-desc">
+      Enter your email and we'll send you a summary of your {toolTitle.toLowerCase()} calculation. No spam, unsubscribe anytime.
+    </p>
+    <form class="email-capture-form" data-tool={toolTitle}>
+      <div class="email-capture-fields">
+        <input
+          type="email"
+          class="email-capture-input"
+          placeholder="your@email.com"
+          required
+          autocomplete="email"
+        />
+        <button type="submit" class="btn btn-primary email-capture-btn">
+          <i class="fa-regular fa-paper-plane"></i> Send Results
+        </button>
+      </div>
+      <p class="email-capture-error" style="display:none;color:var(--color-danger);font-size:0.8rem;margin-top:8px;">
+        Please enter a valid email address.
+      </p>
+    </form>
+    <div class="email-capture-success" style="display:none;">
+      <i class="fa-regular fa-circle-check" style="color:var(--color-success);font-size:1.5rem;"></i>
+      <p class="email-capture-success-text">
+        <strong>Thanks!</strong> Check your inbox for your {toolTitle.toLowerCase()} results.
+      </p>
+      <p class="email-capture-success-note">
+        <small style="color:var(--color-text-muted);">Tip: Add <strong>vxeexvxeex@gmail.com</strong> to your contacts so you don't miss it.</small>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  class EmailCapture {
+    private form: HTMLFormElement;
+    private input: HTMLInputElement;
+    private error: HTMLElement;
+    private success: HTMLElement;
+    private container: HTMLElement;
+    private storageKey: string;
+
+    constructor(el: HTMLElement) {
+      this.container = el;
+      this.form = el.querySelector('.email-capture-form')!;
+      this.input = el.querySelector('.email-capture-input')!;
+      this.error = el.querySelector('.email-capture-error')!;
+      this.success = el.querySelector('.email-capture-success')!;
+      this.storageKey = `fot-email-sent-${el.dataset.slug || 'unknown'}`;
+
+      // Check if already submitted
+      if (localStorage.getItem(this.storageKey)) {
+        this.showSuccess();
+      }
+
+      this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+    }
+
+    private handleSubmit(e: Event) {
+      e.preventDefault();
+      const email = this.input.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        this.error.style.display = 'block';
+        return;
+      }
+      this.error.style.display = 'none';
+
+      // Store in localStorage
+      localStorage.setItem(this.storageKey, email);
+
+      // Track in session storage for analytics
+      const emailed = JSON.parse(sessionStorage.getItem('fot-emailed-tools') || '[]');
+      if (!emailed.includes(this.container.dataset.slug)) {
+        emailed.push(this.container.dataset.slug);
+        sessionStorage.setItem('fot-emailed-tools', JSON.stringify(emailed));
+      }
+
+      // TODO: Connect to an email service (Mailchimp, ConvertKit, SendGrid, etc.)
+      // For now, log the submission:
+      console.log('[EmailCapture] Submission:', {
+        email,
+        tool: this.form.dataset.tool || '',
+        slug: this.container.dataset.slug || '',
+        timestamp: new Date().toISOString(),
+      });
+
+      this.showSuccess();
+    }
+
+    private showSuccess() {
+      this.form.style.display = 'none';
+      this.success.style.display = 'block';
+    }
+  }
+
+  // Initialize on all email capture sections
+  document.querySelectorAll('.email-capture').forEach(el => {
+    new EmailCapture(el as HTMLElement);
+  });
+</script>
+
+<style>
+  .email-capture {
+    background: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .email-capture-inner {
+    padding: 24px 28px;
+    text-align: center;
+  }
+  .email-capture-icon {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+  .email-capture h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--color-text);
+  }
+  .email-capture-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .email-capture-fields {
+    display: flex;
+    gap: 8px;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .email-capture-input {
+    flex: 1;
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color 0.15s;
+    min-width: 0;
+  }
+  .email-capture-input:focus {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-glow);
+  }
+  .email-capture-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .email-capture-success {
+    animation: fadeSlideIn 0.35s var(--ease-out);
+  }
+  .email-capture-success-text {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .email-capture-success-text strong {
+    color: var(--color-primary);
+  }
+  .email-capture-success-note {
+    margin-top: 8px;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 640px) {
+    .email-capture-inner { padding: 20px; }
+    .email-capture-fields { flex-direction: column; }
+    .email-capture-btn { width: 100%; justify-content: center; }
+  }
+</style>

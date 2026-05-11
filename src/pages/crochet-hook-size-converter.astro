@@ -1,0 +1,291 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['crochet-hook-size-converter'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+
+const SYSTEMS = [
+  { id: 'us', label: 'US (United States — letter/number)' },
+  { id: 'uk', label: 'UK (United Kingdom — old numbering)' },
+  { id: 'jp', label: 'Japanese' },
+  { id: 'mm', label: 'Metric (mm) — Europe, Russia, China, India, Australia/NZ' },
+];
+
+// Standard crochet hook sizes with equivalent in each system
+interface HookSize {
+  mm: number;
+  us: string | null;
+  uk: string | null;
+  jp: string | null;
+}
+
+const SIZES: HookSize[] = [
+  { mm: 2.0,  us: null, uk: '14', jp: null },
+  { mm: 2.25, us: 'B/1',  uk: '13', jp: 'B/1' },
+  { mm: 2.5,  us: null,   uk: null, jp: null },
+  { mm: 2.75, us: 'C/2',  uk: '12', jp: 'C/2' },
+  { mm: 3.0,  us: null,   uk: '11', jp: null },
+  { mm: 3.25, us: 'D/3',  uk: '10', jp: 'D/3' },
+  { mm: 3.5,  us: 'E/4',  uk: null, jp: 'E/4' },
+  { mm: 3.75, us: 'F/5',  uk: '9',  jp: 'F/5' },
+  { mm: 4.0,  us: 'G/6',  uk: '8',  jp: 'G/6' },
+  { mm: 4.5,  us: '7',    uk: '7',  jp: '7' },
+  { mm: 5.0,  us: 'H/8',  uk: '6',  jp: 'H/8' },
+  { mm: 5.5,  us: 'I/9',  uk: '5',  jp: 'I/9' },
+  { mm: 6.0,  us: 'J/10', uk: '4',  jp: 'J/10' },
+  { mm: 6.5,  us: 'K/10.5',uk:'3',  jp: 'K/10.5' },
+  { mm: 7.0,  us: 'L/11', uk: '2',  jp: 'L/11' },
+  { mm: 8.0,  us: 'M/13', uk: '0',  jp: 'M/13' },
+  { mm: 9.0,  us: 'N/15', uk: '00', jp: 'N/15' },
+  { mm: 10.0, us: 'P/Q',  uk: '000',jp: 'P/Q' },
+  { mm: 11.5, us: 'Q',    uk: null, jp: 'Q' },
+  { mm: 12.0, us: 'S',    uk: null, jp: null },
+  { mm: 15.0, us: 'T',    uk: null, jp: null },
+  { mm: 16.0, us: 'U',    uk: null, jp: null },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: 'Why do US crochet hooks have both a letter and a number?',
+    a: 'US hooks are labeled with letters (B through S and beyond) and sometimes also a number (e.g., H/8). The number roughly corresponds to an old US steel hook sizing, not the mm diameter. Always check the mm measurement for accuracy.',
+  },
+  {
+    q: 'Which countries use which crochet hook system?',
+    a: 'The US uses letter/number labels. The UK has an old numbering system (now mostly replaced by metric). Japan uses a system similar to US. Europe, Russia, China, India, and Australia/NZ all use metric (mm) — the actual hook diameter.',
+  },
+  {
+    q: 'What is the most common crochet hook size?',
+    a: 'H/8 (5.0 mm) is the most popular size — it works well with worsted weight yarn, which is the most common yarn weight. It is a great all-around size for beginners.',
+  },
+  {
+    q: 'Can I substitute a hook size if I do not have the exact one?',
+    a: 'A difference of 0.25–0.5 mm is usually fine for most projects, but it changes your gauge (tension). For garments or fitted items, always make a gauge swatch. Going up a size makes looser stitches; going down makes tighter ones.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to Convert Crochet Hook Sizes',
+    description: tool.description,
+    step: [
+      { '@type': 'HowToStep', text: 'Select your current sizing system (US, UK, Japanese, or metric)' },
+      { '@type': 'HowToStep', text: 'Enter the hook size you want to convert' },
+      { '@type': 'HowToStep', text: 'Instantly see the equivalent sizes across all systems' },
+      { '@type': 'HowToStep', text: 'Use the full reference chart for quick comparisons' },
+    ],
+  },
+];
+
+const relatedTools = [
+  toolBySlug['knitting-needle-size-converter'],
+  toolBySlug['unit-converter'],
+  toolBySlug['percentage-calculator'],
+].filter(Boolean);
+---
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">
+      Crochet hook sizes are labeled differently around the world — US letters, UK numbers, and Japanese sizing.
+      This converter shows the exact metric (mm) equivalent across all major systems at a glance.
+    </p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Crochet Hook Size Converter</h2>
+
+      <div class="form-group">
+        <label for="hookSystem">Your System</label>
+        <select id="hookSystem">
+          {SYSTEMS.map(s => <option value={s.id}>{s.label}</option>)}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="hookSize">Your Hook Size</label>
+        <select id="hookSize"></select>
+      </div>
+
+      <div id="hookResult" class="converter-result">
+        <div class="result-placeholder">Select a size to see conversions</div>
+      </div>
+
+      <div class="chart-section">
+        <h3>Complete Size Reference Chart</h3>
+        <div class="table-wrap">
+          <table class="size-chart" id="hookChart">
+            <thead>
+              <tr>
+                <th>Metric (mm)</th>
+                <th>US</th>
+                <th>UK (old)</th>
+                <th>Japanese</th>
+                <th>Used In</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SIZES.filter(s => s.us || s.uk || s.jp).map(s => (
+                <tr data-mm={s.mm}>
+                  <td><strong>{s.mm.toFixed(2).replace('.00', '')} mm</strong></td>
+                  <td>{s.us ?? '—'}</td>
+                  <td>{s.uk ?? '—'}</td>
+                  <td>{s.jp ?? '—'}</td>
+                  <td class="region-cell">
+                    {s.us ? 'US · ' : ''}
+                    {s.uk ? 'UK · ' : ''}
+                    {s.jp ? 'JP · ' : ''}
+                    Europe<br />Russia · China · India · AU/NZ
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="faq">
+    <FAQ items={FAQ_ITEMS} />
+  </fragment>
+
+  <fragment slot="related">
+    <RelatedTools tools={relatedTools} />
+  </fragment>
+</ToolLayout>
+
+<script>
+  interface HookRow { mm: number; us: string | null; uk: string | null; jp: string | null; }
+
+  const rows = document.querySelectorAll('#hookChart tbody tr');
+  const allSizes: HookRow[] = [];
+  rows.forEach(tr => {
+    const tds = tr.querySelectorAll('td');
+    allSizes.push({
+      mm: parseFloat(tr.getAttribute('data-mm')!),
+      us: tds[1].textContent!.trim() === '—' ? null : tds[1].textContent!.trim(),
+      uk: tds[2].textContent!.trim() === '—' ? null : tds[2].textContent!.trim(),
+      jp: tds[3].textContent!.trim() === '—' ? null : tds[3].textContent!.trim(),
+    });
+  });
+
+  const sysSelect = document.getElementById('hookSystem') as HTMLSelectElement;
+  const sizeSelect = document.getElementById('hookSize') as HTMLSelectElement;
+  const resultDiv = document.getElementById('hookResult')!;
+
+  function getVal(row: HookRow, sys: string): string | null {
+    if (sys === 'mm') return row.mm.toFixed(2).replace(/\.?0+$/, '');
+    return row[sys as keyof HookRow] as string | null;
+  }
+
+  function populateSizes() {
+    const sys = sysSelect.value;
+    sizeSelect.innerHTML = '';
+    allSizes.forEach((row, idx) => {
+      const val = getVal(row, sys);
+      if (val !== null && val !== '—') {
+        const opt = document.createElement('option');
+        opt.value = String(idx);
+        opt.textContent = val + (sys === 'mm' ? ' mm' : '');
+        sizeSelect.appendChild(opt);
+      }
+    });
+  }
+
+  function convert() {
+    const idx = parseInt(sizeSelect.value, 10);
+    if (isNaN(idx)) { resultDiv.innerHTML = '<div class="result-placeholder">Select a size to see conversions</div>'; return; }
+    const row = allSizes[idx];
+    const srcSys = sysSelect.value;
+    const srcVal = getVal(row, srcSys);
+
+    document.querySelectorAll('#hookChart tbody tr').forEach(tr => tr.classList.remove('highlight'));
+    const chartRow = document.querySelector(`#hookChart tbody tr[data-mm="${row.mm}"]`);
+    if (chartRow) chartRow.classList.add('highlight');
+
+    resultDiv.innerHTML = `
+      <div class="result-banner">${srcVal}${srcSys === 'mm' ? ' mm' : ''} = <strong>${row.mm.toFixed(2).replace(/\.?0+$/, '')} mm</strong></div>
+      <div class="result-cards">
+        <div class="result-card ${row.us ? '' : 'na'}">
+          <span class="rc-badge us">US</span>
+          <span class="rc-value">${row.us ?? '—'}</span>
+        </div>
+        <div class="result-card ${row.uk ? '' : 'na'}">
+          <span class="rc-badge uk">UK</span>
+          <span class="rc-value">${row.uk ?? '—'}</span>
+        </div>
+        <div class="result-card ${row.jp ? '' : 'na'}">
+          <span class="rc-badge jp">JP</span>
+          <span class="rc-value">${row.jp ?? '—'}</span>
+        </div>
+        <div class="result-card">
+          <span class="rc-badge">mm</span>
+          <span class="rc-value">${row.mm.toFixed(2).replace(/\.?0+$/, '')}</span>
+          <span class="rc-sub">EU/RU/CN/IN/AU/NZ</span>
+        </div>
+      </div>`;
+  }
+
+  sysSelect.addEventListener('change', () => { populateSizes(); convert(); });
+  sizeSelect.addEventListener('change', convert);
+
+  populateSizes();
+  if (sizeSelect.options.length > 0) convert();
+</script>
+
+<style>
+  .converter-result { margin-top: 1rem; }
+  .result-placeholder { color: var(--color-text-muted); font-style: italic; padding: 1rem 0; text-align: center; }
+
+  .result-banner {
+    background: var(--color-primary);
+    color: var(--color-inverse-fg);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 1.15rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .result-banner strong { font-size: 1.3rem; }
+
+  .result-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.6rem; }
+  .result-card {
+    display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+    padding: 0.7rem 0.5rem; border-radius: var(--radius-sm);
+    background: var(--color-surface); border: 1px solid var(--color-border);
+  }
+  .result-card.na { opacity: 0.3; }
+  .rc-badge {
+    font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px;
+    background: var(--color-primary-bg); color: var(--color-primary); letter-spacing: 0.5px;
+  }
+  .rc-badge.us { background: #dbeafe; color: #1d4ed8; }
+  .rc-badge.uk { background: #fef3c7; color: #b45309; }
+  .rc-badge.jp { background: #fce7f3; color: #be185d; }
+  .rc-value { font-size: 1.15rem; font-weight: 700; }
+  .rc-sub { font-size: 0.6rem; color: var(--color-text-muted); margin-top: 0.1rem; }
+
+  .chart-section { margin-top: 2rem; }
+  .chart-section h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+
+  .size-chart { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .size-chart th { background: var(--color-surface); padding: 0.6rem 0.75rem; text-align: left; font-weight: 600; border-bottom: 2px solid var(--color-border); position: sticky; top: 0; }
+  .size-chart td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--color-border); }
+  .size-chart tbody tr:hover { background: var(--color-surface-hover); }
+  .size-chart tbody tr.highlight { background: var(--color-primary-bg); border-left: 4px solid var(--color-primary); }
+  .size-chart .region-cell { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.4; }
+
+  .table-wrap { overflow-x: auto; max-height: 480px; overflow-y: auto; border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+
+  @media (max-width: 640px) {
+    .size-chart { font-size: 0.8rem; }
+    .size-chart th, .size-chart td { padding: 0.4rem 0.5rem; }
+    .result-cards { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

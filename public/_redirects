@@ -1,3 +1,9 @@
 # Cloudflare Pages redirects
 # SPA-style: serve index.html for each path
 /* /404.html 404
+
+# Sitemap redirect
+/sitemap.xml /sitemap-index.xml 301
+
+# WWW → non-WWW redirect (canonical domain)
+https://www.freeonlinetoolkit.org/* https://freeonlinetoolkit.org/:splat 301

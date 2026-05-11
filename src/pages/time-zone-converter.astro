@@ -150,6 +150,19 @@ function populateTZ() {
   toSel.value = '-300';
 }
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function fmtTime(d: Date): string {
+  const h = d.getUTCHours();
+  const m = d.getUTCMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  return (h % 12 || 12) + ':' + String(m).padStart(2, '0') + ' ' + ampm;
+}
+
+function fmtDate(d: Date): string {
+  return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear();
+}
+
 function convertTZ() {
   const fromOffset = parseInt((document.getElementById('tzFrom') as HTMLSelectElement).value);
   const toOffset = parseInt((document.getElementById('tzTo') as HTMLSelectElement).value);
@@ -165,11 +178,10 @@ function convertTZ() {
   const utcMs = sourceDate.getTime() - (fromOffset * 60000);
   const targetDate = new Date(utcMs + (toOffset * 60000));
 
-  const targetTime = targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-  const targetDateStr = targetDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-
-  const sourceTime = sourceDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-  const sourceDateStr = sourceDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const sourceTime = fmtTime(sourceDate);
+  const sourceDateStr = fmtDate(sourceDate);
+  const targetTime = fmtTime(targetDate);
+  const targetDateStr = fmtDate(targetDate);
 
   const diffMin = toOffset - fromOffset;
   const diffHours = Math.floor(Math.abs(diffMin) / 60);

@@ -13,13 +13,14 @@ const pageDesc = `Browse our collection of ${guides.length} in-depth guides cove
 
 <BaseLayout title={pageTitle} description={pageDesc}>
   <Header />
+  <main>
   <div class="tool-page">
     <Breadcrumb items={breadcrumbItems} />
-    <h1>Guides & Resources</h1>
-    <p class="tool-intro">Learn how to use our calculators effectively and understand the concepts behind them. Our guides break down complex topics into simple, actionable advice.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
-      {guides.map(g => (
-        <a href={`/guides/${g.slug}/`} class="guide-card">
+    <h1 class="animate-in">Guides & Resources</h1>
+    <p class="tool-intro animate-in animate-in-delay-1">Learn how to use our calculators effectively and understand the concepts behind them. Our guides break down complex topics into simple, actionable advice.</p>
+    <div class="guides-grid">
+      {guides.map((g, i) => (
+        <a href={`/guides/${g.slug}/`} class="guide-card animate-in" style={`transition-delay:${(i % 12) * 0.06}s;`}>
           <span class="guide-card-icon" style={`background:${g.color}18;color:${g.color};`}>
             <i class={`fa-solid ${g.icon}`}></i>
           </span>
@@ -31,5 +32,10 @@ const pageDesc = `Browse our collection of ${guides.length} in-depth guides cove
       ))}
     </div>
   </div>
+  </main>
   <Footer />
+  <script>
+    import { initScrollAnimations } from '../../utils/scroll-animations';
+    initScrollAnimations();
+  </script>
 </BaseLayout>
