@@ -40,3 +40,9 @@ const toolTitle = tool?.title || 'Calculator';
   </div>
   <Footer />
 </BaseLayout>
+
+<script>
+  import { trackRecentTool } from '../utils/recent-tools';
+  const toolSlug = window.location.pathname.replace(/\/$/, '').split('/').filter(Boolean).pop() || '';
+  if (toolSlug) trackRecentTool(toolSlug);
+</script>

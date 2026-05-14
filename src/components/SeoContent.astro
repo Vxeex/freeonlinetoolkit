@@ -1,0 +1,429 @@
+---
+import { toolBySlug, type Tool } from '../data/tools';
+import { categories } from '../data/categories';
+import { toolContent } from '../data/tool-content';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const tool = toolBySlug[slug];
+if (!tool) return;
+
+const content = toolContent[slug];
+const category = categories.find(c => c.id === tool.category);
+const catTools = category
+  ? category.toolSlugs.map(s => toolBySlug[s]).filter(Boolean) as Tool[]
+  : [];
+const related = catTools.filter(t => t.slug !== slug).slice(0, 4);
+
+const categoryName = category?.name || 'tools';
+const catId = category?.id || '';
+const lowerTitle = tool.title.toLowerCase();
+
+// Tool-specific quick start steps — generates unique content per tool from data
+function getSteps(slug: string): { label: string; text: string }[] {
+  const c = toolContent[slug];
+  if (c?.example?.steps) {
+    return c.example.steps;
+  }
+  return [
+    { label: 'Enter your values', text: 'Fill in the fields with numbers relevant to your situation. Most fields include sensible defaults so you can see results right away.' },
+    { label: 'Adjust the settings', text: 'Change options like units, timeframes, or rates to match your specific scenario. Each change updates the results instantly.' },
+    { label: 'Read your results', text: 'The output is displayed clearly with a breakdown of each component so you understand how the total is calculated.' },
+    { label: 'Try different scenarios', text: 'Change one input at a time to see how it affects the outcome. This helps you make more informed decisions.' },
+  ];
+}
+
+const quickSteps = getSteps(slug);
+
+// Tool-specific usage context
+const usageContext: Record<string, { audience: string; tip: string }> = {
+  financial: {
+    audience: 'homebuyers, investors, and budget-conscious individuals',
+    tip: 'Try adjusting the interest rate or loan term by small amounts to see how much you could save over the long run.',
+  },
+  'business-finance': {
+    audience: 'entrepreneurs, startup founders, and business owners',
+    tip: 'Use the results as a starting point for discussions with your financial advisor or accountant.',
+  },
+  'health-wellness': {
+    audience: 'health-conscious individuals, fitness enthusiasts, and anyone tracking their well-being',
+    tip: 'Track your results over time to see trends and progress toward your health goals.',
+  },
+  'health-insurance': {
+    audience: 'individuals and families planning their healthcare coverage',
+    tip: 'Review your results annually during open enrollment when your circumstances or plan options change.',
+  },
+  utility: {
+    audience: 'students, professionals, and anyone who needs quick answers',
+    tip: 'Bookmark this page for quick access whenever you need it again.',
+  },
+  legal: {
+    audience: 'individuals planning for legal situations and estimating potential costs',
+    tip: 'Use this as an educational estimate and consult a qualified professional for official advice.',
+  },
+  developer: {
+    audience: 'developers, IT professionals, and system architects',
+    tip: 'Combine this with your actual usage data for the most accurate budget projections.',
+  },
+  ecommerce: {
+    audience: 'e-commerce sellers, marketers, and online business owners',
+    tip: 'Run multiple scenarios with different margin assumptions to stress-test your business model.',
+  },
+  saas: {
+    audience: 'SaaS founders, product managers, and growth teams',
+    tip: 'Share these metrics with your team to align on growth targets and unit economics.',
+  },
+  freelancing: {
+    audience: 'freelancers, contractors, and consultants',
+    tip: 'Revisit your rates annually as your skills, experience, and expenses evolve.',
+  },
+  hr: {
+    audience: 'HR professionals, business owners, and hiring managers',
+    tip: 'Factor in company-specific costs like training, equipment, and benefits beyond the base salary.',
+  },
+  education: {
+    audience: 'students, parents, and educators',
+    tip: 'Use the results to set realistic goals and create a plan to achieve them.',
+  },
+  automotive: {
+    audience: 'car owners, commuters, and travel planners',
+    tip: 'Compare multiple scenarios — such as different vehicles or routes — to find the most cost-effective option.',
+  },
+  lifestyle: {
+    audience: 'individuals planning major life events and purchases',
+    tip: 'Share the results with family members or partners to align on budget decisions together.',
+  },
+  food: {
+    audience: 'home cooks, bakers, and food enthusiasts',
+    tip: 'Save your favorite settings so you can quickly recalculate next time.',
+  },
+  'real-estate': {
+    audience: 'home buyers, sellers, and real estate investors',
+    tip: 'Use these estimates alongside professional advice from a real estate agent or mortgage broker.',
+  },
+  homeowner: {
+    audience: 'homeowners and DIY enthusiasts planning improvement projects',
+    tip: 'Always add 10-15% buffer to material estimates for waste and unexpected issues.',
+  },
+  moving: {
+    audience: 'individuals and families planning a move',
+    tip: 'Get quotes from at least three moving companies to compare with this estimate.',
+  },
+};
+
+const context = usageContext[catId] || {
+  audience: 'anyone who needs quick, accurate results',
+  tip: 'Try different input values to see how small changes can make a big difference.',
+};
+
+// Tool-specific FAQ items
+const faqByCategory: Record<string, { q: string; a: string }[]> = {
+  financial: [
+    { q: 'How accurate is this calculator?', a: 'This calculator provides accurate results based on the inputs you enter. The calculations follow standard financial formulas used by banks and financial institutions. Always verify critical numbers with a professional.' },
+    { q: 'Can I save or print my results?', a: 'Yes! You can use your browser\'s print function (Ctrl+P or Cmd+P) to save or print the results. We recommend taking a screenshot for quick reference.' },
+    { q: 'Is this calculator really free?', a: 'Yes, 100% free. No signup, no hidden fees, no usage limits. Use it as many times as you need.' },
+  ],
+  'health-wellness': [
+    { q: 'Should I use this instead of seeing a doctor?', a: 'No. This tool provides educational estimates only. Always consult a healthcare professional for medical advice, diagnosis, or treatment.' },
+    { q: 'How often should I use this tool?', a: 'Use it as often as you like. Tracking your results weekly or monthly can help you spot trends and monitor progress over time.' },
+  ],
+  utility: [
+    { q: 'Is there a limit on how many times I can use this?', a: 'No limits at all. Use it as many times as you need, completely free.' },
+    { q: 'Does this work on mobile devices?', a: 'Yes. The tool is fully responsive and works on smartphones, tablets, and desktop browsers.' },
+  ],
+  ecommerce: [
+    { q: 'How should I use these numbers?', a: 'Use them as a starting point for your business planning. Market conditions, fees, and pricing change frequently, so revisit your calculations regularly.' },
+    { q: 'Are the fee estimates up to date?', a: 'We update fee structures as platforms announce changes. However, always verify current fees on the platform\'s official website.' },
+  ],
+  developer: [
+    { q: 'How are the estimates calculated?', a: 'The tool uses published pricing from official provider documentation. Actual costs may vary based on your specific usage patterns, reserved instances, and negotiated discounts.' },
+  ],
+  education: [
+    { q: 'Can schools use this tool?', a: 'Absolutely. Teachers and students can use it in the classroom, for homework, or personal planning. No registration needed.' },
+  ],
+  food: [
+    { q: 'Can I adjust the measurements?', a: 'Yes. The tool supports different units and serving sizes. Adjust the inputs to match your specific recipe or needs.' },
+  ],
+};
+
+// Use tool-specific FAQs if available, fall back to category FAQs, then generic
+const toolFaqs = content?.faqs || [];
+const categoryFaqs = faqByCategory[catId] || [];
+const genericFaqs = [
+  { q: 'How accurate are the results?', a: 'Results are based on standard formulas and the values you enter. They are accurate for educational and planning purposes.' },
+  { q: 'Is this tool really free?', a: 'Yes, completely free. No signup, no hidden charges, no usage limits. Use it as often as you need.' },
+  { q: 'Can I share the results?', a: 'Yes. You can take a screenshot or share the page link with anyone. The tool works the same for everyone.' },
+];
+
+const faqItems = [...toolFaqs, ...categoryFaqs, ...genericFaqs].slice(0, 5);
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqItems.map(item => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": { "@type": "Answer", "text": item.a }
+  }))
+};
+
+// Article schema for better search results
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": `How to Use the ${tool.title}`,
+  "description": tool.description,
+  "author": { "@type": "Person", "name": "FreeOnlineToolkit Editorial Team" },
+  "dateModified": content?.lastUpdated || '2026-01-01',
+  "publisher": {
+    "@type": "Organization",
+    "name": "FreeOnlineToolkit.org",
+    "url": "https://freeonlinetoolkit.org"
+  }
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+<script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+
+<section class="seo-content-section">
+  {content?.overview ? (
+    <>
+      <h2>About the {tool.title}</h2>
+      <p>{content.overview}</p>
+    </>
+  ) : (
+    <>
+      <h2>How to Use the {tool.title}</h2>
+      <p>
+        The <strong>{tool.title}</strong> helps you {tool.description.charAt(0).toLowerCase() + tool.description.slice(1).replace(/\.\s*$/, '')}.
+        Whether you are {context.audience} — this tool gives you accurate results instantly.
+      </p>
+    </>
+  )}
+
+  <h3>Quick Start Guide</h3>
+  <ol>
+    {quickSteps.map(step => (
+      <li><strong>{step.label}</strong> — {step.text}</li>
+    ))}
+  </ol>
+
+  {content?.methodology && (
+    <>
+      <h3>How It Works</h3>
+      <p>{content.methodology}</p>
+    </>
+  )}
+
+  {content?.example && content.example.steps ? (
+    <>
+      <h3>Real-World Example</h3>
+      <p><strong>Scenario:</strong> {content.example.scenario}</p>
+      <ol>
+        {content.example.steps.map(step => (
+          <li><strong>{step.label}:</strong> {step.text}</li>
+        ))}
+      </ol>
+      <div class="seo-example-result">
+        <strong>Result:</strong> {content.example.result}
+      </div>
+    </>
+  ) : content?.example ? (
+    <>
+      <h3>Real-World Example</h3>
+      <p><strong>Scenario:</strong> {content.example.scenario}</p>
+      <div class="seo-example-result">
+        <strong>Result:</strong> {content.example.result}
+      </div>
+    </>
+  ) : null}
+
+  <h3>Who Is This For?</h3>
+  <p>
+    This <strong>{lowerTitle}</strong> is designed for {context.audience}. It's intentionally simple — no complex signup forms, no data tracking, no distractions. Just enter your numbers and get the answer.
+  </p>
+
+  <h3>Pro Tip</h3>
+  <p>
+    {context.tip}
+  </p>
+
+  {content?.references && content.references.length > 0 && (
+    <>
+      <h3>Sources &amp; References</h3>
+      <ul class="seo-references">
+        {content.references.map(ref => (
+          <li>
+            <a href={ref.url} target="_blank" rel="noopener noreferrer">{ref.name}</a>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  {related.length > 0 && (
+    <>
+      <h3>Explore More {categoryName}</h3>
+      <p>These related tools work well alongside the {lowerTitle}:</p>
+      <ul class="seo-related-list">
+        {related.map(t => (
+          <li>
+            <a href={`/${t.slug}/`}>{t.shortTitle || t.title}</a>
+            <span class="seo-related-desc"> — {t.shortDescription || t.description.replace(/\.$/, '').split('.').slice(0, 1)}.</span>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  <h3>Frequently Asked Questions</h3>
+  <div class="seo-faq">
+    {faqItems.map(item => (
+      <details class="seo-faq-item">
+        <summary class="seo-faq-question">{item.q}</summary>
+        <p class="seo-faq-answer">{item.a}</p>
+      </details>
+    ))}
+  </div>
+
+  <div class="seo-footer-meta">
+    <span class="seo-last-updated">Last updated: {content?.lastUpdated || 'January 2026'}</span>
+    <span class="seo-editorial">— FreeOnlineToolkit Editorial Team</span>
+  </div>
+</section>
+
+<style>
+  .seo-content-section {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .seo-content-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+  }
+  .seo-content-section h3 {
+    font-size: 1.05rem;
+    margin: 1.25rem 0 0.5rem;
+    color: var(--color-text);
+  }
+  .seo-content-section p {
+    margin-bottom: 0.75rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+  .seo-content-section ol {
+    padding-left: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .seo-content-section li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .seo-content-section .seo-related-list {
+    list-style: none;
+    padding: 0;
+  }
+  .seo-content-section .seo-related-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .seo-content-section .seo-related-list li:last-child {
+    border-bottom: none;
+  }
+  .seo-content-section .seo-related-list a {
+    font-weight: 600;
+  }
+  .seo-related-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.88rem;
+  }
+
+  .seo-example-result {
+    background: var(--color-bg);
+    border-left: 3px solid var(--color-primary);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text);
+  }
+
+  .seo-references {
+    list-style: none;
+    padding: 0;
+  }
+  .seo-references li {
+    padding: 0.25rem 0;
+  }
+  .seo-references a {
+    color: var(--color-primary);
+    font-size: 0.85rem;
+  }
+  .seo-references a::before {
+    content: '↗ ';
+    font-size: 0.8rem;
+  }
+
+  .seo-footer-meta {
+    margin-top: 1.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border-light);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+  .seo-editorial {
+    color: var(--color-text-muted);
+  }
+
+  /* FAQ inside SEO content */
+  .seo-faq {
+    margin-top: 0.5rem;
+  }
+  .seo-faq-item {
+    border-bottom: 1px solid var(--color-border-light);
+    padding: 0.5rem 0;
+  }
+  .seo-faq-item:first-child {
+    border-top: 1px solid var(--color-border-light);
+  }
+  .seo-faq-question {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
+    color: var(--color-text);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .seo-faq-question::-webkit-details-marker {
+    display: none;
+  }
+  .seo-faq-question::after {
+    content: '+';
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .seo-faq-item[open] .seo-faq-question::after {
+    content: '−';
+  }
+  .seo-faq-answer {
+    padding: 0.25rem 0 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>

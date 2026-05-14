@@ -3,12 +3,13 @@ import InfoLayout from '../layouts/InfoLayout.astro';
 import { totalToolsCount } from '../data/tools';
 ---
 
-<InfoLayout title="About Us | FreeOnlineToolkit" description="FreeOnlineToolkit.org provides 80+ free online calculators and tools. Learn about our mission, expertise, and commitment to accuracy and privacy.">
+<InfoLayout title="About Us | FreeOnlineToolkit" description="FreeOnlineToolkit.org provides 80+ free online calculators and tools. Learn about our mission, editorial process, expertise, and commitment to accuracy and privacy.">
   <h1 class="animate-in">About FreeOnlineToolkit</h1>
+  <p class="animate-in animate-in-delay-1"><em>Last updated: May 2026</em></p>
 
   <h2 class="animate-in"><i class="fa-solid fa-bullseye"></i> Our Mission</h2>
   <p class="animate-in animate-in-delay-1">FreeOnlineToolkit.org was created with a simple mission: provide <strong>fast, accurate, and completely free</strong> online calculators and tools for everyone. We believe that essential calculation tools — from mortgage payments to health metrics — should be accessible to all, without signups, hidden fees, or complicated interfaces.</p>
-  <p class="animate-in animate-in-delay-2">Every tool on this site is designed with a single goal: give you the answer you need in seconds, with clear explanations of how the result was calculated.</p>
+  <p class="animate-in animate-in-delay-2">Every tool on this site is designed with a single goal: give you the answer you need in seconds, with clear explanations of how the result was calculated. Our accompanying guides and editorial content provide the context you need to understand and apply the results to your real-world situation.</p>
 
   <h2 class="animate-in"><i class="fa-solid fa-calculator"></i> What We Offer</h2>
   <p class="animate-in animate-in-delay-1">Our platform currently features <strong>{totalToolsCount}+ free tools</strong> across multiple categories, each built with accuracy and usability as top priorities:</p>
@@ -24,34 +25,56 @@ import { totalToolsCount } from '../data/tools';
   </ul>
 
   <h2 class="animate-in"><i class="fa-solid fa-book-open"></i> Our Expertise</h2>
-  <p class="animate-in animate-in-delay-1">Our calculators are built using established formulas and methodologies from recognized sources:</p>
+  <p class="animate-in animate-in-delay-1">Our calculators are built using established formulas and methodologies from recognized sources. We carefully research and implement standard industry formulas so you can trust the results:</p>
   <ul>
-    <li class="animate-in animate-in-delay-1"><strong>Financial tools</strong> follow standard industry formulas (amortization, compound interest, DTI ratios, NPV calculations) used by financial institutions</li>
-    <li class="animate-in animate-in-delay-2"><strong>Health calculators</strong> use clinically validated methods (Naegele Rule for due dates, US Navy method for body fat, Devine and Hamwi formulas for ideal weight)</li>
-    <li class="animate-in animate-in-delay-3"><strong>Legal estimators</strong> are based on published settlement data and common industry multiplier methods</li>
-    <li class="animate-in animate-in-delay-4"><strong>Conversion tools</strong> use official reference rates and standardized unit definitions</li>
+    <li class="animate-in animate-in-delay-1"><strong>Financial tools</strong> follow standard industry formulas (amortization, compound interest, DTI ratios, NPV calculations) used by financial institutions worldwide</li>
+    <li class="animate-in animate-in-delay-2"><strong>Health calculators</strong> use clinically validated methods including the Naegele Rule for due dates, the US Navy circumference method for body fat, the Mifflin-St Jeor equation for calorie needs, and the Devine, Robinson, Miller, and Hamwi formulas for ideal weight</li>
+    <li class="animate-in animate-in-delay-3"><strong>Legal estimators</strong> are based on published settlement data and common industry multiplier methods, providing educational estimates rather than legal guarantees</li>
+    <li class="animate-in animate-in-delay-4"><strong>Conversion tools</strong> use official reference rates and standardized unit definitions from NIST and international standards organizations</li>
+    <li class="animate-in animate-in-delay-5"><strong>Developer and SaaS calculators</strong> use published pricing from official provider documentation (AWS, Azure, Google Cloud, OpenAI, Confluent)</li>
   </ul>
-  <p class="animate-in animate-in-delay-2">Each tool includes inline explanations of the formula used, so you understand not just the result but how it was derived. Our 15 in-depth guides provide further educational context for the most popular tools.</p>
+  <p class="animate-in animate-in-delay-2">Each tool includes inline explanations of the formula used, so you understand not just the result but how it was derived. Our growing library of in-depth guides provides further educational context for the most popular tools. Many pages include references to authoritative external sources such as the CDC, WHO, IRS, CFPB, and peer-reviewed research.</p>
 
-  <h2 class="animate-in"><i class="fa-solid fa-file-circle-check"></i> Our Commitment to Accuracy</h2>
-  <p class="animate-in animate-in-delay-1">We take accuracy seriously. Every calculator on this site undergoes systematic testing:</p>
+  <h2 class="animate-in"><i class="fa-solid fa-file-circle-check"></i> Our Editorial Standards</h2>
+  <p class="animate-in animate-in-delay-1">We take the quality and accuracy of our content seriously. Every tool page on this site undergoes a structured editorial process:</p>
   <ul>
-    <li class="animate-in animate-in-delay-1">Each tool is tested with known inputs and compared against verified results</li>
-    <li class="animate-in animate-in-delay-2">Edge cases (zero values, very large numbers, negative inputs) are handled explicitly</li>
-    <li class="animate-in animate-in-delay-3">Formulas are reviewed against industry standards and updated when necessary</li>
-    <li class="animate-in animate-in-delay-4">User feedback about potential errors is investigated and resolved promptly</li>
+    <li class="animate-in animate-in-delay-1"><strong>Formula verification:</strong> Each calculator uses formulas verified against authoritative sources — financial formulas from banking standards, health formulas from peer-reviewed medical research, and conversion factors from official measurement standards</li>
+    <li class="animate-in animate-in-delay-2"><strong>Systematic testing:</strong> Every tool is tested with known inputs and compared against verified results before publication. Edge cases (zero values, very large numbers, negative inputs, boundary conditions) are explicitly handled.</li>
+    <li class="animate-in animate-in-delay-3"><strong>Regular reviews:</strong> Content is reviewed and updated periodically. Each page displays a "last updated" date so you know when the content was most recently reviewed. Tax brackets, interest rate references, and market data are updated as new information becomes available.</li>
+    <li class="animate-in animate-in-delay-4"><strong>User feedback integration:</strong> User-reported issues are investigated and resolved promptly. Your feedback directly improves the quality of our tools.</li>
+  </ul>
+  <p class="animate-in animate-in-delay-1">For more details, see our <a href="/editorial-process/">Editorial Process</a> page.</p>
+
+  <h2 class="animate-in"><i class="fa-solid fa-check-double"></i> Commitment to Accuracy</h2>
+  <p class="animate-in animate-in-delay-1">Accuracy is foundational to everything we build. Our commitment includes:</p>
+  <ul>
+    <li class="animate-in animate-in-delay-1"><strong>Verified formulas:</strong> Every calculation is based on established, published formulas — not approximations or rules of thumb</li>
+    <li class="animate-in animate-in-delay-2"><strong>Edge case handling:</strong> Calculators gracefully handle unusual inputs including very large numbers, zero values, and boundary conditions</li>
+    <li class="animate-in animate-in-delay-3"><strong>Transparent methodology:</strong> When possible, we show the formula and explain how each result is derived</li>
+    <li class="animate-in animate-in-delay-4"><strong>Continuous improvement:</strong> We monitor for errors and update calculators when formulas or reference data change</li>
   </ul>
 
   <h2 class="animate-in"><i class="fa-solid fa-heart"></i> Why We're Different</h2>
   <ul>
     <li class="animate-in animate-in-delay-1"><strong>100% Free</strong> — No subscription, no credit card, no hidden charges. Everything is free, always.</li>
-    <li class="animate-in animate-in-delay-2"><strong>No Signup Required</strong> — Use any tool instantly without creating an account.</li>
-    <li class="animate-in animate-in-delay-3"><strong>Privacy First</strong> — All calculations run in your browser. Your data never leaves your device.</li>
+    <li class="animate-in animate-in-delay-2"><strong>No Signup Required</strong> — Use any tool instantly without creating an account. Your privacy matters.</li>
+    <li class="animate-in animate-in-delay-3"><strong>Privacy First</strong> — All calculations run in your browser. Your data never leaves your device. We use Google Analytics for anonymous usage statistics only.</li>
     <li class="animate-in animate-in-delay-4"><strong>Fast &amp; Accurate</strong> — Real-time results with precise calculations every time.</li>
-    <li class="animate-in animate-in-delay-5"><strong>Works Everywhere</strong> — Optimized for desktop, tablet, and mobile devices.</li>
-    <li class="animate-in animate-in-delay-6"><strong>Regularly Updated</strong> — We continuously improve our tools and add new ones based on user requests.</li>
+    <li class="animate-in animate-in-delay-5"><strong>Works Everywhere</strong> — Optimized for desktop, tablet, and mobile devices with responsive design.</li>
+    <li class="animate-in animate-in-delay-6"><strong>Regularly Updated</strong> — We continuously improve our tools and add new ones based on user requests. Each page includes a last-updated date.</li>
+    <li class="animate-in animate-in-delay-7"><strong>Editorial Content</strong> — Each tool is accompanied by unique editorial content including usage guides, real-world examples, methodology explanations, and tool-specific FAQs.</li>
+  </ul>
+
+  <h2 class="animate-in"><i class="fa-regular fa-clock"></i> Content Updates</h2>
+  <p class="animate-in animate-in-delay-1">We review and update our content on a rolling basis. Financial calculators are reviewed when tax brackets or interest rates change significantly. Health calculators are reviewed when medical guidelines are updated. Every page displays the date of its last content review. Our editorial team monitors authoritative sources including:</p>
+  <ul>
+    <li class="animate-in animate-in-delay-1"><strong>IRS</strong> — Tax bracket and deduction changes</li>
+    <li class="animate-in animate-in-delay-2"><strong>Federal Reserve</strong> — Interest rate policy changes</li>
+    <li class="animate-in animate-in-delay-3"><strong>CDC and WHO</strong> — Health guideline updates</li>
+    <li class="animate-in animate-in-delay-4"><strong>USPTO</strong> — Patent fee schedule changes</li>
+    <li class="animate-in animate-in-delay-5"><strong>Federal and state agencies</strong> — Legal and regulatory changes</li>
   </ul>
 
   <h2 class="animate-in"><i class="fa-regular fa-envelope"></i> Get in Touch</h2>
-  <p class="animate-in animate-in-delay-1">Have a suggestion, feedback, or found a bug? We'd love to hear from you. Visit our <a href="/contact/">Contact page</a> to send us a message. We review every submission and use your input to improve the site.</p>
+  <p class="animate-in animate-in-delay-1">Have a suggestion, feedback, or found a bug? We'd love to hear from you. Visit our <a href="/contact/">Contact page</a> to send us a message. We review every submission and use your input to improve the site. You can also review our <a href="/privacy-policy/">Privacy Policy</a> and <a href="/terms/">Terms of Service</a> for more information.</p>
 </InfoLayout>
