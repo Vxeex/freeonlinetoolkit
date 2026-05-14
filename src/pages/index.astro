@@ -84,14 +84,17 @@ const jsonLd = [
   <!-- ============ SEARCH ============ -->
   <div class="search-section" id="tools">
     <div class="container">
-      <div class="search-bar">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="toolSearch" placeholder="Search tools..." autocomplete="off" />
-        <span id="searchClear" class="search-clear"><i class="fa-solid fa-xmark"></i></span>
-      </div>
-      <div id="recentlyUsed" class="recently-used" style="display:none;">
-        <div class="recently-used-label"><i class="fa-regular fa-clock"></i> Recently Used</div>
-        <div id="recentToolsList" class="recent-tools-list"></div>
+      <div class="search-inner">
+        <div class="search-label"><i class="fa-solid fa-magnifying-glass"></i> Find the right tool</div>
+        <div class="search-bar">
+          <i class="fa-solid fa-search search-bar-icon"></i>
+          <input type="text" id="toolSearch" placeholder="Search tools..." autocomplete="off" />
+          <span id="searchClear" class="search-clear"><i class="fa-solid fa-xmark"></i></span>
+        </div>
+        <div id="recentlyUsed" class="recently-used" style="display:none;">
+          <div class="recently-used-label"><i class="fa-regular fa-clock"></i> Recently Used</div>
+          <div id="recentToolsList" class="recent-tools-list"></div>
+        </div>
       </div>
     </div>
   </div>
