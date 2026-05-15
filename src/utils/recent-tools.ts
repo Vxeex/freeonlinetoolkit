@@ -24,7 +24,14 @@ export function trackRecentTool(slug: string): void {
 
 export function getRecentTools(): RecentTool[] {
   try {
-    return JSON.parse(localStorage.getItem('recentTools') || '[]');
+    const raw: RecentTool[] = JSON.parse(localStorage.getItem('recentTools') || '[]');
+    // Filter out any tools whose slug no longer exists in the site
+    const valid = raw.filter((t) => t.slug && toolBySlug[t.slug]);
+    // If stale data was cleaned up, persist the cleaned list
+    if (valid.length < raw.length) {
+      localStorage.setItem('recentTools', JSON.stringify(valid));
+    }
+    return valid;
   } catch {
     return [];
   }
