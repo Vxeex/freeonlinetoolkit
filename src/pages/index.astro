@@ -5,8 +5,8 @@ import Footer from '../components/Footer.astro';
 import { categories } from '../data/categories';
 import { toolBySlug, totalToolsCount } from '../data/tools';
 
-const pageTitle = `${totalToolsCount} Free Online Calculators & Everyday Tools | FreeOnlineToolkit`;
-const pageDesc = `Access ${totalToolsCount} free online calculators and tools — mortgage calculator, BMI calculator, currency converter, password generator, and more. 100% free, no signup required.`;
+const pageTitle = `${totalToolsCount} Free Online Calculators & Tools — Mortgage, BMI, & More | FreeOnlineToolkit`;
+const pageDesc = `Access ${totalToolsCount} free online calculators and tools — mortgage calculator, BMI calculator, currency converter, password generator, and more. 100% free, no signup required. Use them instantly in your browser.`;
 
 const jsonLd = [
   {
@@ -45,11 +45,11 @@ const jsonLd = [
           <i class="fa-solid fa-bolt"></i>
           {totalToolsCount} Free Tools &mdash; No Signup Required
         </div>
-        <h1 class="animate-entrance animate-entrance-delay-2">Your pocket toolkit for <span>everyday math</span></h1>
+        <h1 class="animate-entrance animate-entrance-delay-2"><span>{totalToolsCount} Free Online Calculators</span> for Every Need</h1>
         <p class="animate-entrance animate-entrance-delay-3">
           FreeOnlineToolkit gives you <strong>{totalToolsCount} free calculators and utilities</strong>
           for life's everyday questions &mdash; mortgage payments, BMI, passwords,
-          currency conversions, and more. All 100% free, no signup.
+          currency conversions, and more. All 100% free, no signup required.
         </p>
         <div class="hero-actions animate-entrance animate-entrance-delay-4">
           <a href="#tools" class="btn btn-primary">
@@ -130,8 +130,9 @@ const jsonLd = [
   <!-- ============ SEO CONTENT ============ -->
   <section class="seo-content animate-in">
     <div class="seo-content-inner">
-      <h2>Your complete toolkit for everyday calculations</h2>
-      <p>FreeOnlineToolkit.org brings together <strong>{totalToolsCount} powerful tools</strong> &mdash; from mortgage calculators to password generators &mdash; all completely free, no signup required. Works on any device with real-time results.</p>
+      <h2>Free Online Calculators — No Signup, No Limits</h2>
+      <p>FreeOnlineToolkit.org brings together <strong>{totalToolsCount} powerful online calculators and tools</strong> covering personal finance, health &amp; fitness, home improvement, business planning, and everyday utilities. Every calculator is completely free, works in your browser with instant results, and requires no account or signup.</p>
+      <p>Whether you need a <a href="/mortgage-calculator/">mortgage calculator</a>, <a href="/bmi-calculator/">BMI calculator</a>, <a href="/currency-converter/">currency converter</a>, or <a href="/password-generator/">password generator</a> &mdash; you'll find accurate, reliable tools designed for speed and simplicity. Bookmark us for quick access whenever you need a calculation.</p>
     </div>
   </section>
 

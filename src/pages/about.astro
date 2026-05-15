@@ -3,7 +3,7 @@ import InfoLayout from '../layouts/InfoLayout.astro';
 import { totalToolsCount } from '../data/tools';
 ---
 
-<InfoLayout title="About Us | FreeOnlineToolkit" description="FreeOnlineToolkit.org provides 80+ free online calculators and tools. Learn about our mission, editorial process, expertise, and commitment to accuracy and privacy.">
+<InfoLayout title="About Us | FreeOnlineToolkit" description={`FreeOnlineToolkit.org provides ${totalToolsCount} free online calculators and tools. Learn about our mission, editorial process, and commitment to accuracy.`}>
   <h1 class="animate-in">About FreeOnlineToolkit</h1>
   <p class="animate-in animate-in-delay-1"><em>Last updated: May 2026</em></p>
 

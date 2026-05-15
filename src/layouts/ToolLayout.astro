@@ -18,9 +18,32 @@ const { title, description, breadcrumbItems, jsonLd } = Astro.props;
 const toolSlug = Astro.url.pathname.replace(/\/$/, '').split('/').pop() || '';
 const tool = toolBySlug[toolSlug];
 const toolTitle = tool?.title || 'Calculator';
+
+// Improve page title for search — prefix with "Free" and add "- Free Online Calculator"
+// e.g., "Mortgage Calculator - FreeOnlineToolkit" → "Free Mortgage Calculator - Free Online Calculator | FreeOnlineToolkit"
+const siteName = 'FreeOnlineToolkit';
+const improvedTitle = tool
+  ? `Free ${tool.title} — Free Online Calculator & Tool | ${siteName}`
+  : title;
+
+// Breadcrumb structured data
+const breadcrumbSchema = breadcrumbItems.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": breadcrumbItems.map((item, i) => ({
+    "@type": "ListItem",
+    "position": i + 1,
+    "name": item.label,
+    "item": item.href ? `https://freeonlinetoolkit.org${item.href}` : `https://freeonlinetoolkit.org${Astro.url.pathname}`
+  }))
+} : null;
+
+const allJsonLd = breadcrumbSchema
+  ? [...(jsonLd || []), breadcrumbSchema]
+  : jsonLd;
 ---
 
-<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+<BaseLayout title={improvedTitle} description={description} jsonLd={allJsonLd}>
   <Header />
   <div class="tool-page">
     <Breadcrumb items={breadcrumbItems} />

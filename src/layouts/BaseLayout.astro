@@ -29,6 +29,12 @@ const fullUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
   <meta property="og:description" content={description} />
   <meta property="og:url" content={fullUrl} />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="FreeOnlineToolkit" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
 
   {noIndex && <meta name="robots" content="noindex" />}
 
