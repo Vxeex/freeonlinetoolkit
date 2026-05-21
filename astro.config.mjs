@@ -5,7 +5,12 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   output: 'static',
   site: 'https://freeonlinetoolkit.org',
-  adapter: cloudflare(),
+  build: {
+    format: 'file',
+  },
+  adapter: cloudflare({
+    imageService: 'passthrough',
+  }),
   integrations: [sitemap({
     filter: (page) => !page.includes('/404'),
   })],

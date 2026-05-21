@@ -1,3 +1,5 @@
-# Cloudflare Pages redirects
-# SPA-style: serve index.html for each path
+# Redirect old trailing-slash URLs to clean URLs (308 → 301)
+/*/ /:splat 301
+
+# Catch-all 404
 /* /404.html 404
