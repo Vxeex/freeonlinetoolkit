@@ -70,6 +70,7 @@ export const categories: Category[] = [
       'qr-code-generator', 'word-counter', 'json-formatter', 'unit-converter',
       'time-zone-converter', 'color-converter', 'reading-time-calculator',
       'flight-time-calculator', 'knitting-needle-size-converter', 'crochet-hook-size-converter',
+      'name-to-japanese',
     ],
   },
   {

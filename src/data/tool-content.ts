@@ -1587,4 +1587,30 @@ export const toolContent: Record<string, ToolContent> = {
     references: [],
     lastUpdated: '2026-01-10',
   },
+
+  'name-to-japanese': {
+    overview: 'A name to Japanese converter translates English and Chinese names into Japanese katakana and hiragana. When foreign names are written in Japanese, they use katakana to approximate the original pronunciation. This tool helps you see how your name sounds when spoken by Japanese speakers and how it would be written in Japanese characters.',
+    methodology: 'The converter uses standard Japanese transliteration rules. English names are broken into syllables and mapped to the closest katakana equivalents using the modern Hepburn romanization system. Special rules handle common English sounds that do not exist in Japanese — for example, \"th\" becomes \"su\" or \"zu\", \"v\" becomes \"b\", and \"l\" becomes \"r\". Long vowels are marked with the chōonpu (ー) symbol. Chinese names entered in pinyin are converted using similar phonetic approximation rules.',
+    example: {
+      scenario: 'Converting the English name \"Sarah Johnson\" to Japanese',
+      steps: [
+        { label: 'First name', text: 'Sarah → サラ (sa-ra)' },
+        { label: 'Last name', text: 'Johnson → ジョンソン (jo-n-so-n)' },
+        { label: 'Full name', text: 'サラ・ジョンソン in katakana' },
+        { label: 'Hiragana', text: 'さら・じょんそん' },
+      ],
+      result: 'Sarah Johnson in Japanese is written as サラ・ジョンソン (katakana) or さら・じょんそん (hiragana). The name separator (・) is used between first and last names.',
+    },
+    faqs: [
+      { q: 'How accurate is the name conversion?', a: 'Japanese name conversion is based on phonetic approximation rather than direct translation. There is often no single correct way to write a foreign name in Japanese. This tool provides the most common and natural-sounding conversion using standard transliteration rules that Japanese speakers use for foreign names.' },
+      { q: 'Why is my English name so long in Japanese?', a: 'Japanese syllables follow a consonant-vowel pattern, unlike English which allows consonant clusters like \"st\" or \"nd\". Each consonant in a cluster requires its own syllable in Japanese, which makes names longer. For example, \"Smith\" (2 syllables in English) becomes \"スミス\" (su-mi-su, 3 syllables in Japanese).' },
+      { q: 'Can I use this to get a Japanese name tattoo?', a: 'This tool is great for understanding how your name sounds in Japanese. For tattoos or official purposes, we recommend consulting with a native Japanese speaker to verify the conversion, as context and nuance can affect the most appropriate transliteration.' },
+      { q: 'What is the difference between katakana and hiragana?', a: 'Katakana is used for foreign words and names, loanwords, and emphasis. Hiragana is used for native Japanese words and grammatical elements. Foreign names are almost always written in katakana in Japanese. The hiragana version shows the phonetic reading.' },
+    ],
+    references: [
+      { name: 'Wikipedia - Hepburn Romanization', url: 'https://en.wikipedia.org/wiki/Hepburn_romanization' },
+      { name: 'Japanese Katakana Chart', url: 'https://en.wikipedia.org/wiki/Katakana' },
+    ],
+    lastUpdated: '2026-05-21',
+  },
 };

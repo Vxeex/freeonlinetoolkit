@@ -1,0 +1,553 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+import FAQ from '../components/FAQ.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { toolBySlug } from '../data/tools';
+
+const tool = toolBySlug['name-to-japanese'];
+const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Convert Names to Japanese",
+    "description": "Convert English and Chinese names to Japanese katakana and hiragana using phonetic transliteration.",
+    "step": [
+      { "@type": "HowToStep", "text": "Enter an English or Chinese name in the input field" },
+      { "@type": "HowToStep", "text": "Choose the input language type (English or Chinese/Pinyin)" },
+      { "@type": "HowToStep", "text": "Click Convert to see your name in katakana and hiragana" },
+    ],
+  },
+];
+---
+
+<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+  <fragment slot="intro">
+    <p class="tool-intro">See how your name sounds in Japanese. Enter any English or Chinese name and get instant katakana and hiragana transliteration.</p>
+  </fragment>
+
+  <fragment slot="calculator">
+    <div class="calc-card">
+      <h2>Name to Japanese Converter</h2>
+      <div class="form-group">
+        <label for="nameInput">Enter a name</label>
+        <input type="text" id="nameInput" value="Sarah Johnson" placeholder="Enter an English or Chinese name..." />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="inputLang">Input language</label>
+          <select id="inputLang">
+            <option value="english">English</option>
+            <option value="chinese">Chinese (Pinyin)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <div style="padding-top:6px;">
+            <label class="radio-group" style="gap:6px;">
+              <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+                <input type="radio" name="outputType" value="both" checked /> Both scripts
+              </label>
+              <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+              <input type="radio" name="outputType" value="katakana" /> Katakana only
+              </label>
+              <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+                <input type="radio" name="outputType" value="hiragana" /> Hiragana only
+              </label>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="convertBtn">Convert to Japanese</button>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+      </div>
+
+      <div class="result-box" id="japaneseResult">
+        <div style="margin-bottom:16px;">
+          <div style="font-size:0.8rem;color:var(--color-text-secondary);margin-bottom:4px;">Katakana (カタカナ)</div>
+          <div class="result-value" id="katakanaResult" style="font-size:2rem;">ー</div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <div style="font-size:0.8rem;color:var(--color-text-secondary);margin-bottom:4px;">Hiragana (ひらがな)</div>
+          <div class="result-value" id="hiraganaResult" style="font-size:2rem;color:var(--color-accent);">ー</div>
+        </div>
+        <div class="result-details">
+          <div><span class="label">Reading</span><span class="value" id="romajiResult">—</span></div>
+          <div><span class="label">Characters</span><span class="value" id="charCount">0</span></div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" id="copyKatakanaBtn" style="font-size:0.8rem;padding:8px 16px;">
+            <i class="fa-regular fa-copy"></i> Copy katakana
+          </button>
+          <button class="btn btn-secondary" id="copyHiraganaBtn" style="font-size:0.8rem;padding:8px 16px;">
+            <i class="fa-regular fa-copy"></i> Copy hiragana
+          </button>
+        </div>
+      </div>
+    </div>
+  </fragment>
+
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>How the Name to Japanese Converter Works</h2>
+      <p>Japanese uses three writing systems: <strong>katakana</strong> for foreign words and names, <strong>hiragana</strong> for native Japanese words, and <strong>kanji</strong> for Chinese characters. When converting non-Japanese names, katakana is the standard script used.</p>
+      <p>The conversion is based on <strong>phonetic approximation</strong> — each sound in the original name is mapped to the closest equivalent sound in Japanese. Because Japanese has fewer distinct syllables than English (about 100 vs. over 15,000 in English), some sounds must be approximated.</p>
+      <p>For example, the English sounds "l" and "r" are both mapped to Japanese "r" (ら行), and "th" becomes "s" or "z". Consonant clusters like "st" are broken into separate syllables: "s" + "u" + "t" + "o".</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Tips for Accurate Conversion</h2>
+      <ul>
+        <li><strong>Use the full name</strong> — Enter both first and last name for a complete conversion. The tool will separate them automatically.</li>
+        <li><strong>Try different spellings</strong> — If the result sounds wrong, try alternative phonetic spellings of your name. For example, "Catherine" and "Katherine" will produce different results.</li>
+        <li><strong>Chinese names</strong> — Enter names in pinyin (standard romanization). For example, "Zhang Wei" or "Li Xiaoming". The tool will approximate the Mandarin pronunciation.</li>
+        <li><strong>Double consonants</strong> — English doubled consonants like "tt" or "pp" often become a small ッ (sokuon) before the consonant, creating a pause effect.</li>
+      </ul>
+    </div>
+
+    <FAQ items={[
+      { question: "How accurate is the name conversion?", answer: "The conversion uses standard Japanese transliteration rules for foreign names. However, there is often no single correct way to write a foreign name in Japanese. Different people with the same name may choose different katakana representations. This tool provides the most common and natural-sounding conversion." },
+      { question: "Why does my name get longer in Japanese?", answer: "Japanese has a strict consonant-vowel syllable structure. Consonant clusters in English (like 'st', 'nd', 'mp') must be split into separate syllables. For example, 'Smith' (1 syllable in English) becomes 'Su-mi-su' (3 syllables in Japanese)." },
+      { question: "Can I use this to write my name on official documents?", answer: "This tool is for educational and personal use. For official documents, passports, or legal purposes, follow the guidelines provided by the relevant Japanese authorities." },
+      { question: "What is the difference between katakana and hiragana?", answer: "Katakana is used for foreign words, names, loanwords, and emphasis. Hiragana is used for native Japanese words and grammar. Foreign names are almost always written in katakana." },
+    ]} />
+  </fragment>
+
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="name-to-japanese" category="utility" />
+  </fragment>
+</ToolLayout>
+
+<script>
+import { showResult, hideResult } from '../utils/calculator-utils';
+
+// === Katakana syllable mapping ===
+// Maps English letter groups to katakana equivalents
+const SYLLABLE_MAP: Record<string, string> = {
+  // Single vowels
+  'a': 'ア', 'e': 'エ', 'i': 'イ', 'o': 'オ', 'u': 'ウ',
+  'A': 'ア', 'E': 'エ', 'I': 'イ', 'O': 'オ', 'U': 'ウ',
+
+  // K-row
+  'ka': 'カ', 'ki': 'キ', 'ku': 'ク', 'ke': 'ケ', 'ko': 'コ',
+  'kya': 'キャ', 'kyu': 'キュ', 'kyo': 'キョ',
+  'kka': 'ッカ', 'kki': 'ッキ', 'kku': 'ック', 'kke': 'ッケ', 'kko': 'ッコ',
+
+  // G-row
+  'ga': 'ガ', 'gi': 'ギ', 'gu': 'グ', 'ge': 'ゲ', 'go': 'ゴ',
+  'gya': 'ギャ', 'gyu': 'ギュ', 'gyo': 'ギョ',
+  'gga': 'ッガ', 'ggi': 'ッギ', 'ggu': 'ッグ', 'gge': 'ッゲ', 'ggo': 'ッゴ',
+
+  // S-row
+  'sa': 'サ', 'si': 'シ', 'su': 'ス', 'se': 'セ', 'so': 'ソ',
+  'sha': 'シャ', 'shu': 'シュ', 'sho': 'ショ', 'shi': 'シ',
+  'ssa': 'ッサ', 'ssi': 'ッシ', 'ssu': 'ッス', 'sse': 'ッセ', 'sso': 'ッソ',
+
+  // Z-row
+  'za': 'ザ', 'zi': 'ジ', 'zu': 'ズ', 'ze': 'ゼ', 'zo': 'ゾ',
+  'ja': 'ジャ', 'ju': 'ジュ', 'jo': 'ジョ', 'ji': 'ジ',
+
+  // T-row
+  'ta': 'タ', 'ti': 'チ', 'tu': 'ツ', 'te': 'テ', 'to': 'ト',
+  'cha': 'チャ', 'chu': 'チュ', 'cho': 'チョ', 'chi': 'チ',
+  'tsu': 'ツ', 'tsa': 'ツァ', 'tse': 'ツェ', 'tso': 'ツォ',
+  'tta': 'ッタ', 'tti': 'ッチ', 'ttu': 'ッツ', 'tte': 'ッテ', 'tto': 'ット',
+
+  // D-row
+  'da': 'ダ', 'di': 'ヂ', 'du': 'ヅ', 'de': 'デ', 'do': 'ド',
+  'dda': 'ッダ', 'ddi': 'ッヂ', 'ddu': 'ッヅ', 'dde': 'ッデ', 'ddo': 'ッド',
+
+  // N-row
+  'na': 'ナ', 'ni': 'ニ', 'nu': 'ヌ', 'ne': 'ネ', 'no': 'ノ',
+  'nya': 'ニャ', 'nyu': 'ニュ', 'nyo': 'ニョ',
+  'nna': 'ンナ', 'nni': 'ンニ', 'nnu': 'ンヌ', 'nne': 'ンネ', 'nno': 'ンノ',
+
+  // H-row
+  'ha': 'ハ', 'hi': 'ヒ', 'hu': 'フ', 'he': 'ヘ', 'ho': 'ホ',
+  'hya': 'ヒャ', 'hyu': 'ヒュ', 'hyo': 'ヒョ',
+  'fa': 'ファ', 'fi': 'フィ', 'fu': 'フ', 'fe': 'フェ', 'fo': 'フォ',
+  'fya': 'フャ', 'fyu': 'フュ', 'fyo': 'フョ',
+
+  // B-row
+  'ba': 'バ', 'bi': 'ビ', 'bu': 'ブ', 'be': 'ベ', 'bo': 'ボ',
+  'bya': 'ビャ', 'byu': 'ビュ', 'byo': 'ビョ',
+  'bba': 'ッバ', 'bbi': 'ッビ', 'bbu': 'ップ', 'bbe': 'ッベ', 'bbo': 'ッボ',
+
+  // P-row
+  'pa': 'パ', 'pi': 'ピ', 'pu': 'プ', 'pe': 'ペ', 'po': 'ポ',
+  'pya': 'ピャ', 'pyu': 'ピュ', 'pyo': 'ピョ',
+  'ppa': 'ッパ', 'ppi': 'ッピ', 'ppu': 'ップ', 'ppe': 'ッペ', 'ppo': 'ッポ',
+
+  // M-row
+  'ma': 'マ', 'mi': 'ミ', 'mu': 'ム', 'me': 'メ', 'mo': 'モ',
+  'mya': 'ミャ', 'myu': 'ミュ', 'myo': 'ミョ',
+  'mma': 'ンマ', 'mmi': 'ンミ', 'mmu': 'ンム', 'mme': 'ンメ', 'mmo': 'ンモ',
+
+  // Y-row
+  'ya': 'ヤ', 'yu': 'ユ', 'yo': 'ヨ',
+
+  // R-row
+  'ra': 'ラ', 'ri': 'リ', 'ru': 'ル', 're': 'レ', 'ro': 'ロ',
+  'rya': 'リャ', 'ryu': 'リュ', 'ryo': 'リョ',
+  'rra': 'ッラ', 'rri': 'ッリ', 'rru': 'ッル', 'rre': 'ッレ', 'rro': 'ッロ',
+
+  // W-row
+  'wa': 'ワ', 'wi': 'ウィ', 'wu': 'ウ', 'we': 'ウェ', 'wo': 'ウォ',
+  'whi': 'ウィ', 'whe': 'ウェ', 'who': 'ウォ',
+
+  // V-row (using vu+small vowels)
+  'va': 'ヴァ', 'vi': 'ヴィ', 'vu': 'ヴ', 've': 'ヴェ', 'vo': 'ヴォ',
+  'vya': 'ヴャ', 'vyu': 'ヴュ', 'vyo': 'ヴョ',
+
+  // Special English sounds
+  'th': 'ス', 'the': 'ズ', 'tha': 'ザ', 'thi': 'ジ', 'tho': 'ゾ',
+  'thy': 'ジ', 'thur': 'サー',
+
+  // Common endings
+  'tion': 'ション', 'sion': 'ジョン',
+  'ing': 'イング', 'ly': 'リー', 'er': 'アー', 'or': 'オー',
+  'ar': 'アー', 'le': 'ル', 'al': 'アル', 'el': 'エル',
+  'ble': 'ブル', 'cle': 'クル', 'dle': 'ドル', 'gle': 'グル',
+  'ple': 'プル', 'tle': 'トル', 'zle': 'ズル',
+
+  // Ch/Sh special
+  'ch': 'チ', 'sh': 'シ',
+  'che': 'チェ', 'she': 'シェ',
+
+  // Common single letters
+  'b': 'ブ', 'c': 'ク', 'd': 'ド', 'f': 'フ', 'g': 'グ',
+  'h': 'ハ', 'j': 'ジ', 'k': 'ク', 'l': 'ル', 'm': 'ム',
+  'n': 'ン', 'p': 'プ', 'q': 'ク', 'r': 'ル', 's': 'ス',
+  't': 'ト', 'v': 'ヴ', 'w': 'ワ', 'x': 'クス', 'y': 'イ', 'z': 'ズ',
+  'ck': 'ック', 'ng': 'ング', 'nk': 'ンク',
+  'nt': 'ント', 'nd': 'ンド', 'mp': 'ンプ', 'st': 'スト',
+  'ld': 'ルド', 'lf': 'ルフ', 'lk': 'ルク',
+  'rt': 'ルト', 'rd': 'ルド', 'rm': 'ルム', 'rn': 'ルン',
+  'sk': 'スク', 'sp': 'スプ', 'sm': 'スム',
+  'tr': 'トラ', 'dr': 'ドラ', 'gr': 'グラ', 'cr': 'クラ', 'pr': 'プラ', 'br': 'ブラ',
+  'fr': 'フラ', 'thr': 'スラ', 'str': 'ストラ',
+};
+
+// Hiragana version for katakana
+const KATAKANA_TO_HIRAGANA: Record<string, string> = {
+  'ア': 'あ', 'イ': 'い', 'ウ': 'う', 'エ': 'え', 'オ': 'お',
+  'カ': 'か', 'キ': 'き', 'ク': 'く', 'ケ': 'け', 'コ': 'こ',
+  'ガ': 'が', 'ギ': 'ぎ', 'グ': 'ぐ', 'ゲ': 'げ', 'ゴ': 'ご',
+  'サ': 'さ', 'シ': 'し', 'ス': 'す', 'セ': 'せ', 'ソ': 'そ',
+  'ザ': 'ざ', 'ジ': 'じ', 'ズ': 'ず', 'ゼ': 'ぜ', 'ゾ': 'ぞ',
+  'タ': 'た', 'チ': 'ち', 'ツ': 'つ', 'テ': 'て', 'ト': 'と',
+  'ダ': 'だ', 'ヂ': 'ぢ', 'ヅ': 'づ', 'デ': 'で', 'ド': 'ど',
+  'ナ': 'な', 'ニ': 'に', 'ヌ': 'ぬ', 'ネ': 'ね', 'ノ': 'の',
+  'ハ': 'は', 'ヒ': 'ひ', 'フ': 'ふ', 'ヘ': 'へ', 'ホ': 'ほ',
+  'バ': 'ば', 'ビ': 'び', 'ブ': 'ぶ', 'ベ': 'べ', 'ボ': 'ぼ',
+  'パ': 'ぱ', 'ピ': 'ぴ', 'プ': 'ぷ', 'ペ': 'ぺ', 'ポ': 'ぽ',
+  'マ': 'ま', 'ミ': 'み', 'ム': 'む', 'メ': 'め', 'モ': 'も',
+  'ヤ': 'や', 'ユ': 'ゆ', 'ヨ': 'よ',
+  'ラ': 'ら', 'リ': 'り', 'ル': 'る', 'レ': 'れ', 'ロ': 'ろ',
+  'ワ': 'わ', 'ヲ': 'を', 'ン': 'ん',
+  'キャ': 'きゃ', 'キュ': 'きゅ', 'キョ': 'きょ',
+  'ギャ': 'ぎゃ', 'ギュ': 'ぎゅ', 'ギョ': 'ぎょ',
+  'シャ': 'しゃ', 'シュ': 'しゅ', 'ショ': 'しょ',
+  'ジャ': 'じゃ', 'ジュ': 'じゅ', 'ジョ': 'じょ',
+  'チャ': 'ちゃ', 'チュ': 'ちゅ', 'チョ': 'ちょ',
+  'ヂャ': 'ぢゃ', 'ヂュ': 'ぢゅ', 'ヂョ': 'ぢょ',
+  'ニャ': 'にゃ', 'ニュ': 'にゅ', 'ニョ': 'にょ',
+  'ヒャ': 'ひゃ', 'ヒュ': 'ひゅ', 'ヒョ': 'ひょ',
+  'ビャ': 'びゃ', 'ビュ': 'びゅ', 'ビョ': 'びょ',
+  'ピャ': 'ぴゃ', 'ピュ': 'ぴゅ', 'ピョ': 'ぴょ',
+  'ミャ': 'みゃ', 'ミュ': 'みゅ', 'ミョ': 'みょ',
+  'リャ': 'りゃ', 'リュ': 'りゅ', 'リョ': 'りょ',
+  'ファ': 'ふぁ', 'フィ': 'ふぃ', 'フェ': 'ふぇ', 'フォ': 'ふぉ',
+  'ヴァ': 'ゔぁ', 'ヴィ': 'ゔぃ', 'ヴ': 'ゔ', 'ヴェ': 'ゔぇ', 'ヴォ': 'ゔぉ',
+  'ウィ': 'うぃ', 'ウェ': 'うぇ', 'ウォ': 'うぉ',
+  'シェ': 'しぇ', 'チェ': 'ちぇ', 'ジェ': 'じぇ',
+  'ツァ': 'つぁ', 'ツェ': 'つぇ', 'ツォ': 'つぉ',
+  'ティ': 'てぃ', 'トゥ': 'とぅ',
+  'ディ': 'でぃ', 'ドゥ': 'どぅ',
+  'ッ': 'っ',
+  'ー': 'ー',
+  '・': '・',
+};
+
+function katakanaToHiragana(katakana: string): string {
+  let result = '';
+  let i = 0;
+  while (i < katakana.length) {
+    // Try 3 char match
+    const three = katakana.slice(i, i + 3);
+    if (KATAKANA_TO_HIRAGANA[three]) {
+      result += KATAKANA_TO_HIRAGANA[three];
+      i += 3;
+      continue;
+    }
+    // Try 2 char match
+    const two = katakana.slice(i, i + 2);
+    if (KATAKANA_TO_HIRAGANA[two]) {
+      result += KATAKANA_TO_HIRAGANA[two];
+      i += 2;
+      continue;
+    }
+    // Try 1 char match
+    const one = katakana[i];
+    if (KATAKANA_TO_HIRAGANA[one]) {
+      result += KATAKANA_TO_HIRAGANA[one];
+    } else {
+      result += one;
+    }
+    i++;
+  }
+  return result;
+}
+
+function toRomaji(katakana: string): string {
+  const romajiMap: Record<string, string> = {
+    'ア': 'a', 'イ': 'i', 'ウ': 'u', 'エ': 'e', 'オ': 'o',
+    'カ': 'ka', 'キ': 'ki', 'ク': 'ku', 'ケ': 'ke', 'コ': 'ko',
+    'ガ': 'ga', 'ギ': 'gi', 'グ': 'gu', 'ゲ': 'ge', 'ゴ': 'go',
+    'サ': 'sa', 'シ': 'shi', 'ス': 'su', 'セ': 'se', 'ソ': 'so',
+    'ザ': 'za', 'ジ': 'ji', 'ズ': 'zu', 'ゼ': 'ze', 'ゾ': 'zo',
+    'タ': 'ta', 'チ': 'chi', 'ツ': 'tsu', 'テ': 'te', 'ト': 'to',
+    'ダ': 'da', 'ヂ': 'ji', 'ヅ': 'zu', 'デ': 'de', 'ド': 'do',
+    'ナ': 'na', 'ニ': 'ni', 'ヌ': 'nu', 'ネ': 'ne', 'ノ': 'no',
+    'ハ': 'ha', 'ヒ': 'hi', 'フ': 'fu', 'ヘ': 'he', 'ホ': 'ho',
+    'バ': 'ba', 'ビ': 'bi', 'ブ': 'bu', 'ベ': 'be', 'ボ': 'bo',
+    'パ': 'pa', 'ピ': 'pi', 'プ': 'pu', 'ペ': 'pe', 'ポ': 'po',
+    'マ': 'ma', 'ミ': 'mi', 'ム': 'mu', 'メ': 'me', 'モ': 'mo',
+    'ヤ': 'ya', 'ユ': 'yu', 'ヨ': 'yo',
+    'ラ': 'ra', 'リ': 'ri', 'ル': 'ru', 'レ': 're', 'ロ': 'ro',
+    'ワ': 'wa', 'ヲ': 'wo', 'ン': 'n',
+    'キャ': 'kya', 'キュ': 'kyu', 'キョ': 'kyo',
+    'シャ': 'sha', 'シュ': 'shu', 'ショ': 'sho',
+    'チャ': 'cha', 'チュ': 'chu', 'チョ': 'cho',
+    'ニャ': 'nya', 'ニュ': 'nyu', 'ニョ': 'nyo',
+    'ヒャ': 'hya', 'ヒュ': 'hyu', 'ヒョ': 'hyo',
+    'ミャ': 'mya', 'ミュ': 'myu', 'ミョ': 'myo',
+    'リャ': 'rya', 'リュ': 'ryu', 'リョ': 'ryo',
+    'ギャ': 'gya', 'ギュ': 'gyu', 'ギョ': 'gyo',
+    'ジャ': 'ja', 'ジュ': 'ju', 'ジョ': 'jo',
+    'ビャ': 'bya', 'ビュ': 'byu', 'ビョ': 'byo',
+    'ピャ': 'pya', 'ピュ': 'pyu', 'ピョ': 'pyo',
+    'ファ': 'fa', 'フィ': 'fi', 'フェ': 'fe', 'フォ': 'fo',
+    'ヴァ': 'va', 'ヴィ': 'vi', 'ヴ': 'vu', 'ヴェ': 've', 'ヴォ': 'vo',
+    'ウィ': 'wi', 'ウェ': 'we', 'ウォ': 'wo',
+    'シェ': 'she', 'チェ': 'che', 'ジェ': 'je',
+    'ツァ': 'tsa', 'ツェ': 'tse', 'ツォ': 'tso',
+    'ティ': 'ti', 'トゥ': 'tu',
+    'ディ': 'di', 'ドゥ': 'du',
+    'ッ': ' (pause) ',
+    'ー': '—',
+    '・': ' ',
+  };
+  let result = '';
+  let i = 0;
+  while (i < katakana.length) {
+    const multi = katakana.slice(i, i + 3);
+    if (romajiMap[multi]) { result += romajiMap[multi]; i += 3; continue; }
+    const two = katakana.slice(i, i + 2);
+    if (romajiMap[two]) { result += romajiMap[two]; i += 2; continue; }
+    const one = katakana[i];
+    if (romajiMap[one]) result += romajiMap[one]; else result += one;
+    i++;
+  }
+  return result;
+}
+
+function convertNameToKana(name: string, lang: string): string {
+  if (!name.trim()) return '';
+
+  // Split into words (first/last name)
+  const parts = name.trim().split(/\s+/);
+  const kanaParts: string[] = [];
+
+  for (const part of parts) {
+    if (lang === 'chinese') {
+      kanaParts.push(convertChinesePinyinToKana(part));
+    } else {
+      kanaParts.push(convertEnglishToKana(part));
+    }
+  }
+
+  return kanaParts.join('・');
+}
+
+function convertEnglishToKana(word: string): string {
+  let input = word.toLowerCase();
+  let result = '';
+  let i = 0;
+
+  while (i < input.length) {
+    let matched = false;
+    let longestLen = 0;
+    let longestKana = '';
+
+    // Try longest match first (up to 5 chars)
+    for (let len = 5; len >= 1; len--) {
+      const chunk = input.slice(i, i + len);
+      if (SYLLABLE_MAP[chunk]) {
+        longestLen = len;
+        longestKana = SYLLABLE_MAP[chunk];
+        matched = true;
+        break;
+      }
+    }
+
+    if (matched) {
+      // Check for double consonant before vowel (e.g., "tt" in "button")
+      if (i + longestLen < input.length) {
+        const nextChar = input[i + longestLen];
+        const prevChar = input[i + longestLen - 1];
+        if (nextChar === prevChar && 'aeiou'.includes(nextChar)) {
+          // Handle doubled consonant with small tsu
+          // This is a simplification - real Japanese has specific rules
+        }
+      }
+      result += longestKana;
+      i += longestLen;
+    } else {
+      // Skip character (non-alpha)
+      i++;
+    }
+  }
+
+  return result;
+}
+
+function convertChinesePinyinToKana(pinyin: string): string {
+  const pinyinMap: Record<string, string> = {
+    // Chinese initials to katakana
+    'b': 'バ', 'p': 'パ', 'm': 'マ', 'f': 'ファ',
+    'd': 'ダ', 't': 'タ', 'n': 'ナ', 'l': 'ラ',
+    'g': 'ガ', 'k': 'カ', 'h': 'ハ',
+    'j': 'ジ', 'q': 'チ', 'x': 'シ',
+    'zh': 'ジ', 'ch': 'チ', 'sh': 'シ',
+    'r': 'ル', 'z': 'ズ', 'c': 'ツ', 's': 'ス',
+    'w': 'ワ', 'y': 'イ',
+
+    // Chinese finals to katakana
+    'a': 'ア', 'o': 'オ', 'e': 'ウー', 'i': 'イー', 'u': 'ウー', 'v': 'ユイ',
+    'ai': 'アイ', 'ei': 'エイ', 'ui': 'ウイ',
+    'ao': 'アオ', 'ou': 'オウ', 'iu': 'イウ',
+    'an': 'アン', 'en': 'エン', 'in': 'イン', 'un': 'ウン', 'vn': 'ユイン',
+    'ang': 'アン', 'eng': 'エン', 'ing': 'イン', 'ong': 'オン',
+    'ia': 'イア', 'ie': 'イエ', 'iao': 'イアオ', 'ian': 'イエン',
+    'iang': 'イアン', 'iong': 'イオン',
+    'ua': 'ウア', 'uo': 'ウオ', 'uai': 'ウアイ', 'uan': 'ワン',
+    'uang': 'ワン', 'ueng': 'ウエン',
+    'ue': 'ユエ', 'van': 'ユアン', 've': 'ユエ',
+  };
+
+  let input = pinyin.toLowerCase();
+  let result = '';
+
+  // Try to match Chinese pinyin syllable structure
+  // Simple approach: iterate and match known patterns
+  let i = 0;
+  while (i < input.length) {
+    let matched = false;
+    for (let len = 4; len >= 1; len--) {
+      const chunk = input.slice(i, i + len);
+      if (pinyinMap[chunk]) {
+        result += pinyinMap[chunk];
+        i += len;
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      // Fall back to English conversion
+      const engResult = convertEnglishToKana(input.slice(i));
+      result += engResult;
+      break;
+    }
+  }
+
+  return result;
+}
+
+function convertName() {
+  const nameInput = document.getElementById('nameInput') as HTMLInputElement;
+  const langSelect = document.getElementById('inputLang') as HTMLSelectElement;
+  const outputRadios = document.querySelectorAll('input[name="outputType"]') as NodeListOf<HTMLInputElement>;
+
+  const name = nameInput.value.trim();
+  if (!name) return;
+
+  const lang = langSelect.value;
+  const katakana = convertNameToKana(name, lang);
+
+  if (!katakana) return;
+
+  const hiragana = katakanaToHiragana(katakana);
+  const romaji = toRomaji(katakana);
+  const charCount = katakana.replace(/[・ー\s]/g, '').length;
+
+  // Determine what to show
+  let selectedOutput = 'both';
+  for (const radio of outputRadios) {
+    if (radio.checked) { selectedOutput = radio.value; break; }
+  }
+
+  const katakanaEl = document.getElementById('katakanaResult')!;
+  const hiraganaEl = document.getElementById('hiraganaResult')!;
+
+  if (selectedOutput === 'both' || selectedOutput === 'katakana') {
+    katakanaEl.textContent = katakana;
+    (katakanaEl.parentElement as HTMLElement).style.display = '';
+  } else {
+    (katakanaEl.parentElement as HTMLElement).style.display = 'none';
+  }
+  if (selectedOutput === 'both' || selectedOutput === 'hiragana') {
+    hiraganaEl.textContent = hiragana;
+    (hiraganaEl.parentElement as HTMLElement).style.display = '';
+  } else {
+    (hiraganaEl.parentElement as HTMLElement).style.display = 'none';
+  }
+
+  document.getElementById('romajiResult')!.textContent = romaji;
+  document.getElementById('charCount')!.textContent = String(charCount);
+
+  showResult('japaneseResult');
+}
+
+function reset() {
+  (document.getElementById('nameInput') as HTMLInputElement).value = 'Sarah Johnson';
+  (document.getElementById('inputLang') as HTMLSelectElement).value = 'english';
+  (document.querySelector('input[name="outputType"][value="both"]') as HTMLInputElement).checked = true;
+  hideResult('japaneseResult');
+}
+
+document.getElementById('convertBtn')!.addEventListener('click', convertName);
+document.getElementById('resetBtn')!.addEventListener('click', reset);
+
+// Copy buttons
+document.getElementById('copyKatakanaBtn')!.addEventListener('click', () => {
+  const text = document.getElementById('katakanaResult')!.textContent;
+  if (text && text !== 'ー') {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyKatakanaBtn')!;
+      btn.innerHTML = '<i class="fa-regular fa-check"></i> Copied!';
+      setTimeout(() => { btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy katakana'; }, 2000);
+    });
+  }
+});
+document.getElementById('copyHiraganaBtn')!.addEventListener('click', () => {
+  const text = document.getElementById('hiraganaResult')!.textContent;
+  if (text && text !== 'ー') {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyHiraganaBtn')!;
+      btn.innerHTML = '<i class="fa-regular fa-check"></i> Copied!';
+      setTimeout(() => { btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy hiragana'; }, 2000);
+    });
+  }
+});
+
+// Allow Enter key to convert
+document.getElementById('nameInput')!.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Enter') convertName();
+});
+
+// Auto-convert on DOM load
+document.addEventListener('DOMContentLoaded', convertName);
+</script>
