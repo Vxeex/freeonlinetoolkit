@@ -176,4 +176,12 @@ export const guides: Guide[] = [
     color: '#0d9488',
     relatedToolSlug: 'freelance-rate-calculator',
   },
+  {
+    slug: 'name-to-japanese-guide',
+    title: 'How to Convert Names to Japanese: Katakana & Hiragana Guide',
+    description: 'Learn how English and Chinese names are converted to Japanese katakana and hiragana. Understand the rules of phonetic transliteration and Japanese writing systems.',
+    icon: 'fa-language',
+    color: '#db2777',
+    relatedToolSlug: 'name-to-japanese',
+  },
 ];
