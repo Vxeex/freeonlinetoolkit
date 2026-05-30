@@ -135,10 +135,12 @@ const SYLLABLE_MAP: Record<string, string> = {
   'kya': 'キャ', 'kyu': 'キュ', 'kyo': 'キョ',
   'kka': 'ッカ', 'kki': 'ッキ', 'kku': 'ック', 'kke': 'ッケ', 'kko': 'ッコ',
 
-  // G-row
+  // G-row (hard G)
   'ga': 'ガ', 'gi': 'ギ', 'gu': 'グ', 'ge': 'ゲ', 'go': 'ゴ',
   'gya': 'ギャ', 'gyu': 'ギュ', 'gyo': 'ギョ',
   'gga': 'ッガ', 'ggi': 'ッギ', 'ggu': 'ッグ', 'gge': 'ッゲ', 'ggo': 'ッゴ',
+  // Soft G before e/i in names (Gemma → ジェマ, Gina → ジーナ)
+  'ge': 'ジェ', 'gi': 'ジ',
 
   // S-row
   'sa': 'サ', 'si': 'シ', 'su': 'ス', 'se': 'セ', 'so': 'ソ',
@@ -158,9 +160,9 @@ const SYLLABLE_MAP: Record<string, string> = {
   'tsu': 'ツ', 'tsa': 'ツァ', 'tse': 'ツェ', 'tso': 'ツォ',
   'tta': 'ッタ', 'tti': 'ッチ', 'ttu': 'ッツ', 'tte': 'ッテ', 'tto': 'ット',
 
-  // D-row
-  'da': 'ダ', 'di': 'ヂ', 'du': 'ヅ', 'de': 'デ', 'do': 'ド',
-  'dda': 'ッダ', 'ddi': 'ッヂ', 'ddu': 'ッヅ', 'dde': 'ッデ', 'ddo': 'ッド',
+  // D-row (modern transliteration for /di/, /du/ sounds)
+  'da': 'ダ', 'di': 'ディ', 'du': 'ドゥ', 'de': 'デ', 'do': 'ド',
+  'dda': 'ッダ', 'ddi': 'ッディ', 'ddu': 'ッドゥ', 'dde': 'ッデ', 'ddo': 'ッド',
 
   // N-row
   'na': 'ナ', 'ni': 'ニ', 'nu': 'ヌ', 'ne': 'ネ', 'no': 'ノ',
@@ -170,6 +172,8 @@ const SYLLABLE_MAP: Record<string, string> = {
   // H-row
   'ha': 'ハ', 'hi': 'ヒ', 'hu': 'フ', 'he': 'ヘ', 'ho': 'ホ',
   'hya': 'ヒャ', 'hyu': 'ヒュ', 'hyo': 'ヒョ',
+  // F-row (Ph- is pronounced /f/ in English — Philip, Phoebe, Joseph, Stephen)
+  'pha': 'ファ', 'phe': 'フェ', 'phi': 'フィ', 'pho': 'フォ', 'phy': 'フィ',
   'fa': 'ファ', 'fi': 'フィ', 'fu': 'フ', 'fe': 'フェ', 'fo': 'フォ',
   'fya': 'フャ', 'fyu': 'フュ', 'fyo': 'フョ',
 
@@ -208,10 +212,13 @@ const SYLLABLE_MAP: Record<string, string> = {
   'th': 'ス', 'the': 'ズ', 'tha': 'ザ', 'thi': 'ジ', 'tho': 'ゾ',
   'thy': 'ジ', 'thur': 'サー',
 
-  // Common endings
-  'tion': 'ション', 'sion': 'ジョン',
-  'ing': 'イング', 'ly': 'リー', 'er': 'アー', 'or': 'オー',
-  'ar': 'アー', 'le': 'ル', 'al': 'アル', 'el': 'エル',
+  // Common name endings with Y (Timothy, Cindy, Sally, Tommy, Mary, Bobby)
+  'thy': 'シー', 'dy': 'ディー', 'ty': 'ティー', 'ny': 'ニー',
+  'ry': 'リー', 'my': 'ミー', 'by': 'ビー', 'py': 'ピー', 'fy': 'フィー',
+  'gy': 'ジー', 'ly': 'リー',
+  // Common word endings (Parker → パーカー, Taylor → テイラー, Christian → クリスチャン, etc.)
+  'tion': 'ション', 'sion': 'ジョン', 'ing': 'イング',
+  'er': 'アー', 'or': 'オー', 'ar': 'アー', 'le': 'ル', 'al': 'アル', 'el': 'エル',
   'ble': 'ブル', 'cle': 'クル', 'dle': 'ドル', 'gle': 'グル',
   'ple': 'プル', 'tle': 'トル', 'zle': 'ズル',
 
