@@ -40,6 +40,8 @@ const jsonLd = [
           <select id="inputLang">
             <option value="english">English</option>
             <option value="chinese">Chinese (Pinyin)</option>
+            <option value="trad">Chinese (Traditional)</option>
+            <option value="simp">Chinese (Simplified)</option>
           </select>
         </div>
         <div class="form-group">
@@ -103,6 +105,7 @@ const jsonLd = [
         <li><strong>Use the full name</strong> — Enter both first and last name for a complete conversion. The tool will separate them automatically.</li>
         <li><strong>Try different spellings</strong> — If the result sounds wrong, try alternative phonetic spellings of your name. For example, "Catherine" and "Katherine" will produce different results.</li>
         <li><strong>Chinese names</strong> — Enter names in pinyin (standard romanization). For example, "Zhang Wei" or "Li Xiaoming". The tool will approximate the Mandarin pronunciation.</li>
+        <li><strong>Chinese characters</strong> — You can also enter Chinese characters directly. The tool will look up each character's Japanese on'yomi (Chinese-derived reading) to create the katakana conversion.</li>
         <li><strong>Double consonants</strong> — English doubled consonants like "tt" or "pp" often become a small ッ (sokuon) before the consonant, creating a pause effect.</li>
       </ul>
     </div>
@@ -146,6 +149,8 @@ const SYLLABLE_MAP: Record<string, string> = {
   'sa': 'サ', 'si': 'シ', 'su': 'ス', 'se': 'セ', 'so': 'ソ',
   'sha': 'シャ', 'shu': 'シュ', 'sho': 'ショ', 'shi': 'シ',
   'ssa': 'ッサ', 'ssi': 'ッシ', 'ssu': 'ッス', 'sse': 'ッセ', 'sso': 'ッソ',
+  // Soft C before e/i/y → /s/ sound (Celia, Cindy, Cyril)
+  'ce': 'セ', 'ci': 'シ', 'cy': 'シ',
 
   // Z-row
   'za': 'ザ', 'zi': 'ジ', 'zu': 'ズ', 'ze': 'ゼ', 'zo': 'ゾ',
@@ -153,10 +158,12 @@ const SYLLABLE_MAP: Record<string, string> = {
 
   // T-row
   'ta': 'タ', 'ti': 'チ', 'tu': 'ツ', 'te': 'テ', 'to': 'ト',
-  'cha': 'チャ', 'chu': 'チュ', 'cho': 'チョ', 'chi': 'チ',
   // Chr- is pronounced /kr/ (e.g., Chris, Chrome, Chronic) — NOT "ch" sound
   'chri': 'クリ', 'chro': 'クロ', 'chre': 'クレ', 'chru': 'クル', 'chry': 'クライ',
   'chr': 'クル',
+  // Chl- is /kl/ sound (e.g., Chloe, Chlorine)
+  'chlo': 'クロ', 'chl': 'クル',
+  'cha': 'チャ', 'chu': 'チュ', 'cho': 'チョ', 'chi': 'チ',
   'tsu': 'ツ', 'tsa': 'ツァ', 'tse': 'ツェ', 'tso': 'ツォ',
   'tta': 'ッタ', 'tti': 'ッチ', 'ttu': 'ッツ', 'tte': 'ッテ', 'tto': 'ット',
 
@@ -240,6 +247,67 @@ const SYLLABLE_MAP: Record<string, string> = {
   'fr': 'フラ', 'thr': 'スラ', 'str': 'ストラ',
 };
 
+// === Chinese character → Japanese on'yomi (katakana) mapping ===
+// Covers common Chinese surname and given name characters
+const HANZI_MAP: Record<string, string> = {
+  // Common surnames
+  '李': 'リ', '王': 'オウ', '张': 'チョウ', '劉': 'リュウ', '陈': 'チン', '杨': 'ヨウ',
+  '赵': 'チョウ', '黄': 'コウ', '周': 'シュウ', '吴': 'ゴ', '徐': 'ジョ', '孙': 'ソン',
+  '马': 'バ', '朱': 'シュ', '胡': 'コ', '郭': 'カク', '何': 'カ', '高': 'コウ',
+  '林': 'リン', '罗': 'ラ', '梁': 'リョウ', '宋': 'ソウ', '唐': 'トウ', '许': 'キョ',
+  '韩': 'カン', '冯': 'ヒョウ', '邓': 'トウ', '曹': 'ソウ', '彭': 'ホウ', '曾': 'ソウ',
+  '肖': 'ショウ', '田': 'デン', '董': 'トウ', '潘': 'ハン', '袁': 'エン', '蔡': 'サイ',
+  '蒋': 'ショウ', '余': 'ヨ', '于': 'ウ', '杜': 'ト', '叶': 'ヨウ', '程': 'テイ',
+  '苏': 'ソ', '魏': 'ギ', '吕': 'ロ', '丁': 'テイ', '任': 'ジン', '沈': 'シン',
+  '姚': 'ヨウ', '卢': 'ロ', '姜': 'キョウ', '崔': 'サイ', '钟': 'ショウ', '谭': 'タン',
+  '陆': 'リク', '汪': 'オウ', '范': 'ハン', '金': 'キン', '石': 'セキ', '廖': 'リョウ',
+  '贾': 'カ', '夏': 'カ', '韦': 'イ', '付': 'フ', '方': 'ホウ', '白': 'ハク',
+  '邹': 'ス', '孟': 'モウ', '熊': 'ユウ', '秦': 'シン', '邱': 'キュウ', '江': 'コウ',
+  '尹': 'イン', '薛': 'セツ', '阎': 'エン', '段': 'ダン', '雷': 'ライ', '侯': 'コウ',
+  '龙': 'リュウ', '史': 'シ', '陶': 'トウ', '贺': 'ガ', '顾': 'コ', '毛': 'モウ',
+  '郝': 'カク', '龚': 'キョウ', '邵': 'ショウ', '万': 'マン', '钱': 'セン', '严': 'ゲン',
+  '覃': 'タン', '武': 'ブ', '戴': 'タイ', '莫': 'バク', '孔': 'コウ', '向': 'コウ',
+  '汤': 'トウ',
+
+  // Given name characters
+  '明': 'メイ', '华': 'カ', '伟': 'イ', '文': 'ブン', '英': 'エイ', '美': 'ビ',
+  '玉': 'ギョク', '秀': 'シュウ', '丽': 'レイ', '健': 'ケン', '慧': 'ケイ', '志': 'シ',
+  '国': 'コク', '永': 'エイ', '爱': 'アイ', '红': 'コウ', '平': 'ヘイ', '强': 'キョウ',
+  '军': 'グン', '杰': 'ケツ', '飞': 'ヒ', '建': 'ケン', '小': 'ショウ', '山': 'サン',
+  '水': 'スイ', '火': 'カ', '木': 'ボク', '金': 'キン', '土': 'ド', '日': 'ニチ',
+  '月': 'ゲツ', '风': 'フウ', '花': 'カ', '春': 'シュン', '夏': 'カ', '秋': 'シュウ',
+  '冬': 'トウ', '东': 'トウ', '南': 'ナン', '西': 'セイ', '北': 'ホク', '中': 'チュウ',
+  '大': 'ダイ', '子': 'シ', '女': 'ジョ', '男': 'ダン', '天': 'テン', '生': 'セイ',
+  '学': 'ガク', '海': 'カイ', '安': 'アン', '乐': 'ラク', '新': 'シン', '年': 'ネン',
+  '时': 'ジ', '光': 'コウ', '道': 'ドウ', '德': 'トク', '福': 'フク', '贵': 'キ',
+  '兰': 'ラン', '清': 'セイ', '庆': 'ケイ', '思': 'シ', '家': 'カ', '瑞': 'ズイ',
+  '智': 'チ', '峰': 'ホウ', '琳': 'リン', '淑': 'シュク', '芬': 'フン', '玲': 'レイ',
+  '敏': 'ビン', '裕': 'ユウ', '顺': 'ジュン', '礼': 'レイ', '仁': 'ジン', '义': 'ギ',
+  '忠': 'チュウ', '孝': 'コウ', '信': 'シン', '和': 'ワ', '昌': 'ショウ', '盛': 'セイ',
+  '荣': 'エイ', '辉': 'キ', '星': 'セイ', '晨': 'シン', '曦': 'ギ', '昊': 'コウ',
+  '鹏': 'ホウ', '翔': 'ショウ', '帆': 'ハン', '航': 'コウ', '宇': 'ウ', '宙': 'チュウ',
+  '辰': 'シン', '怡': 'イ', '欣': 'キン', '悦': 'エツ', '惠': 'ケイ', '忆': 'オク',
+  '恒': 'コウ', '彬': 'ヒン', '彦': 'ゲン', '嘉': 'カ', '瑜': 'ユ', '瑾': 'キン',
+  '琪': 'キ', '瑶': 'ヨウ', '琼': 'ケイ', '珊': 'サン', '瑚': 'コ', '珠': 'シュ',
+  '宝': 'ホウ', '珍': 'チン', '琴': 'キン', '棋': 'キ', '松': 'ショウ', '竹': 'チク',
+  '梅': 'バイ', '桃': 'トウ', '菊': 'キク', '莲': 'レン', '桂': 'ケイ', '柳': 'リュウ',
+  '柏': 'ハク', '梓': 'シ', '枫': 'フウ', '桦': 'カ',
+
+  // Simplified equivalents (same readings)
+  '张': 'チョウ', '刘': 'リュウ', '陈': 'チン', '杨': 'ヨウ', '赵': 'チョウ',
+  '吴': 'ゴ', '许': 'キョ', '韩': 'カン', '冯': 'ヒョウ', '邓': 'トウ',
+  '蒋': 'ショウ', '苏': 'ソ', '吕': 'ロ', '卢': 'ロ', '钟': 'ショウ',
+  '谭': 'タン', '陆': 'リク', '韦': 'イ', '邹': 'ス', '阎': 'エン',
+  '龙': 'リュウ', '贺': 'ガ', '顾': 'コ', '龚': 'キョウ', '万': 'マン',
+  '钱': 'セン', '严': 'ゲン', '汤': 'トウ',
+  '华': 'カ', '伟': 'イ', '丽': 'レイ', '强': 'キョウ', '军': 'グン',
+  '飞': 'ヒ', '风': 'フウ', '东': 'トウ', '学': 'ガク', '乐': 'ラク',
+  '时': 'ジ', '德': 'トク', '贵': 'キ', '兰': 'ラン', '庆': 'ケイ',
+  '顺': 'ジュン', '义': 'ギ', '荣': 'エイ', '辉': 'キ', '鹏': 'ホウ',
+  '忆': 'オク', '恒': 'コウ', '彦': 'ゲン', '嘉': 'カ', '琼': 'ケイ',
+  '宝': 'ホウ', '枫': 'フウ', '桦': 'カ',
+};
+
 // Hiragana version for katakana
 const KATAKANA_TO_HIRAGANA: Record<string, string> = {
   'ア': 'あ', 'イ': 'い', 'ウ': 'う', 'エ': 'え', 'オ': 'お',
@@ -285,27 +353,12 @@ function katakanaToHiragana(katakana: string): string {
   let result = '';
   let i = 0;
   while (i < katakana.length) {
-    // Try 3 char match
     const three = katakana.slice(i, i + 3);
-    if (KATAKANA_TO_HIRAGANA[three]) {
-      result += KATAKANA_TO_HIRAGANA[three];
-      i += 3;
-      continue;
-    }
-    // Try 2 char match
+    if (KATAKANA_TO_HIRAGANA[three]) { result += KATAKANA_TO_HIRAGANA[three]; i += 3; continue; }
     const two = katakana.slice(i, i + 2);
-    if (KATAKANA_TO_HIRAGANA[two]) {
-      result += KATAKANA_TO_HIRAGANA[two];
-      i += 2;
-      continue;
-    }
-    // Try 1 char match
+    if (KATAKANA_TO_HIRAGANA[two]) { result += KATAKANA_TO_HIRAGANA[two]; i += 2; continue; }
     const one = katakana[i];
-    if (KATAKANA_TO_HIRAGANA[one]) {
-      result += KATAKANA_TO_HIRAGANA[one];
-    } else {
-      result += one;
-    }
+    if (KATAKANA_TO_HIRAGANA[one]) result += KATAKANA_TO_HIRAGANA[one]; else result += one;
     i++;
   }
   return result;
@@ -353,8 +406,8 @@ function toRomaji(katakana: string): string {
   let result = '';
   let i = 0;
   while (i < katakana.length) {
-    const multi = katakana.slice(i, i + 3);
-    if (romajiMap[multi]) { result += romajiMap[multi]; i += 3; continue; }
+    const three = katakana.slice(i, i + 3);
+    if (romajiMap[three]) { result += romajiMap[three]; i += 3; continue; }
     const two = katakana.slice(i, i + 2);
     if (romajiMap[two]) { result += romajiMap[two]; i += 2; continue; }
     const one = katakana[i];
@@ -366,6 +419,11 @@ function toRomaji(katakana: string): string {
 
 function convertNameToKana(name: string, lang: string): string {
   if (!name.trim()) return '';
+
+  // Chinese character input (Traditional or Simplified)
+  if (lang === 'trad' || lang === 'simp') {
+    return convertHanziToKana(name.trim());
+  }
 
   // Split into words (first/last name)
   const parts = name.trim().split(/\s+/);
@@ -380,6 +438,24 @@ function convertNameToKana(name: string, lang: string): string {
   }
 
   return kanaParts.join('・');
+}
+
+function convertHanziToKana(text: string): string {
+  let result = '';
+  for (const char of text) {
+    if (HANZI_MAP[char]) {
+      result += HANZI_MAP[char];
+    } else if (/[一-鿿㐀-䶿]/.test(char)) {
+      result += char; // Unmapped CJK character — keep as-is
+    } else if (/[぀-ゟ゠-ヿ]/.test(char)) {
+      result += char; // Already hiragana or katakana — pass through
+    } else if (/[a-zA-Z]/.test(char)) {
+      result += convertEnglishToKana(char);
+    } else {
+      result += char; // Spaces, punctuation — pass through
+    }
+  }
+  return result;
 }
 
 function convertEnglishToKana(word: string): string {
@@ -404,19 +480,9 @@ function convertEnglishToKana(word: string): string {
     }
 
     if (matched) {
-      // Check for double consonant before vowel (e.g., "tt" in "button")
-      if (i + longestLen < input.length) {
-        const nextChar = input[i + longestLen];
-        const prevChar = input[i + longestLen - 1];
-        if (nextChar === prevChar && 'aeiou'.includes(nextChar)) {
-          // Handle doubled consonant with small tsu
-          // This is a simplification - real Japanese has specific rules
-        }
-      }
       result += longestKana;
       i += longestLen;
     } else {
-      // Skip character (non-alpha)
       i++;
     }
   }
@@ -426,7 +492,6 @@ function convertEnglishToKana(word: string): string {
 
 function convertChinesePinyinToKana(pinyin: string): string {
   const pinyinMap: Record<string, string> = {
-    // Chinese initials to katakana
     'b': 'バ', 'p': 'パ', 'm': 'マ', 'f': 'ファ',
     'd': 'ダ', 't': 'タ', 'n': 'ナ', 'l': 'ラ',
     'g': 'ガ', 'k': 'カ', 'h': 'ハ',
@@ -434,8 +499,6 @@ function convertChinesePinyinToKana(pinyin: string): string {
     'zh': 'ジ', 'ch': 'チ', 'sh': 'シ',
     'r': 'ル', 'z': 'ズ', 'c': 'ツ', 's': 'ス',
     'w': 'ワ', 'y': 'イ',
-
-    // Chinese finals to katakana
     'a': 'ア', 'o': 'オ', 'e': 'ウー', 'i': 'イー', 'u': 'ウー', 'v': 'ユイ',
     'ai': 'アイ', 'ei': 'エイ', 'ui': 'ウイ',
     'ao': 'アオ', 'ou': 'オウ', 'iu': 'イウ',
@@ -450,9 +513,6 @@ function convertChinesePinyinToKana(pinyin: string): string {
 
   let input = pinyin.toLowerCase();
   let result = '';
-
-  // Try to match Chinese pinyin syllable structure
-  // Simple approach: iterate and match known patterns
   let i = 0;
   while (i < input.length) {
     let matched = false;
@@ -466,13 +526,11 @@ function convertChinesePinyinToKana(pinyin: string): string {
       }
     }
     if (!matched) {
-      // Fall back to English conversion
       const engResult = convertEnglishToKana(input.slice(i));
       result += engResult;
       break;
     }
   }
-
   return result;
 }
 
@@ -493,7 +551,6 @@ function convertName() {
   const romaji = toRomaji(katakana);
   const charCount = katakana.replace(/[・ー\s]/g, '').length;
 
-  // Determine what to show
   let selectedOutput = 'both';
   for (const radio of outputRadios) {
     if (radio.checked) { selectedOutput = radio.value; break; }
@@ -531,7 +588,6 @@ function reset() {
 document.getElementById('convertBtn')!.addEventListener('click', convertName);
 document.getElementById('resetBtn')!.addEventListener('click', reset);
 
-// Copy buttons
 document.getElementById('copyKatakanaBtn')!.addEventListener('click', () => {
   const text = document.getElementById('katakanaResult')!.textContent;
   if (text && text !== 'ー') {
@@ -553,11 +609,9 @@ document.getElementById('copyHiraganaBtn')!.addEventListener('click', () => {
   }
 });
 
-// Allow Enter key to convert
 document.getElementById('nameInput')!.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === 'Enter') convertName();
 });
 
-// Auto-convert on DOM load
 document.addEventListener('DOMContentLoaded', convertName);
 </script>
