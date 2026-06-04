@@ -22,9 +22,12 @@ export async function getStaticPaths() {
 }
 
 const { category, catTools } = Astro.props;
+const totalTools = catTools.length;
+const catName = category.name;
+const catNameLower = catName.toLowerCase();
 
-const pageTitle = `${category.name} — Free Online Tools & Calculators | FreeOnlineToolkit`;
-const pageDesc = `Browse our collection of free ${category.name.toLowerCase()}. ${category.description} All tools are 100% free, no signup required.`;
+const pageTitle = `${catName} — Free Online Tools & Calculators | FreeOnlineToolkit`;
+const pageDesc = `Browse our collection of ${totalTools} free ${catNameLower}. ${category.description} All tools are 100% free, no signup required.`;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -67,18 +70,41 @@ const jsonLd = {
       </div>
 
       <div class="content-section animate-in">
-        <h2>Why Use Our {category.name}?</h2>
+        <h2>Why Use Our {catName}?</h2>
         <p>Every calculator and tool in this collection is built with accuracy and ease of use as top priorities. The calculations run entirely in your browser — your data never leaves your device, and you get instant results with no waiting. There are no accounts to create, no subscriptions to manage, and no usage limits. You can use each tool as many times as you need, from any device with a modern web browser.</p>
         <p>Each tool includes a clear explanation of how the calculation works, the formula used, and what the results mean. Many tools also include references to authoritative sources so you can verify the methodology and explore further reading. Our accompanying guides provide deeper context and practical tips for applying the results to your real-world situation.</p>
       </div>
 
-      {catTools.length >= 4 && (
-        <div class="content-section animate-in">
-          <h2>Getting Started with {category.name}</h2>
-          <p>If you are new to using {category.name.toLowerCase()}, start with the most popular tool in this category — <a href="/{catTools[0].slug}/">{catTools[0].title}</a>. This tool covers the most common use case and provides a solid foundation for understanding the other tools in this collection.</p>
-          <p>For more in-depth information about specific topics, check our <a href="/guides/">guides library</a> which includes detailed articles covering many of the concepts behind these calculators. The guides explain the underlying principles, common mistakes to avoid, and practical tips for getting the most accurate results.</p>
-        </div>
-      )}
+      <div class="content-section animate-in">
+        <h2>What {catName} Cover</h2>
+        <p>This collection includes <strong>{totalTools} {catNameLower} tools</strong> designed to help you with a wide range of practical calculations. Whether you are a professional who needs quick answers, a student learning about these concepts, or someone planning a major life decision, these tools give you accurate results in seconds. Each tool focuses on a specific calculation so you can find exactly what you need without wading through irrelevant features.</p>
+        <p>The tools in this category are designed to work together. For many real-world situations, you may need to use more than one tool to get a complete picture. For example, you might use one tool to calculate your current situation and another to compare different scenarios or options. The related tools section on each tool page suggests which tools work well together, making it easy to explore connected calculations.</p>
+      </div>
+
+      <div class="content-section animate-in">
+        <h2>Who Can Benefit from These Tools</h2>
+        <p>Our <strong>{catNameLower}</strong> are designed for a broad audience. Professionals use them to verify calculations and save time on routine work. Students use them to check their work and understand how formulas apply to real-world scenarios. Individuals use them to plan major financial decisions, track health metrics, or solve everyday problems. The calculators are deliberately simple — no training is required to get started.</p>
+        <p>Each tool includes clear labels and sensible default values so you can see results immediately. If you are new to a type of calculation, the built-in guide content explains what each input means and how the result is calculated. If you are experienced, you can skip the explanations and go directly to entering your values. The tools adapt to your comfort level.</p>
+      </div>
+
+      <div class="content-section animate-in">
+        <h2>How to Get the Most from These Tools</h2>
+        <p>Start by identifying the specific calculation you need. Each tool in this category serves a distinct purpose, so choosing the right one is the first step to getting useful results. If you are unsure which tool to use, read the description under each tool name — it explains what the tool calculates and who typically uses it. You can also check the guides section for more detailed explanations of related concepts.</p>
+        <p>For the most accurate results, use real numbers from your actual situation. When planning ahead, try multiple scenarios — optimistic, realistic, and conservative — to understand the full range of possible outcomes. Small changes in inputs can sometimes produce surprisingly large differences in results, so experimenting with different values helps you understand which factors matter most for your specific situation.</p>
+        <p>Bookmark the tools you use most often for quick access. All tools update results instantly as you adjust inputs, so you can compare different scenarios side by side without waiting for page reloads. If you need to save your results, take a screenshot or note down the key numbers — the tools do not store your data on any server, keeping your information completely private.</p>
+      </div>
+
+      <div class="content-section animate-in">
+        <h2>Accuracy and Methodology</h2>
+        <p>Every tool in this collection follows established formulas and methodologies from authoritative sources. Financial tools use standard industry formulas employed by banks and financial institutions. Health tools use clinically validated methods from peer-reviewed medical research. Conversion tools use official measurement standards from organizations like the National Institute of Standards and Technology. Each tool page includes a methodology section explaining the formula used and links to references where applicable.</p>
+        <p>While we strive for accuracy, these tools are designed for educational and planning purposes. For critical decisions, verify the results with a qualified professional who can evaluate your specific circumstances. Our tools provide a reliable starting point for understanding your options, but no online calculator can replace professional advice tailored to your unique situation.</p>
+      </div>
+
+      <div class="content-section animate-in">
+        <h2>Related Guides and Resources</h2>
+        <p>For more in-depth information about the concepts behind these tools, explore our <a href="/guides/">guides library</a>. Each guide provides detailed explanations of key topics, common mistakes to avoid, and practical tips for applying the calculations to your real-world situation. The guides are written in plain language and designed to be accessible whether you are new to the topic or have some experience.</p>
+        <p>You can also visit the <a href="/">homepage</a> to browse all available tools across every category, or use the search bar to find a specific tool by name. If you have suggestions for new tools or improvements, we welcome your feedback through our <a href="/contact/">contact page</a>.</p>
+      </div>
     </div>
   </main>
   <Footer />
