@@ -16,6 +16,14 @@ export const guides: Guide[] = [
     color: '#2563eb',
   },
   {
+    slug: 'bmi-vs-body-fat-vs-ideal-weight-guide',
+    title: 'BMI vs Body Fat vs Ideal Weight: Which Health Calculator Should You Use?',
+    description: 'Compare BMI, body fat percentage, and ideal weight calculators. Learn the differences, strengths, and limitations of each method to track your health.',
+    icon: 'fa-weight-scale',
+    color: '#10b981',
+    relatedToolSlug: 'bmi-calculator',
+  },
+  {
     slug: 'mortgage-calculator-guide',
     title: 'How to Use a Mortgage Calculator to Plan Your Home Purchase',
     description: 'Learn how to use a mortgage calculator effectively, understand interest rates, and plan your home purchase with confidence.',

@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { categories } from '../../data/categories';
+import { toolBySlug, tools } from '../../data/tools';
+
+export interface Props {
+  category: typeof categories[number];
+  catTools: typeof tools;
+}
+
+export async function getStaticPaths() {
+  return categories.map((cat) => {
+    const catTools = cat.toolSlugs.map(s => toolBySlug[s]).filter(Boolean);
+    return {
+      params: { slug: cat.id },
+      props: { category: cat, catTools },
+    };
+  });
+}
+
+const { category, catTools } = Astro.props;
+
+const pageTitle = `${category.name} — Free Online Tools & Calculators | FreeOnlineToolkit`;
+const pageDesc = `Browse our collection of free ${category.name.toLowerCase()}. ${category.description} All tools are 100% free, no signup required.`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": `${category.name} — FreeOnlineToolkit`,
+  "description": pageDesc,
+  "url": `https://freeonlinetoolkit.org/category/${category.id}/`,
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": catTools.map((t, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "url": `https://freeonlinetoolkit.org/${t.slug}/`,
+      "name": t.title,
+    }))
+  }
+};
+---
+
+<BaseLayout title={pageTitle} description={pageDesc} jsonLd={jsonLd}>
+  <Header />
+  <main>
+    <div class="tool-page">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: category.name }]} />
+      <h1 class="animate-in">{category.name}</h1>
+      <p class="tool-intro animate-in">{category.description} All tools are completely free, work in your browser, and require no signup.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:48px;">
+        {catTools.map((t, i) => (
+          <a href={`/${t.slug}/`} class="guide-card animate-in" style={`transition-delay:${(i % 12) * 0.06}s;`}>
+            <span class="guide-card-icon" style={`background:${t.color}18;color:${t.color};`}>
+              <i class={`fa-solid ${t.icon}`}></i>
+            </span>
+            <div>
+              <h3 style="font-size:1rem;margin-bottom:4px;">{t.title}</h3>
+              <p style="font-size:0.85rem;color:var(--color-text-secondary);line-height:1.5;">{t.shortDescription || t.description}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="content-section animate-in">
+        <h2>Why Use Our {category.name}?</h2>
+        <p>Every calculator and tool in this collection is built with accuracy and ease of use as top priorities. The calculations run entirely in your browser — your data never leaves your device, and you get instant results with no waiting. There are no accounts to create, no subscriptions to manage, and no usage limits. You can use each tool as many times as you need, from any device with a modern web browser.</p>
+        <p>Each tool includes a clear explanation of how the calculation works, the formula used, and what the results mean. Many tools also include references to authoritative sources so you can verify the methodology and explore further reading. Our accompanying guides provide deeper context and practical tips for applying the results to your real-world situation.</p>
+      </div>
+
+      {catTools.length >= 4 && (
+        <div class="content-section animate-in">
+          <h2>Getting Started with {category.name}</h2>
+          <p>If you are new to using {category.name.toLowerCase()}, start with the most popular tool in this category — <a href="/{catTools[0].slug}/">{catTools[0].title}</a>. This tool covers the most common use case and provides a solid foundation for understanding the other tools in this collection.</p>
+          <p>For more in-depth information about specific topics, check our <a href="/guides/">guides library</a> which includes detailed articles covering many of the concepts behind these calculators. The guides explain the underlying principles, common mistakes to avoid, and practical tips for getting the most accurate results.</p>
+        </div>
+      )}
+    </div>
+  </main>
+  <Footer />
+  <script>
+    import { initScrollAnimations } from '../../utils/scroll-animations';
+    initScrollAnimations();
+  </script>
+</BaseLayout>
