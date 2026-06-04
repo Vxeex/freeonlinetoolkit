@@ -590,6 +590,24 @@ ul { list-style: none; }
   letter-spacing: 0.08em;
   margin-bottom: 6px;
 }
+.section-view-all {
+  margin-left: 8px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.section-view-all:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.section-view-all i {
+  font-size: 0.55rem;
+  margin-left: 2px;
+}
 .section-header h2 {
   font-family: var(--font-display);
   font-size: clamp(1.2rem, 2vw, 1.5rem);

@@ -107,7 +107,10 @@ const jsonLd = [
       <section class="cat-section">
         <div class="cat-section-inner">
           <div class="section-header animate-in">
-            <div class="section-label"><i class={`fa-solid ${cat.icon}`}></i> {cat.name}</div>
+            <div class="section-label">
+              <i class={`fa-solid ${cat.icon}`}></i> {cat.name}
+              <a href={`/category/${cat.id}/`} class="section-view-all">View all <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
             <h2>{cat.description}</h2>
           </div>
           <div class="tool-grid-home">
