@@ -184,4 +184,11 @@ export const guides: Guide[] = [
     color: '#db2777',
     relatedToolSlug: 'name-to-japanese',
   },
+  {
+    slug: 'how-to-use-online-calculators-guide',
+    title: 'How to Use Online Calculators Effectively: Tips and Best Practices',
+    description: 'Learn how to get accurate results from online calculators, understand the formulas behind them, and avoid common mistakes. A comprehensive guide for users of free online tools.',
+    icon: 'fa-calculator',
+    color: '#2563eb',
+  },
 ];
