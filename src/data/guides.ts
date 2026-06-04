@@ -9,6 +9,13 @@ export interface Guide {
 
 export const guides: Guide[] = [
   {
+    slug: 'how-to-use-online-calculators-guide',
+    title: 'How to Use Online Calculators Effectively: Tips and Best Practices',
+    description: 'Learn how to get accurate results from online calculators, understand the formulas behind them, and avoid common mistakes. A comprehensive guide for all users.',
+    icon: 'fa-calculator',
+    color: '#2563eb',
+  },
+  {
     slug: 'mortgage-calculator-guide',
     title: 'How to Use a Mortgage Calculator to Plan Your Home Purchase',
     description: 'Learn how to use a mortgage calculator effectively, understand interest rates, and plan your home purchase with confidence.',
@@ -183,12 +190,5 @@ export const guides: Guide[] = [
     icon: 'fa-language',
     color: '#db2777',
     relatedToolSlug: 'name-to-japanese',
-  },
-  {
-    slug: 'how-to-use-online-calculators-guide',
-    title: 'How to Use Online Calculators Effectively: Tips and Best Practices',
-    description: 'Learn how to get accurate results from online calculators, understand the formulas behind them, and avoid common mistakes. A comprehensive guide for users of free online tools.',
-    icon: 'fa-calculator',
-    color: '#2563eb',
   },
 ];
