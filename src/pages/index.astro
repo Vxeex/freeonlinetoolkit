@@ -48,38 +48,40 @@ const jsonLd = [
         </div>
         <h1 class="animate-entrance animate-entrance-delay-2"><span>{totalToolsCount} Free Online Calculators</span> for Every Need</h1>
         <p class="animate-entrance animate-entrance-delay-3">
-          FreeOnlineToolkit gives you <strong>{totalToolsCount} free calculators and utilities</strong>
-          for life's everyday questions &mdash; mortgage payments, BMI, passwords,
-          currency conversions, and more. All 100% free, no signup required.
-          Every tool works instantly in your browser with no data storage and no tracking.
-          Whether you are planning a home purchase, tracking your fitness, converting currencies for travel, or generating secure passwords &mdash; the right tool is just a click away. Our collection covers personal finance, health and wellness, business planning, education, automotive costs, cooking, and everyday utilities. Each tool is designed to give you accurate results in seconds, with clear explanations of how the calculation works.
+          Fast, accurate calculators and utilities for life's everyday questions &mdash;
+          mortgage payments, BMI, passwords, currency conversions, and more.
+          All 100% free, no signup required, works instantly in your browser.
         </p>
         <div class="hero-actions animate-entrance animate-entrance-delay-4">
           <a href="#tools" class="btn btn-primary">
             <i class="fa-solid fa-magnifying-glass"></i> Explore Tools
-          </a>
-          <a href="/guides/" class="btn btn-secondary">
-            <i class="fa-regular fa-compass"></i> Read Guides
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ TRUST BAR ============ -->
-  <div class="trust-bar animate-in">
-    <div class="trust-bar-inner">
-      <div class="trust-stat">
-        <div class="trust-stat-number" data-count={totalToolsCount}>{totalToolsCount}</div>
-        <div class="trust-stat-label">Free Online Tools</div>
+  <!-- ============ SOCIAL PROOF BAR ============ -->
+  <div class="social-proof animate-in">
+    <div class="social-proof-inner">
+      <div class="social-proof-item">
+        <i class="fa-solid fa-wrench"></i>
+        <span><strong>84</strong> Free Tools</span>
       </div>
-      <div class="trust-stat">
-        <div class="trust-stat-number" data-count="100">100%</div>
-        <div class="trust-stat-label">Free &mdash; No Hidden Fees</div>
+      <div class="social-proof-divider"></div>
+      <div class="social-proof-item">
+        <i class="fa-solid fa-desktop"></i>
+        <span><strong>100%</strong> Browser-Based</span>
       </div>
-      <div class="trust-stat">
-        <div class="trust-stat-number" data-count="0">0</div>
-        <div class="trust-stat-label">Signups Required</div>
+      <div class="social-proof-divider"></div>
+      <div class="social-proof-item">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span><strong>No</strong> Data Collection</span>
+      </div>
+      <div class="social-proof-divider"></div>
+      <div class="social-proof-item">
+        <i class="fa-solid fa-bolt"></i>
+        <span><strong>Instant</strong> Results</span>
       </div>
     </div>
   </div>
@@ -107,14 +109,13 @@ const jsonLd = [
     <div class="popular-section-inner">
       <div class="section-header">
         <div class="section-label">
-          <i class="fa-solid fa-fire-flame-curved"></i> Most Popular Tools
+          <i class="fa-solid fa-fire-flame-curved"></i> Most Popular
         </div>
-        <h2>Popular this week</h2>
-        <p class="popular-subtitle">The tools our users reach for most — all free, instant, and private.</p>
+        <h2>Most Popular</h2>
       </div>
       <div class="popular-grid">
         {popularTools.map((t, i) => (
-          <ToolCard tool={t} featured={true} index={i} />
+          <ToolCard tool={t} index={i} />
         ))}
       </div>
     </div>
@@ -199,35 +200,6 @@ const jsonLd = [
           searchInput.dispatchEvent(new Event('input'));
           searchInput.focus();
         });
-      }
-
-      // Trust bar counter animation
-      const trustBar = document.querySelector('.trust-bar');
-      if (trustBar) {
-        const counterObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              const counters = entry.target.querySelectorAll('[data-count]');
-              counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-count'), 10);
-                if (target === 0) return;
-                const duration = 1200;
-                const start = performance.now();
-                function update(now) {
-                  const elapsed = now - start;
-                  const progress = Math.min(elapsed / duration, 1);
-                  counter.textContent = Math.round(progress * target) + (target === 100 ? '%' : '');
-                  if (progress < 1) requestAnimationFrame(update);
-                  else counter.textContent = target + (target === 100 ? '%' : '');
-                }
-                requestAnimationFrame(update);
-              });
-              counterObserver.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.5 });
-        counterObserver.observe(trustBar);
       }
     }
 
