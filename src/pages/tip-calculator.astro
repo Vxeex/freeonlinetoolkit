@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['tip-calculator'];
@@ -60,6 +61,18 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="bar"
+      color={tool.color}
+      title="Quick Tip Guide on a $85.50 Bill"
+      data={[
+        { label: "15% — Good", value: "$12.83", pct: 60 },
+        { label: "18% — Great", value: "$15.39", pct: 72 },
+        { label: "20% — Excellent", value: "$17.10", pct: 80 },
+        { label: "25% — Generous", value: "$21.38", pct: 100 }
+      ]}
+    />
   </fragment>
 
   <fragment slot="content">

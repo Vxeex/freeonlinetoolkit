@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['home-affordability-calculator'];
@@ -100,6 +101,23 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="gauge"
+      color={tool.color}
+      title="Affordability Score ($85K Income)"
+      data={{
+        value: 65,
+        min: 0,
+        max: 100,
+        label: "Moderate Affordability",
+        zones: [
+          { label: "Tight", color: "#ef4444" },
+          { label: "Moderate", color: "#eab308" },
+          { label: "Comfortable", color: "#10b981" }
+        ]
+      }}
+    />
   </fragment>
 
   <fragment slot="content">

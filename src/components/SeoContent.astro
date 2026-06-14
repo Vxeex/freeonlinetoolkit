@@ -2,6 +2,7 @@
 import { toolBySlug, type Tool } from '../data/tools';
 import { categories } from '../data/categories';
 import { toolContent } from '../data/tool-content';
+import DownloadResources from './DownloadResources.astro';
 
 interface Props {
   slug: string;
@@ -222,6 +223,32 @@ const articleSchema = {
     </>
   )}
 
+  {content?.currentData && content.currentData.length > 0 && (
+    <>
+      <h3>Current Market Data</h3>
+      <table class="seo-current-data">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+            <th>Source</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {content.currentData.map((row, i) => (
+            <tr class={i % 2 === 0 ? 'row-even' : 'row-odd'}>
+              <td class="data-label">{row.label}</td>
+              <td class="data-value">{row.value}</td>
+              <td class="data-source">{row.source}</td>
+              <td class="data-date">{row.date}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )}
+
   {content?.example && content.example.steps ? (
     <>
       <h3>Real-World Example</h3>
@@ -261,6 +288,8 @@ const articleSchema = {
       <div class="seo-editorial-content" set:html={content.editorial} />
     </>
   )}
+
+  <DownloadResources slug={slug} />
 
   {content?.references && content.references.length > 0 && (
     <>
@@ -302,7 +331,7 @@ const articleSchema = {
 
   <div class="seo-footer-meta">
     <span class="seo-last-updated">Last updated: {content?.lastUpdated || 'January 2026'}</span>
-    <span class="seo-editorial">— FreeOnlineToolkit Editorial Team</span>
+    <span class="seo-editorial">— Written by <a href="/editors/" class="seo-editorial-link">FreeOnlineToolkit Editorial Team</a></span>
   </div>
 </section>
 
@@ -400,6 +429,58 @@ const articleSchema = {
     color: var(--color-text-muted);
   }
   .seo-editorial {
+    color: var(--color-text-muted);
+  }
+  .seo-editorial-link {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .seo-editorial-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Current data table */
+  .seo-current-data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0 0.75rem;
+    font-size: 0.85rem;
+  }
+  .seo-current-data th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-text-muted);
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--color-border);
+  }
+  .seo-current-data td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-text-secondary);
+  }
+  .seo-current-data .row-even {
+    background: transparent;
+  }
+  .seo-current-data .row-odd {
+    background: var(--color-bg);
+  }
+  .seo-current-data .data-label {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+  .seo-current-data .data-value {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .seo-current-data .data-source {
+    font-size: 0.8rem;
+  }
+  .seo-current-data .data-date {
+    font-size: 0.8rem;
     color: var(--color-text-muted);
   }
 

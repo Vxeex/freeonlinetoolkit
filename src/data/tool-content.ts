@@ -9,6 +9,8 @@ export interface ToolContent {
   tip?: string;
   steps?: { label: string; text: string }[];
   editorial?: string;
+  currentData?: { label: string; value: string; source: string; date: string }[];
+  resources?: { title: string; description: string }[];
 }
 
 export const toolContent: Record<string, ToolContent> = {
@@ -36,6 +38,16 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'Freddie Mac - Mortgage Rate Data', url: 'https://www.freddiemac.com/pmms' },
     ],
     lastUpdated: '2026-02-15',
+    currentData: [
+      { label: '30-Year Fixed Rate', value: '6.50%', source: 'Freddie Mac PMMS', date: 'June 2026' },
+      { label: '15-Year Fixed Rate', value: '5.80%', source: 'Freddie Mac PMMS', date: 'June 2026' },
+      { label: '5/1 ARM Rate', value: '5.95%', source: 'Freddie Mac PMMS', date: 'June 2026' },
+    ],
+    resources: [
+      { title: 'First-Time Homebuyer Checklist', description: 'A comprehensive checklist covering every step from pre-approval to closing day. Never miss a critical deadline or document.' },
+      { title: 'Mortgage Amortization Schedule Template', description: 'A downloadable spreadsheet that visualizes your amortization schedule with principal vs. interest breakdowns month by month.' },
+      { title: 'Refinancing Decision Guide', description: 'A step-by-step guide to help you decide if refinancing makes sense, including break-even analysis and rate comparison worksheets.' },
+    ],
     audience: 'Homebuyers comparing loan offers, homeowners considering refinancing, and anyone wanting to understand what a mortgage payment would look like before committing to a home purchase.',
     tip: 'Try comparing a 15-year term against a 30-year term with the same loan amount. The monthly payment difference is often smaller than people expect, but the total interest savings can be tens of thousands of dollars.',
     steps: [
@@ -70,6 +82,16 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'S&P 500 Historical Returns', url: 'https://www.spglobal.com/spdji/en/indices/equity/sp-500/' },
     ],
     lastUpdated: '2026-02-10',
+    currentData: [
+      { label: 'High-Yield Savings APY', value: '4.50% – 5.00%', source: 'FDIC / Bankrate', date: 'June 2026' },
+      { label: '10-Year Treasury Yield', value: '4.20%', source: 'US Treasury', date: 'June 2026' },
+      { label: 'S&P 500 Avg. Annual Return', value: '10.2% (10-year)', source: 'S&P Dow Jones Indices', date: 'June 2026' },
+    ],
+    resources: [
+      { title: 'Compound Interest Growth Tracker', description: 'A spreadsheet to track your investment growth month by month with compound interest calculations and contribution tracking.' },
+      { title: 'Rule of 72 Quick Reference Card', description: 'A printable reference card showing how long it takes to double your money at different interest rates using the Rule of 72.' },
+      { title: 'Investment Comparison Worksheet', description: 'Compare up to 5 investment scenarios side-by-side with different rates, contributions, and time horizons.' },
+    ],
     audience: 'Investors building long-term wealth, savers comparing account options, students learning about the time value of money, and anyone who wants to see how small regular contributions grow over decades.',
     tip: 'The difference between 6% and 8% annual return seems small, but over 30 years on a $10,000 investment, it is over $100,000. Always try to maximize tax-advantaged accounts like 401(k)s and IRAs first.',
     steps: [
@@ -102,6 +124,11 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'FDIC - Deposit Insurance', url: 'https://www.fdic.gov/resources/deposit-insurance/' },
     ],
     lastUpdated: '2026-01-20',
+    resources: [
+      { title: 'Emergency Fund Planning Worksheet', description: 'Calculate how much you need for 3-6 months of expenses and create a monthly savings plan to build your emergency fund.' },
+      { title: 'Savings Goal Tracker', description: 'A visual tracker to monitor your progress toward multiple savings goals with monthly milestones and projections.' },
+      { title: 'High-Yield Savings Account Comparison', description: 'Compare current APY rates, minimum balances, and features across top high-yield savings accounts.' },
+    ],
     audience: 'People building emergency funds, saving for specific goals like a house down payment or vacation, and anyone who wants to see how regular contributions add up over time.',
     tip: 'Automate your savings by setting up a recurring transfer on payday. Money you never see in your checking account is money you will not accidentally spend.',
     steps: [
@@ -134,6 +161,11 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'Consumer Financial Protection Bureau - Auto Loans', url: 'https://www.consumerfinance.gov/consumer-tools/auto-loans/' },
     ],
     lastUpdated: '2026-01-15',
+    currentData: [
+      { label: 'New Car Loan Rate (Good Credit)', value: '6.80%', source: 'Bankrate', date: 'June 2026' },
+      { label: 'New Car Loan Rate (Fair Credit)', value: '11.20%', source: 'Bankrate', date: 'June 2026' },
+      { label: 'Used Car Loan Rate (Good Credit)', value: '7.40%', source: 'Bankrate', date: 'June 2026' },
+    ],
     audience: 'Car shoppers comparing financing options, people deciding between buying and leasing, and anyone who wants to understand the true cost of a vehicle loan before visiting the dealership.',
     tip: 'Get pre-approved from your bank or credit union before going to the dealership. Dealership financing often has higher rates, and having a pre-approval gives you negotiating leverage.',
     steps: [
@@ -222,6 +254,16 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'CFPB - Credit Card Repayment', url: 'https://www.consumerfinance.gov/consumer-tools/credit-cards/' },
     ],
     lastUpdated: '2026-02-05',
+    currentData: [
+      { label: 'Average Credit Card APR', value: '22.80%', source: 'Federal Reserve', date: 'Q1 2026' },
+      { label: 'Average Balance Transfer APR', value: '0% (intro 15-21 months)', source: 'Bankrate', date: 'June 2026' },
+      { label: 'Average Minimum Payment', value: '1% – 3% of balance', source: 'CFPB', date: 'June 2026' },
+    ],
+    resources: [
+      { title: 'Debt Payoff Strategy Worksheet', description: 'Compare the avalanche and snowball methods side by side. Enter all your debts to see which strategy saves you the most money.' },
+      { title: 'Monthly Budget Template', description: 'A clean budgeting template to help you allocate income toward debt payments, savings, and essential expenses.' },
+      { title: 'Credit Score Improvement Checklist', description: 'A step-by-step action plan to improve your credit score, from disputing errors to optimizing utilization ratios.' },
+    ],
     audience: 'People carrying credit card debt who want to understand how long payoff will take and how much they can save by paying more than the minimum.',
     tip: 'Paying just $50 extra per month on a $5,000 credit card balance at 20% APR saves you over $3,000 in interest and gets you debt-free 3 years sooner. Even small amounts matter.',
     steps: [
@@ -250,6 +292,11 @@ export const toolContent: Record<string, ToolContent> = {
     ],
     references: [],
     lastUpdated: '2026-01-10',
+    currentData: [
+      { label: 'SENSEX 10-Year CAGR', value: '12.4%', source: 'NSE India', date: 'June 2026' },
+      { label: 'Nifty 50 10-Year CAGR', value: '11.8%', source: 'NSE India', date: 'June 2026' },
+      { label: 'Average Equity MF Return (10Y)', value: '13.2%', source: 'AMFI', date: 'June 2026' },
+    ],
     audience: 'Indian investors planning Systematic Investment Plans, mutual fund investors comparing lump sum versus SIP strategies, and anyone who wants to project long-term investment growth.',
     tip: 'Start your SIP as early as possible. A 25-year-old investing ₹5,000/month at 12% annual return will have ₹35 lakhs by age 45 — while a 35-year-old investing the same amount will have only about ₹10 lakhs.',
     steps: [
@@ -281,6 +328,22 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'IRS - Federal Tax Brackets', url: 'https://www.irs.gov/filing/federal-income-tax-rates-and-brackets' },
     ],
     lastUpdated: '2026-01-05',
+    currentData: [
+      { label: 'Federal Tax Bracket — 10%', value: 'Up to $11,925 (single)', source: 'IRS', date: '2026 Tax Year' },
+      { label: 'Federal Tax Bracket — 12%', value: '$11,926 – $48,475', source: 'IRS', date: '2026 Tax Year' },
+      { label: 'Federal Tax Bracket — 22%', value: '$48,476 – $103,350', source: 'IRS', date: '2026 Tax Year' },
+      { label: 'Federal Tax Bracket — 24%', value: '$103,351 – $197,300', source: 'IRS', date: '2026 Tax Year' },
+      { label: 'Federal Tax Bracket — 32%', value: '$197,301 – $250,525', source: 'IRS', date: '2026 Tax Year' },
+      { label: 'Federal Tax Bracket — 35%', value: '$250,526 – $626,350', source: 'IRS', date: '2026 Tax Year' },
+      { label: 'Federal Tax Bracket — 37%', value: 'Over $626,350', source: 'IRS', date: '2026 Tax Year' },
+      { label: 'Standard Deduction (Single)', value: '$15,700', source: 'IRS', date: '2026 Tax Year' },
+      { label: 'Standard Deduction (Married)', value: '$31,400', source: 'IRS', date: '2026 Tax Year' },
+    ],
+    resources: [
+      { title: 'Paycheck Deductions Breakdown Worksheet', description: 'Itemize every deduction from your paycheck — federal tax, state tax, FICA, 401(k), HSA, and more — to understand your true take-home pay.' },
+      { title: 'Salary Negotiation Calculator', description: 'Compare two job offers side by side including base salary, bonuses, benefits value, and 401(k) matching to find the better total package.' },
+      { title: 'Tax Withholding Estimator Guide', description: 'A guide to optimizing your W-4 withholdings so you neither owe a large bill nor give the government an interest-free loan.' },
+    ],
     audience: 'Job seekers negotiating offers, employees evaluating new positions, and anyone who wants to understand the difference between gross and net pay.',
     tip: 'When comparing job offers, focus on total compensation including benefits, not just salary. A $75,000 job with full benefits and 401(k) matching may be worth more than an $85,000 job with no benefits.',
     steps: [
@@ -311,6 +374,11 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'Bureau of Labor Statistics - CPI Data', url: 'https://www.bls.gov/cpi/' },
     ],
     lastUpdated: '2026-02-10',
+    currentData: [
+      { label: 'CPI-U (Year-over-Year)', value: '3.1%', source: 'Bureau of Labor Statistics', date: 'May 2026' },
+      { label: 'Core CPI (YoY)', value: '3.0%', source: 'Bureau of Labor Statistics', date: 'May 2026' },
+      { label: 'Fed Inflation Target', value: '2.0%', source: 'Federal Reserve', date: '2026' },
+    ],
     audience: 'Anyone planning long-term finances, retirees concerned about purchasing power, investors evaluating real returns, and students learning about economic concepts.',
     tip: 'A dollar today buys roughly half what it did 20 years ago. When planning for retirement, always account for inflation — your target number should be 2-3x higher than what you think you need.',
     steps: [
@@ -341,6 +409,13 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'European Commission - VAT Rates', url: 'https://ec.europa.eu/taxation_customs/business/vat_en' },
     ],
     lastUpdated: '2026-01-20',
+    currentData: [
+      { label: 'UK Standard VAT', value: '20%', source: 'HMRC', date: 'June 2026' },
+      { label: 'EU VAT Range', value: '17% – 27%', source: 'European Commission', date: 'June 2026' },
+      { label: 'Australia GST', value: '10%', source: 'ATO', date: 'June 2026' },
+      { label: 'Canada GST/HST', value: '5% – 15%', source: 'CRA', date: 'June 2026' },
+      { label: 'India GST Range', value: '5% – 28%', source: 'CBIC', date: 'June 2026' },
+    ],
     audience: 'Business owners calculating VAT for invoicing, consumers wanting to understand the tax breakdown on purchases, and freelancers working across different VAT jurisdictions.',
     tip: 'Always clarify whether a quoted price includes or excludes VAT. In B2B contexts, prices are usually quoted ex-VAT, while consumer prices in the EU and UK always include VAT.',
     steps: [
@@ -623,6 +698,16 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'Consumer Financial Protection Bureau - Home Buying', url: 'https://www.consumerfinance.gov/owning-a-home/' },
     ],
     lastUpdated: '2026-02-01',
+    currentData: [
+      { label: 'Median US Home Price', value: '$412,000', source: 'NAR / Zillow', date: 'Q1 2026' },
+      { label: 'Median 30-Year Fixed Rate', value: '6.50%', source: 'Freddie Mac PMMS', date: 'June 2026' },
+      { label: 'Median Household Income', value: '$80,610', source: 'US Census Bureau', date: '2025' },
+    ],
+    resources: [
+      { title: 'Home Affordability Budget Worksheet', description: 'A detailed worksheet to calculate your maximum affordable home price based on income, debts, and current rates.' },
+      { title: 'Closing Costs Estimator', description: 'Estimate all closing costs including origination fees, title insurance, appraisal, and escrow deposits for your home purchase.' },
+      { title: 'Home Buying Timeline Checklist', description: 'A month-by-month timeline from pre-approval to closing, with reminders for inspections, insurance, and paperwork.' },
+    ],
     audience: 'Home buyers and investors comparing purchase scenarios, evaluating affordability, and understanding the true cost of homeownership.',
     tip: 'Factor in all costs of ownership — property taxes, insurance, maintenance, and HOA fees — not just the mortgage payment.',
     steps: [
@@ -679,6 +764,16 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'Tax Foundation - Property Tax by State', url: 'https://taxfoundation.org/data/all/state/property-taxes-by-state-county-2024/' },
     ],
     lastUpdated: '2026-01-20',
+    currentData: [
+      { label: 'Average US Property Tax Rate', value: '1.10%', source: 'Tax Foundation', date: '2025' },
+      { label: 'Highest State (NJ)', value: '2.23%', source: 'Tax Foundation', date: '2025' },
+      { label: 'Lowest State (HI)', value: '0.28%', source: 'Tax Foundation', date: '2025' },
+    ],
+    resources: [
+      { title: 'Property Tax Estimation Worksheet', description: 'Calculate estimated annual property taxes for any US county using effective rates and home values with this easy-to-use worksheet.' },
+      { title: 'State-by-State Tax Rate Comparison Chart', description: 'A comprehensive chart comparing effective property tax rates across all 50 states with median home values.' },
+      { title: 'Tax Appeal Process Guide', description: 'A step-by-step guide to challenging your property tax assessment, including sample appeal letters and documentation checklist.' },
+    ],
     audience: 'Home buyers and investors comparing purchase scenarios, evaluating affordability, and understanding the true cost of homeownership.',
     tip: 'Factor in all costs of ownership — property taxes, insurance, maintenance, and HOA fees — not just the mortgage payment.',
     steps: [
@@ -711,6 +806,11 @@ export const toolContent: Record<string, ToolContent> = {
       { name: 'WHO - BMI Classification', url: 'https://www.who.int/data/gho/data/themes/topics/topic-details/GHO/body-mass-index' },
     ],
     lastUpdated: '2026-02-01',
+    resources: [
+      { title: 'BMI & Body Composition Tracking Sheet', description: 'A printable tracker to log your BMI, weight, body fat percentage, and waist measurements over weeks and months.' },
+      { title: 'Healthy Weight Range Reference Card', description: 'A quick-reference card showing healthy BMI weight ranges for every height from 4\'10" to 6\'6".' },
+      { title: 'Weekly Wellness Progress Journal', description: 'A structured journal template for tracking nutrition, exercise, sleep, and body metrics toward your health goals.' },
+    ],
     audience: 'Health-conscious individuals tracking fitness goals, understanding body composition, and making informed wellness decisions.',
     tip: 'Track your measurements over time rather than obsessing over single readings — trends are more meaningful than individual data points.',
     steps: [
@@ -938,6 +1038,11 @@ export const toolContent: Record<string, ToolContent> = {
     ],
     references: [],
     lastUpdated: '2026-02-01',
+    resources: [
+      { title: 'Life Insurance Needs Assessment Worksheet', description: 'A detailed DIME method worksheet to calculate exactly how much life insurance coverage your family needs.' },
+      { title: 'Term vs Whole Life Comparison Guide', description: 'A side-by-side comparison of term and whole life insurance with cost projections and recommendations for different life stages.' },
+      { title: 'Beneficiary & Estate Planning Checklist', description: 'A comprehensive checklist for designating beneficiaries, updating policies, and coordinating life insurance with your overall estate plan.' },
+    ],
     audience: 'Individuals and families evaluating health insurance options, understanding subsidies, and planning healthcare costs.',
     tip: 'Review your health insurance options annually during open enrollment — your needs and plan options change every year.',
     steps: [
@@ -2029,6 +2134,11 @@ export const toolContent: Record<string, ToolContent> = {
     faqs: [],
     references: [],
     lastUpdated: '2026-01-20',
+    resources: [
+      { title: 'Wedding Budget Planner Spreadsheet', description: 'A comprehensive budget planner with 15+ vendor categories, payment tracking, and automatic total calculations.' },
+      { title: 'Vendor Comparison Worksheet', description: 'Compare up to 3 vendors per category on price, reviews, availability, and contract terms to find the best fit.' },
+      { title: 'Day-of Wedding Timeline Template', description: 'A minute-by-minute wedding day timeline template to keep everything running smoothly from ceremony to reception.' },
+    ],
     audience: 'People planning major life events like weddings, evaluating pet ownership costs, and making lifestyle financial decisions.',
     tip: 'Use these calculations to have informed conversations with partners and family about shared financial commitments.',
     steps: [

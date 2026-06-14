@@ -7,6 +7,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: 'Guides' }];
 
 const pageTitle = `Guides & Resources (${guides.length} Articles) | FreeOnlineToolkit`;
 const pageDesc = `Browse our collection of ${guides.length} in-depth guides covering mortgage calculators, BMI and health, compound interest, car loans, savings goals, and more.`;
+
+const comparisonSlugs = [
+  'mortgage-15-year-vs-30-year',
+  'rent-vs-buy-guide',
+  'bmi-healthy-ranges',
+  'credit-card-debt-strategies',
+  'savings-account-rates',
+];
+const comparisonGuides = guides.filter(g => comparisonSlugs.includes(g.slug));
+const otherGuides = guides.filter(g => !comparisonSlugs.includes(g.slug));
 ---
 
 <BaseLayout title={pageTitle} description={pageDesc}>
@@ -15,8 +25,26 @@ const pageDesc = `Browse our collection of ${guides.length} in-depth guides cove
     <Breadcrumb items={breadcrumbItems} />
     <h1 class="animate-in">Guides & Resources</h1>
     <p class="tool-intro animate-in animate-in-delay-1">Learn how to use our calculators effectively and understand the concepts behind them. Our guides break down complex topics into simple, actionable advice.</p>
+
+    <h2 class="animate-in" style="margin-top:2rem;">Comparison Guides</h2>
+    <p class="animate-in">In-depth side-by-side comparisons to help you make the best financial and health decisions.</p>
     <div class="guides-grid">
-      {guides.map((g, i) => (
+      {comparisonGuides.map((g, i) => (
+        <a href={`/guides/${g.slug}/`} class="guide-card animate-in" style={`transition-delay:${i * 0.06}s;`}>
+          <span class="guide-card-icon" style={`background:${g.color}18;color:${g.color};`}>
+            <i class={`fa-solid ${g.icon}`}></i>
+          </span>
+          <div>
+            <h3>{g.title}</h3>
+            <p>{g.description}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <h2 class="animate-in" style="margin-top:2.5rem;">All Guides</h2>
+    <div class="guides-grid">
+      {otherGuides.map((g, i) => (
         <a href={`/guides/${g.slug}/`} class="guide-card animate-in" style={`transition-delay:${(i % 12) * 0.06}s;`}>
           <span class="guide-card-icon" style={`background:${g.color}18;color:${g.color};`}>
             <i class={`fa-solid ${g.icon}`}></i>

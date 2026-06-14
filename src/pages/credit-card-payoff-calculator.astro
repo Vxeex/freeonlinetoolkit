@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['credit-card-payoff-calculator'];
@@ -71,6 +72,19 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="timeline"
+      color={tool.color}
+      title="Payoff Milestones ($5,000 at 22.9% APR)"
+      data={[
+        { period: "Start", label: "$5,000 balance — begin payoff journey" },
+        { period: "Month 6", label: "~$3,800 remaining — first $1,200 paid off" },
+        { period: "Month 12", label: "~$2,500 remaining — halfway there!" },
+        { period: "Month 18", label: "~$1,100 remaining — the home stretch" },
+        { period: "Month 24", label: "Debt free! 🎉 — with $50 extra/month", accent: true }
+      ]}
+    />
   </fragment>
 
   <fragment slot="content">

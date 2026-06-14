@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['calorie-calculator'];
@@ -86,6 +87,23 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="scale"
+      color={tool.color}
+      title="TDEE by Activity Level (30yr male, 175cm, 70kg)"
+      data={{
+        markerPct: 57,
+        markerLabel: "Moderate: 2,556 cal",
+        segments: [
+          { label: "Sedentary", color: "#6b7280", startPct: 0, endPct: 20 },
+          { label: "Light", color: "#3b82f6", startPct: 20, endPct: 40 },
+          { label: "Moderate", color: "#10b981", startPct: 40, endPct: 60 },
+          { label: "Active", color: "#f59e0b", startPct: 60, endPct: 80 },
+          { label: "Very Active", color: "#ef4444", startPct: 80, endPct: 100 }
+        ]
+      }}
+    />
   </fragment>
 
   <fragment slot="content">

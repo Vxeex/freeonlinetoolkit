@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['bmi-calculator'];
@@ -86,6 +87,22 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="scale"
+      color={tool.color}
+      title="BMI Categories"
+      data={{
+        markerPct: 45,
+        markerLabel: "You (22.9)",
+        segments: [
+          { label: "Underweight", color: "#3b82f6", startPct: 0, endPct: 27.6 },
+          { label: "Normal", color: "#10b981", startPct: 27.6, endPct: 48.8 },
+          { label: "Overweight", color: "#eab308", startPct: 48.8, endPct: 69.2 },
+          { label: "Obese", color: "#ef4444", startPct: 69.2, endPct: 100 }
+        ]
+      }}
+    />
   </fragment>
 
   <fragment slot="content">

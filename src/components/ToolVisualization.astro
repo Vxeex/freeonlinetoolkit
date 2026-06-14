@@ -1,0 +1,177 @@
+---
+/**
+ * ToolVisualization.astro — Pure CSS visualization component
+ * 
+ * Props:
+ *   type: 'gauge' | 'bar' | 'pie' | 'timeline' | 'scale'
+ *   color: string (hex color from tools.ts)
+ *   data: visualization-specific data object
+ *   title?: string (optional section title)
+ */
+
+export interface BarItem {
+  label: string;
+  value: string;
+  pct: number;
+}
+
+export interface TimelineItem {
+  period: string;
+  label: string;
+  accent?: boolean;
+}
+
+export interface ScaleSegment {
+  label: string;
+  color: string;
+  startPct: number;
+  endPct: number;
+}
+
+export interface PieSlice {
+  label: string;
+  value: string;
+  pct: number;
+  color: string;
+}
+
+export interface GaugeData {
+  value: number;
+  min: number;
+  max: number;
+  label: string;
+  zones?: { label: string; color: string }[];
+}
+
+export interface Props {
+  type: 'gauge' | 'bar' | 'pie' | 'timeline' | 'scale';
+  color: string;
+  title?: string;
+  data: any;
+}
+
+const { type, color, title, data } = Astro.props;
+---
+
+<div class="tool-viz" style={`--viz-color: ${color};`}>
+  {title && <h3 class="tool-viz-title">{title}</h3>}
+
+  {type === 'gauge' && (() => {
+    const g = data as GaugeData;
+    const clamped = Math.max(g.min, Math.min(g.max, g.value));
+    const pct = ((clamped - g.min) / (g.max - g.min)) * 100;
+    const needleDeg = -90 + (pct / 100) * 180;
+    let gaugeColor = '#10b981';
+    if (g.zones) {
+      const zoneIdx = Math.min(Math.floor(pct / (100 / g.zones.length)), g.zones.length - 1);
+      gaugeColor = g.zones[zoneIdx].color;
+    }
+    return (
+      <div class="gauge" role="img" aria-label={`Gauge showing ${g.label}: ${g.value}`}>
+        <div class="gauge-arc">
+          <div class="gauge-fill" style="background: conic-gradient(from -90deg, #10b981 0deg, #eab308 90deg, #ef4444 180deg);"></div>
+          <div class="gauge-inner"></div>
+        </div>
+        <div class="gauge-needle" style={`transform: rotate(${needleDeg}deg);`}></div>
+        <div class="gauge-center"></div>
+        <div class="gauge-value">{g.value}</div>
+        <div class="gauge-label">{g.label}</div>
+        {g.zones && (
+          <div class="gauge-legend">
+            {g.zones.map((z: {label: string; color: string}) => (
+              <span class="gauge-legend-item">
+                <span class="gauge-legend-dot" style={`background:${z.color};`}></span>
+                {z.label}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  })()}
+
+  {type === 'bar' && (
+    <div class="bar-chart" role="img" aria-label={title || 'Bar chart'}>
+      {(data as BarItem[]).map((item: BarItem) => (
+        <div class="bar-row">
+          <div class="bar-label">{item.label}</div>
+          <div class="bar-track">
+            <div
+              class="bar-fill"
+              style={`width: ${item.pct}%; background: var(--viz-color);`}
+              role="meter"
+              aria-valuenow={item.pct}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            ></div>
+          </div>
+          <div class="bar-value">{item.value}</div>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {type === 'pie' && (() => {
+    const slices = data as PieSlice[];
+    let cumulative = 0;
+    const gradientParts = slices.map((s: PieSlice) => {
+      const start = cumulative;
+      cumulative += (s.pct / 100) * 360;
+      return `${s.color} ${start}deg ${cumulative}deg`;
+    });
+    const gradient = `conic-gradient(${gradientParts.join(', ')})`;
+    return (
+      <div class="pie-chart-wrapper" role="img" aria-label={title || 'Pie chart'}>
+        <div class="pie-chart" style={`background: ${gradient};`}></div>
+        <div class="pie-legend">
+          {slices.map((s: PieSlice) => (
+            <div class="pie-legend-item">
+              <span class="pie-legend-dot" style={`background: ${s.color};`}></span>
+              <span class="pie-legend-label">{s.label}</span>
+              <span class="pie-legend-value">{s.value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  })()}
+
+  {type === 'timeline' && (
+    <div class="timeline" role="list" aria-label={title || 'Timeline'}>
+      {(data as TimelineItem[]).map((item: TimelineItem) => (
+        <div class={`timeline-item${item.accent ? ' timeline-accent' : ''}`} role="listitem">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-period">{item.period}</span>
+            <span class="timeline-label">{item.label}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+
+  {type === 'scale' && (() => {
+    const segments = data.segments as ScaleSegment[];
+    const markerPct = data.markerPct as number;
+    const markerLabel = data.markerLabel as string;
+    return (
+      <div class="scale-chart" role="img" aria-label={title || 'Scale chart'}>
+        <div class="scale-track">
+          {segments.map((seg: ScaleSegment) => (
+            <div
+              class="scale-segment"
+              style={`left: ${seg.startPct}%; width: ${seg.endPct - seg.startPct}%; background: ${seg.color};`}
+              title={seg.label}
+            >
+              <span class="scale-segment-label">{seg.label}</span>
+            </div>
+          ))}
+          <div class="scale-marker" style={`left: ${markerPct}%`}>
+            <div class="scale-marker-line"></div>
+            <div class="scale-marker-label">{markerLabel}</div>
+          </div>
+        </div>
+      </div>
+    );
+  })()}
+</div>

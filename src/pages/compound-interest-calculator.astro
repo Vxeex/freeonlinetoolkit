@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['compound-interest-calculator'];
@@ -74,6 +75,18 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="bar"
+      color={tool.color}
+      title="$10,000 Growth Over Time (7% compounded monthly)"
+      data={[
+        { label: "5 Years", value: "$14,176", pct: 17 },
+        { label: "10 Years", value: "$20,097", pct: 25 },
+        { label: "20 Years", value: "$40,387", pct: 50 },
+        { label: "30 Years", value: "$81,165", pct: 100 }
+      ]}
+    />
   </fragment>
 
   <fragment slot="content">

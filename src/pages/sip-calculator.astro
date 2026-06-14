@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['sip-calculator'];
@@ -63,6 +64,18 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="bar"
+      color={tool.color}
+      title="SIP vs Lump Sum ($5K/month or $600K upfront @ 12%)"
+      data={[
+        { label: "SIP Invested", value: "$6,00,000", pct: 32 },
+        { label: "SIP Returns", value: "$5,61,695", pct: 30 },
+        { label: "SIP Maturity", value: "$11,61,695", pct: 62 },
+        { label: "Lump Sum Maturity", value: "$18,63,567", pct: 100 }
+      ]}
+    />
   </fragment>
 
   <fragment slot="content">

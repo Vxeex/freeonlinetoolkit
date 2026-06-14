@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['salary-calculator'];
@@ -75,6 +76,18 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="bar"
+      color={tool.color}
+      title="Where Your $75K Salary Goes (Single Filer)"
+      data={[
+        { label: "Take-Home", value: "$55,149", pct: 74 },
+        { label: "Federal Tax", value: "$8,113", pct: 11 },
+        { label: "Social Security", value: "$4,650", pct: 6 },
+        { label: "Medicare", value: "$1,088", pct: 1 }
+      ]}
+    />
   </fragment>
 
   <fragment slot="content">

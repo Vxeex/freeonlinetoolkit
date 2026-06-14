@@ -2,6 +2,7 @@
 import ToolLayout from '../layouts/ToolLayout.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
+import ToolVisualization from '../components/ToolVisualization.astro';
 import { toolBySlug } from '../data/tools';
 
 const tool = toolBySlug['mortgage-calculator'];
@@ -63,6 +64,16 @@ const jsonLd = [
         </div>
       </div>
     </div>
+
+    <ToolVisualization
+      type="pie"
+      color={tool.color}
+      title="$300K Loan — Principal vs. Interest (30yr @ 6.5%)"
+      data={[
+        { label: "Principal", value: "$300,000", pct: 43.9, color: "#2563eb" },
+        { label: "Interest", value: "$382,633", pct: 56.1, color: "#f59e0b" }
+      ]}
+    />
   </fragment>
 
   <fragment slot="content">
