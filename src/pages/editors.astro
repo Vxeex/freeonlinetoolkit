@@ -1,197 +1,109 @@
 ---
 import InfoLayout from '../layouts/InfoLayout.astro';
-
-const team = [
-  {
-    name: 'Sarah Chen',
-    role: 'Lead Calculator Analyst',
-    bio: 'Sarah has spent over 8 years in the fintech industry, building and validating financial calculators for major banking platforms. She specializes in mortgage, loan, and investment tools, ensuring every formula meets industry standards. Her background in applied mathematics and data science drives the accuracy behind every calculator on FreeOnlineToolkit.',
-    expertise: ['Mortgage & Loan Calculators', 'Financial Modeling', 'Data Validation', 'Fintech UX Research'],
-    icon: 'fa-chart-line',
-  },
-  {
-    name: 'Marcus Williams',
-    role: 'Health & Wellness Editor',
-    bio: 'Marcus is a registered dietitian and certified personal trainer with over 10 years of experience in clinical nutrition and fitness programming. He reviews all health-related tools on FreeOnlineToolkit to ensure they align with current medical guidelines and evidence-based practices. His passion is making health metrics accessible and actionable for everyday people.',
-    expertise: ['BMI & Body Composition', 'Nutrition Science', 'Fitness Programming', 'Medical Guidelines Review'],
-    icon: 'fa-heart-pulse',
-  },
-  {
-    name: 'Priya Sharma',
-    role: 'Finance & Tax Specialist',
-    bio: 'Priya is a Certified Public Accountant (CPA) with expertise in personal income tax, corporate finance, and financial planning. She has worked with Big Four accounting firms and now focuses on making complex tax and financial concepts understandable for a general audience. She ensures all tax-related calculators reflect current IRS guidelines and rates.',
-    expertise: ['Federal & State Tax Law', 'Personal Finance Planning', 'Salary & Payroll Analysis', 'Financial Education'],
-    icon: 'fa-calculator',
-  },
-];
 ---
 
-<InfoLayout title="Our Editorial Team | FreeOnlineToolkit" description="Meet the expert editorial team behind FreeOnlineToolkit's calculators and tools. Our team of analysts, editors, and specialists ensures every tool is accurate, up-to-date, and easy to use.">
+<InfoLayout title="About Our Team | FreeOnlineToolkit" description="Learn about the small team behind FreeOnlineToolkit. We build free calculators and tools to help people make better financial, health, and everyday decisions.">
 
-  <div class="editors-page">
-    <div class="editors-header">
-      <h1>Our Editorial Team</h1>
-      <p class="editors-intro">
-        Every calculator and tool on FreeOnlineToolkit is reviewed by our expert team to ensure accuracy, clarity, and real-world usefulness. Meet the people behind the numbers.
-      </p>
-    </div>
+<div class="info-page">
+  <h1>About Our Team</h1>
 
-    <div class="team-grid">
-      {team.map((member) => (
-        <div class="team-card">
-          <div class="team-avatar">
-            <i class={`fas ${member.icon}`}></i>
-          </div>
-          <div class="team-content">
-            <h2 class="team-name">{member.name}</h2>
-            <span class="team-role">{member.role}</span>
-            <p class="team-bio">{member.bio}</p>
-            <div class="team-expertise">
-              <span class="expertise-label">Areas of Expertise</span>
-              <ul class="expertise-list">
-                {member.expertise.map((area) => (
-                  <li>{area}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+  <div class="team-intro">
+    <p>FreeOnlineToolkit is built and maintained by a small, focused team of developers and content writers. We are not a large corporation — we are a group of people who believe that useful tools should be free, fast, and accessible to everyone.</p>
+    <p>Every calculator on this site is built with careful attention to the formulas and algorithms behind it. We reference official sources — the IRS for tax calculations, the WHO for health metrics, Freddie Mac for mortgage rates — to ensure our tools reflect real-world standards.</p>
+  </div>
 
-    <div class="editors-commitment">
-      <h2>Our Commitment to Quality</h2>
-      <p>
-        Every tool on FreeOnlineToolkit undergoes a rigorous review process before publication. Our editorial team verifies formulas against industry standards, checks data sources for accuracy, and tests each calculator with real-world scenarios. We update our tools regularly to reflect changes in tax law, interest rates, medical guidelines, and other time-sensitive data.
-      </p>
-      <p>
-        Have feedback or suggestions? <a href="/contact/">Get in touch</a> — we read every message.
-      </p>
+  <div class="team-values">
+    <h2>What We Believe</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon"><i class="fas fa-lock"></i></div>
+        <h3>Privacy First</h3>
+        <p>Every calculation runs entirely in your browser. No data is sent to our servers. Your numbers stay on your device — always.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><i class="fas fa-bolt"></i></div>
+        <h3>Speed Matters</h3>
+        <p>No signups, no waiting, no loading screens. Each tool loads instantly and gives you results in milliseconds.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><i class="fas fa-check-circle"></i></div>
+        <h3>Accuracy Always</h3>
+        <p>We use industry-standard formulas and reference official data sources. Every tool is tested against known results before publishing.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><i class="fas fa-globe"></i></div>
+        <h3>Free Forever</h3>
+        <p>No paywalls, no premium tiers, no hidden fees. Every tool is completely free with no usage limits.</p>
+      </div>
     </div>
   </div>
 
-  <style>
-    .editors-page {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem;
-    }
-    .editors-header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-    .editors-header h1 {
-      font-size: 1.75rem;
-      margin-bottom: 0.5rem;
-    }
-    .editors-intro {
-      font-size: 1rem;
-      color: var(--color-text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.65;
-    }
-    .team-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-    }
-    .team-card {
-      display: flex;
-      gap: 1.25rem;
-      padding: 1.25rem;
-      background: var(--color-surface, #fff);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md, 10px);
-    }
-    .team-avatar {
-      flex-shrink: 0;
-      width: 56px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--color-primary);
-      color: #fff;
-      border-radius: 50%;
-      font-size: 1.25rem;
-    }
-    .team-content {
-      flex: 1;
-      min-width: 0;
-    }
-    .team-name {
-      font-size: 1.1rem;
-      margin: 0 0 0.15rem;
-    }
-    .team-role {
-      display: inline-block;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--color-primary);
-      margin-bottom: 0.5rem;
-    }
-    .team-bio {
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: var(--color-text-secondary);
-      margin-bottom: 0.75rem;
-    }
-    .expertise-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-text-muted);
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-    .expertise-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .expertise-list li {
-      font-size: 0.75rem;
-      padding: 0.2rem 0.55rem;
-      background: var(--color-bg);
-      border: 1px solid var(--color-border-light);
-      border-radius: 4px;
-      color: var(--color-text-secondary);
-    }
-    .editors-commitment {
-      padding: 1.25rem;
-      background: var(--color-surface, #fff);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md, 10px);
-    }
-    .editors-commitment h2 {
-      font-size: 1.15rem;
-      margin-bottom: 0.5rem;
-    }
-    .editors-commitment p {
-      font-size: 0.88rem;
-      line-height: 1.65;
-      color: var(--color-text-secondary);
-      margin-bottom: 0.75rem;
-    }
-    .editors-commitment a {
-      color: var(--color-primary);
-      font-weight: 600;
-    }
-    @media (max-width: 600px) {
-      .team-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-      .expertise-list {
-        justify-content: center;
-      }
-    }
-  </style>
+  <div class="team-process">
+    <h2>How We Build Tools</h2>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Research</h3>
+          <p>We start by understanding the real-world problem the tool solves. We review official guidelines, industry standards, and how professionals approach the calculation.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Build</h3>
+          <p>Each calculator is built using proven formulas. We document the methodology on every tool page so you can verify how the calculation works.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Test</h3>
+          <p>We validate every tool against known results — bank mortgage calculators, IRS tax tables, WHO health standards — to ensure accuracy.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3>Update</h3>
+          <p>We refresh data regularly — tax brackets annually, mortgage rates monthly, health guidelines as they change. Each tool shows its last-updated date.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="team-contact">
+    <h2>Get In Touch</h2>
+    <p>Have a suggestion for a new tool, found an error, or just want to say hello? We read every message.</p>
+    <a href="/contact/" class="btn btn-primary">Contact Us</a>
+  </div>
+</div>
+
+<style>
+  .info-page { max-width: 800px; margin: 0 auto; }
+  .info-page h1 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .info-page h2 { font-size: 1.5rem; font-weight: 600; margin: 2.5rem 0 1rem; letter-spacing: -0.01em; }
+  .info-page p { line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1rem; }
+  .team-intro { margin-bottom: 2rem; }
+
+  .values-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin: 1.5rem 0; }
+  .value-card { padding: 1.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; }
+  .value-icon { font-size: 1.5rem; color: var(--color-primary); margin-bottom: 0.75rem; }
+  .value-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .value-card p { font-size: 0.9rem; margin: 0; }
+
+  .process-steps { margin: 1.5rem 0; }
+  .process-step { display: flex; gap: 1rem; align-items: flex-start; padding: 1.25rem 0; border-bottom: 1px solid var(--color-border); }
+  .process-step:last-child { border-bottom: none; }
+  .step-number { width: 36px; height: 36px; border-radius: 50%; background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+  .step-content h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .step-content p { font-size: 0.9rem; margin: 0; }
+
+  .team-contact { text-align: center; padding: 2rem; background: var(--color-surface); border-radius: 12px; margin-top: 2rem; }
+
+  @media (max-width: 640px) {
+    .values-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
 </InfoLayout>
