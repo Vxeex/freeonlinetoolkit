@@ -5,8 +5,9 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   output: 'static',
   site: 'https://freeonlinetoolkit.org',
+  trailingSlash: 'always',
   build: {
-    format: 'file',
+    format: 'directory',
   },
   adapter: cloudflare({
     imageService: 'passthrough',

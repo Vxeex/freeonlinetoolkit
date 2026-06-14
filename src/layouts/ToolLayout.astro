@@ -22,9 +22,18 @@ const toolTitle = tool?.title || 'Calculator';
 // Improve page title for search — prefix with "Free" and add "- Free Online Calculator"
 // e.g., "Mortgage Calculator - FreeOnlineToolkit" → "Free Mortgage Calculator - Free Online Calculator | FreeOnlineToolkit"
 const siteName = 'FreeOnlineToolkit';
+const siteUrl = 'https://freeonlinetoolkit.org';
 const improvedTitle = tool
   ? `Free ${tool.title} — Free Online Calculator & Tool | ${siteName}`
   : title;
+
+// Strip .html and ensure trailing slash for breadcrumb URLs
+function cleanPath(pathname: string): string {
+  let p = pathname.replace(/\.html$/, '');
+  if (!p.endsWith('/')) p += '/';
+  return p;
+}
+const currentUrl = `${siteUrl}${cleanPath(Astro.url.pathname)}`;
 
 // Breadcrumb structured data
 const breadcrumbSchema = breadcrumbItems.length > 0 ? {
@@ -34,7 +43,7 @@ const breadcrumbSchema = breadcrumbItems.length > 0 ? {
     "@type": "ListItem",
     "position": i + 1,
     "name": item.label,
-    "item": item.href ? `https://freeonlinetoolkit.org${item.href}` : `https://freeonlinetoolkit.org${Astro.url.pathname}`
+    "item": item.href ? `${siteUrl}${item.href}` : currentUrl
   }))
 } : null;
 

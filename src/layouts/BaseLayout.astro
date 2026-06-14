@@ -11,7 +11,13 @@ export interface Props {
 
 const { title, description, canonical, noIndex, jsonLd } = Astro.props;
 const siteUrl = 'https://freeonlinetoolkit.org';
-const fullUrl = canonical || `${siteUrl}${Astro.url.pathname}`;
+// Strip .html extension and ensure trailing slash for clean canonical URLs
+function cleanPath(pathname: string): string {
+  let p = pathname.replace(/\.html$/, '');
+  if (!p.endsWith('/')) p += '/';
+  return p;
+}
+const fullUrl = canonical || `${siteUrl}${cleanPath(Astro.url.pathname)}`;
 ---
 
 <!DOCTYPE html>
