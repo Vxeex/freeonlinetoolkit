@@ -22,9 +22,12 @@ const categoryName = category?.name || 'tools';
 const catId = category?.id || '';
 const lowerTitle = tool.title.toLowerCase();
 
-// Tool-specific quick start steps — generates unique content per tool from data
+// Tool-specific quick start steps — prioritizes dedicated steps, then example steps, then fallback
 function getSteps(slug: string): { label: string; text: string }[] {
   const c = toolContent[slug];
+  if (c?.steps && c.steps.length > 0) {
+    return c.steps;
+  }
   if (c?.example?.steps) {
     return c.example.steps;
   }
@@ -200,7 +203,7 @@ const articleSchema = {
       <h2>How to Use the {tool.title}</h2>
       <p>
         The <strong>{tool.title}</strong> helps you {tool.description.charAt(0).toLowerCase() + tool.description.slice(1).replace(/\.\s*$/, '')}.
-        Whether you are {context.audience} — this tool gives you accurate results instantly.
+        Whether you are {content?.audience || context.audience} — this tool gives you accurate results instantly.
       </p>
     </>
   )}
@@ -244,40 +247,20 @@ const articleSchema = {
 
   <h3>Who Is This For?</h3>
   <p>
-    This <strong>{lowerTitle}</strong> is designed for {context.audience}. It's intentionally simple — no complex signup forms, no data tracking, no distractions. Just enter your numbers and get the answer.
+    This <strong>{lowerTitle}</strong> is designed for {content?.audience || context.audience}. It's intentionally simple — no complex signup forms, no data tracking, no distractions. Just enter your numbers and get the answer.
   </p>
 
   <h3>Pro Tip</h3>
   <p>
-    {context.tip}
+    {content?.tip || context.tip}
   </p>
 
-  <h3>Why Use This Calculator?</h3>
-  <p>
-    Unlike many online tools that require signups, track your data, or bury results behind paywalls, the <strong>{tool.title}</strong> is completely free and works entirely in your browser. Your numbers never leave your device — there are no servers involved, no data collection, and no privacy concerns. You can use it as many times as you need, bookmark it for later, and share it with anyone who needs a quick, accurate calculation.
-  </p>
-  <p>
-    Each result includes a clear breakdown so you understand not just what the answer is, but how it was calculated. Whether you're planning a major financial decision, tracking a health goal, or just need a quick conversion, this tool gives you instant, reliable results without friction.
-  </p>
-
-  <h3>How to Get the Most Out of This Tool</h3>
-  <p>
-    Start by entering the values that match your situation — most fields include sensible defaults so you can see results immediately. Try adjusting one variable at a time to understand how different factors affect the outcome. For example, changing the interest rate or time period by small amounts can reveal big differences in the final result.
-  </p>
-  <p>
-    If you are saving your results for later, take a screenshot or note down the key numbers. The tool does not store your data on any server, so your calculations remain completely private. Share the page link with friends, family, or colleagues who might find it useful — the tool works the same for everyone, no registration needed.
-  </p>
-
-  <h3>Common Questions About This Type of Calculation</h3>
-  <p>
-    Many people who use the <strong>{tool.title}</strong> have similar questions about how calculations work and what factors influence the results. Understanding these fundamentals helps you make better decisions based on the numbers the tool provides.
-  </p>
-  <p>
-    The accuracy of any calculator depends on the quality of your inputs. For best results, use real numbers from your actual situation — current loan offers, recent measurements, or up-to-date price information. When planning ahead, consider trying multiple scenarios (optimistic, realistic, and conservative) to understand the full range of possible outcomes.
-  </p>
-  <p>
-    Remember that while this tool provides accurate calculations based on standard formulas, it is designed for educational and planning purposes. Always verify critical financial, medical, or legal decisions with a qualified professional who can evaluate your specific circumstances.
-  </p>
+  {content?.editorial && (
+    <>
+      <h3>Things to Know</h3>
+      <div class="seo-editorial-content" set:html={content.editorial} />
+    </>
+  )}
 
   {content?.references && content.references.length > 0 && (
     <>
@@ -382,6 +365,15 @@ const articleSchema = {
     font-size: 0.9rem;
     line-height: 1.6;
     color: var(--color-text);
+  }
+
+  .seo-editorial-content {
+    margin-bottom: 0.75rem;
+  }
+  .seo-editorial-content p {
+    margin-bottom: 0.75rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
   }
 
   .seo-references {
