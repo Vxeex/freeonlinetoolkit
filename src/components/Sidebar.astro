@@ -1,0 +1,91 @@
+---
+import { categories } from '../data/categories';
+
+interface Props {
+  currentCategory?: string;
+}
+
+const { currentCategory } = Astro.props;
+const pathname = Astro.url.pathname;
+---
+
+<!-- Mobile overlay backdrop -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<aside class="app-sidebar" id="appSidebar">
+  <div class="sidebar-header">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar" title="Toggle sidebar">
+      <i class="fas fa-angles-left" id="sidebarToggleIcon"></i>
+    </button>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/" class:list={['sidebar-link', 'sidebar-link-home', { active: pathname === '/' || pathname === '' }]}>
+      <span class="sidebar-link-icon"><i class="fas fa-grid-2"></i></span>
+      <span class="sidebar-link-label">All Tools</span>
+    </a>
+    <div class="sidebar-divider"></div>
+    {categories.map((cat) => {
+      const isActive = currentCategory === cat.id || pathname.includes(`/category/${cat.id}/`);
+      return (
+        <a href={`/category/${cat.id}/`} class:list={['sidebar-link', { active: isActive }]}>
+          <span class="sidebar-link-icon"><i class={`fas ${cat.icon}`}></i></span>
+          <span class="sidebar-link-label">{cat.name}</span>
+        </a>
+      );
+    })}
+  </nav>
+</aside>
+
+<script is:inline>
+  (function() {
+    var sidebar = document.getElementById('appSidebar');
+    var toggle = document.getElementById('sidebarToggle');
+    var toggleIcon = document.getElementById('sidebarToggleIcon');
+    var overlay = document.getElementById('sidebarOverlay');
+
+    if (!sidebar || !toggle) return;
+
+    // Restore collapsed state from localStorage
+    var savedState = localStorage.getItem('fot-sidebar-collapsed');
+    if (savedState === 'true') {
+      sidebar.classList.add('collapsed');
+      if (toggleIcon) toggleIcon.className = 'fas fa-angles-right';
+    }
+
+    // Toggle collapsed
+    toggle.addEventListener('click', function() {
+      var isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('visible');
+        document.body.style.overflow = '';
+      } else {
+        var collapsed = sidebar.classList.toggle('collapsed');
+        if (toggleIcon) {
+          toggleIcon.className = collapsed ? 'fas fa-angles-right' : 'fas fa-angles-left';
+        }
+        localStorage.setItem('fot-sidebar-collapsed', String(collapsed));
+      }
+    });
+
+    // Overlay click closes mobile sidebar
+    if (overlay) {
+      overlay.addEventListener('click', function() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('visible');
+        document.body.style.overflow = '';
+      });
+    }
+
+    // Close sidebar when clicking a link on mobile
+    sidebar.querySelectorAll('.sidebar-link').forEach(function(link) {
+      link.addEventListener('click', function() {
+        if (window.innerWidth < 768) {
+          sidebar.classList.remove('open');
+          if (overlay) overlay.classList.remove('visible');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  })();
+</script>

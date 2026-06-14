@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import ToolCard from '../components/ToolCard.astro';
 import { categories } from '../data/categories';
 import { toolBySlug, totalToolsCount } from '../data/tools';
+
+const popularSlugs = ['mortgage-calculator', 'bmi-calculator', 'compound-interest-calculator', 'salary-calculator', 'tip-calculator', 'password-generator'];
+const popularTools = popularSlugs.map(s => toolBySlug[s]).filter(Boolean);
 
 const pageTitle = `${totalToolsCount} Free Online Calculators & Tools — Mortgage, BMI, & More | FreeOnlineToolkit`;
 const pageDesc = `Access ${totalToolsCount} free online calculators and tools — mortgage calculator, BMI calculator, currency converter, password generator, and more. 100% free, no signup required. Use them instantly in your browser.`;
@@ -34,7 +36,6 @@ const jsonLd = [
 ---
 
 <BaseLayout title={pageTitle} description={pageDesc} jsonLd={jsonLd}>
-  <Header />
 
   <main>
   <!-- ============ HERO ============ -->
@@ -101,6 +102,24 @@ const jsonLd = [
     </div>
   </div>
 
+  <!-- ============ POPULAR TOOLS ============ -->
+  <section class="popular-section animate-in" id="popular">
+    <div class="popular-section-inner">
+      <div class="section-header">
+        <div class="section-label">
+          <i class="fa-solid fa-fire-flame-curved"></i> Most Popular Tools
+        </div>
+        <h2>Popular this week</h2>
+        <p class="popular-subtitle">The tools our users reach for most — all free, instant, and private.</p>
+      </div>
+      <div class="popular-grid">
+        {popularTools.map((t, i) => (
+          <ToolCard tool={t} featured={true} index={i} />
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CATEGORY SECTIONS ============ -->
   {categories.map((cat) => {
     const catTools = cat.toolSlugs.map(s => toolBySlug[s]).filter(Boolean);
@@ -117,14 +136,7 @@ const jsonLd = [
           </div>
           <div class="tool-grid-home">
             {catTools.map((t, i) => (
-              <a href={`/${t.slug}/`} class:list={['tool-card', 'animate-in', `animate-in-delay-${Math.min(i + 1, 10)}`]}>
-                <div class="tool-card-icon" style={`background:${t.color}18;color:${t.color};`}>
-                  <i class={`fa-solid ${t.icon}`}></i>
-                </div>
-                <h3>{t.title}</h3>
-                <p>{t.shortDescription || t.description}</p>
-                <div class="tool-card-arrow">Use tool <i class="fa-solid fa-arrow-right"></i></div>
-              </a>
+              <ToolCard tool={t} index={i} />
             ))}
           </div>
         </div>
@@ -155,8 +167,6 @@ const jsonLd = [
   </section>
 
   </main>
-
-  <Footer />
 
   <script>
     import { renderRecentTools } from '../utils/recent-tools';

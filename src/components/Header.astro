@@ -4,15 +4,30 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
 
 <header class="header" id="site-header">
   <div class="header-inner">
+    <!-- Mobile sidebar toggle (hamburger) -->
+    <button class="sidebar-mobile-toggle" id="sidebarMobileToggle" aria-label="Open navigation" aria-expanded="false">
+      <i class="fas fa-bars"></i>
+    </button>
+
     <a href="/" class="logo">
       <span class="logo-icon"><i class="fas fa-screwdriver-wrench"></i></span>
       FreeOnlineToolkit
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
+
+    <!-- Header search bar -->
+    <div class="header-search" id="headerSearch">
+      <i class="fas fa-magnifying-glass header-search-icon"></i>
+      <input
+        type="text"
+        class="header-search-input"
+        id="headerSearchInput"
+        placeholder="Search tools…"
+        autocomplete="off"
+        data-i18n-placeholder="search.placeholder"
+      />
+      <kbd class="header-search-kbd" id="headerSearchKbd">⌘K</kbd>
+    </div>
+
     <div class="header-right">
       <nav class="nav" id="mainNav">
         <a href="/" data-i18n="nav.home">Home</a>
@@ -33,8 +48,6 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
 
 <script>
   const header = document.getElementById('site-header');
-  const toggle = document.getElementById('menuToggle');
-  const nav = document.getElementById('mainNav');
 
   if (header) {
     header.classList.toggle('scrolled', window.scrollY > 10);
@@ -43,20 +56,54 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
     }, { passive: true });
   }
 
-  if (toggle && nav) {
-    toggle.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      toggle.classList.toggle('open', open);
-      toggle.setAttribute('aria-expanded', String(open));
-      document.body.style.overflow = open ? 'hidden' : '';
+  // Mobile sidebar toggle
+  const sidebarMobileToggle = document.getElementById('sidebarMobileToggle');
+  const appSidebar = document.getElementById('appSidebar');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+  if (sidebarMobileToggle && appSidebar) {
+    sidebarMobileToggle.addEventListener('click', () => {
+      const isOpen = appSidebar.classList.toggle('open');
+      if (sidebarOverlay) sidebarOverlay.classList.toggle('visible', isOpen);
+      sidebarMobileToggle.setAttribute('aria-expanded', String(isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
-    nav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('open');
-        toggle.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+  }
+
+  // Header search — keyboard shortcut
+  const searchInput = document.getElementById('headerSearchInput') as HTMLInputElement | null;
+  const searchKbd = document.getElementById('headerSearchKbd');
+
+  // Detect OS for shortcut display
+  if (searchKbd) {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    searchKbd.textContent = isMac ? '⌘K' : 'Ctrl+K';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    // Ctrl+K or Cmd+K to focus search
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.select();
+      }
+    }
+    // Escape to blur search
+    if (e.key === 'Escape' && document.activeElement === searchInput) {
+      searchInput?.blur();
+    }
+  });
+
+  // Search functionality — filter and navigate
+  if (searchInput) {
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const query = searchInput.value.trim();
+        if (query) {
+          window.location.href = '/?search=' + encodeURIComponent(query);
+        }
+      }
     });
   }
 

@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import { toolBySlug } from '../data/tools';
 import type { Tool } from '../data/tools';
 
@@ -14,7 +12,6 @@ const quickLinks: Tool[] = [
 ---
 
 <BaseLayout title="404 - Page Not Found | FreeOnlineToolkit" description="Page not found. Browse our free calculators and tools." noIndex>
-  <Header />
 
   <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center;">
     <div style="font-family:var(--font-display);font-size:clamp(4rem,8vw,7rem);font-weight:900;line-height:1;color:var(--color-primary);">404</div>
@@ -41,6 +38,4 @@ const quickLinks: Tool[] = [
       </div>
     </div>
   </div>
-
-  <Footer />
 </BaseLayout>
