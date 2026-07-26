@@ -5,3 +5,6 @@
 
 # WWW → non-WWW redirect (canonical domain)
 https://www.freeonlinetoolkit.org/* https://freeonlinetoolkit.org/:splat 301
+
+# Old .html URL redirects (from format:file → format:directory migration)
+/*.html /:splat/ 301
