@@ -10,6 +10,15 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "BMI: What It Means, Limitations & Free Calculator",
+    "description": "Understand what BMI really measures, its limitations as a health metric, and how to interpret your results alongside other health indicators.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.com/bmi-calculator" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Your BMI",
     "description": "Calculate your body mass index using your height and weight.",
@@ -23,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="BMI: What It Means, Limitations & Free Calculator" description="Understand what BMI really measures, its limitations as a health metric, and how to interpret your results alongside other health indicators." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>BMI: What It Means, Limitations & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Calculate your Body Mass Index (BMI) quickly and accurately. This free BMI calculator shows your BMI value, weight category, and healthy weight range for your height.</p>
+    <div class="takeaway-box" style="background:var(--color-surface-alt, #f0f7ff);border-left:4px solid var(--color-primary,#2563eb);padding:16px 20px;border-radius:8px;margin-bottom:24px;">
+      <h2 style="margin:0 0 10px;font-size:1rem;">Key Takeaways</h2>
+      <ul style="margin:0;padding-left:20px;line-height:1.8;">
+        <li>BMI (Body Mass Index) is a <strong>screening tool</strong>, not a diagnostic — it estimates body fat based on height and weight alone.</li>
+        <li>The WHO classifies BMI into four categories: underweight (&lt;18.5), normal (18.5–24.9), overweight (25–29.9), and obese (≥30).</li>
+        <li>BMI has <strong>significant limitations</strong> — it can overestimate fat in muscular people and underestimate it in older adults with low muscle mass.</li>
+        <li>Waist circumference, body fat percentage, and blood markers give a <strong>more complete picture</strong> of health than BMI alone.</li>
+        <li>A healthy BMI is associated with lower risk of heart disease, type 2 diabetes, and certain cancers — but it's just one piece of the puzzle.</li>
+      </ul>
+    </div>
+
+    <p>Body Mass Index — BMI — is one of the most widely used health metrics in the world. Doctors use it, insurance companies reference it, and public health researchers track it across populations. Yet for something so ubiquitous, BMI is widely misunderstood. It's not a measure of fitness, it doesn't tell you how much body fat you have, and it can be misleading for entire demographic groups. So what exactly is it, and should you care about yours?</p>
+
+    <p>BMI was invented in the 1830s by Belgian mathematician Adolphe Quetelet — not a physician, but a statistician. He created a simple formula (weight divided by height squared) to classify populations, not individuals. It wasn't adopted as a health tool until nearly 150 years later, when insurance companies began using it to assess risk. The World Health Organization (WHO) formalized the current BMI categories in the 1990s, and they've been the standard ever since.</p>
+
+    <p>The appeal of BMI is its simplicity. You only need two measurements — height and weight — to get a number that correlates (at the population level) with body fat and health outcomes. Research consistently shows that people in the "normal" BMI range have lower rates of cardiovascular disease, type 2 diabetes, and certain cancers compared to those in the "obese" range. At a public health level, BMI is a useful tool for identifying trends and allocating resources.</p>
+
+    <p>But at the individual level, BMI has real problems. It can't distinguish between fat and muscle — a bodybuilder and a couch potato with the same height and weight have identical BMIs. It doesn't account for where fat is stored (visceral fat around the organs is far more dangerous than subcutaneous fat under the skin). And the standard categories were developed primarily from studies of European populations, which means they may not apply equally across all ethnic groups. The WHO acknowledges that some Asian populations face elevated health risks at lower BMIs, while some Polynesian populations have lower risks at higher BMIs. Understanding these limitations is essential to using BMI wisely.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -107,14 +133,17 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the BMI Calculator</h2>
-      <p>Using this BMI calculator is simple. Choose between <strong>metric</strong> (centimeters and kilograms) or <strong>imperial</strong> (feet, inches, and pounds) units. Enter your height and weight, then click "Calculate" to get your BMI instantly.</p>
-      <p>The results show your <strong>BMI value</strong> (rounded to one decimal place), your <strong>weight category</strong> (underweight, normal, overweight, or obese), and your <strong>healthy weight range</strong> for your height.</p>
+      <h2>What This Calculator Shows</h2>
+      <p>This BMI calculator gives you your body mass index and weight category, but it also shows the <strong>healthy weight range</strong> for your specific height. That range is often more actionable than the BMI number itself — it tells you the weight window where health risks are statistically lowest. Use it as a starting point for conversations with your doctor, not as a final verdict on your health.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>BMI Categories and What They Mean</h2>
       <ul>
-        <li><strong>Below 18.5</strong> — Underweight</li>
-        <li><strong>18.5 - 24.9</strong> — Normal weight</li>
-        <li><strong>25.0 - 29.9</strong> — Overweight</li>
-        <li><strong>30.0 and above</strong> — Obese</li>
+        <li><strong>Below 18.5</strong> — Underweight. May indicate malnutrition, eating disorders, or other health conditions. Associated with weakened immunity and bone loss.</li>
+        <li><strong>18.5 - 24.9</strong> — Normal weight. Associated with the lowest risk of weight-related health conditions for most adults.</li>
+        <li><strong>25.0 - 29.9</strong> — Overweight. Increased risk of heart disease, high blood pressure, and type 2 diabetes, though the risk varies significantly by individual.</li>
+        <li><strong>30.0 and above</strong> — Obese. Substantially elevated risk of serious health conditions. Further divided into Class I (30–34.9), Class II (35–39.9), and Class III (40+).</li>
       </ul>
     </div>
 
@@ -124,6 +153,17 @@ const jsonLd = [
       <div class="formula-box">BMI = weight (kg) / [height (m)]<sup>2</sup></div>
       <p><strong>Imperial formula:</strong></p>
       <div class="formula-box">BMI = [weight (lbs) / height (in)]<sup>2</sup> × 703</div>
+    </div>
+
+    <div class="content-section">
+      <h2>Beyond BMI: Other Health Markers to Consider</h2>
+      <p>BMI alone doesn't tell the full story. Health professionals increasingly recommend looking at multiple indicators together:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Waist circumference</strong> — A waist over 40 inches (men) or 35 inches (women) indicates elevated risk, regardless of BMI. This measures visceral fat, the most dangerous type.</li>
+        <li><strong>Waist-to-hip ratio</strong> — Another measure of fat distribution. A ratio above 0.90 (men) or 0.85 (women) suggests higher cardiovascular risk.</li>
+        <li><strong>Body fat percentage</strong> — Directly measures fat vs. lean mass. Healthy ranges are typically 10-20% for men and 20-30% for women.</li>
+        <li><strong>Blood markers</strong> — Cholesterol, blood sugar, blood pressure, and inflammatory markers provide objective data about your metabolic health that no body measurement can match.</li>
+      </ul>
     </div>
 
     <div class="content-section">
@@ -161,6 +201,18 @@ const jsonLd = [
       { question: "What is a healthy BMI for my age?", answer: "For adults (ages 18-65), the same BMI categories apply regardless of age. For children and teenagers, BMI is interpreted using age and sex-specific percentiles. For seniors, a slightly higher BMI (up to 27) may be considered healthy." },
       { question: "How can I lower my BMI?", answer: "To lower your BMI, focus on a balanced diet with appropriate portion sizes and regular physical activity. Aim for at least 150 minutes of moderate exercise per week." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Once you know your BMI, here's how to use that information wisely:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Don't panic over a single number.</strong> BMI is a screening tool, not a diagnosis. If you're in the "overweight" category but exercise regularly and have good blood markers, you may be perfectly healthy.</li>
+        <li><strong>Measure your waist.</strong> This simple measurement often tells you more about health risk than BMI. Use a tape measure at the narrowest point of your torso, just above the navel.</li>
+        <li><strong>Talk to your doctor</strong> about your full health picture — BMI, blood pressure, cholesterol, blood sugar, and family history together paint a much clearer picture than any single metric.</li>
+        <li><strong>Focus on behaviors, not numbers.</strong> Regular exercise, adequate sleep, stress management, and a balanced diet improve health outcomes regardless of what the scale says.</li>
+        <li><strong>Use the related tools</strong> above to get your body fat percentage and ideal weight range for a more complete understanding of your body composition.</li>
+      </ul>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

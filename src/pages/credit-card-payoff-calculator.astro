@@ -10,6 +10,15 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Credit Card Debt: Payoff Strategies & Free Calculator",
+    "description": "Understand how credit card interest works, the true cost of minimum payments, and proven strategies to eliminate credit card debt faster.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.com/credit-card-payoff-calculator" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Credit Card Payoff",
     "description": "Calculate how long it takes to pay off credit card debt and how much interest you can save.",
@@ -23,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Credit Card Payoff Calculator</h1></fragment>
+<ToolLayout title="Credit Card Debt: Payoff Strategies & Free Calculator" description="Understand how credit card interest works, the true cost of minimum payments, and proven strategies to eliminate credit card debt faster." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Credit Card Debt: Payoff Strategies & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">See exactly how long it will take to pay off your credit card balance and how much interest you'll pay. Compare making minimum payments vs. adding extra each month — the difference could save you thousands.</p>
+    <div class="takeaway-box" style="background:var(--color-surface-alt, #f0f7ff);border-left:4px solid var(--color-primary,#2563eb);padding:16px 20px;border-radius:8px;margin-bottom:24px;">
+      <h2 style="margin:0 0 10px;font-size:1rem;">Key Takeaways</h2>
+      <ul style="margin:0;padding-left:20px;line-height:1.8;">
+        <li>Credit card interest compounds <strong>daily</strong> at rates of 18–25% APR — making it one of the most expensive forms of consumer debt.</li>
+        <li>Paying only the minimum on a $5,000 balance at 22% APR can take <strong>20+ years</strong> and cost over $7,000 in interest alone.</li>
+        <li>Adding just <strong>$50–100 extra per month</strong> above the minimum can cut years off your payoff and save thousands in interest.</li>
+        <li>The <strong>avalanche method</strong> (highest rate first) saves the most money; the <strong>snowball method</strong> (smallest balance first) builds momentum faster.</li>
+        <li>Balance transfers to 0% APR cards can be a powerful tool, but only if you pay off the balance before the promotional period ends.</li>
+      </ul>
+    </div>
+
+    <p>Credit card debt is the financial equivalent of a slow leak in your wallet. At 20%+ APR, every dollar you carry costs you roughly 20 cents per year in interest — and that interest compounds, meaning you pay interest on your interest. The average American household carrying credit card debt owes about $8,000, and at typical rates, that debt generates over $1,600 in annual interest charges. That's money that builds no equity, earns no return, and simply vanishes into your card issuer's pocket.</p>
+
+    <p>The reason credit card debt is so hard to escape is the minimum payment trap. Card issuers set minimums low enough that paying them feels manageable — typically 2-3% of the balance or $25, whichever is higher. But those low minimums mean most of your payment goes to interest, barely touching the principal. It's a treadmill: you make payments month after month while the balance barely budges. A $5,000 balance at 22% APR with a 3% minimum payment would take over 22 years to pay off and cost more than $7,500 in interest — more than the original debt.</p>
+
+    <p>The good news is that relatively small changes in payment behavior produce outsized results. Adding even $50 or $100 per month above the minimum dramatically shortens the payoff timeline and slashes total interest. The reason is simple: every extra dollar goes directly to reducing the principal, which means less interest accrues on all future payments. It's the same principle as compound interest working in reverse — every dollar of principal you pay down early prevents years of compounding interest charges.</p>
+
+    <p>There are also strategic approaches to accelerating payoff. The <strong>avalanche method</strong> focuses on paying off the highest-interest debt first while making minimums on everything else — this saves the most money mathematically. The <strong>snowball method</strong> pays off the smallest balances first for quick psychological wins, then rolls those payments into larger debts. Both work. The best method is the one you'll stick with. And if you have good credit, a balance transfer to a 0% promotional APR card can give you 12-21 months of interest-free breathing room to make real progress.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -89,9 +115,8 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use</h2>
-      <p>Enter your current <strong>credit card balance</strong>, your card's <strong>APR</strong>, and the <strong>minimum payment percentage</strong> (typically 2-4%). Then add any <strong>extra amount</strong> you can pay each month above the minimum.</p>
-      <p>The calculator simulates two scenarios: paying only the minimum, and paying the minimum plus your extra amount. You'll see the difference in payoff time and total interest paid.</p>
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator runs two scenarios side by side: paying only the minimum, and paying the minimum plus whatever extra you can afford. The results are often eye-opening — you'll see the exact difference in payoff time and total interest between the two approaches. The timeline visualization maps your payoff milestones so you can see when you'll hit key debt reduction goals.</p>
     </div>
 
     <div class="content-section">
@@ -103,11 +128,44 @@ const jsonLd = [
       </div>
     </div>
 
+    <div class="content-section">
+      <h2>Payoff Strategies Compared</h2>
+      <h3>The Avalanche Method (Math-Optimal)</h3>
+      <p>List all your debts by interest rate, highest first. Make minimum payments on everything, then throw every extra dollar at the highest-rate debt. Once that's paid off, redirect its payment to the next-highest. This saves the most money in total interest.</p>
+      <h3>The Snowball Method (Motivation-Optimal)</h3>
+      <p>List debts by balance, smallest first. Pay off the smallest balance as fast as possible, then roll that payment into the next-smallest. The quick wins build momentum and keep you motivated, even if it costs slightly more in total interest.</p>
+      <h3>Balance Transfer (If You Qualify)</h3>
+      <p>Transfer your balance to a card offering 0% APR for 12-21 months. Pay as much as possible during the promo period. Watch out for transfer fees (typically 3-5%) and make sure you can pay off the balance before the regular rate kicks in.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>The True Cost of Minimum Payments</h2>
+      <p>Here's what minimum-only payments look like for different balances at 22% APR (3% minimum):</p>
+      <ul style="line-height:1.8;">
+        <li><strong>$2,000 balance</strong> → ~9 years to pay off, ~$1,800 in interest</li>
+        <li><strong>$5,000 balance</strong> → ~22 years to pay off, ~$7,500 in interest</li>
+        <li><strong>$10,000 balance</strong> → ~30+ years to pay off, ~$18,000+ in interest</li>
+      </ul>
+      <p>Adding $100/month extra to the $5,000 example cuts the payoff from 22 years to 3 years and saves over $6,000 in interest.</p>
+    </div>
+
     <FAQ items={[
       { question: "Should I pay off my credit card or save money?", answer: "High-interest credit card debt (18%+) should generally be paid off before building savings, since the interest you're paying almost certainly exceeds what you'd earn on savings." },
       { question: "How does a balance transfer help?", answer: "A balance transfer to a 0% APR card lets your full payment go toward the principal. Even with a 3-5% transfer fee, you can save significantly if you pay off the balance during the promotional period." },
       { question: "What happens if I only pay the minimum?", answer: "Paying only the minimum can keep you in debt for decades. A $5,000 balance at 22% APR with a 3% minimum payment would take over 20 years and cost more than $7,000 in interest." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Start eliminating your credit card debt today:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Stop adding to the balance.</strong> Remove the card from your wallet and switch to debit or cash for daily spending until the balance is under control.</li>
+        <li><strong>Find your extra payment amount.</strong> Use the calculator above to see how much faster you can be debt-free with even $50-100 extra per month.</li>
+        <li><strong>Call your card issuer and ask for a lower rate.</strong> It works more often than you'd expect, especially if you have a good payment history. Even a 2-3% reduction saves real money.</li>
+        <li><strong>Consider a balance transfer</strong> if you have good credit (680+). A 0% promotional period lets every dollar go to principal. Just have a payoff plan before the promo ends.</li>
+        <li><strong>Build a small emergency fund ($1,000)</strong> while paying down debt. This prevents new debt from unexpected expenses and breaks the cycle of relying on credit cards for emergencies.</li>
+      </ul>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

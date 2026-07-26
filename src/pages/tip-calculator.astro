@@ -10,6 +10,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Tipping Guide: How Much to Tip in Every Situation & Free Calculator",
+    "description": "Learn tipping etiquette for restaurants, bars, hotels, ride-shares, and more. Understand the culture of tipping and calculate tips instantly with our free tool.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/tip-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate a Tip",
     "description": "Calculate the tip amount and split the bill among multiple people.",
@@ -23,10 +34,29 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Tipping Guide: How Much to Tip in Every Situation & Free Calculator | FreeOnlineToolkit" description="Learn tipping etiquette for restaurants, bars, hotels, ride-shares, and more. Understand the culture of tipping and calculate tips instantly with our free tool." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Tipping Guide: How Much to Tip in Every Situation & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#fdf4ff;border:1px solid #d8b4fe;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#6b21a8;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>In the United States, 15–20% is standard for restaurant service — 18% is the most common default for good service.</li>
+      <li>Tipping customs vary dramatically worldwide: mandatory in the US, optional in the UK, and sometimes considered rude in Japan.</li>
+      <li>Tipped workers in the US often earn a base wage as low as $2.13/hour — tips make up the majority of their income.</li>
+      <li>Always tip on the pre-tax subtotal, not the post-tax total, though most people tip on the full bill for simplicity.</li>
+    </ul>
+  </div>
+
+  <p>Tipping is one of those social customs that seems simple on the surface but causes genuine anxiety for many people. How much is appropriate? When is it expected? What if the service was mediocre? The answers depend heavily on where you are in the world, what service you're receiving, and the economic realities of the workers serving you. In the United States, tipping isn't just a nicety — it's a structural part of the service industry's compensation system, and understanding that context helps make tipping decisions easier.</p>
+
+  <p>The American tipping culture has deep roots in post-Civil War economics. Tipping became widespread partly because it allowed employers to pay formerly enslaved workers little or nothing, relying on customers to provide their wages. Today, the federal minimum wage for tipped workers remains at just $2.13 per hour (though some states mandate higher minimums). This means that for a typical server handling 4–5 tables per hour, tips aren't a bonus — they're the difference between earning a living wage and poverty. Understanding this context doesn't obligate you to tip, but it does explain why tipping is considered an essential part of dining out in the US.</p>
+
+  <p>Internationally, tipping norms vary enormously. In the UK and much of Europe, a service charge is often included in the bill, and additional tipping is appreciated but not expected (5–10% for exceptional service). In Japan, tipping can actually be considered rude — it implies the service wasn't good enough to be included in the standard price. In many Middle Eastern and Asian countries, a 10% service charge is standard. Before travelling, research the local customs to avoid awkward situations — what's generous in one country can be insulting in another.</p>
+
+  <p>Beyond restaurants, tipping extends to a wide range of services: bartenders, baristas, taxi and ride-share drivers, hotel staff, hair stylists, food delivery workers, and more. The general principle is simple: if someone provides a personal service directly to you, a tip is likely expected. The amount varies by service type, but the mental shortcut of "15–20% for food service, $1–2 per drink for bartenders, and 10–15% for transportation" covers most common situations in the US.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Split bills and calculate tips with ease. Perfect for restaurants, group dining, and service tips. Customize the tip percentage and number of people.</p>
+    <p class="tool-intro">Use the free tip calculator below to quickly figure out how much to tip and split the bill among your group.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -77,18 +107,41 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the Tip Calculator</h2>
-      <p>Using this tip calculator is straightforward. Enter the <strong>bill amount</strong>, then choose your <strong>tip percentage</strong> — 15% is standard, 18-20% for great service. If you're dining with others, enter the <strong>number of people</strong> to split the bill.</p>
-      <p>The calculator shows the tip amount, total bill with tip, and the per-person breakdown for both the tip and total.</p>
+      <h2>What This Tool Shows</h2>
+      <p>This calculator instantly computes the tip amount, total bill, and per-person breakdown for any bill size. Use the visualisation above as a quick reference for common tip percentages, and adjust the inputs to match your specific situation.</p>
     </div>
 
     <div class="content-section">
-      <h2>Tipping Guidelines</h2>
+      <h2>Complete Tipping Guide by Service Type</h2>
+      <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
+        <thead>
+          <tr style="background:#f1f5f9;">
+            <th style="padding:10px;text-align:left;border:1px solid #e2e8f0;">Service</th>
+            <th style="padding:10px;text-align:left;border:1px solid #e2e8f0;">Standard Tip</th>
+            <th style="padding:10px;text-align:left;border:1px solid #e2e8f0;">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:8px;border:1px solid #e2e8f0;">Restaurant server</td><td style="padding:8px;border:1px solid #e2e8f0;font-weight:bold;">15–20%</td><td style="padding:8px;border:1px solid #e2e8f0;">Pre-tax subtotal; tip more for large parties</td></tr>
+          <tr style="background:#faf5ff;"><td style="padding:8px;border:1px solid #e2e8f0;">Bartender</td><td style="padding:8px;border:1px solid #e2e8f0;font-weight:bold;">$1–2/drink or 15–20%</td><td style="padding:8px;border:1px solid #e2e8f0;">Tip on first round to ensure attentive service</td></tr>
+          <tr><td style="padding:8px;border:1px solid #e2e8f0;">Barista</td><td style="padding:8px;border:1px solid #e2e8f0;font-weight:bold;">$1–2 or loose change</td><td style="padding:8px;border:1px solid #e2e8f0;">Not expected but appreciated for complex orders</td></tr>
+          <tr style="background:#faf5ff;"><td style="padding:8px;border:1px solid #e2e8f0;">Food delivery</td><td style="padding:8px;border:1px solid #e2e8f0;font-weight:bold;">15–20% ($5 minimum)</td><td style="padding:8px;border:1px solid #e2e8f0;">Tip more for bad weather or difficult deliveries</td></tr>
+          <tr><td style="padding:8px;border:1px solid #e2e8f0;">Ride-share / taxi</td><td style="padding:8px;border:1px solid #e2e8f0;font-weight:bold;">10–15%</td><td style="padding:8px;border:1px solid #e2e8f0;">Round up for short trips</td></tr>
+          <tr style="background:#faf5ff;"><td style="padding:8px;border:1px solid #e2e8f0;">Hotel housekeeping</td><td style="padding:8px;border:1px solid #e2e8f0;font-weight:bold;">$2–5/night</td><td style="padding:8px;border:1px solid #e2e8f0;">Leave daily, not at checkout (different staff may clean)</td></tr>
+          <tr><td style="padding:8px;border:1px solid #e2e8f0;">Hotel bellhop</td><td style="padding:8px;border:1px solid #e2e8f0;font-weight:bold;">$1–2/bag</td><td style="padding:8px;border:1px solid #e2e8f0;">More for heavy luggage or special requests</td></tr>
+          <tr style="background:#faf5ff;"><td style="padding:8px;border:1px solid #e2e8f0;">Hair stylist / barber</td><td style="padding:8px;border:1px solid #e2e8f0;font-weight:bold;">15–20%</td><td style="padding:8px;border:1px solid #e2e8f0;">Tip the shampoo assistant separately ($3–5)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content-section">
+      <h2>Quick Mental Math for Tipping</h2>
+      <p>No calculator handy? Here's how to estimate tips in your head:</p>
       <ul>
-        <li><strong>Restaurants:</strong> 15-20% of the pre-tax bill</li>
-        <li><strong>Bartenders:</strong> $1-2 per drink or 15-20% of the tab</li>
-        <li><strong>Hotel staff:</strong> $2-5 per night for housekeeping, $1-2 per bag for bellhops</li>
-        <li><strong>Ride-share:</strong> 10-15% of the fare</li>
+        <li><strong>10% tip:</strong> Move the decimal one place left. $85.50 → $8.55</li>
+        <li><strong>15% tip:</strong> Calculate 10%, then add half. $8.55 + $4.28 ≈ $12.83</li>
+        <li><strong>20% tip:</strong> Calculate 10%, then double it. $8.55 × 2 = $17.10</li>
+        <li><strong>18% tip:</strong> Calculate 20%, then subtract 10% of the tip. $17.10 − $1.71 ≈ $15.39</li>
       </ul>
     </div>
 
@@ -96,7 +149,13 @@ const jsonLd = [
       { question: "What's the standard tip percentage?", answer: "In the US, 15-20% is standard for restaurant service. Many people tip 18% as a default and adjust up or down based on service quality." },
       { question: "Should I tip on the pre-tax or post-tax amount?", answer: "Most tipping guidelines suggest tipping on the pre-tax amount, though many people tip on the total bill for simplicity." },
       { question: "How do I calculate tip without a calculator?", answer: "To calculate a 15% tip, move the decimal point one place left (10%) and add half of that (5%). For 20%, calculate 10% and double it." },
+      { question: "Should I tip on takeout orders?", answer: "Tipping on takeout is increasingly expected, especially post-pandemic. 10% is a common amount, though it's not as strictly expected as for sit-down service." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use the calculator above for your next dining experience, and bookmark this page for quick reference when you're unsure about tipping norms. When in doubt, err on the side of generosity — service workers depend on tips as a significant portion of their income. If you're travelling internationally, research local tipping customs before you go to avoid both over-tipping and awkward faux pas.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

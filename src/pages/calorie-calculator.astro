@@ -10,6 +10,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Calorie Counting: Complete Guide to Daily Needs & Free Calculator",
+    "description": "Understand how calories work, how many you need daily, and the science behind BMR and TDEE. Learn to use calorie counting for weight management. Free calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/calorie-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Daily Calorie Needs",
     "description": "Calculate your Total Daily Energy Expenditure (TDEE) based on your personal metrics and activity level.",
@@ -24,10 +35,30 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Calorie Counting: Complete Guide to Daily Needs & Free Calculator | FreeOnlineToolkit" description="Understand how calories work, how many you need daily, and the science behind BMR and TDEE. Learn to use calorie counting for weight management. Free calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Calorie Counting: Complete Guide to Daily Needs & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#92400e;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>A calorie is a unit of energy — your body needs a specific number each day to maintain basic functions and fuel activity.</li>
+      <li>Your Basal Metabolic Rate (BMR) accounts for 60–75% of daily calorie burn and is calculated using your age, gender, height, and weight.</li>
+      <li>Total Daily Energy Expenditure (TDEE) = BMR × activity factor, and represents the total calories you burn in a day.</li>
+      <li>A deficit of 500 calories per day leads to roughly 0.5 kg (1 lb) of weight loss per week — a safe, sustainable pace.</li>
+      <li>Calorie counting is a tool, not an obsession — food quality, macronutrient balance, and consistency matter as much as the total number.</li>
+    </ul>
+  </div>
+
+  <p>Calories are the fundamental unit of energy that powers every function in your body — from breathing and circulating blood to running a marathon. Every food and drink you consume provides calories, and every activity you perform burns them. When you consume more calories than you burn, the excess is stored as body fat. When you burn more than you consume, your body taps into those stores for energy. This simple energy balance is the foundation of all weight management, regardless of which diet philosophy you follow.</p>
+
+  <p>Your body burns calories through three main channels. <strong>Basal Metabolic Rate (BMR)</strong> accounts for 60–75% of your daily expenditure — it's the energy your body needs just to stay alive: keeping your heart beating, lungs breathing, brain functioning, and cells repairing. The <strong>thermic effect of food</strong> accounts for about 10% — digesting, absorbing, and processing nutrients actually burns calories. The remaining energy comes from <strong>physical activity</strong>, which is the most variable component and the one you have the most control over.</p>
+
+  <p>Several equations exist for estimating BMR, but the <strong>Mifflin-St Jeor equation</strong> is considered the most accurate for the general population (within about 10% of measured values for most adults). It accounts for the fact that men and women have different metabolic rates, primarily due to differences in body composition — muscle tissue burns more energy at rest than fat tissue. Age also matters: metabolic rate gradually declines (about 1–2% per decade after age 20) as muscle mass naturally decreases.</p>
+
+  <p>The practical application of calorie counting is straightforward but requires honesty and consistency. You need to know your TDEE (which the calculator below estimates), then decide whether to maintain, lose, or gain weight. For weight loss, a moderate deficit of 300–500 calories per day produces steady results without the extreme hunger and metabolic adaptation that crash diets cause. For weight gain (particularly muscle gain), a surplus of 250–500 calories combined with resistance training is the evidence-based approach. The most common mistake is overestimating activity level — if you sit at a desk most of the day, "sedentary" or "lightly active" is your correct category regardless of that gym session three times a week.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Find out how many calories you need each day based on your age, height, weight, activity level, and fitness goals. This calculator uses the Mifflin-St Jeor equation, the most accurate method for estimating BMR and TDEE.</p>
+    <p class="tool-intro">Use the free calorie calculator below to find your daily calorie needs based on your personal metrics and activity level. Adjust the inputs to see how different goals affect your target.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -108,14 +139,13 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the Calorie Calculator</h2>
-      <p>This calorie calculator estimates your <strong>Total Daily Energy Expenditure (TDEE)</strong> — the number of calories your body burns each day. Start by selecting your <strong>gender</strong>, then enter your <strong>age</strong>, <strong>height</strong> (in centimeters), and <strong>weight</strong> (in kilograms).</p>
-      <p>Choose your <strong>activity level</strong> honestly for the most accurate results. Finally, select your <strong>goal</strong> — maintain, lose, or gain weight. For weight loss, we subtract 500 calories from your TDEE; for weight gain, we add 500 calories.</p>
+      <h2>What This Tool Shows</h2>
+      <p>This calculator estimates your BMR using the Mifflin-St Jeor equation and multiplies it by your activity level to produce your TDEE — the total calories you burn daily. Select a goal to see how adjusting your intake by 500 calories supports steady weight loss or gain.</p>
     </div>
 
     <div class="content-section">
       <h2>The Formula Behind the Calculator</h2>
-      <p>This calculator uses the <strong>Mifflin-St Jeor equation</strong>, considered the most accurate BMR formula:</p>
+      <p>This calculator uses the <strong>Mifflin-St Jeor equation</strong>, considered the most accurate BMR formula for the general population:</p>
       <div class="formula-box">
         <strong>Male:</strong> BMR = 10 × weight(kg) + 6.25 × height(cm) - 5 × age(y) + 5<br>
         <strong>Female:</strong> BMR = 10 × weight(kg) + 6.25 × height(cm) - 5 × age(y) - 161
@@ -123,11 +153,33 @@ const jsonLd = [
       <p>TDEE = BMR × Activity Factor (1.2 to 1.9 depending on activity level).</p>
     </div>
 
+    <div class="content-section">
+      <h2>Calorie Quality Matters Too</h2>
+      <p>Not all calories are created equal when it comes to health and satiety. A 200-calorie serving of Greek yoghurt with berries provides protein, calcium, and fibre that keep you full for hours. A 200-calorie handful of candy provides a sugar spike followed by a crash and more hunger. While total calorie intake determines weight change, the <strong>quality</strong> of those calories affects energy levels, hunger, muscle retention, and long-term health.</p>
+      <p>Focus on <strong>protein</strong> (0.7–1g per pound of body weight for active individuals), <strong>fibre-rich carbohydrates</strong> (vegetables, whole grains, legumes), and <strong>healthy fats</strong> (olive oil, nuts, avocado). These nutrients promote satiety, support muscle maintenance, and provide the micronutrients your body needs to function optimally — even during a calorie deficit.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Common Calorie Counting Mistakes</h2>
+      <ul>
+        <li><strong>Overestimating activity level:</strong> Most people overestimate how active they are. If you have a desk job, "sedentary" or "light" is usually correct.</li>
+        <li><strong>Not counting cooking oils and sauces:</strong> A tablespoon of olive oil is 120 calories. Sauces, dressings, and condiments add up quickly.</li>
+        <li><strong>Ignoring liquid calories:</strong> Sodas, juices, alcohol, and fancy coffee drinks can add hundreds of invisible calories.</li>
+        <li><strong>Being too aggressive:</strong> A deficit greater than 750–1000 calories/day risks muscle loss, metabolic slowdown, and binge cycles.</li>
+        <li><strong>Giving up after one bad day:</strong> Weight fluctuates 1–2 kg daily due to water, sodium, and digestion. One day over budget is irrelevant — weekly averages matter.</li>
+      </ul>
+    </div>
+
     <FAQ items={[
       { question: "How accurate is this calorie calculator?", answer: "The Mifflin-St Jeor equation has an accuracy of about 85-90% in the general population. Individual factors like muscle mass, genetics, and metabolic health can cause variations. Use this as a starting point and adjust based on your actual results." },
       { question: "How many calories should I eat to lose weight?", answer: "A deficit of 300-500 calories per day typically leads to safe, sustainable weight loss of about 0.5 kg per week. We recommend not going below 1,200 calories per day for women or 1,500 for men without medical supervision." },
       { question: "What's the difference between BMR and TDEE?", answer: "BMR (Basal Metabolic Rate) is the number of calories your body needs at complete rest to maintain vital functions. TDEE (Total Daily Energy Expenditure) is your BMR plus all the calories burned through daily activity, exercise, and digesting food." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your details in the calculator above to get your personalised calorie target. Track your intake for at least two weeks using an app like MyFitnessPal, Cronometer, or a simple food journal. Weigh yourself under the same conditions each morning and track weekly averages — daily fluctuations are noise. Adjust your intake by 100–200 calories if you're not seeing the expected results after 2–3 weeks. Consider consulting a registered dietitian for personalised nutrition guidance.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

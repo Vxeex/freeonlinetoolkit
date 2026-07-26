@@ -10,6 +10,15 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Home Affordability: How Much House Can You Buy? & Free Calculator",
+    "description": "Understand the 28/36 rule, debt-to-income ratios, and the real costs of homeownership beyond the mortgage payment.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.com/home-affordability-calculator" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Home Affordability",
     "description": "Calculate how much house you can afford based on your income, down payment, monthly debts, and current interest rates using the 28/36 rule.",
@@ -24,10 +33,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Home Affordability: How Much House Can You Buy? & Free Calculator" description="Understand the 28/36 rule, debt-to-income ratios, and the real costs of homeownership beyond the mortgage payment." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Home Affordability: How Much House Can You Buy? & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Find out how much house you can afford based on your income, down payment, and monthly debts. This calculator uses the standard 28/36 debt-to-income rule that most mortgage lenders follow to determine your maximum home price.</p>
+    <div class="takeaway-box" style="background:var(--color-surface-alt, #f0f7ff);border-left:4px solid var(--color-primary,#2563eb);padding:16px 20px;border-radius:8px;margin-bottom:24px;">
+      <h2 style="margin:0 0 10px;font-size:1rem;">Key Takeaways</h2>
+      <ul style="margin:0;padding-left:20px;line-height:1.8;">
+        <li>The <strong>28/36 rule</strong> says your housing costs shouldn't exceed 28% of gross income, and total debts shouldn't exceed 36% — this is what lenders use to qualify you.</li>
+        <li>The <strong>maximum a lender approves</strong> and the <strong>amount you can comfortably afford</strong> are often very different numbers. Lenders don't know your lifestyle, goals, or risk tolerance.</li>
+        <li>Property taxes, insurance, HOA fees, maintenance, and PMI can add <strong>30-50% to your base mortgage payment</strong> — many first-time buyers are shocked by the real monthly cost.</li>
+        <li>A 20% down payment eliminates <strong>private mortgage insurance (PMI)</strong>, which typically adds $100-300/month to your payment.</li>
+        <li>Your debt-to-income ratio (DTI) is the single biggest factor lenders use after credit score — paying off a car loan or credit card before applying can <strong>significantly increase</strong> your borrowing power.</li>
+      </ul>
+    </div>
+
+    <p>Buying a home is the largest financial decision most people make, and the question "how much house can I afford?" is deceptively complex. A lender might approve you for a $400,000 mortgage, but that doesn't mean you should borrow $400,000. Lenders look at your income, debts, and credit score — they don't look at your childcare costs, student loan ambitions, retirement savings goals, or desire to take vacations. The maximum you qualify for and the maximum you can comfortably afford are often tens of thousands of dollars apart.</p>
+
+    <p>The standard that most mortgage lenders use is the <strong>28/36 rule</strong>. The "28" means your monthly housing costs (mortgage principal, interest, property taxes, and insurance — known as PITI) should not exceed 28% of your gross monthly income. The "36" means your total monthly debt payments (housing plus car loans, student loans, credit cards, and other obligations) should not exceed 36% of gross income. Some lenders allow higher ratios — up to 43% or even 50% for certain loan programs — but stretching to those limits leaves very little financial breathing room.</p>
+
+    <p>The hidden costs of homeownership catch many first-time buyers off guard. Beyond the mortgage payment, you'll pay property taxes (which can range from 0.5% to over 2% of home value annually), homeowner's insurance ($1,000-3,000+/year depending on location), and potentially HOA fees ($200-500+/month for condos and planned communities). Maintenance and repairs typically cost 1-2% of the home's value per year. If your down payment is less than 20%, you'll also pay PMI (private mortgage insurance), which adds $100-300/month until you build 20% equity. All of these costs stack on top of your principal and interest payment.</p>
+
+    <p>Interest rates play a massive role in affordability. At 6.5%, a $300,000 30-year mortgage costs about $1,896/month in principal and interest. At 4.5%, the same loan costs $1,520 — a $376 difference that translates to qualifying for roughly $50,000 more house at the same income level. This is why rising rates cool the housing market and falling rates heat it up. When rates change by even 1%, it shifts the entire affordability equation for millions of buyers.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -122,7 +148,12 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the Home Affordability Calculator</h2>
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator works backward from your income and debts to determine the maximum home price you can afford under the 28/36 rule. It accounts for property taxes and insurance (which many calculators ignore), shows your debt-to-income ratios, and breaks down your monthly payment into its components. The gauge visualization shows whether your affordability situation is tight, moderate, or comfortable — helping you make a realistic decision rather than stretching to the maximum.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How the Home Affordability Formula Works</h2>
       <p>Enter your <strong>annual household income</strong> before taxes, your <strong>down payment</strong> amount, and your <strong>monthly debt payments</strong>. Enter the <strong>interest rate</strong> and <strong>loan term</strong>, plus annual <strong>property taxes</strong> and <strong>homeowner's insurance</strong>.</p>
       <p>The calculator applies the <strong>28/36 rule</strong>: your monthly housing costs should not exceed 28% of your gross monthly income (front-end ratio), and your total debt payments should not exceed 36% (back-end ratio).</p>
     </div>
@@ -136,12 +167,61 @@ const jsonLd = [
       <p>Your <strong>maximum monthly payment</strong> is the lower of these two limits. The calculator then works backward using the standard amortization formula to determine the maximum loan amount.</p>
     </div>
 
+    <div class="content-section">
+      <h2>DTI Ratio: What Lenders Actually Look At</h2>
+      <p>Your debt-to-income ratio (DTI) is the percentage of your gross monthly income that goes to debt payments. Lenders calculate two versions:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Front-end DTI (housing ratio)</strong> — Just your housing costs (PITI) divided by gross monthly income. Most lenders want this under 28%.</li>
+        <li><strong>Back-end DTI (total debt ratio)</strong> — All monthly debt payments (housing + car + student loans + credit cards + minimums) divided by gross monthly income. Most lenders want this under 36%, though some programs allow up to 43-50%.</li>
+      </ul>
+      <p>A lower DTI means more borrowing power and better loan terms. Paying off a $400/month car loan before applying for a mortgage could increase your maximum home price by $40,000-60,000.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Down Payment: How Much Do You Really Need?</h2>
+      <p>The down payment is often the biggest barrier to homeownership. Here's how different amounts affect your purchase:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>20% down</strong> — Eliminates PMI, gives you the best rate, and shows lenders you're a low-risk borrower. On a $300,000 home, that's $60,000.</li>
+        <li><strong>10% down</strong> — Still a strong position. You'll pay PMI ($100-200/month) until you reach 20% equity, but you keep more cash for emergencies and moving costs.</li>
+        <li><strong>3-5% down</strong> — Conventional loans allow this. PMI is higher, and you may pay a slightly elevated rate. But you get into a home years sooner.</li>
+        <li><strong>3.5% down (FHA)</strong> — Government-backed loans for buyers with lower credit scores or savings. PMI lasts the life of the loan (refinance out when you can).</li>
+        <li><strong>0% down (VA/USDA)</strong> — Available to veterans (VA) or in rural areas (USDA). No PMI, but eligibility requirements are specific.</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>The True Monthly Cost of Homeownership</h2>
+      <p>Your mortgage payment is just the beginning. A realistic monthly budget for a $300,000 home might look like:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Principal & Interest:</strong> ~$1,610 (at 6.5%, 30-year)</li>
+        <li><strong>Property Taxes:</strong> ~$300/month</li>
+        <li><strong>Homeowner's Insurance:</strong> ~$100/month</li>
+        <li><strong>PMI (if <20% down):</strong> ~$150-250/month</li>
+        <li><strong>Maintenance Reserve:</strong> ~$250/month (1% of value annually)</li>
+        <li><strong>HOA (if applicable):</strong> $0-500/month</li>
+        <li><strong>Total:</strong> ~$2,310-3,010/month</li>
+      </ul>
+      <p>That's $700-1,400 more than the base mortgage payment alone. Budget for the full picture, not just the principal and interest.</p>
+    </div>
+
     <FAQ items={[
       { question: "What is the 28/36 rule in home buying?", answer: "The 28/36 rule is a common guideline used by mortgage lenders. It states that your monthly housing costs should not exceed 28% of your gross monthly income, and your total debt payments should not exceed 36% of your gross monthly income." },
       { question: "How much should I put down on a house?", answer: "A 20% down payment is ideal because it eliminates the need for private mortgage insurance (PMI). However, many conventional loans allow as little as 3-5% down, and FHA loans require only 3.5%." },
       { question: "What debts count toward my debt-to-income ratio?", answer: "Lenders count all recurring monthly debt payments including car loans, student loans, credit card minimum payments, personal loans, and alimony. Utilities, groceries, and insurance are not counted." },
       { question: "Can I afford more house than this calculator shows?", answer: "This calculator uses conservative 28/36 guidelines. Some lenders may approve loans with higher ratios, especially with excellent credit or a large down payment. However, staying within these limits helps ensure manageable housing costs." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Prepare for your home purchase strategically:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Get pre-approved, not just pre-qualified.</strong> A pre-approval letter from a lender carries real weight with sellers and tells you exactly what you can borrow. It requires a credit check and income verification.</li>
+        <li><strong>Reduce your DTI before applying.</strong> Pay off small debts (car loans, credit cards) to increase your borrowing power. Even eliminating a $200/month payment can qualify you for $30,000+ more in mortgage.</li>
+        <li><strong>Use the calculator to set a realistic budget.</strong> Input your actual income and debts to find your true maximum. Then consider buying below that maximum to leave room for unexpected expenses, savings, and quality of life.</li>
+        <li><strong>Shop multiple lenders.</strong> Mortgage rates and terms vary significantly between lenders. Get quotes from at least 3-4 sources: a big bank, a credit union, an online lender, and a mortgage broker.</li>
+        <li><strong>Budget for closing costs.</strong> These typically run 2-5% of the purchase price. On a $300,000 home, that's $6,000-15,000 due at closing on top of your down payment.</li>
+      </ul>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

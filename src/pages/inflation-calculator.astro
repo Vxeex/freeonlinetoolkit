@@ -10,6 +10,15 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Inflation Explained: Protecting Your Money & Free Calculator",
+    "description": "What inflation really is, how it erodes your purchasing power, and practical strategies to protect your savings from rising prices.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.com/inflation-calculator" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Inflation Impact",
     "description": "Calculate how inflation affects the purchasing power of money over time.",
@@ -23,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Inflation Calculator</h1></fragment>
+<ToolLayout title="Inflation Explained: Protecting Your Money & Free Calculator" description="What inflation really is, how it erodes your purchasing power, and practical strategies to protect your savings from rising prices." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Inflation Explained: Protecting Your Money & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">See how inflation changes the purchasing power of your money over time. Based on historical Consumer Price Index (CPI) data with forward projections using average inflation trends.</p>
+    <div class="takeaway-box" style="background:var(--color-surface-alt, #f0f7ff);border-left:4px solid var(--color-primary,#2563eb);padding:16px 20px;border-radius:8px;margin-bottom:24px;">
+      <h2 style="margin:0 0 10px;font-size:1rem;">Key Takeaways</h2>
+      <ul style="margin:0;padding-left:20px;line-height:1.8;">
+        <li>Inflation is the <strong>gradual increase in prices</strong> over time — it means every dollar you hold buys less next year than it does today.</li>
+        <li>The Federal Reserve targets <strong>2% annual inflation</strong>, but the historical average since 1913 is about 3.2%. Recent years have seen spikes well above that.</li>
+        <li>Cash in a savings account earning less than inflation is <strong>losing purchasing power</strong> every day — even though the balance looks the same.</li>
+        <li>The CPI (Consumer Price Index) measures inflation by tracking the cost of a <strong>fixed basket of goods and services</strong> that average consumers buy.</li>
+        <li>Assets that historically <strong>beat inflation</strong> include stocks, real estate, TIPS (Treasury Inflation-Protected Securities), and I-bonds.</li>
+      </ul>
+    </div>
+
+    <p>Inflation is the silent tax that affects everyone but shows up on no paycheck. It's the reason a movie ticket that cost $5 in 2000 now costs $12, why your grocery bill keeps creeping up, and why the $100 bill in your dresser drawer is worth less every year. Unlike income tax, inflation doesn't require a law to take effect — it's a natural consequence of monetary policy, supply and demand, and economic growth. And unlike most taxes, you can't opt out.</p>
+
+    <p>At its core, inflation measures the rate at which the general level of prices for goods and services rises, eroding purchasing power. When inflation is 3%, something that costs $100 today will cost $103 next year. That doesn't sound like much, but it compounds relentlessly. Over 20 years at 3% annual inflation, $100 worth of purchasing power shrinks to about $55. Your money didn't disappear — it just buys less. This is why simply saving money without investing it is a losing strategy over the long term.</p>
+
+    <p>The most widely cited inflation measure in the US is the <strong>Consumer Price Index (CPI)</strong>, published monthly by the Bureau of Labor Statistics. The CPI tracks the average price of a basket of goods and services that typical urban consumers buy — food, housing, transportation, healthcare, clothing, and more. The basket is updated periodically to reflect changing consumption patterns. When you hear that "inflation was 3.2% last year," that means the CPI rose 3.2% compared to the previous year.</p>
+
+    <p>Not all prices move together. Healthcare and college tuition have consistently outpaced general inflation for decades, rising 3-5x faster than the CPI. Electronics and clothing, on the other hand, have gotten cheaper in real terms. Housing costs are the biggest component of the CPI and have been a major driver of inflation in recent years. Understanding these differences helps you plan for your specific cost pressures — if you have college-bound kids or aging parents, your personal inflation rate may be significantly higher than the official average.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -83,15 +109,44 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use</h2>
+      <h2>What This Calculator Shows</h2>
+      <p>This inflation calculator uses actual historical CPI data from the Bureau of Labor Statistics to show you exactly how much purchasing power your money has gained or lost between any two years since 1913. It also projects forward using recent average inflation rates. The bar chart puts decades of inflation in perspective — showing what $100 from each era would need to be worth today to maintain its purchasing power.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How Inflation Is Calculated</h2>
       <p>Enter an <strong>amount</strong> of money, the <strong>start year</strong>, and the <strong>end year</strong>. For historical years, the calculator uses actual CPI data from the Bureau of Labor Statistics. Forward projections use the average annual CPI rate from the last 10 years.</p>
       <p><strong>Example:</strong> $10,000 in 2000 would be worth about $18,200 in 2026 — you'd need $18,200 to maintain the same purchasing power.</p>
     </div>
 
     <div class="content-section">
-      <h2>How Inflation Is Calculated</h2>
+      <h2>Inflation Formula</h2>
       <div class="formula-box">Adjusted Value = Starting Amount &times; (CPI<sub>end</sub> / CPI<sub>start</sub>)</div>
       <p>The CPI (Consumer Price Index) measures the average change in prices paid by consumers. This calculator uses the annual average CPI-U published by the Bureau of Labor Statistics.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Historical Inflation: What Drives Prices Up?</h2>
+      <p>Inflation has several root causes, and they often overlap:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Demand-pull inflation</strong> — When demand for goods outstrips supply. The post-COVID spending surge is a textbook example.</li>
+        <li><strong>Cost-push inflation</strong> — When production costs rise (oil prices, wages, supply chain disruptions) and businesses pass those costs to consumers.</li>
+        <li><strong>Monetary inflation</strong> — When the money supply grows faster than the economy. More dollars chasing the same goods = higher prices.</li>
+        <li><strong>Built-in inflation</strong> — Workers demand higher wages to keep up with rising prices, which increases costs, which raises prices further. A self-reinforcing cycle.</li>
+      </ul>
+      <p>The US experienced its worst inflation during the 1970s-early 1980s, when rates hit 13.5%. The 2021-2023 period saw inflation spike to 9.1% (June 2022) — the highest in 40 years — before cooling back toward the Fed's 2% target.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How to Protect Your Money from Inflation</h2>
+      <p>Simply holding cash in a low-interest savings account means losing purchasing power every year. Here are proven inflation hedges:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Stocks</strong> — The S&P 500 has returned about 10% annually over the long term, well above inflation. Companies can raise prices with inflation, protecting their real earnings.</li>
+        <li><strong>TIPS</strong> — Treasury Inflation-Protected Securities adjust their principal based on CPI changes, guaranteeing a real return above inflation.</li>
+        <li><strong>I-Bonds</strong> — US savings bonds with rates tied to inflation. Currently popular as a risk-free inflation hedge for individuals.</li>
+        <li><strong>Real estate</strong> — Property values and rents tend to rise with inflation, making real estate a traditional inflation hedge.</li>
+        <li><strong>High-yield savings</strong> — While not a true hedge, a 4-5% APY at least partially offsets 2-3% inflation, reducing the real loss on your cash reserves.</li>
+      </ul>
     </div>
 
     <FAQ items={[
@@ -100,6 +155,18 @@ const jsonLd = [
       { question: "How do I protect my savings from inflation?", answer: "Investing in assets that historically outpace inflation is the best protection. Stocks, real estate, and TIPS can help preserve purchasing power." },
       { question: "Does inflation affect everything equally?", answer: "No. Healthcare and education costs have consistently risen faster than general inflation, while electronics have risen more slowly." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Don't let inflation silently erode your wealth:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Check your savings rate.</strong> If your savings account earns less than inflation, you're losing money in real terms. Move cash reserves to a high-yield account paying 4%+.</li>
+        <li><strong>Use the calculator above</strong> to see how much purchasing power you've already lost on money sitting idle. Let that motivate action.</li>
+        <li><strong>Invest for the long term.</strong> Even conservative portfolios (60% stocks / 40% bonds) have historically beaten inflation by 3-5% annually over 10+ year periods.</li>
+        <li><strong>Consider I-Bonds or TIPS</strong> for money you won't need for 1-5 years. They're backed by the US government and explicitly designed to keep pace with inflation.</li>
+        <li><strong>Negotiate salary increases</strong> that at least match inflation. A "raise" that's below the inflation rate is actually a pay cut in real terms.</li>
+      </ul>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

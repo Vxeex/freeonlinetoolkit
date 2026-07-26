@@ -21,7 +21,7 @@ const toolTitle = tool?.title || 'Calculator';
 // e.g., "Mortgage Calculator - FreeOnlineToolkit" → "Free Mortgage Calculator - Free Online Calculator | FreeOnlineToolkit"
 const siteName = 'FreeOnlineToolkit';
 const siteUrl = 'https://freeonlinetoolkit.org';
-const improvedTitle = tool
+const improvedTitle = tool && title === `${tool.title} - FreeOnlineToolkit`
   ? `Free ${tool.title} — Free Online Calculator & Tool | ${siteName}`
   : title;
 

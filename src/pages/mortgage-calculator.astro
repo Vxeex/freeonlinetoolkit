@@ -10,6 +10,15 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Mortgage Payments: Complete Guide & Free Calculator",
+    "description": "Everything you need to know about mortgage payments — how amortization works, what affects your rate, and strategies to save thousands in interest.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.com/mortgage-calculator" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Mortgage Payments",
     "description": "Calculate your monthly mortgage payment using loan amount, interest rate, and term.",
@@ -23,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Mortgage Payments: Complete Guide & Free Calculator" description="Everything you need to know about mortgage payments — how amortization works, what affects your rate, and strategies to save thousands in interest." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Mortgage Payments: Complete Guide & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Calculate your monthly mortgage payments instantly. Shows total payment including principal and interest, with full amortization details for any loan term.</p>
+    <div class="takeaway-box" style="background:var(--color-surface-alt, #f0f7ff);border-left:4px solid var(--color-primary,#2563eb);padding:16px 20px;border-radius:8px;margin-bottom:24px;">
+      <h2 style="margin:0 0 10px;font-size:1rem;">Key Takeaways</h2>
+      <ul style="margin:0;padding-left:20px;line-height:1.8;">
+        <li>Your mortgage payment is split between <strong>principal</strong> (paying down the loan) and <strong>interest</strong> (the lender's fee) — early payments are mostly interest.</li>
+        <li>Even a 0.5% difference in interest rate can mean <strong>tens of thousands of dollars</strong> over a 30-year loan.</li>
+        <li>A 15-year mortgage costs far less in total interest than a 30-year, but requires higher monthly payments.</li>
+        <li>Making one extra payment per year can shave <strong>4–6 years</strong> off your loan and save a fortune in interest.</li>
+        <li>Your mortgage payment is just part of the cost — property taxes, insurance, and PMI add significantly to your monthly housing expense.</li>
+      </ul>
+    </div>
+
+    <p>A mortgage is likely the largest financial commitment you'll ever make. For most homeowners, it represents hundreds of thousands of dollars borrowed over decades — and the total interest paid often rivals or exceeds the original loan amount. Understanding how mortgage payments work isn't just academic; it's the difference between making smart financial decisions and leaving money on the table.</p>
+
+    <p>At its core, a mortgage is an amortizing loan. Each monthly payment covers two things: interest charged on the remaining balance and a portion that reduces the principal. In the early years, most of your payment goes toward interest. As the balance shrinks over time, more of each payment chips away at the principal. This is why after 10 years of payments on a 30-year mortgage, you may have paid off less than 20% of the loan — a fact that surprises many first-time buyers.</p>
+
+    <p>The interest rate you secure has an enormous impact. A $300,000 loan at 6.5% over 30 years results in roughly $382,000 in total interest — more than the house itself. At 5.5%, that drops to about $313,000. Shopping for the best rate, improving your credit score before applying, and considering points (upfront interest payments that lower your rate) are all strategies that can save you serious money.</p>
+
+    <p>Beyond the rate, the loan term matters just as much. A 15-year mortgage typically comes with a lower interest rate <em>and</em> cuts the repayment period in half, but the monthly payment is significantly higher. The right choice depends on your budget, how long you plan to stay in the home, and what else you could do with the money (like investing the difference). This guide breaks down everything you need to know to make that decision confidently.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -78,7 +104,12 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the Mortgage Calculator</h2>
+      <h2>What This Calculator Shows</h2>
+      <p>This mortgage calculator lets you experiment with different loan amounts, interest rates, and terms to see exactly how each variable affects your monthly payment and total cost. Use it to compare scenarios — for instance, see how much you'd save with a 15-year term versus 30, or what happens if you secure a rate that's 0.5% lower. The pie chart visualizes how much of your total payment goes to the bank versus toward actually owning your home.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How Mortgage Payments Are Calculated</h2>
       <p>Enter the total <strong>loan amount</strong> you plan to borrow — the purchase price minus your down payment. Input the <strong>annual interest rate</strong> your lender has quoted. Then choose your <strong>loan term</strong> in years — typically 15, 20, or 30 years.</p>
       <p>Click "Calculate" to see your <strong>monthly payment</strong> (principal and interest), the total amount over the full term, and total interest paid.</p>
       <p>Try adjusting the rate or term to see how small changes affect your payment. A lower rate or shorter term saves on total interest.</p>
@@ -88,6 +119,18 @@ const jsonLd = [
       <h2>Mortgage Payment Formula</h2>
       <div class="formula-box">M = P × [r(1+r)^n] / [(1+r)^n − 1]</div>
       <p>Where: <strong>M</strong> = monthly payment, <strong>P</strong> = loan principal, <strong>r</strong> = monthly interest rate (annual rate / 12), <strong>n</strong> = total number of monthly payments (term × 12).</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Understanding Amortization: Where Your Money Goes</h2>
+      <p>Amortization is the process of spreading a loan into equal monthly payments over time. Each payment is calculated so that the loan balance reaches zero by the end of the term. But the split between principal and interest changes every month.</p>
+      <p>In the first year of a $300,000 mortgage at 6.5% over 30 years, roughly 70% of each payment is interest. By year 20, that flips — about 70% goes to principal. This is why making extra payments early in the loan has such a powerful effect: every extra dollar goes directly to reducing principal, which reduces the interest charged on all future payments.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Fixed-Rate vs. Adjustable-Rate Mortgages</h2>
+      <p>A <strong>fixed-rate mortgage</strong> locks in your interest rate for the entire loan term. Your payment never changes, which makes budgeting predictable. This is the most popular choice for homeowners who plan to stay long-term.</p>
+      <p>An <strong>adjustable-rate mortgage (ARM)</strong> offers a lower initial rate for a set period (usually 5, 7, or 10 years), then adjusts annually based on market rates. ARMs can save money if you plan to move or refinance before the adjustment period begins, but they carry risk — if rates rise, your payment could increase significantly.</p>
     </div>
 
     <div class="content-section">
@@ -115,6 +158,18 @@ const jsonLd = [
       { question: "Should I choose a 15-year or 30-year mortgage?", answer: "A 15-year mortgage has higher monthly payments but much less total interest. A 30-year mortgage has lower monthly payments but costs more in interest over time. Choose based on your budget and financial goals." },
       { question: "How much can I borrow for a mortgage?", answer: "Most lenders approve mortgages where the monthly payment is no more than 28-31% of your gross monthly income. Your credit score, debt-to-income ratio, and down payment also affect how much you can borrow." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Now that you understand how mortgage payments work, here's what to do next:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Get pre-approved</strong> by at least three lenders to compare rates and terms. Even a 0.25% rate difference can save $10,000+ over the life of the loan.</li>
+        <li><strong>Check your credit score</strong> and take steps to improve it before applying. A score above 760 typically qualifies for the best rates.</li>
+        <li><strong>Run scenarios</strong> with the calculator above — compare 15-year vs. 30-year terms, and test what happens if rates are 0.5% higher or lower than expected.</li>
+        <li><strong>Factor in the full cost</strong> — property taxes, homeowner's insurance, HOA fees, and maintenance typically add 30-50% to your base mortgage payment.</li>
+        <li><strong>Consider your timeline</strong> — if you plan to move within 5-7 years, an ARM might save you money. If you're staying put, a fixed rate offers peace of mind.</li>
+      </ul>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

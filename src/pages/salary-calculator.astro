@@ -10,6 +10,15 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Salary Breakdown: Taxes, Deductions & Free Calculator",
+    "description": "Understand where your paycheck actually goes — federal taxes, FICA, deductions, and how to maximize your take-home pay.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.com/salary-calculator" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Take-Home Pay",
     "description": "Calculate your net salary after federal taxes and FICA deductions.",
@@ -23,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Salary Calculator &mdash; Take-Home Pay Estimator</h1></fragment>
+<ToolLayout title="Salary Breakdown: Taxes, Deductions & Free Calculator" description="Understand where your paycheck actually goes — federal taxes, FICA, deductions, and how to maximize your take-home pay." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Salary Breakdown: Taxes, Deductions & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Estimate your net take-home pay after federal income tax and FICA deductions. Based on 2025 federal tax brackets and standard deduction. Results are estimates — actual deductions may vary.</p>
+    <div class="takeaway-box" style="background:var(--color-surface-alt, #f0f7ff);border-left:4px solid var(--color-primary,#2563eb);padding:16px 20px;border-radius:8px;margin-bottom:24px;">
+      <h2 style="margin:0 0 10px;font-size:1rem;">Key Takeaways</h2>
+      <ul style="margin:0;padding-left:20px;line-height:1.8;">
+        <li>Your gross salary and your take-home pay are <strong>very different numbers</strong> — federal tax, Social Security, and Medicare typically reduce your paycheck by 20-30%.</li>
+        <li>The US uses a <strong>progressive tax system</strong> — you only pay higher rates on income above each bracket threshold, not on all your income.</li>
+        <li>FICA taxes (Social Security 6.2% + Medicare 1.45%) are <strong>separate from income tax</strong> and apply to every dollar of earned income up to the wage base limit.</li>
+        <li>Pre-tax contributions to a <strong>401(k) or HSA</strong> reduce your taxable income dollar-for-dollar — the single most effective way to lower your tax bill.</li>
+        <li>Your <strong>effective tax rate</strong> (total tax ÷ gross income) is always lower than your <strong>marginal rate</strong> (rate on your last dollar) — this is a common source of confusion.</li>
+      </ul>
+    </div>
+
+    <p>When you accept a job offer at $75,000, you might mentally calculate your monthly income as $6,250. But your actual paycheck will be significantly less. After federal income tax, Social Security, and Medicare, that $75,000 might net you around $55,000-58,000 depending on your filing status and deductions. Understanding where the difference goes — and what you can do about it — is essential for budgeting, negotiating salary, and planning your financial future.</p>
+
+    <p>The US federal income tax is <strong>progressive</strong>, which means it uses a bracket system. In 2025, the brackets for a single filer are 10%, 12%, 22%, 24%, 32%, 35%, and 37%. A common misconception is that earning more money can somehow "push you into a higher bracket" and leave you with less take-home pay. That's not how it works. Only the income <em>above</em> each bracket threshold is taxed at the higher rate. If you earn $50,000 as a single filer, the first $11,925 is taxed at 10%, the next $36,550 at 12%, and only the remaining $1,525 at 22%. Your effective rate is much lower than your marginal rate.</p>
+
+    <p>Beyond income tax, every worker pays <strong>FICA taxes</strong>: 6.2% for Social Security (on income up to $176,100 in 2025) and 1.45% for Medicare (on all earned income, with an additional 0.9% surtax on income over $200,000). These are flat taxes — unlike income tax, everyone pays the same rate. Your employer matches these contributions, so the total FICA cost is actually 15.3% of your wages, split evenly between you and your employer.</p>
+
+    <p>The most powerful tool for reducing your tax bill is <strong>pre-tax contributions</strong>. Money you put into a traditional 401(k), HSA, or FSA reduces your taxable income dollar-for-dollar. If you earn $75,000 and contribute $10,000 to your 401(k), you're taxed as if you earned $65,000. This can save you $2,200+ in federal taxes alone, and your retirement contributions grow tax-deferred until withdrawal. It's the closest thing to a guaranteed return in personal finance.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -92,7 +118,12 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use</h2>
+      <h2>What This Calculator Shows</h2>
+      <p>This salary calculator breaks down your gross pay into its component parts: federal income tax, Social Security, Medicare, and your actual take-home pay. It shows your pay per period (weekly, bi-weekly, semi-monthly, or monthly), your effective tax rate, and a visual breakdown of where every dollar goes. Use it to understand your paycheck, plan your budget, or compare job offers at different salary levels.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>How Salary Taxes Are Calculated</h2>
       <p>Enter your <strong>annual gross salary</strong>, select your <strong>filing status</strong>, and choose your <strong>pay frequency</strong> to see your take-home pay per period. The calculator applies the 2025 federal standard deduction and marginal tax brackets, then subtracts FICA taxes.</p>
       <p><strong>Important:</strong> This is a simplified estimator. Actual payroll deductions may include pre-tax benefits, state taxes, and other withholdings.</p>
     </div>
@@ -114,12 +145,41 @@ const jsonLd = [
       <p style="margin-top:12px;">Standard deduction 2025: <strong>$15,000</strong> (Single), <strong>$30,000</strong> (Married Joint), <strong>$22,500</strong> (Head of Household).</p>
     </div>
 
+    <div class="content-section">
+      <h2>Marginal vs. Effective Tax Rate</h2>
+      <p>Your <strong>marginal tax rate</strong> is the rate you pay on your last dollar of income — the bracket your top earnings fall into. Your <strong>effective tax rate</strong> is your total tax divided by your gross income. Because of the progressive bracket system and the standard deduction, your effective rate is always lower than your marginal rate.</p>
+      <p>For example, a single filer earning $75,000 in 2025 has a marginal rate of 22%, but their effective federal income tax rate is only about 10.8%. Understanding this distinction helps you make better financial decisions — like whether a raise will actually "cost" you in taxes (it won't, beyond the marginal rate on the additional income).</p>
+    </div>
+
+    <div class="content-section">
+      <h2>What This Calculator Doesn't Include</h2>
+      <p>This is a federal-only estimator. Your actual paycheck may also be reduced by:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>State income tax</strong> — varies from 0% (Texas, Florida, etc.) to over 13% (California). Some states have flat rates; others are progressive.</li>
+        <li><strong>Local/city taxes</strong> — some cities (like New York City and Portland) levy their own income tax.</li>
+        <li><strong>Pre-tax benefits</strong> — health insurance premiums, 401(k) contributions, HSA/FSA contributions, and commuter benefits reduce your taxable income.</li>
+        <li><strong>Post-tax deductions</strong> — Roth 401(k), life insurance, union dues, and garnishments come out after taxes.</li>
+      </ul>
+    </div>
+
     <FAQ items={[
       { question: "What deductions are not included?", answer: "This calculator does not include state income tax, pre-tax benefit deductions (health insurance, 401k contributions, FSA/HSA), or local taxes. Your actual take-home pay will be lower if you have these deductions." },
       { question: "How do pre-tax 401k contributions affect my taxes?", answer: "Pre-tax 401k contributions reduce your taxable income dollar-for-dollar, lowering your federal tax bill, potentially dropping you into a lower bracket." },
       { question: "What is marginal vs effective tax rate?", answer: "Your marginal rate is the rate you pay on your last dollar of income. Your effective rate is your total tax divided by your total income — it's always lower because of the progressive bracket system and standard deduction." },
       { question: "Does the calculator include the standard deduction?", answer: "Yes. The calculator automatically subtracts the 2025 standard deduction based on your filing status before computing federal tax." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use this information to optimize your paycheck and tax situation:</p>
+      <ul style="line-height:1.8;">
+        <li><strong>Maximize your 401(k) match.</strong> If your employer matches contributions, contribute at least enough to get the full match — it's free money with an immediate 50-100% return.</li>
+        <li><strong>Consider an HSA</strong> if you have a high-deductible health plan. Contributions are pre-tax, growth is tax-free, and withdrawals for medical expenses are tax-free. It's the only triple-tax-advantaged account in the US tax code.</li>
+        <li><strong>Adjust your W-4 withholding.</strong> If you're getting a large tax refund every year, you're giving the government an interest-free loan. Use the IRS withholding calculator to adjust your W-4 and increase your take-home pay each paycheck.</li>
+        <li><strong>Know your state tax situation.</strong> If you live in a high-tax state, consider whether pre-tax deductions could save you significantly. If you're in a no-income-tax state, you have more flexibility.</li>
+        <li><strong>Use the calculator to compare job offers.</strong> A $80,000 offer in Texas and an $85,000 offer in California might result in very different take-home amounts after state taxes.</li>
+      </ul>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
