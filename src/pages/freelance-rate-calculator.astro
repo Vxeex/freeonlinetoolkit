@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Freelance Rate: Set Your Hourly & Project Rates",
+    "description": "Freelance Rate — comprehensive guide with free online calculator. Freelancers typically bill only 60–70% of their working hours — the rest goes to admin, marketing, proposals, and professional development — so your hourly rate must be higher than you might initially think. The formula starts from your desired take-home income, adds business expenses, accounts for taxes, then divides by realistic billable hours to arrive at a sustainable rate.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/freelance-rate-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Your Freelance Hourly Rate",
     "description": "Calculate your freelance hourly rate based on desired income, business expenses, billable hours, and taxes.",
@@ -23,8 +34,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Freelance Rate: Set Your Hourly & Project Rates | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Freelance Rate: Set Your Hourly & Project Rates</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Freelancers typically bill only 60–70% of their working hours — the rest goes to admin, marketing, proposals, and professional development — so your hourly rate must be higher than you might initially think.</li>
+      <li>The formula starts from your desired take-home income, adds business expenses, accounts for taxes, then divides by realistic billable hours to arrive at a sustainable rate.</li>
+      <li>Project-based pricing rewards efficiency: if you finish a 40-hour estimate in 30 hours, your effective hourly rate increases by 33%, incentivising skill development and process improvement.</li>
+      <li>Health insurance, retirement savings, and paid leave — all typically covered by employers — must be funded entirely by the freelancer, adding 20–30% to the income you need to earn.</li>
+    </ul>
+  </div>
+
+  <p>Pricing your freelance services is one of the hardest parts of going independent. Unlike a salaried position where compensation is set by an employer, freelancers must determine their own rates — and the wrong number can mean either leaving money on the table or losing clients to cheaper competitors. The good news is that with a systematic approach, you can calculate a rate that is both competitive and sustainable.</p>
+
+  <p>The biggest mistake new freelancers make is basing their rate on what they earned as an employee divided by working hours. This ignores the reality that freelancers pay both halves of Social Security/Medicare taxes (or UK National Insurance), fund their own health insurance and retirement, receive no paid leave, and spend significant time on non-billable work. The result is that freelancers typically need to charge 2–3 times their equivalent employed hourly rate to maintain the same standard of living.</p>
+
+  <p>There are two primary pricing models: hourly and project-based. Hourly billing is straightforward and low-risk for both parties, but it penalises efficiency — the faster you work, the less you earn. Project-based pricing (also called value-based pricing) quotes a fixed price for a defined scope of work. This rewards skill and efficiency, but requires accurate estimation to avoid scope creep eating into your margins.</p>
+
+  <p>The most successful freelancers use a hybrid approach: they calculate their hourly rate as a baseline, then quote fixed project prices based on estimated hours plus a buffer for revisions and unexpected complexity. Over time, as they build expertise and streamline processes, their effective hourly rate increases even as project prices remain competitive.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Set your rates with confidence. Enter your income goal and expenses to get your ideal hourly rate, day rate, weekly rate, and project pricing. Built for freelancers, consultants, and independent contractors.</p>
   </fragment>
@@ -174,6 +205,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator determines your ideal hourly rate, day rate, weekly rate, and monthly revenue needed by working backward from your desired income. It accounts for business expenses, billable hours per week, vacation days, tax rate, and profit margin. Toggle to Project Rate mode to calculate fixed-price quotes based on your hourly baseline.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use</h2>
       <p>This calculator helps you determine what to charge as a freelancer by working backward from your financial goals. Here is how it works:</p>
@@ -207,7 +243,12 @@ const jsonLd = [
       { question: "How often should I review my rates?", answer: "Review your rates at least once a year. Increase them when you gain experience or your expenses rise. A standard practice is to raise rates 5-10% annually. Never lower your rates — offer a smaller scope instead." },
       { question: "What is the difference between gross revenue and take-home pay?", answer: "Gross revenue is everything you invoice clients. From that, you subtract business expenses, taxes, and profit margin before arriving at your take-home pay. This is why the required hourly rate is higher than you might expect." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Start by calculating your minimum viable rate — the lowest you can charge without losing money. Then research market rates for your skill level and niche. If you are new, consider starting slightly below market rate and raising prices every 6–12 months as you build your portfolio. Never lower your rates — instead, offer a smaller scope of work at the same price.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="freelance-rate-calculator" category="freelancing" />

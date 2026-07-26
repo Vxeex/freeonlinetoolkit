@@ -9,6 +9,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "ROI Calculator: Measure Investment Returns & Free Tool",
+    "description": "Calculate your ROI, annualized return (CAGR), and compare investment performance against savings accounts. Supports dollar-cost averaging scenarios.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Return on Investment",
     "description": "Calculate ROI and annualized return for any investment using initial investment, final value, and holding period.",
@@ -23,10 +33,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="ROI Calculator: Measure Investment Returns & Free Tool — FreeOnlineToolkit" description="Calculate ROI, annualized return (CAGR), and compare investment performance against savings accounts." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>ROI Calculator: Measure Investment Returns & Free Tool</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Measure the performance of any investment. This free ROI calculator shows your total return, ROI percentage, annualized return (CAGR), and compares the result against a standard savings account.</p>
+    <div class="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li><strong>ROI (Return on Investment)</strong> measures total percentage gain over the entire holding period — the most basic investment performance metric</li>
+        <li><strong>CAGR (Compound Annual Growth Rate)</strong> is more useful than ROI for comparing investments of different durations</li>
+        <li>The S&P 500 has historically returned <strong>7-10% annualized</strong> (including dividends and adjusted for inflation) — use this as a benchmark</li>
+        <li><strong>Dollar-cost averaging</strong> (investing fixed amounts regularly) reduces the impact of market volatility on your portfolio</li>
+        <li>Comparing your investment return to a <strong>risk-free alternative</strong> (like a savings account) shows whether the extra risk was worth it</li>
+      </ul>
+    </div>
+
+    <p>Every investor — from beginners buying their first index fund to seasoned professionals managing complex portfolios — needs a reliable way to measure performance. Return on Investment (ROI) is the most widely used metric because of its simplicity: it tells you how much profit you made relative to how much you invested. If you invested $10,000 and ended up with $18,000, your ROI is 80%. While straightforward, this basic metric has a critical limitation: it doesn't account for time. An 80% return over 1 year is extraordinary; over 20 years, it's mediocre.</p>
+
+    <p>That's where <strong>CAGR (Compound Annual Growth Rate)</strong> comes in. CAGR smooths out the ups and downs of an investment to give you the average annual return, accounting for compounding. It answers the question: "What consistent annual return would have produced this result?" For our $10,000 → $18,000 example over 5 years, the CAGR is about 12.5% per year — a much more meaningful number for comparison. You can compare a 5-year investment returning 12.5% CAGR against a 10-year investment returning 9% CAGR and immediately see which performed better per year.</p>
+
+    <p>Many investors don't invest a lump sum once — they contribute regularly through <strong>dollar-cost averaging (DCA)</strong>. This strategy involves investing a fixed amount at regular intervals (e.g., $500/month) regardless of market conditions. DCA reduces the impact of market volatility because you buy more shares when prices are low and fewer when prices are high. However, it also means your total invested capital grows over time, which changes how ROI and CAGR should be interpreted. The calculator below handles monthly contributions to give you accurate results for DCA scenarios.</p>
+
+    <p>A complete investment analysis should also compare your returns against alternatives. The most basic benchmark is a <strong>risk-free rate</strong> — typically the return on a high-yield savings account or government bonds. If your investment earned 8% annually but a savings account would have earned 4%, your excess return (alpha) was 4%. Was the additional risk worth that extra 4%? For stock investments, the answer is usually yes over long periods. For riskier investments like individual stocks or crypto, the answer depends on your risk tolerance and the specific returns you achieved.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -84,6 +111,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This ROI calculator shows your <strong>total ROI percentage</strong>, <strong>total profit</strong>, <strong>annualized return (CAGR)</strong>, and a <strong>comparison against a savings account</strong>. If you add monthly contributions, it accounts for dollar-cost averaging to give accurate results. The savings comparison shows what your money would have earned in a risk-free account, helping you evaluate whether the extra risk of your investment was justified.</p>
+    </div>
+
+    <div class="content-section">
       <h2>How to Use the Investment ROI Calculator</h2>
       <p>First, enter your <strong>initial investment</strong> &mdash; the amount you originally put into the investment. Next, enter the <strong>final value</strong> &mdash; what the investment is worth now. Then input your <strong>holding period</strong> in years.</p>
       <p>For dollar-cost averaging (DCA) scenarios, add a <strong>monthly contribution</strong> amount. The <strong>savings account rate</strong> lets you compare what your money would have earned in a standard savings account.</p>
@@ -94,6 +126,17 @@ const jsonLd = [
       <div class="formula-box">ROI = [(Final Value &minus; Total Invested) / Total Invested] &times; 100</div>
       <div class="formula-box">CAGR = (Final Value / Total Invested)^(1 / Years) &minus; 1</div>
       <p>Where: <strong>Total Invested</strong> = Initial Investment + (Monthly Contribution &times; 12 &times; Years). <strong>CAGR</strong> stands for Compound Annual Growth Rate.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Track all your investments</strong> — run each one through this calculator to see which are truly performing well and which are lagging</li>
+        <li><strong>Benchmark against the S&P 500</strong> — if your active investments underperform a simple index fund, consider switching to passive investing</li>
+        <li><strong>Account for taxes</strong> — your after-tax ROI may be significantly lower than pre-tax, especially for short-term capital gains</li>
+        <li><strong>Consider risk-adjusted returns</strong> — a 15% return from a volatile stock is not the same as 15% from a diversified fund</li>
+        <li><strong>Use the Compound Interest Calculator</strong> on this site to project future growth of your investments with regular contributions</li>
+      </ul>
     </div>
 
     <FAQ items={[

@@ -9,27 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Calculate Micro SaaS Profit",
-    "description": "Estimate your micro SaaS net income based on monthly recurring revenue, churn rate, and operating costs.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter your number of monthly paying users" },
-      { "@type": "HowToStep", "text": "Enter your average monthly price per user" },
-      { "@type": "HowToStep", "text": "Enter your monthly churn rate" },
-      { "@type": "HowToStep", "text": "Enter your monthly operating costs and annual salary draw" },
-      { "@type": "HowToStep", "text": "Click Calculate to see your MRR, profit, and net income" },
-    ],
+    "@type": "Article",
+    "headline": "Micro SaaS Profit: MRR, ARR & Net Income Calculator",
+    "description": "Micro SaaS Profit: MRR, ARR & Net Income Calculator. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/micro-saas-profit-calculator/" }
   }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Micro SaaS Profit: MRR, ARR & Net Income Calculator | FreeOnlineToolkit" description="Micro SaaS Profit: MRR, ARR & Net Income Calculator. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Micro SaaS Profit: MRR, ARR & Net Income Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Micro SaaS businesses are small, focused software products typically run by solo founders or tiny teams, generating $1K-$50K MRR in niche markets.</li>
+      <li>A monthly churn rate below 5% is acceptable, below 3% is good, and below 2% is excellent - even small churn reductions dramatically improve lifetime value.</li>
+      <li>Typical micro SaaS operating costs range from $100-$2,000/month (hosting, APIs, tools), making them highly capital-efficient businesses.</li>
+      <li>MRR of $3,000-$10,000 can provide a decent side income; $10,000-$50,000 MRR is considered sustainable full-time income for a solo founder.</li>
+      <li>The net income after salary draw reveals whether your SaaS is truly sustainable - negative numbers mean you are subsidising the business with savings.</li>
+    </ul>
+  </div>
+
+    <p>The micro SaaS movement has democratised software entrepreneurship. Unlike venture-backed startups that pursue massive scale, micro SaaS founders build small, focused tools that solve specific problems for niche audiences - and they do it profitably, often as solo operators. Products like Carrd ($1M+ ARR, solo founder) and Plausible Analytics prove that you don't need a 50-person team to build a meaningful software business.</p>
+
+    <p>The financial model of a micro SaaS is fundamentally different from traditional SaaS. Revenue is measured in <strong>Monthly Recurring Revenue (MRR)</strong> - the predictable income from active subscribers. MRR = paying users x average price per user. <strong>Annual Recurring Revenue (ARR)</strong> is simply MRR x 12. These metrics are the heartbeat of any subscription business.</p>
+
+    <p><strong>Churn</strong> - the rate at which customers cancel - is the most critical metric for micro SaaS sustainability. A 5% monthly churn rate means you lose 5% of your customers each month, which compounds devastatingly over time. At 5% monthly churn, the average customer lifetime is 20 months (1/0.05). At 3% churn, it extends to 33 months - a 65% increase in lifetime value.</p>
+
+    <p>The <strong>cost structure</strong> of a micro SaaS is remarkably lean. Typical monthly expenses include hosting ($20-$200), third-party APIs ($50-$500), domain and email ($10-$50), analytics ($20-$100), and payment processing (2.9% + $0.30 per transaction). Total monthly costs usually range from $100 to $2,000, meaning a micro SaaS can reach profitability with as few as 10-50 paying customers.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Estimate your micro SaaS net income based on monthly recurring revenue (MRR), churn rate, operating costs, and founder salary. See if your SaaS idea is financially sustainable.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>SaaS Profit Calculator</h2>
       <div class="form-group">
@@ -77,6 +95,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator shows your <strong>MRR</strong>, <strong>ARR</strong>, <strong>monthly churned revenue</strong>, <strong>net MRR</strong> (after churn), <strong>monthly and annual operating profit</strong>, <strong>net income after salary draw</strong>, and <strong>monthly customer loss</strong>. Enter your user count, pricing, churn rate, operating costs, and salary to see whether your micro SaaS is financially sustainable.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use</h2>
       <p>This micro SaaS profit calculator helps you model the financial health of your SaaS business. Start by entering your <strong>monthly paying users</strong> and <strong>average monthly price</strong> to calculate your MRR. Then add your <strong>churn rate</strong> to see how much revenue you lose each month.</p>
       <p>Include your <strong>monthly operating costs</strong> (hosting, SaaS tools, payment processing, etc.) and your <strong>annual salary draw</strong> to determine whether your business is sustainable. The calculator shows both your operating profit and your net income after paying yourself.</p>
@@ -114,12 +137,18 @@ const jsonLd = [
       { question: "How much can a micro SaaS founder earn?", answer: "Micro SaaS founder earnings vary widely. A profitable micro SaaS with 200-500 users at $29/month can generate $5,800-$14,500 MRR. After operating costs and taxes, many solo founders take home $40,000-$120,000 per year. The key is keeping operating costs low and focusing on a niche audience." },
       { question: "What are typical micro SaaS operating costs?", answer: "Typical monthly operating costs for a micro SaaS include hosting ($20-$200), third-party APIs ($50-$500), domain and email ($10-$50), analytics and monitoring ($20-$100), and payment processing fees (2.9% + $0.30 per transaction). Total monthly costs typically range from $100 to $2,000." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Model your micro SaaS economics above to see if your idea is financially viable. Focus on reducing churn before scaling acquisition - a product that retains customers well is much easier to grow profitably. Aim for MRR that covers your operating costs plus a reasonable salary before investing in paid acquisition channels.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="micro-saas-profit-calculator" category="saas" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';

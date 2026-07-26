@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Pet Cost: Lifetime Cost of Dog & Cat Ownership",
+    "description": "Pet Cost — comprehensive guide with free online calculator. The average annual cost of owning a dog ranges from $1,500 (small) to $4,000 (large), with first-year costs significantly higher due to adoption fees and initial supplies. Cats typically cost 20–30% less per year than dogs of equivalent size, primarily because they do not require professional grooming and their food is less expensive.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/pet-cost-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Pet Ownership Costs",
     "description": "Estimate the total cost of owning a pet including food, vet care, supplies, insurance, and one-time expenses.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Pet Cost: Lifetime Cost of Dog & Cat Ownership | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Pet Cost: Lifetime Cost of Dog & Cat Ownership</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>The average annual cost of owning a dog ranges from $1,500 (small) to $4,000 (large), with first-year costs significantly higher due to adoption fees and initial supplies.</li>
+      <li>Cats typically cost 20–30% less per year than dogs of equivalent size, primarily because they do not require professional grooming and their food is less expensive.</li>
+      <li>Pet insurance ($30–$60/month) is most valuable for unexpected emergencies ($1,000–$5,000+), but for routine care, self-insuring through a dedicated savings account may be more cost-effective.</li>
+      <li>Commonly overlooked costs include pet deposits and monthly pet rent, dental cleanings ($200–$600), boarding or pet-sitting, and replacing damaged household items.</li>
+    </ul>
+  </div>
+
+  <p>Bringing a pet into your home is a joyful decision — but it is also a significant financial commitment that lasts 10–20 years. The ASPCA estimates that the first year of dog ownership costs $1,500–$2,500 depending on size, with ongoing annual costs of $1,000–$2,000. Over a 13-year lifespan, a medium dog can cost $20,000–$30,000 or more.</p>
+
+  <p>The largest recurring costs are food and veterinary care. Premium dog food costs $40–$100/month depending on size and quality. Annual vet visits for wellness checks, vaccinations, and preventive care typically run $200–$400. Add grooming ($300–$800/year for dogs that need professional grooming), pet insurance ($360–$720/year), and supplies ($200–$400/year), and the monthly cost quickly reaches $150–$300.</p>
+
+  <p>Emergency veterinary expenses are the biggest financial risk of pet ownership. A single emergency visit can cost $1,000–$5,000 or more for surgery, hospitalisation, or specialist care. Pet insurance can mitigate this risk, but the monthly premiums add up — $40/month is $4,800 over 10 years. The break-even point depends on whether your pet has a major health event.</p>
+
+  <p>Beyond the obvious costs, there are hidden expenses that catch new pet owners off guard. Many landlords charge $200–$500 pet deposits plus $25–$50/month pet rent. Boarding or pet-sitting costs $30–$75/day when you travel. Training classes run $100–$300 for a basic course. And then there are the replacement costs for chewed shoes, scratched furniture, and cleaned carpets.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Know what you are signing up for before bringing a pet home. This pet cost calculator estimates first-year, annual, and lifetime costs for dogs and cats, broken down by food, vet care, supplies, insurance, and one-time expenses.</p>
   </fragment>
@@ -165,6 +196,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator estimates first-year, annual recurring, monthly average, and lifetime costs for your pet. It breaks down expenses by category (food, supplies, vet visits, vaccinations, grooming, insurance, other) and shows low/high estimate ranges. A cost breakdown table shows what percentage of your total spending goes to each category.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the Pet Cost Calculator</h2>
       <p>Select your <strong>pet type</strong> (dog or cat) and <strong>size</strong> to set baseline cost estimates. Enter your pet's <strong>current age</strong> and <strong>expected lifespan</strong> to calculate the lifetime cost projection. Include <strong>adoption or purchase cost</strong> and <strong>initial setup</strong> expenses.</p>
@@ -189,7 +225,12 @@ const jsonLd = [
       { question: "Is pet insurance worth the cost?", answer: "Pet insurance is most valuable for unexpected accidents and illnesses, which can cost $1,000-$5,000 or more. For routine care, you may come out ahead by self-insuring in a dedicated savings account." },
       { question: "What are the hidden costs of pet ownership?", answer: "Commonly overlooked costs include: pet deposits and monthly pet rent, boarding or pet-sitting, dental cleanings ($200-600), emergency vet visits, and replacing damaged items." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use this calculator to budget realistically before bringing a pet home. Consider pet insurance for emergency coverage, and set up a dedicated savings account for routine care. Research breed-specific health concerns — some breeds are prone to expensive conditions. Adoption from shelters ($50–$300) is significantly cheaper than buying from breeders ($500–$3,000+) and saves a life.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="pet-cost-calculator" category="lifestyle" />

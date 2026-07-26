@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Tire Size Calculator: Compare & Convert Tire Sizes",
+    "description": "Tire Size Calculator — comprehensive guide with free online calculator. Tire size notation (e.g., 245/45R18) encodes section width in mm, aspect ratio as a percentage, and rim diameter in inches — understanding these numbers is essential for safe tire changes. The 3% rule states that a tire swap is generally safe if the new tire diameter is within 3% of the original — beyond this threshold, speedometer accuracy and vehicle safety systems may be compromised.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/tire-size-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Compare Tire Sizes",
     "description": "Compare two tire sizes to see the differences in diameter, width, sidewall height, circumference, and speedometer error.",
@@ -21,8 +32,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Tire Size Calculator: Compare & Convert Tire Sizes | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Tire Size Calculator: Compare & Convert Tire Sizes</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Tire size notation (e.g., 245/45R18) encodes section width in mm, aspect ratio as a percentage, and rim diameter in inches — understanding these numbers is essential for safe tire changes.</li>
+      <li>The 3% rule states that a tire swap is generally safe if the new tire diameter is within 3% of the original — beyond this threshold, speedometer accuracy and vehicle safety systems may be compromised.</li>
+      <li>Changing tire diameter affects speedometer readings, effective gear ratio, ground clearance, and fuel economy — wider tires improve grip but increase rolling resistance.</li>
+      <li>Plus-sizing (increasing rim diameter while reducing sidewall height) maintains overall diameter while giving a sportier appearance and potentially better handling.</li>
+    </ul>
+  </div>
+
+  <p>Choosing the right tire size is one of the most impactful modifications you can make to your vehicle. Tires affect everything from ride comfort and handling to fuel economy and speedometer accuracy. Whether you are replacing worn tires, upgrading for better performance, or considering a different wheel size, understanding tire dimensions is essential for making a safe and informed choice.</p>
+
+  <p>The standard tire size notation looks like 245/45R18. The first number (245) is the section width in millimetres — the width of the tread. The second number (45) is the aspect ratio — the sidewall height as a percentage of the width. The R indicates radial construction (standard for all modern tires), and the final number (18) is the rim diameter in inches. So 245/45R18 means a 245mm wide tire with sidewalls that are 45% of 245mm tall, on an 18-inch rim.</p>
+
+  <p>The overall diameter of the tire is the rim diameter plus twice the sidewall height. Changing this diameter has cascading effects: the speedometer reads based on tire revolutions per mile, the transmission shifts based on vehicle speed, and the ABS and traction control systems are calibrated for a specific tire circumference. A diameter change beyond 3% can cause these systems to function incorrectly.</p>
+
+  <p>Plus-sizing is a popular modification that increases rim diameter while reducing the aspect ratio to keep the overall diameter constant. For example, going from 205/55R16 to 225/45R17 (Plus 1) or 225/40R18 (Plus 2) maintains near-identical diameter while filling the wheel arch more completely and potentially improving cornering response due to the shorter, stiffer sidewall.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Compare two tire sizes side by side. See the differences in diameter, width, sidewall height, circumference, revolutions per mile, and speedometer error. Find out if a tire swap is safe and recommended.</p>
   </fragment>
@@ -103,6 +134,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator compares two tire sizes side by side, showing differences in diameter, width, sidewall height, circumference, revolutions per mile, and speedometer error. A visual diameter comparison, fitment recommendation (safe/borderline/not recommended), and a difference scale bar help you evaluate whether a tire swap is appropriate for your vehicle.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the Tire Size Comparison Calculator</h2>
       <p>Enter two tire sizes in the standard <strong>metric format</strong>: <code>Section Width / Aspect Ratio R Rim Diameter</code>. For example, <strong>245/45R18</strong> means 245mm tread width, 45% aspect ratio, radial construction, 18-inch rim.</p>
@@ -139,7 +175,12 @@ const jsonLd = [
       { question: "Does tire size affect fuel economy?", answer: "Yes. Larger and wider tires increase rolling resistance and weight, which can reduce fuel economy. Taller tires also change your final drive ratio, potentially causing the engine to work harder at highway speeds." },
       { question: "What is the plus-sizing concept?", answer: "Plus-sizing increases rim diameter while reducing tire sidewall height to keep the overall diameter the same. For example, going from 205/55R16 to 225/45R17 (Plus 1) or 225/40R18 (Plus 2)." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your current tire size and the size you are considering to see a complete comparison. Stay within the 3% diameter difference for a safe swap. Check your vehicle's owner's manual or door jamb sticker for the manufacturer's recommended tire sizes. Consult a tire professional if you are unsure about fitment for your specific vehicle.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="tire-size-calculator" category="automotive" />

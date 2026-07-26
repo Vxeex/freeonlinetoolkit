@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Overtime Pay: Calculate FLSA Overtime & Free Tool",
+    "description": "Overtime Pay — comprehensive guide with free online calculator. The Fair Labor Standards Act (FLSA) requires non-exempt employees to receive at least 1.5× their regular hourly rate for all hours worked beyond 40 in a workweek. Overtime is calculated on a weekly basis, not per pay period — a bi-weekly employee who works 35 hours one week and 50 the next is owed 10 hours of overtime.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/overtime-pay-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Overtime Pay",
     "description": "Calculate overtime pay based on hourly rate, regular and overtime hours, and pay period frequency.",
@@ -23,8 +34,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Overtime Pay: Calculate FLSA Overtime & Free Tool | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Overtime Pay: Calculate FLSA Overtime & Free Tool</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>The Fair Labor Standards Act (FLSA) requires non-exempt employees to receive at least 1.5× their regular hourly rate for all hours worked beyond 40 in a workweek.</li>
+      <li>Overtime is calculated on a weekly basis, not per pay period — a bi-weekly employee who works 35 hours one week and 50 the next is owed 10 hours of overtime.</li>
+      <li>The salary threshold for overtime exemption is $684/week ($35,568/year) as of 2024 — employees earning below this must receive overtime regardless of job duties.</li>
+      <li>Some states including California, Colorado, and Nevada require daily overtime after 8 hours in a single day, in addition to the federal weekly standard.</li>
+    </ul>
+  </div>
+
+  <p>Overtime pay is one of the most important — and most misunderstood — areas of employment law. The Fair Labor Standards Act (FLSA), enacted in 1938, established the 40-hour workweek and mandated premium pay for overtime hours. Nearly 80 years later, these rules still govern how millions of American workers are compensated for extra hours, and violations remain one of the most common sources of wage disputes.</p>
+
+  <p>The core rule is straightforward: non-exempt employees must receive at least 1.5 times their regular hourly rate for every hour worked beyond 40 in a workweek. This is commonly called "time and a half." Some employers voluntarily offer double time (2×) for holidays, Sundays, or hours beyond a certain threshold, and some union contracts or state laws require it. But the federal minimum is 1.5×.</p>
+
+  <p>Not all employees are entitled to overtime. The FLSA exempts executive, administrative, and professional employees who are paid on a salary basis and meet both a salary threshold ($684/week as of 2024) and a duties test. Outside sales employees and certain computer professionals may also be exempt. Misclassification of employees as exempt when they do not meet the criteria is one of the most common FLSA violations and can result in significant back-pay liability.</p>
+
+  <p>For employers, overtime costs add up quickly. An employee earning $25/hour costs $37.50/hour in overtime — a 50% premium. Five hours of weekly overtime per employee across a team of 10 adds nearly $50,000 in annual labour costs. Understanding these numbers helps businesses plan staffing, manage budgets, and decide whether to hire additional workers or pay overtime to existing staff.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Calculate correct overtime pay in compliance with FLSA standards. This tool helps small business owners, HR managers, and employees understand the full impact of overtime on paychecks and annual earnings.</p>
   </fragment>
@@ -90,6 +121,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator shows your total weekly pay broken down into regular and overtime components, plus per-period pay (based on your pay frequency), annual totals, and the percentage of income coming from overtime. Adjust the multiplier between 1.5× (standard) and 2× (double time) and select your pay period frequency.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use</h2>
       <p>Start by entering the employee's <strong>hourly rate</strong> and the number of <strong>regular hours</strong> worked per week (typically 40). Then enter the <strong>overtime hours</strong> worked per week beyond the regular schedule.</p>
@@ -120,7 +156,12 @@ const jsonLd = [
       { question: "Which employees are exempt from overtime?", answer: "Executive, administrative, and professional employees who are paid on a salary basis and meet the salary threshold ($684 per week as of 2024) may be exempt from overtime. Outside sales employees and certain computer professionals may also be exempt." },
       { question: "How do I calculate overtime for salaried non-exempt employees?", answer: "For salaried non-exempt employees, convert the salary to an hourly rate by dividing the weekly salary by 40 hours. Then apply the overtime multiplier for all hours worked beyond 40 in the workweek." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>If you are an employee, use this calculator to verify your paycheck is correct. If you are an employer, use it to forecast overtime costs when planning staffing. Remember that some states have additional overtime requirements — check your state labour department website for rules that may apply to you.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="overtime-pay-calculator" category="hr" />

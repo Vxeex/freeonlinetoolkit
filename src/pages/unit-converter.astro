@@ -9,26 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Convert Units",
-    "description": "Convert between different units of measurement for length, weight, volume, and more.",
-    "step": [
-      { "@type": "HowToStep", "text": "Select the category of measurement" },
-      { "@type": "HowToStep", "text": "Choose the unit you want to convert from" },
-      { "@type": "HowToStep", "text": "Choose the unit you want to convert to" },
-      { "@type": "HowToStep", "text": "Enter the value to see the converted result instantly" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Unit Converter: Length, Weight, Volume & More",
+    "description": "Unit Converter: Length, Weight, Volume & More. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/unit-converter/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Unit Converter: Length, Weight, Volume & More | FreeOnlineToolkit" description="Unit Converter: Length, Weight, Volume & More. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Unit Converter: Length, Weight, Volume & More</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>The metric system (SI) is used by 95% of the world's population - the US, Myanmar, and Liberia are the only countries that have not officially adopted it.</li>
+      <li>Key conversions to memorise: 1 inch = 2.54 cm, 1 mile = 1.609 km, 1 kg = 2.205 lbs, 1 US gallon = 3.785 litres.</li>
+      <li>Temperature conversion uses the formulas C = (F - 32) x 5/9 and F = (C x 9/5) + 32 - no simple ratio like other unit types.</li>
+      <li>Confusing US and Imperial gallons is a common mistake - a US gallon is 3.785 litres while a UK Imperial gallon is 4.546 litres, a 20% difference.</li>
+      <li>All conversion factors use internationally accepted standards based on SI definitions.</li>
+    </ul>
+  </div>
+
+    <p>Unit conversion is one of those everyday tasks that sounds simple until you actually need to do it. Whether you are following a recipe that uses metric measurements in a country that uses cups and Fahrenheit, reading an engineering specification in a different unit system, or converting between measurement units for international shipping, accurate conversion is essential. Errors in unit conversion have caused real disasters - the Mars Climate Orbiter was lost in 1999 because one team used metric units and another used Imperial.</p>
+
+    <p>The <strong>metric system</strong> (formally the International System of Units, or SI) was developed in France during the 1790s and is now used by virtually every country on Earth. Its power lies in its decimal structure: units scale by factors of 10, 100, or 1,000, making conversion as simple as moving a decimal point. A kilometre is 1,000 metres; a milligram is 1/1,000 of a gram. The US Customary system, by contrast, uses irregular conversion factors (12 inches in a foot, 3 feet in a yard, 5,280 feet in a mile) that require memorisation or lookup.</p>
+
+    <p><strong>Temperature</strong> is unique among unit types because it cannot be converted with a simple multiplication factor. Celsius and Fahrenheit have different zero points and different scale sizes. Water freezes at 0C (32F) and boils at 100C (212F), giving each degree Celsius equal to 1.8 degrees Fahrenheit. The Kelvin scale, used in scientific work, starts at absolute zero (-273.15C) and has the same degree size as Celsius. Understanding these relationships is crucial for scientists, engineers, cooks, and anyone working across measurement systems.</p>
+
+    <p>For <strong>volume conversions</strong>, one of the most common sources of confusion is the difference between US and Imperial measurements. A US fluid ounce (29.57 mL) is slightly larger than a UK Imperial fluid ounce (28.41 mL), but a US gallon (3.785 L) is smaller than a UK Imperial gallon (4.546 L) because the US system defines a gallon as 128 fluid ounces while the Imperial system uses 160. This 20% difference has caused costly mistakes in industries from pharmaceuticals to fuel trading, making it essential to specify which system you are using.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Convert between hundreds of measurement units instantly. Length, weight, volume, temperature, area, speed, and more — all in one tool. Fast and accurate conversions for everyday use.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Unit Converter</h2>
 
@@ -74,6 +93,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This unit converter covers six categories: <strong>Length</strong>, <strong>Weight & Mass</strong>, <strong>Volume</strong>, <strong>Temperature</strong>, <strong>Area</strong>, and <strong>Speed</strong>. Select a category, choose the source and target units, enter a value, and click Convert to see the result with full precision. Both metric and Imperial units are supported in every category.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use the Unit Converter</h2>
       <p>Select a <strong>category</strong>, then choose the units you want to convert <strong>from</strong> and <strong>to</strong>. Enter the value and click <strong>Convert</strong> to see the result instantly. The converter supports both metric and imperial units across all categories.</p>
     </div>
@@ -91,12 +115,18 @@ const jsonLd = [
       { question: "Can I convert between metric and imperial?", answer: "Yes, the converter supports both metric and imperial units in every category — meters to feet, kilograms to pounds, liters to gallons, and more." },
       { question: "What's the difference between US and Imperial gallons?", answer: "A US gallon equals 3.78541 liters, while a UK imperial gallon equals 4.54609 liters. This converter uses US liquid volume units." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Select your category and units above to start converting. For quick reference, bookmark the conversion factors in the reference section below the calculator. If you are working across measurement systems regularly, consider memorising the core conversions: 1 inch = 2.54 cm, 1 kg = 2.205 lbs, and 1 US gallon = 3.785 L.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="unit-converter" category="utility" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { formatNumber } from '../utils/calculator-utils';

@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Ovulation & Fertility: Track Your Cycle & Free Calculator",
+    "description": "Understand ovulation, fertile windows, and cycle tracking to optimise your chances of conception. Free ovulation calculator with cycle day predictions.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/ovulation-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Ovulation and Fertile Window",
     "description": "Find your most fertile days using cycle tracking.",
@@ -21,8 +32,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Ovulation & Fertility Calculator</h1></fragment>
+<ToolLayout title="Ovulation & Fertility: Track Your Cycle & Free Calculator | FreeOnlineToolkit" description="Understand ovulation, fertile windows, and cycle tracking to optimise your chances of conception. Free ovulation calculator with cycle day predictions." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Ovulation & Fertility: Track Your Cycle & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Ovulation typically occurs 14 days before your next period — the luteal phase is relatively consistent, even when cycle length varies.</li>
+      <li>The fertile window spans 6 days: the 5 days before ovulation plus ovulation day itself, when the egg survives 12–24 hours after release.</li>
+      <li>The highest chance of conception occurs in the 2–3 days leading up to ovulation, not on ovulation day itself.</li>
+      <li>Only about 30% of women have a textbook 28-day cycle — tracking over multiple months gives the most accurate predictions.</li>
+      <li>For irregular cycles, combine calendar tracking with ovulation predictor kits (OPKs), basal body temperature, and cervical mucus observation.</li>
+    </ul>
+  </div>
+
+  <p>Understanding your menstrual cycle is one of the most powerful tools for family planning — whether you're trying to conceive or trying to avoid pregnancy. The key to timing is <strong>ovulation</strong>, the moment when a mature egg is released from the ovary. While the first half of the menstrual cycle (the follicular phase) can vary significantly in length, the second half (the <strong>luteal phase</strong>) is remarkably consistent at 12–16 days for most women, with 14 days being the average. This consistency is what makes calendar-based prediction possible.</p>
+
+  <p>The <strong>fertile window</strong> is the approximately 6-day period when conception is possible. Sperm can survive in the reproductive tract for up to 5 days under favourable conditions, which means intercourse in the days <em>before</em> ovulation can result in pregnancy. The egg itself survives only 12–24 hours after release. This is why the 2–3 days before ovulation represent the peak fertility window — sperm are already waiting when the egg is released.</p>
+
+  <p>Many women assume ovulation happens on <strong>day 14</strong> of a 28-day cycle, but this is only true for those with textbook cycles. In reality, ovulation timing depends on your individual cycle length. For a 32-day cycle with a 14-day luteal phase, ovulation occurs around day 18. For a 25-day cycle, it's around day 11. The calculator accounts for this by subtracting your luteal phase length from your total cycle length.</p>
+
+  <p>For women with <strong>irregular cycles</strong>, calendar prediction alone isn't reliable enough. In these cases, combining multiple tracking methods gives the best results: ovulation predictor kits (OPKs) detect the LH surge that precedes ovulation by 24–36 hours; basal body temperature (BBT) rises 0.2–0.5°C after ovulation; and cervical mucus becomes clear, stretchy, and egg-white textured during fertile days.</p>
+
   <fragment slot="intro">
     <p class="tool-intro">Find your fertile window and ovulation day to plan for pregnancy. This free calculator uses your cycle data to identify the best days to conceive.</p>
   </fragment>
@@ -68,7 +99,7 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use</h2>
+      <h2>What This Calculator Shows</h2>
       <p>Enter the first day of your last period, your average cycle length, and your typical luteal phase length. The calculator determines your <strong>ovulation day</strong> and <strong>fertile window</strong> — the 6-day period when conception is most likely.</p>
       <p>Ovulation typically occurs <strong>14 days before your next period</strong>. The fertile window includes the 5 days before ovulation plus ovulation day itself.</p>
     </div>
@@ -79,6 +110,11 @@ const jsonLd = [
       { question: "Can I get pregnant outside my fertile window?", answer: "No. Pregnancy can only occur if sperm meets an egg during ovulation. The egg survives only 12-24 hours after release." },
       { question: "How accurate is this calculator?", answer: "This calculator provides an estimate based on average cycle data. For best results, track your cycle over several months and consider using ovulation predictor kits." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Track your cycle for 3–4 months to establish your personal pattern. Use our <a href="/pregnancy-due-date-calculator/">Pregnancy Due Date Calculator</a> once you conceive to estimate your due date. If you've been trying to conceive for 12 months (or 6 months if over 35) without success, consult a fertility specialist. Maintain a healthy lifestyle — folic acid supplementation, moderate exercise, and stress management all support fertility.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

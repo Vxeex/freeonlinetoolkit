@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Day Rate Calculator: UK & US Contractor Rates",
+    "description": "Day Rate Calculator — comprehensive guide with free online calculator. A sustainable day rate must cover not just your target salary but also business overhead, taxes, non-billable time, and a profit margin — most freelancers need to charge 2–3× what they would earn as employees. The standard formula works backward from your desired annual income: Revenue Needed = (Salary + Overhead) ÷ (1 − Tax Rate), then divides by effective billable days.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/day-rate-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Your Freelance Day Rate",
     "description": "Calculate your freelance day rate based on salary target, business overhead, billable days, and taxes.",
@@ -23,8 +34,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Day Rate Calculator: UK & US Contractor Rates | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Day Rate Calculator: UK & US Contractor Rates</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>A sustainable day rate must cover not just your target salary but also business overhead, taxes, non-billable time, and a profit margin — most freelancers need to charge 2–3× what they would earn as employees.</li>
+      <li>The standard formula works backward from your desired annual income: Revenue Needed = (Salary + Overhead) ÷ (1 − Tax Rate), then divides by effective billable days.</li>
+      <li>UK freelancers inside IR35 face different tax treatment than those outside it, which can significantly affect the day rate required to hit the same take-home pay.</li>
+      <li>Most full-time freelancers realistically bill 180–220 days per year after subtracting weekends, holidays, vacation, sick days, and non-billable admin time.</li>
+    </ul>
+  </div>
+
+  <p>Setting the right day rate is one of the most consequential decisions a freelancer or contractor makes. Charge too little and you work long hours for mediocre pay. Charge too much and you price yourself out of projects. The sweet spot is a rate that covers your costs, funds your lifestyle, and leaves room for growth — and calculating it requires understanding the full picture of self-employment economics.</p>
+
+  <p>Unlike salaried employees who receive benefits, paid leave, and employer tax contributions, freelancers must fund everything themselves. In the US, self-employment tax alone adds 15.3% on top of income tax. In the UK, National Insurance contributions and potential IR35 implications change the maths considerably. A day rate that looks generous on paper can quickly shrink once taxes, insurance, and overhead are accounted for.</p>
+
+  <p>The key insight is that your billable days are far fewer than calendar days. Starting from 365 days, subtract 104 weekend days, 10 public holidays, 20 vacation days, and 5 sick days, and you are down to around 226 potential working days. Then remove 20–30% for non-billable activities — marketing, proposals, admin, accounting, and professional development — and you are left with roughly 160–180 truly billable days.</p>
+
+  <p>UK and US markets also differ in typical rate ranges. A mid-level software developer might charge £400–£600/day in London or $600–$900/day in San Francisco. Senior consultants and specialists often command £800–£1,200+ or $1,000–$1,500+. Understanding your market rate is just as important as calculating your cost-based minimum.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Set a sustainable freelance day rate that covers your salary, overhead, taxes, and profit. This calculator is widely used by UK and US freelancers to go from salary target to daily rate in seconds.</p>
   </fragment>
@@ -92,6 +123,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator works backward from your desired annual salary to find the day rate you need to charge. It accounts for business overhead, billable days per year, non-billable time percentage, tax rate, and desired profit margin. The results show your day rate, effective hourly rate, revenue needed, and annual profit.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use</h2>
       <p>This calculator works backward from your target income to find the day rate you need to charge. Here is what each input means:</p>
@@ -122,7 +158,12 @@ const jsonLd = [
       { question: "How do taxes affect my day rate calculation?", answer: "Taxes significantly impact your required day rate. Revenue needed = (Salary + Overhead) / (1 - Tax Rate). At a 30% tax rate, you need to earn roughly 43% more than your target income just to cover taxes." },
       { question: "Should I charge a day rate or an hourly rate?", answer: "Day rates are preferred for creative and consulting work where the output matters more than the hours. Hourly rates work better for ongoing maintenance and support. Many freelancers use both." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use the calculator to find your minimum viable day rate, then research market rates on platforms like Glassdoor, Indeed, or specialist contractor boards. Adjust your rate based on your experience level, niche specialisation, and the value you deliver. Review your rate at least annually — a standard practice is to increase 5–10% each year as your skills and reputation grow.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="day-rate-calculator" category="freelancing" />

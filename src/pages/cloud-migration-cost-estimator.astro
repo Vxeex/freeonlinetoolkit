@@ -9,27 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Estimate Cloud Migration Costs",
-    "description": "Estimate the cost of migrating your infrastructure to AWS, Azure, or Google Cloud.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter the number of servers or VMs you plan to migrate" },
-      { "@type": "HowToStep", "text": "Enter the vCPUs and RAM per server" },
-      { "@type": "HowToStep", "text": "Enter storage per server and estimated data transfer" },
-      { "@type": "HowToStep", "text": "Enter migration labor hours and hourly rate for engineers" },
-      { "@type": "HowToStep", "text": "Click Calculate to compare AWS, Azure, and GCP pricing" },
-    ],
+    "@type": "Article",
+    "headline": "Cloud Migration Cost: AWS vs Azure vs GCP",
+    "description": "Cloud Migration Cost: AWS vs Azure vs GCP. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/cloud-migration-cost-estimator/" }
   }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Cloud Migration Cost: AWS vs Azure vs GCP | FreeOnlineToolkit" description="Cloud Migration Cost: AWS vs Azure vs GCP. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Cloud Migration Cost: AWS vs Azure vs GCP</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Cloud migration costs include both one-time expenses (planning, testing, labour) and ongoing monthly costs (compute, storage, data transfer).</li>
+      <li>GCP typically offers the lowest compute pricing per vCPU, Azure has competitive storage rates, and AWS provides the most flexible pricing options.</li>
+      <li>A simple lift-and-shift of 10 servers typically costs $20,000-$50,000 in professional services; complex rearchitecting can exceed $100,000-$500,000.</li>
+      <li>Cloud can be 20-40% cheaper than on-premise when accounting for hardware replacement, power/cooling, IT staff, and capacity planning overhead.</li>
+      <li>Data transfer (egress) is often the most underestimated ongoing cost - plan for it early to avoid bill shock after migration.</li>
+    </ul>
+  </div>
+
+    <p>Migrating infrastructure from on-premise servers to the cloud is one of the most significant IT decisions an organisation can make. The three major providers - Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP) - collectively hold over 65% of the cloud infrastructure market. Each offers hundreds of services with different pricing models, making cost comparison a complex but essential exercise.</p>
+
+    <p>Cloud costs are fundamentally different from on-premise costs. On-premise requires large <strong>capital expenditures</strong> (CapEx) upfront: servers, networking equipment, data centre space, cooling, and redundant power. Cloud operates on <strong>operational expenditure</strong> (OpEx): you pay only for what you use, typically monthly. For many organisations, this shift from CapEx to OpEx is the primary business case for cloud migration.</p>
+
+    <p>The three main <strong>cost components</strong> are compute, storage, and data transfer. <strong>Compute</strong> is typically the largest cost. GCP often wins on raw compute cost, while AWS offers the widest range of instance types. <strong>Storage</strong> varies in price and performance. <strong>Data transfer</strong> (egress) is charged when data leaves the cloud provider's network at $0.05-$0.12 per GB - a cost that can add up quickly for data-intensive applications.</p>
+
+    <p>The <strong>migration process</strong> itself adds one-time costs. Planning and assessment (1-4 weeks), testing and validation (2-8 weeks), actual migration, and post-migration optimisation (ongoing) are all necessary phases. Right-sizing instances and implementing auto-scaling can reduce ongoing costs by 30-50%.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Compare AWS, Azure, and Google Cloud pricing for your infrastructure. Estimate monthly costs, one-time migration expenses, and total first-year spend to make an informed cloud migration decision.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Cost Estimator</h2>
       <div class="form-row">
@@ -89,6 +107,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This estimator compares <strong>monthly costs</strong> across AWS, Azure, and Google Cloud based on your server specifications. It shows the <strong>one-time migration cost</strong>, <strong>monthly savings vs on-premise</strong>, and <strong>first-year total</strong> (12 months of cloud costs plus migration labour) for each provider.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use</h2>
       <p>This cloud migration cost estimator gives you an approximate price comparison across the three major cloud providers. Enter your <strong>infrastructure specifications</strong> — number of servers, vCPUs, RAM, and storage — along with your expected <strong>data transfer volume</strong>.</p>
       <p>Include the <strong>labor hours</strong> you expect to spend on migration (planning, testing, reconfiguring, and cutover) and your <strong>hourly rate</strong> for engineers. The calculator shows monthly costs for each provider, an estimated on-premise comparison, the one-time migration cost, and total first-year spend.</p>
@@ -112,12 +135,18 @@ const jsonLd = [
       { question: "Is the cloud cheaper than on-premise?", answer: "Cloud can be 20-40% cheaper than on-premise when you account for hardware replacement, power/cooling, IT staff, and capacity planning overhead. However, for predictable steady-state workloads, on-premise can sometimes be cheaper." },
       { question: "What is a lift-and-shift migration?", answer: "Lift-and-shift (rehosting) is the simplest migration strategy where you move applications and data to the cloud with minimal changes. It's faster and less risky than rearchitecting, but may not take full advantage of cloud-native features." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your infrastructure specifications above to compare costs across AWS, Azure, and GCP. These are simplified estimates based on pay-as-you-go pricing - reserved instances and enterprise agreements can reduce costs by 30-60%. For a detailed migration plan, engage with the cloud provider's solutions architects or a certified migration partner.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="cloud-migration-cost-estimator" category="saas" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';

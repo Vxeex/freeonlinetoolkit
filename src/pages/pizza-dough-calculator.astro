@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Pizza Dough: Perfect Recipe with Baker's Percentages",
+    "description": "Pizza Dough — comprehensive guide with free online calculator. Baker's percentages express every ingredient as a percentage of the flour weight (which is always 100%), making it easy to scale recipes to any batch size. Hydration percentage (water relative to flour) is the most important variable: 60% produces firm, easy-to-handle dough, while 75–80% creates airy, open-crumb doughs that require more skill.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/pizza-dough-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Pizza Dough with Baker's Percentages",
     "description": "Get exact flour, water, yeast, and salt amounts for perfect pizza dough using baker's percentages.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Pizza Dough: Perfect Recipe with Baker's Percentages | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Pizza Dough: Perfect Recipe with Baker's Percentages</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Baker's percentages express every ingredient as a percentage of the flour weight (which is always 100%), making it easy to scale recipes to any batch size.</li>
+      <li>Hydration percentage (water relative to flour) is the most important variable: 60% produces firm, easy-to-handle dough, while 75–80% creates airy, open-crumb doughs that require more skill.</li>
+      <li>Cold fermentation in the fridge for 24–72 hours develops far more complex flavours than a same-day room-temperature rise.</li>
+      <li>The four essential ingredients are flour, water, yeast (~0.5–1%), and salt (~2–3%) — everything else is optional.</li>
+    </ul>
+  </div>
+
+  <p>Making great pizza dough at home is surprisingly simple once you understand baker's percentages — a system professional bakers use to express recipes as ratios rather than fixed quantities. Once you know the ratios, you can scale a recipe from a single pizza to a hundred without guessing, and you can adjust hydration, yeast, and salt to match your preferred style.</p>
+
+  <p>The concept is elegant: flour is always 100%, and every other ingredient is expressed as a percentage of the flour weight. So 65% hydration means the water weighs 65% of the flour weight. If you are using 500g of flour, you need 325g of water (500 × 0.65). Salt at 2% means 10g. Yeast at 0.6% means 3g. This system scales perfectly — double the flour, double everything else.</p>
+
+  <p>Different pizza styles call for different hydration levels. Neapolitan pizza (the classic thin-crust style from Naples) typically uses 60–65% hydration and is cooked at extremely high temperatures (800–900°F). New York style uses 63–67% hydration for a foldable, slightly chewy crust. Sicilian and Detroit styles use 70–80% hydration for an airy, focaccia-like crumb.</p>
+
+  <p>The flour you use matters as much as the hydration. "00" flour (doppio zero) is finely milled and traditional for Neapolitan pizza, producing a soft, extensible dough. Bread flour (12–13% protein) provides more gluten structure and works well for New York and pan styles. All-purpose flour is a reasonable substitute for home ovens that cannot reach the extreme temperatures of professional pizza ovens.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Get the perfect pizza dough recipe using baker's percentages. Choose your style, dough ball size, and number of pizzas for exact ingredient amounts.</p>
   </fragment>
@@ -81,6 +112,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator provides exact ingredient amounts (flour, water, salt, yeast) based on your chosen pizza style, number of pizzas, and hydration level. It includes presets for Neapolitan, New York, Sicilian, and Pan/Deep Dish styles with their traditional dough ball weights and hydration levels.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the Pizza Dough Calculator</h2>
       <p>Baker's percentages are based on the flour weight being 100%. All other ingredients are calculated as a percentage of the flour. This method scales perfectly to any batch size.</p>
@@ -102,7 +138,12 @@ const jsonLd = [
       { question: "Can I use bread flour instead of pizza flour?", answer: "Yes. Bread flour (12-13% protein) works great for pizza dough and gives excellent structure. '00' flour is finer-milled and traditional for Neapolitan, but bread flour is a fine substitute for home ovens." },
       { question: "How long should the dough rise?", answer: "Room temperature: 2-4 hours. Cold ferment in the fridge: 24-72 hours for better flavor and digestibility. Cold fermentation develops more complex flavors as the yeast slowly breaks down the dough." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Choose your pizza style and start with the recommended hydration. Weigh your ingredients with a kitchen scale for accuracy — volume measurements (cups) are unreliable for flour. Try cold fermentation: mix your dough, let it rise at room temperature for 2 hours, then refrigerate for 24–72 hours for significantly better flavour.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="pizza-dough-calculator" category="food" />

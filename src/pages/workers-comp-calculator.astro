@@ -9,27 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Estimate a Workers Compensation Settlement",
-    "description": "Estimate the value of a workers' compensation claim including temporary total disability, permanent partial disability, and medical costs.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter your weekly wage before the injury" },
-      { "@type": "HowToStep", "text": "Select your injury type and enter your permanent partial disability rating" },
-      { "@type": "HowToStep", "text": "Enter the number of weeks of temporary total disability" },
-      { "@type": "HowToStep", "text": "Input your medical costs to date and select your state" },
-      { "@type": "HowToStep", "text": "Click Calculate to see your estimated settlement and net after attorney fee" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Workers Comp Settlement: Estimate Your Claim",
+    "description": "Workers Comp Settlement: Estimate Your Claim. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/workers-comp-calculator/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Workers Comp Settlement: Estimate Your Claim | FreeOnlineToolkit" description="Workers Comp Settlement: Estimate Your Claim. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Workers Comp Settlement: Estimate Your Claim</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Workers' compensation provides wage replacement (typically 66.7% of your pre-injury wage) and medical coverage for work-related injuries - regardless of who was at fault.</li>
+      <li>Permanent partial disability (PPD) ratings are assigned as a percentage by your doctor and directly determine the value of your settlement or award.</li>
+      <li>Workers' comp attorney fees are capped at 10-20% in most states (lower than personal injury's typical 33%), and many attorneys offer free initial consultations.</li>
+      <li>State maximum benefit durations vary widely - California caps temporary disability at 104 weeks while New York allows up to 260 weeks.</li>
+      <li>You can receive both workers' compensation and Social Security Disability (SSDI), but SSDI may be reduced if combined benefits exceed 80% of your average earnings.</li>
+    </ul>
+  </div>
+
+    <p>Workers' compensation is a no-fault insurance system that provides benefits to employees who suffer work-related injuries or illnesses. Unlike personal injury claims, you do not need to prove your employer was negligent - if the injury happened in the course of employment, you are generally eligible for benefits. The system is designed to be faster and simpler than litigation, but understanding how settlements are calculated is essential for ensuring you receive fair compensation.</p>
+
+    <p>Workers' comp benefits fall into three main categories. <strong>Temporary Total Disability (TTD)</strong> payments replace lost wages while you are completely unable to work, typically at 66.7% (two-thirds) of your pre-injury average weekly wage. TTD payments continue until you reach "maximum medical improvement" (MMI) - the point at which your condition has stabilised. Each state sets a maximum number of weeks for TTD benefits, ranging from 104 weeks to 260 weeks or more for certain injury types.</p>
+
+    <p><strong>Permanent Partial Disability (PPD)</strong> compensation addresses the lasting impact of your injury. After reaching MMI, your treating physician assigns a PPD rating - a percentage that quantifies your permanent impairment. This rating is based on medical guidelines and considers factors like loss of range of motion, chronic pain, and functional limitations. The PPD rating directly determines the value of your permanent disability award.</p>
+
+    <p>The settlement process involves negotiation between you (or your attorney), your employer's insurance company, and sometimes a workers' compensation judge. Insurance companies often try to settle claims quickly for less than they are worth, which is why many injured workers benefit from legal representation. Workers' comp attorney fees are notably lower than personal injury fees - most states cap them at 10-20% of the settlement or award.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Estimate the value of your workers' compensation claim. This calculator considers your weekly wage, injury type, permanent partial disability rating, and medical costs to give you a realistic settlement figure.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Workers Comp Settlement Calculator</h2>
       <div class="form-group">
@@ -97,6 +115,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This workers' comp settlement estimator calculates your <strong>Temporary Total Disability (TTD) payment</strong>, <strong>Permanent Partial Disability (PPD) award</strong>, <strong>medical cost reimbursement</strong>, total settlement, and <strong>net amount after a standard 15% attorney fee</strong>. It applies your state's maximum TTD benefit duration and adjusts for your specific injury type and PPD rating.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use the Workers Comp Settlement Estimator</h2>
       <p>Start by entering your <strong>weekly wage</strong> before the injury. Select your <strong>injury type</strong> from the dropdown &mdash;each type has a preset impairment rating that serves as a starting point. You can also manually enter a <strong>PPD rating</strong> (permanent partial disability percentage from 0 to 100) if you have one from your doctor.</p>
       <p>Enter the number of <strong>weeks of temporary total disability (TTD)</strong> &mdash;this is the time you were completely unable to work. Add your <strong>medical costs to date</strong> including hospital bills, surgery, therapy, and medications. Select your <strong>state</strong> to apply the correct maximum TTD benefit duration.</p>
@@ -124,12 +147,18 @@ const jsonLd = [
       { question: "How are workers comp attorney fees calculated?", answer: "Workers' comp attorney fees are typically lower than personal injury fees. Many states cap workers comp attorney fees at 10-20% of the settlement or award, often around 15%. In some states, the fee must be approved by the workers' compensation board." },
       { question: "Can I receive both workers comp and Social Security disability?", answer: "Yes, you can receive both, but there may be offsets. Social Security Disability Insurance (SSDI) benefits may be reduced if your workers comp payments exceed 80% of your average current earnings. This is known as the workers comp offset." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your weekly wage, injury type, and medical costs above to estimate your workers' comp settlement. If your claim has been denied or you have a significant permanent disability, consult a workers' compensation attorney - most offer free consultations and charge only 10-20% of your settlement.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="workers-comp-calculator" category="legal" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

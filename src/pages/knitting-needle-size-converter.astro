@@ -82,6 +82,17 @@ const FAQ_ITEMS = [
 
 const jsonLd = [
   {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Knitting Needle Size: US, UK, Metric Conversion",
+    "description": "Knitting Needle Size — comprehensive guide with free online calculator. The US system assigns larger numbers to thicker needles (US 15 = 9.0 mm), while the old UK system is the opposite (UK 14 = 2.0 mm) — this reversal is the most common source of confusion. Metric (mm) is the universal standard used in Europe, Russia, China, India, and Australia/NZ — and increasingly in modern UK patterns as well.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/knitting-needle-size-converter/" }
+  },
+  {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
     name: 'How to Convert Knitting Needle Sizes',
@@ -101,8 +112,28 @@ const relatedTools = [
   toolBySlug['percentage-calculator'],
 ].filter(Boolean);
 ---
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Knitting Needle Size: US, UK, Metric Conversion | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Knitting Needle Size: US, UK, Metric Conversion</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>The US system assigns larger numbers to thicker needles (US 15 = 9.0 mm), while the old UK system is the opposite (UK 14 = 2.0 mm) — this reversal is the most common source of confusion.</li>
+      <li>Metric (mm) is the universal standard used in Europe, Russia, China, India, and Australia/NZ — and increasingly in modern UK patterns as well.</li>
+      <li>Always knit a gauge swatch before starting a project — the needle size on a pattern is a recommendation, and your personal tension may require going up or down a size.</li>
+      <li>For beginners, US 8 (5.0 mm) or US 9 (5.5 mm) with worsted weight yarn is the ideal starting point — comfortable to hold and easy to see individual stitches.</li>
+    </ul>
+  </div>
+
+  <p>If you have ever been confused by a knitting pattern that calls for "UK 10s" when you only have needles labelled in US sizes, you are not alone. Knitting needle sizing is one of the most bewildering aspects of the craft, with different countries using completely different numbering systems — some of which are counterintuitively reversed.</p>
+
+  <p>The root of the confusion is historical. The US system numbers needles from thin (US 0, 2.0 mm) to thick (US 50, 25.0 mm) in a logical progression. The old British (UK) system does the opposite: UK 14 is the thinnest (2.0 mm) and UK 000 is among the thickest (10.0 mm). Japanese needles use their own numbering that is close to, but not identical to, the US system. And then there is the metric system, which simply states the diameter in millimetres — the most straightforward approach.</p>
+
+  <p>Modern knitting has increasingly standardised on metric measurements. Most European, Australian, and New Zealand patterns use millimetres exclusively. UK patterns often list both metric and old UK sizes. US patterns primarily use US sizing with metric in parentheses. Being able to convert between systems opens up the full global library of knitting patterns.</p>
+
+  <p>The metric system is the most reliable reference because it describes the actual physical diameter of the needle. A 5.0 mm needle is 5.0 mm regardless of where you bought it or what the label says. When in doubt, measure your needles with a knitting needle gauge or a ruler to confirm the diameter.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">
       Knitting needle sizes vary by country — US, UK, and Japanese systems all use different numbers for the same needle.
@@ -165,12 +196,20 @@ const relatedTools = [
     </div>
   </fragment>
 
-  <fragment slot="faq">
-    <FAQ items={FAQ_ITEMS} />
+  <fragment slot="content">
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This converter translates knitting needle sizes between US, UK (old numbering), Japanese, and metric (mm) systems. Select your current system and needle size to see the equivalent in all other systems. A complete reference chart below the converter shows every standard needle size with its equivalents across all four systems.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter the needle size from your pattern and select the sizing system it uses. The converter will show the equivalent in your preferred system. Bookmark the reference chart for quick lookups. When substituting needles, always knit a gauge swatch to verify your tension matches the pattern requirements.</p>
+    </div>
   </fragment>
 
-  <fragment slot="related">
-    <RelatedTools tools={relatedTools} />
+  <fragment slot="sidebar">
+    <RelatedTools currentSlug="knitting-needle-size-converter" category="lifestyle" />
   </fragment>
 </ToolLayout>
 

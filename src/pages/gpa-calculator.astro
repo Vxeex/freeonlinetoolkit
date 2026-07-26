@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "GPA Calculator: Weighted & Unweighted Grade Average",
+    "description": "GPA Calculator — comprehensive guide with free online calculator. GPA is calculated by dividing total grade points earned by total credit hours attempted — a credit-weighted average that gives heavier courses more influence on your overall average. Unweighted GPA uses a straight 4.0 scale (A=4.0, B=3.0, etc.), while weighted GPA adds 0.5–1.0 points for AP, Honors, and IB courses, allowing GPAs above 4.0.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/gpa-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Your GPA",
     "description": "Calculate your grade point average on a 4.0 scale with weighted and unweighted options.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="GPA Calculator: Weighted & Unweighted Grade Average | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>GPA Calculator: Weighted & Unweighted Grade Average</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>GPA is calculated by dividing total grade points earned by total credit hours attempted — a credit-weighted average that gives heavier courses more influence on your overall average.</li>
+      <li>Unweighted GPA uses a straight 4.0 scale (A=4.0, B=3.0, etc.), while weighted GPA adds 0.5–1.0 points for AP, Honors, and IB courses, allowing GPAs above 4.0.</li>
+      <li>Selective colleges typically look for 3.5–4.0 unweighted GPA, but they also evaluate course rigour — a 3.7 with challenging AP coursework can be stronger than a 4.0 with easy classes.</li>
+      <li>Your cumulative GPA across all semesters is what colleges and employers see — one bad semester can be offset by strong performance in subsequent terms.</li>
+    </ul>
+  </div>
+
+  <p>Your Grade Point Average (GPA) is one of the most important numbers in your academic career. It affects college admissions, scholarship eligibility, graduate school applications, and even some job opportunities. Understanding how it is calculated — and how to strategically manage it — gives you a significant advantage in academic planning.</p>
+
+  <p>The GPA calculation is a credit-weighted average. Each letter grade corresponds to a numeric value on a 4.0 scale: A = 4.0, A- = 3.67, B+ = 3.33, B = 3.0, and so on down to F = 0.0. Multiply each grade value by the course credit hours to get grade points, then sum all grade points and divide by total credit hours. A 3-credit A (4.0 × 3 = 12 grade points) carries more weight than a 1-credit A (4.0 × 1 = 4 grade points).</p>
+
+  <p>The distinction between weighted and unweighted GPA matters significantly for college-bound students. Unweighted GPA treats all courses equally on a 4.0 scale. Weighted GPA adds bonus points for advanced courses — typically +0.5 for Honors and +1.0 for AP/IB courses. This means a student taking several AP courses can achieve a weighted GPA above 4.0, which better reflects the difficulty of their course load.</p>
+
+  <p>Colleges evaluate both numbers. Many recalculate your GPA using their own methodology, often looking at core academic subjects only (excluding PE, art, etc.) and considering both the weighted and unweighted figures. A strong unweighted GPA with a rigorous course load signals both academic ability and intellectual ambition.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Calculate your semester and cumulative GPA on a 4.0 scale. Supports weighted grades for AP, honors, and IB courses. Perfect for high school and college students tracking academic performance.</p>
   </fragment>
@@ -103,6 +134,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator computes your semester GPA by entering each course grade and credit hours. It supports both the standard 4.0 scale and a 4.33 scale (which awards A+ = 4.33). Toggle the weighted option to add 0.5 points for AP/Honors courses with a grade of B or higher. The result shows your GPA, total grade points, total credits, and equivalent letter grade.</p>
+    </div>
     <div class="content-section">
       <h2>How GPA Is Calculated</h2>
       <p>GPA is calculated by dividing the total grade points earned by the total credit hours attempted. Each letter grade has a numeric value (A = 4.0, B = 3.0, etc.). For <strong>weighted</strong> courses (AP, honors, IB), an extra 0.5-1.0 points is added to reflect course difficulty.</p>
@@ -114,7 +150,12 @@ const jsonLd = [
       { question: "What GPA do I need for college?", answer: "Selective colleges typically look for 3.5-4.0 unweighted. Less selective schools may accept 2.5-3.0. However, colleges consider course rigor, extracurriculars, essays, and test scores alongside GPA. A slightly lower GPA with challenging courses can be stronger than a perfect GPA with easy classes." },
       { question: "Can I calculate my cumulative GPA?", answer: "Yes! Your cumulative GPA is the average of all semesters combined. Add all courses from all semesters into this calculator to get your cumulative result. The weighted option supports AP/IB courses that often appear on high school transcripts." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use this calculator at the end of each semester to track your cumulative GPA. If your GPA is below your target, focus on raising grades in high-credit courses — improving a 3-credit course from B to A has more impact than improving a 1-credit course. Also consider retaking courses where your school replaces the old grade in the GPA calculation.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="gpa-calculator" category="education" />

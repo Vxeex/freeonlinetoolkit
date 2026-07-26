@@ -9,25 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Convert Colors Between HEX and RGB",
-    "description": "Pick any color and instantly convert between HEX, RGB, and HSL formats.",
-    "step": [
-      { "@type": "HowToStep", "text": "Pick a color using the color input or enter a HEX value" },
-      { "@type": "HowToStep", "text": "View the RGB and HSL equivalents instantly" },
-      { "@type": "HowToStep", "text": "Copy any color code with one click" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Color Picker & Converter: HEX, RGB, HSL",
+    "description": "Color Picker & Converter: HEX, RGB, HSL. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/color-converter/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Color Picker & Converter: HEX, RGB, HSL | FreeOnlineToolkit" description="Color Picker & Converter: HEX, RGB, HSL. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Color Picker & Converter: HEX, RGB, HSL</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>HEX (#RRGGBB), RGB (rgb(r,g,b)), and HSL (hsl(h,s%,l%)) all represent the same colour space - just in different notations optimised for different use cases.</li>
+      <li>HEX codes are the standard in web design and CSS - they are compact (7 characters) and universally supported across browsers and design tools.</li>
+      <li>HSL (Hue, Saturation, Lightness) is the most intuitive format for creating colour palettes - adjust lightness for shades and tints while keeping the hue constant.</li>
+      <li>The CSS Color Level 4 specification added support for modern formats like oklch() and oklab() for perceptually uniform colour manipulation.</li>
+      <li>Accessibility matters: WCAG 2.1 requires a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text against their background.</li>
+    </ul>
+  </div>
+
+    <p>Colour is one of the most powerful tools in design, yet working with colours programmatically requires understanding how computers represent what our eyes see. The three most common colour formats - HEX, RGB, and HSL - all describe the same underlying reality (the sRGB colour space) but through different lenses. <strong>HEX</strong> is a 6-digit hexadecimal number where pairs represent red, green, and blue intensity (00-FF, or 0-255 in decimal). <strong>RGB</strong> uses three decimal numbers in the same 0-255 range. <strong>HSL</strong> decomposes colour into hue (the colour wheel angle, 0-360 degrees), saturation (how vivid, 0-100%), and lightness (how bright, 0-100%).</p>
+
+    <p>Each format excels in different contexts. HEX codes dominate in <strong>web design</strong> because they are compact, easy to copy-paste, and supported everywhere from CSS to design tools like Figma and Adobe XD. The shorthand notation (#FFF for #FFFFFF, #636 for #636363) makes them even more concise. RGB is natural for <strong>programmatic manipulation</strong> - if you want to increase the red channel, you simply increment the first value. Modern CSS supports both notations interchangeably.</p>
+
+    <p><strong>HSL</strong> is the most human-friendly format for designers because it aligns with how we think about colour. Want a lighter version of your brand blue? Increase the lightness value while keeping hue and saturation constant. Want a muted variant? Reduce saturation. This makes HSL ideal for generating <strong>colour palettes</strong> - a single hue can produce dozens of coordinated shades, tints, and tones by systematically varying S and L. Many design systems (Tailwind CSS, Material Design) define their colour scales using this principle.</p>
+
+    <p><strong>Colour accessibility</strong> is an increasingly important consideration. The Web Content Accessibility Guidelines (WCAG 2.1) specify minimum contrast ratios between text and background colours to ensure readability for people with visual impairments. Normal text requires a contrast ratio of at least 4.5:1, while large text (18pt+) requires 3:1. When choosing colours for user interfaces, always verify contrast ratios - tools like this converter help you experiment with different lightness values to find accessible combinations that still look great.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Pick any color and instantly get its HEX, RGB, and HSL values. Adjust colors visually with sliders, copy codes with one click, and explore complementary harmonies.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Color Converter</h2>
 
@@ -76,6 +96,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This colour picker displays your selected colour in <strong>HEX</strong>, <strong>RGB</strong>, and <strong>HSL</strong> formats simultaneously. Use the native colour picker, type a HEX value directly, or adjust the individual <strong>Red</strong>, <strong>Green</strong>, and <strong>Blue</strong> sliders to fine-tune. A colour history of your last 12 picks appears below the sliders for easy reuse.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use</h2>
       <p>Pick a color using the <strong>color picker</strong>, type a <strong>HEX value</strong> directly, or adjust the <strong>RGB sliders</strong> to fine-tune. All color formats update in real time. Click the <strong>Copy</strong> button next to any format to copy it to your clipboard.</p>
       <p>Your recently picked colors appear as swatches below the sliders for easy reuse.</p>
@@ -96,12 +121,18 @@ const jsonLd = [
       { question: "How do I use HSL colors?", answer: "HSL stands for Hue, Saturation, Lightness. Hue is the color angle (0-360), saturation is the intensity (0-100%), and lightness is the brightness (0-100%). HSL is often easier for creating harmonious color schemes because you can keep hue constant and adjust saturation/lightness for variations." },
       { question: "What is a color hex code?", answer: "A hex code is a 6-digit hexadecimal number that represents a color. The format is #RRGGBB where RR is the red value, GG is green, and BB is blue. Each pair ranges from 00 (minimum) to FF (maximum). For example, #FF0000 is pure red, #00FF00 is green, and #0000FF is blue." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use the colour picker above to explore colours in HEX, RGB, and HSL. When building a colour palette, start with your primary hue in HSL, then generate lighter and darker variants by adjusting lightness. Always check contrast ratios for accessibility compliance - aim for at least 4.5:1 for body text.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="color-converter" category="utility" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Flight Time Calculator: Estimate Travel Duration",
+    "description": "Flight Time Calculator — comprehensive guide with free online calculator. Flight time is estimated using great-circle distance (the shortest path on Earth's surface) divided by average cruise speed (900 km/h) plus a 30-minute buffer for takeoff and landing. Actual flight times can vary by 10–20% from estimates due to wind, air traffic control routing, weather avoidance, and aircraft type.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/flight-time-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Estimate Flight Time",
     "description": "Estimate direct flight time between two airports using great-circle distance.",
@@ -21,8 +32,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Flight Time Calculator: Estimate Travel Duration | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Flight Time Calculator: Estimate Travel Duration</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Flight time is estimated using great-circle distance (the shortest path on Earth's surface) divided by average cruise speed (900 km/h) plus a 30-minute buffer for takeoff and landing.</li>
+      <li>Actual flight times can vary by 10–20% from estimates due to wind, air traffic control routing, weather avoidance, and aircraft type.</li>
+      <li>Jet streams — fast-flowing air currents at cruising altitude — can add 30–60 minutes to eastbound flights or reduce westbound flight times by the same amount, particularly on transatlantic routes.</li>
+      <li>Time zone differences affect jet lag and arrival planning: flying eastward means losing hours, while flying westward means gaining hours.</li>
+    </ul>
+  </div>
+
+  <p>Whether you are planning a business trip or a holiday, knowing how long your flight will take helps you schedule meetings, arrange ground transportation, and set expectations with family or colleagues. While airlines publish scheduled flight times, understanding the factors that determine actual flight duration gives you a more realistic picture for planning.</p>
+
+  <p>The foundation of any flight time estimate is the great-circle distance between departure and arrival airports. This is the shortest distance between two points on the surface of a sphere — the path a plane would fly in a perfect world with no wind, traffic, or restricted airspace. The Haversine formula, which accounts for Earth's curvature, calculates this distance using the latitude and longitude coordinates of each airport.</p>
+
+  <p>Dividing the great-circle distance by an average commercial jet cruise speed of 900 km/h (about 560 mph) gives the base flight time. Adding 30 minutes for takeoff, climb, descent, and landing produces a reasonable estimate. For example, New York (JFK) to London (LHR) covers about 5,570 km, yielding a base flight time of about 6 hours 11 minutes, or roughly 6 hours 41 minutes with the buffer.</p>
+
+  <p>Several factors cause actual flight times to differ from estimates. Wind is the biggest variable: the jet stream at 30,000–40,000 feet can blow at 100–200 mph, significantly helping or hindering flights depending on direction. Aircraft type matters too — a Boeing 787 cruises at about 903 km/h while an Airbus A320 cruises at about 828 km/h. Air traffic control routing and weather avoidance can add distance and time.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Estimate direct flight times between airports worldwide. Uses great-circle distance and average cruise speed. Includes airport codes, timezone differences, and example airlines for reference.</p>
   </fragment>
@@ -58,6 +89,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator estimates direct flight time between any two of 80+ major airports worldwide using great-circle distance and average cruise speed. Results include flight duration, distance (km and miles), departure and arrival cities, timezone difference, and example airlines that operate the route. Airports are grouped by region for easy selection.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the Flight Time Calculator</h2>
       <p>Select your <strong>departure airport</strong> and <strong>arrival airport</strong> from the dropdown lists. The calculator uses the <strong>great-circle distance</strong> (the shortest path between two points on a sphere) to estimate the flight time at typical cruise speed.</p>
@@ -95,7 +131,12 @@ const jsonLd = [
       { question: "What is great-circle distance?", answer: "The great-circle distance is the shortest distance between two points on the surface of a sphere, measured along the surface. For air travel, this is the most efficient route, though actual flight paths often vary slightly." },
       { question: "Why does the time difference matter?", answer: "The time difference between departure and arrival cities affects jet lag and arrival planning. Flying eastward (e.g., New York to London) means losing hours, while flying westward (London to New York) means gaining hours." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Select your departure and arrival airports to see estimated flight time and distance. Remember this is a direct flight estimate — for connecting itineraries, add the flight time of each segment plus layover time. Check the timezone difference to plan your arrival activities and manage jet lag.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="flight-time-calculator" category="utility" />

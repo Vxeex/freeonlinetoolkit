@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "College Acceptance: Estimate Your Admission Odds",
+    "description": "College Acceptance — comprehensive guide with free online calculator. Admissions decisions weight GPA and test scores most heavily (50% combined), but extracurriculars, essays, and course rigour can tip the balance at selective institutions. Schools are typically categorised as Reach (<25% acceptance), Target (25–60%), or Safety (>60%) — a balanced college list should include 2–3 of each.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/college-acceptance-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Estimate College Acceptance Chances",
     "description": "Estimate your college admission chances based on GPA, test scores, extracurriculars, and other factors.",
@@ -23,8 +34,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="College Acceptance: Estimate Your Admission Odds | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>College Acceptance: Estimate Your Admission Odds</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Admissions decisions weight GPA and test scores most heavily (50% combined), but extracurriculars, essays, and course rigour can tip the balance at selective institutions.</li>
+      <li>Schools are typically categorised as Reach (<25% acceptance), Target (25–60%), or Safety (>60%) — a balanced college list should include 2–3 of each.</li>
+      <li>Legacy status can boost admission chances by 5–15% at private universities, though many public institutions and some private schools have eliminated legacy preferences.</li>
+      <li>Taking 4–8 AP/IB courses over four years signals academic rigour — admissions officers value challenging coursework as much as high grades.</li>
+    </ul>
+  </div>
+
+  <p>College admissions is one of the most competitive and opaque processes students face. With acceptance rates at top universities dropping below 5%, even highly qualified applicants face uncertainty. Understanding how admissions committees evaluate candidates — and where your profile stands — helps you build a realistic college list and focus your efforts where they will have the most impact.</p>
+
+  <p>Admissions decisions are based on a holistic review of your application. While GPA and test scores form the foundation (typically 40–50% of the evaluation), selective schools increasingly weigh extracurricular involvement, personal essays, recommendation letters, demonstrated interest, and the strength of your curriculum. A student with a 3.8 GPA who took 6 AP courses and led meaningful extracurricular activities may be more competitive than a 4.0 student with a lighter course load.</p>
+
+  <p>Building a balanced college list is essential. Most counsellors recommend applying to 8–12 schools: 2–3 reach schools (where your credentials are below or near the median), 4–5 target schools (where you are a strong match), and 2–3 safety schools (where your credentials exceed the averages). This strategy ensures you have options regardless of how the competitive schools respond.</p>
+
+  <p>The application timeline matters too. Early Decision (binding) and Early Action (non-binding) options often have higher acceptance rates than Regular Decision, partly because they demonstrate strong interest in the school. However, Early Decision commits you to attend if accepted, so only use it for your top-choice school.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Get a data-informed estimate of your college admission chances. This acceptance predictor evaluates your GPA, test scores, extracurriculars, and other factors to give you a realistic probability range.</p>
   </fragment>
@@ -125,6 +156,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator evaluates your admissions profile across eight weighted factors: GPA, test scores, class rank, extracurriculars, essay quality, interview quality, legacy status, and AP/IB coursework. It produces an overall score (0–100), identifies strengths and weaknesses, and provides personalised recommendations for improving your application.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the College Acceptance Calculator</h2>
       <p>Enter your <strong>GPA</strong> on a 4.0 unweighted scale and your highest <strong>SAT score</strong> (400-1600 range). You can optionally include your ACT score for a more complete picture. Provide your <strong>class rank</strong> as a percentage - if you are in the top 10%, enter 10.</p>
@@ -146,7 +182,12 @@ const jsonLd = [
       { question: "How much does legacy status really help?", answer: "Legacy status can provide a meaningful boost at many private universities, typically increasing admission chances by 5-15% depending on the institution. However, many public universities and some private schools have eliminated legacy preferences in recent years." },
       { question: "Do AP/IB courses really improve my chances?", answer: "Yes, taking rigorous courses demonstrates academic preparedness. Admissions officers value the strength of your curriculum as much as your GPA. Taking 4-8 AP/IB courses over four years is common for competitive applicants, but quality and performance matter more than quantity." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use this calculator to assess where you stand relative to your target schools. Focus improvement efforts on your weakest areas — often essay quality and extracurricular depth offer the most room for growth. Research specific schools' middle 50% GPA and test score ranges to set realistic targets.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="college-acceptance-calculator" category="education" />

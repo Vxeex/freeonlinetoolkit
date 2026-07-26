@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Recipe Nutrition: Calculate Calories & Macros",
+    "description": "Recipe Nutrition — comprehensive guide with free online calculator. Understanding the calorie and macronutrient content of your recipes is essential for managing weight, meeting fitness goals, and maintaining a balanced diet. The three macronutrients provide different amounts of energy: protein and carbohydrates each provide 4 calories per gram, while fat provides 9 calories per gram.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/recipe-nutrition-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Recipe Nutrition Facts",
     "description": "Get nutrition facts for any recipe by adding ingredients and setting servings.",
@@ -21,8 +32,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Recipe Nutrition: Calculate Calories & Macros | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Recipe Nutrition: Calculate Calories & Macros</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Understanding the calorie and macronutrient content of your recipes is essential for managing weight, meeting fitness goals, and maintaining a balanced diet.</li>
+      <li>The three macronutrients provide different amounts of energy: protein and carbohydrates each provide 4 calories per gram, while fat provides 9 calories per gram.</li>
+      <li>USDA nutrition data provides standardised values, but actual nutrition varies by brand, preparation method, cooking temperature, and ingredient ripeness or freshness.</li>
+      <li>Fibre, while technically a carbohydrate, is not digested for calories and plays a crucial role in digestive health, blood sugar regulation, and satiety.</li>
+    </ul>
+  </div>
+
+  <p>Whether you are managing your weight, building muscle, or simply trying to eat healthier, knowing the nutritional content of your meals is the foundation of informed food choices. A recipe nutrition calculator takes the guesswork out of meal planning by showing you exactly how many calories, grams of protein, carbohydrates, fat, and other nutrients are in each serving.</p>
+
+  <p>The concept of calories is often misunderstood. A calorie is simply a unit of energy — specifically, the amount of energy needed to raise the temperature of one kilogram of water by one degree Celsius. Your body uses this energy for everything from breathing and thinking to running and lifting. The three macronutrients — protein, carbohydrates, and fat — are your body's energy sources, each providing a different amount of energy per gram.</p>
+
+  <p>Tracking macros (macronutrients) rather than just calories gives you finer control over your nutrition. Two meals with identical calorie counts can have very different effects on your body: a 500-calorie meal high in protein and fibre will keep you full longer and support muscle maintenance, while a 500-calorie meal high in sugar and fat may leave you hungry an hour later.</p>
+
+  <p>The USDA maintains a comprehensive database of nutrition information for thousands of foods, which forms the basis for most nutrition calculators. However, actual values vary by brand, growing conditions, cooking method, and serving size. Use nutrition calculations as a reliable guide, not an exact science — a 10–15% margin of error is normal even with careful measuring.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Add your ingredients and get a complete nutrition facts label for your recipe. Calories, protein, carbs, fat, and more per serving.</p>
   </fragment>
@@ -119,6 +150,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator generates a nutrition facts label for your recipe by summing the nutritional values of all ingredients and dividing by the number of servings. It shows per-serving values for calories, protein, total fat, carbohydrates, dietary fibre, and sodium. The ingredient database includes 40+ common recipe ingredients across produce, protein, grains, dairy, and pantry categories.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the Recipe Nutrition Calculator</h2>
       <p>Select ingredients from the dropdown and click "Add Ingredient" to build your recipe. The calculator totals all nutrition facts and divides by the number of servings to give you per-serving values.</p>
@@ -136,7 +172,12 @@ const jsonLd = [
       { question: "Can I add my own ingredients?", answer: "The dropdown includes 40+ common ingredients. For custom ingredients not in the database, you would need to look up their nutrition facts and adjust the total manually." },
       { question: "What about cooking oil, salt, and seasonings?", answer: "Oils and butter are included in the ingredient list. For dry seasonings, the amounts are usually negligible — 1 tsp of salt adds about 2,300mg sodium, so add it separately if tracking closely." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Build your recipe by adding ingredients from the dropdown. Adjust servings to see per-serving nutrition. For accurate tracking, measure ingredients by weight (grams) rather than volume (cups). Use the results to compare recipes and make healthier substitutions — for example, swapping olive oil for butter reduces saturated fat while maintaining calories.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="recipe-nutrition-calculator" category="food" />

@@ -9,27 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Calculate SaaS Pricing and Unit Economics",
-    "description": "Calculate MRR, ARR, LTV, CAC payback, and gross margin for your SaaS business.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter your monthly price per user and current customer count" },
-      { "@type": "HowToStep", "text": "Input monthly new customers and churn rate" },
-      { "@type": "HowToStep", "text": "Add your COGS per customer and fixed monthly costs" },
-      { "@type": "HowToStep", "text": "Enter your sales & marketing spend and CAC" },
-      { "@type": "HowToStep", "text": "Click Calculate to see your MRR, ARR, LTV, and full unit economics" },
-    ],
+    "@type": "Article",
+    "headline": "SaaS Pricing: Optimize Revenue & Unit Economics",
+    "description": "SaaS Pricing: Optimize Revenue & Unit Economics. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/saas-pricing-calculator/" }
   }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="SaaS Pricing: Optimize Revenue & Unit Economics | FreeOnlineToolkit" description="SaaS Pricing: Optimize Revenue & Unit Economics. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>SaaS Pricing: Optimize Revenue & Unit Economics</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>SaaS unit economics (MRR, ARR, LTV, CAC, gross margin, churn) determine whether your business can scale profitably - track them from day one.</li>
+      <li>A healthy SaaS business targets: LTV:CAC ratio above 3:1, CAC payback under 12 months, gross margin above 70%, and monthly churn below 5%.</li>
+      <li>Gross margin above 70% is the SaaS industry standard - if your COGS per customer is too high, focus on infrastructure optimisation or pricing increases.</li>
+      <li>Reducing churn by even 1-2 percentage points can have a larger impact on LTV and profitability than equivalent improvements in acquisition.</li>
+      <li>Fixed costs (salaries, office, software) and variable costs (COGS, sales/marketing) must both be covered by revenue - model both to find your break-even point.</li>
+    </ul>
+  </div>
+
+    <p>SaaS (Software as a Service) has become the dominant business model for software companies, from startups to enterprises. Unlike traditional software that customers buy once, SaaS generates recurring revenue through subscriptions - creating a predictable, compounding revenue stream that investors value highly. But the economics of SaaS are nuanced: the costs of acquiring and serving customers must be carefully managed to ensure that growth translates into profitability.</p>
+
+    <p>The core <strong>SaaS metrics</strong> form an interconnected system. <strong>MRR</strong> (Monthly Recurring Revenue) is your predictable monthly income. <strong>ARR</strong> (Annualised Recurring Revenue = MRR x 12) is the headline metric investors use to value SaaS businesses. <strong>LTV</strong> (Lifetime Value) represents the total profit from each customer. <strong>CAC</strong> (Customer Acquisition Cost) is what you spend to acquire each customer. The <strong>LTV:CAC ratio</strong> tells you whether your unit economics work.</p>
+
+    <p><strong>Gross margin</strong> - the percentage of revenue remaining after direct costs (COGS) - is the most important indicator of SaaS business quality. Top SaaS companies maintain gross margins of 75-85%. COGS for SaaS includes hosting, payment processing fees, customer support, and third-party API costs. If your gross margin is below 70%, you likely need to optimise infrastructure or raise prices.</p>
+
+    <p><strong>Churn</strong> is the silent killer of SaaS businesses. A 5% monthly churn rate means you lose nearly half your customers within a year. Reducing churn from 5% to 3% extends average customer lifetime from 20 months to 33 months - a 65% increase in LTV without spending a penny on acquisition. The most effective churn reduction strategies include improving onboarding, implementing proactive customer success outreach, and adding annual pricing options.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Understand your SaaS unit economics at a glance. This free calculator shows MRR, ARR, LTV, CAC payback period, gross margin, and net monthly profit — essential metrics for any subscription business.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>SaaS Unit Economics Calculator</h2>
       <div class="form-row">
@@ -111,6 +129,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This SaaS unit economics calculator computes your <strong>MRR</strong>, <strong>ARR</strong>, <strong>active customers</strong>, <strong>customer lifetime</strong>, <strong>LTV</strong>, <strong>gross margin</strong>, <strong>net monthly profit</strong>, <strong>CAC payback period</strong>, and <strong>LTV:CAC ratio</strong>. Enter your pricing, customer count, churn rate, COGS, fixed costs, marketing spend, and CAC to see your complete unit economics picture.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use</h2>
       <p>Start by entering your <strong>monthly price per user</strong> and the number of <strong>current customers</strong>. Then input how many <strong>new customers</strong> you add each month and your <strong>monthly churn rate</strong> (the percentage of customers who cancel each month).</p>
       <p>Enter your <strong>COGS</strong> (cost of goods sold) per customer each month — this includes hosting, support, and infrastructure costs. Add your <strong>fixed monthly costs</strong> (salaries, office, software) and <strong>sales & marketing spend</strong>. Finally, enter your <strong>CAC</strong> (customer acquisition cost).</p>
@@ -136,12 +159,18 @@ const jsonLd = [
       { question: "What is a reasonable churn rate for SaaS?", answer: "Monthly churn rates vary by segment: enterprise SaaS averages 1-2%, SMB SaaS averages 3-7%, and B2C subscription apps can see 5-10% monthly churn. Reducing churn by even 1% can significantly improve LTV." },
       { question: "Should I include salaries in fixed monthly costs?", answer: "Yes, fixed monthly costs should include all operational expenses that do not vary directly with the number of customers: salaries, rent, software subscriptions, insurance, and administrative costs. COGS should only include costs that scale with each additional customer." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Model your SaaS economics above to identify areas for improvement. If gross margin is below 70%, focus on COGS reduction. If LTV:CAC is below 3:1, either reduce CAC or improve retention. If churn is above 5%, invest in onboarding and customer success before scaling acquisition. Healthy unit economics are the foundation of sustainable SaaS growth.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="saas-pricing-calculator" category="saas" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { getNum, formatCurrency, showResult, hideResult } from '../utils/calculator-utils';

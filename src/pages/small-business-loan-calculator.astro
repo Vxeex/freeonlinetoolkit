@@ -9,6 +9,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Small Business Loans: Rates, Terms & Free Calculator",
+    "description": "Understand small business loan rates, terms, and qualification requirements. Calculate your EMI, total interest, amortization schedule, and debt-to-income ratio.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Small Business Loan Payments",
     "description": "Calculate your small business loan EMI, total interest, and debt-to-income ratio using loan amount, interest rate, and term.",
@@ -23,10 +33,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Small Business Loans: Rates, Terms & Free Calculator — FreeOnlineToolkit" description="Understand small business loan rates, terms, and requirements. Calculate your EMI, total interest, and debt-to-income ratio." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Small Business Loans: Rates, Terms & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Plan your business financing with confidence. This small business loan calculator shows your monthly EMI, total interest, full amortization schedule, and debt-to-income ratio based on your monthly revenue.</p>
+    <div class="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>Small business loan rates range from <strong>6% (bank loans) to 30%+ (online lenders)</strong> — your credit score and business history determine where you fall</li>
+        <li>Lenders look at your <strong>debt-to-income (DTI) ratio</strong> — keep it below 35% for the best approval odds and rates</li>
+        <li>SBA loans offer the <strong>best balance of rate and accessibility</strong>, with government backing that reduces lender risk</li>
+        <li>Longer loan terms mean <strong>lower monthly payments but higher total interest</strong> — the right term balances cash flow with total cost</li>
+        <li><strong>Prepayment penalties</strong> of 1-3% are common on business loans — always check before paying early</li>
+      </ul>
+    </div>
+
+    <p>Securing the right financing is one of the most critical decisions a small business owner faces. Whether you're launching a startup, expanding operations, purchasing equipment, or managing cash flow gaps, a small business loan can provide the capital you need to grow. However, the world of business lending is complex — rates, terms, qualification requirements, and repayment structures vary dramatically between lenders, and choosing the wrong loan can cost tens of thousands of dollars in unnecessary interest.</p>
+
+    <p>Small business loans come in several forms. <strong>Term loans</strong> provide a lump sum upfront that you repay with interest over a fixed period, typically 1 to 10 years. <strong>SBA loans</strong> are partially guaranteed by the Small Business Administration, which reduces risk for lenders and allows them to offer competitive rates (typically 7-13%) even to businesses that might not qualify for traditional bank loans. <strong>Business lines of credit</strong> offer flexible borrowing up to a limit — you draw what you need and pay interest only on what you use. <strong>Equipment financing</strong> uses the equipment itself as collateral, and <strong>invoice factoring</strong> lets you sell unpaid invoices for immediate cash.</p>
+
+    <p>The interest rate you're offered depends on several factors: your personal and business credit scores, time in business (lenders prefer 2+ years), annual revenue, existing debt, and the loan type. Traditional bank loans offer the lowest rates (5-9%) but have strict qualification requirements. Online lenders provide fast funding and easier qualification but charge significantly higher rates (15-40%). SBA loans sit in the middle, offering competitive rates with more paperwork and longer processing times. Understanding these tradeoffs is essential for choosing the right financing for your situation.</p>
+
+    <p>Before applying, calculate your <strong>debt-to-income ratio</strong> (monthly debt payments divided by monthly revenue). Most lenders want to see a DTI below 35-50%. Also consider the <strong>total cost of the loan</strong>, not just the monthly payment. A 5-year loan at 8.5% on $100,000 results in about $22,800 in total interest — meaning you repay nearly $123,000 in total. The amortization schedule below breaks this down year by year, showing how much of each payment goes to principal versus interest.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -97,6 +124,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This business loan calculator shows your <strong>monthly EMI payment</strong>, <strong>total interest</strong> over the loan term, <strong>total repayment amount</strong>, and the <strong>number of payments</strong>. If you enter your monthly revenue, it also calculates your <strong>debt-to-income (DTI) ratio</strong> — a key metric lenders use to evaluate your loan application. The yearly amortization schedule shows how each year's payments break down between principal and interest.</p>
+    </div>
+
+    <div class="content-section">
       <h2>How to Use the Small Business Loan Calculator</h2>
       <p>Using this business loan calculator is straightforward. Start by entering the <strong>loan amount</strong> you plan to borrow for your business. Then input the <strong>annual interest rate</strong> your lender has quoted. Business loan rates typically range from 6% to 30% depending on your creditworthiness, business history, and loan type.</p>
       <p>Choose your <strong>loan term</strong> in years or months &mdash; most small business loans range from 1 to 10 years. You can switch between years and months using the dropdown. If you enter your <strong>monthly revenue</strong>, the calculator will also show your debt-to-income (DTI) ratio, which lenders use to assess your ability to repay.</p>
@@ -109,6 +141,17 @@ const jsonLd = [
       <div class="formula-box">EMI = P &times; [r(1+r)^n] / [(1+r)^n &minus; 1]</div>
       <p>Where: <strong>EMI</strong> = monthly payment, <strong>P</strong> = loan principal, <strong>r</strong> = monthly interest rate (annual rate / 12), and <strong>n</strong> = total number of monthly payments.</p>
       <p>The <strong>debt-to-income ratio</strong> is calculated as: DTI = (Monthly Payment / Monthly Revenue) &times; 100.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Check your credit score</strong> before applying — both personal and business scores affect your rate and approval odds</li>
+        <li><strong>Compare at least 3-5 lenders</strong> including banks, credit unions, SBA lenders, and online platforms to find the best terms</li>
+        <li><strong>Gather your documents</strong> — tax returns, financial statements, business plan, and bank statements are typically required</li>
+        <li><strong>Consider the total cost</strong>, not just the monthly payment — a longer term lowers payments but increases total interest paid</li>
+        <li><strong>Negotiate terms</strong> — rates and fees are often negotiable, especially with banks and credit unions where you have an existing relationship</li>
+      </ul>
     </div>
 
     <FAQ items={[

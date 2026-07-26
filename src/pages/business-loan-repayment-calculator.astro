@@ -9,6 +9,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Business Loan Repayment: Compare Options & Free Calculator",
+    "description": "Compare business loan repayment options from banks, SBA lenders, and online platforms. See monthly payments, total interest, and total cost side by side.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Compare Business Loan Repayment Options",
     "description": "Compare monthly payments, total interest, and total cost across bank loans, SBA loans, and online lender financing.",
@@ -22,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Business Loan Repayment: Compare Options & Free Calculator — FreeOnlineToolkit" description="Compare business loan repayment options from banks, SBA lenders, and online platforms. See costs side by side." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Business Loan Repayment: Compare Options & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Compare repayment costs across bank loans, SBA loans, and online lenders side by side. See monthly payments, total interest, and total cost for each option so you can choose the best financing for your business.</p>
+    <div class="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>The same $100,000 loan costs <strong>$19,500 in interest at 7%</strong> but <strong>$75,000+ at 25%</strong> over 5 years — rate shopping pays off enormously</li>
+        <li><strong>Bank loans</strong> (5-9% APR) are cheapest but hardest to qualify for; <strong>online lenders</strong> (15-40% APR) are fastest but most expensive</li>
+        <li>SBA loans offer the <strong>best middle ground</strong> — competitive rates (9-13%) with more flexible qualification than traditional banks</li>
+        <li>The <strong>total cost of the loan</strong> matters more than the monthly payment — a lower payment on a longer term often means paying much more overall</li>
+        <li>Always compare the <strong>APR (Annual Percentage Rate)</strong>, not just the interest rate — APR includes fees and gives the true cost of borrowing</li>
+      </ul>
+    </div>
+
+    <p>When your business needs financing, the options can feel overwhelming. Should you go to your bank, apply for an SBA loan, or use an online lender? Each option has dramatically different rates, terms, qualification requirements, and speed of funding. Making the wrong choice can cost your business tens of thousands of dollars in unnecessary interest — or worse, leave you with a loan you can't comfortably repay. A side-by-side comparison of your options is the smartest first step.</p>
+
+    <p>Traditional <strong>bank loans</strong> offer the lowest interest rates, typically 5-9% APR, because banks have the lowest cost of capital and the strictest underwriting standards. They want to see strong personal credit (700+), established business history (2+ years), solid financial statements, and often collateral. The application process can take weeks to months, and rejection rates are high. If you qualify, bank loans are almost always the cheapest option. <strong>SBA loans</strong> are partially guaranteed by the Small Business Administration, which reduces lender risk and allows them to offer competitive rates (typically 9-13% APR) to businesses that might not qualify for traditional bank loans. SBA 7(a) loans are the most common, offering up to $5 million with terms up to 25 years for real estate.</p>
+
+    <p><strong>Online lenders</strong> and fintech platforms have transformed business lending by offering fast approvals (often within 24-48 hours) and much easier qualification requirements. The tradeoff is significantly higher rates — typically 15-40% APR, and sometimes higher for short-term or merchant cash advance products. Online lenders focus more on your revenue and cash flow than your credit score, making them accessible to newer businesses or those with blemished credit. However, the cost difference is enormous: on a $100,000, 5-year loan, the difference between 7% and 25% interest is roughly $55,000 in total interest paid.</p>
+
+    <p>The key to smart borrowing is understanding the <strong>amortization formula</strong> that determines your monthly payment: M = P × [r(1+r)^n] / [(1+r)^n - 1]. This formula means that for a given loan amount and term, your payment is determined entirely by the interest rate. A higher rate means a higher payment and dramatically more total interest. Use the calculator below to see exactly how different rates affect your monthly payment, total interest, and total cost — and make an informed decision about which lender to choose.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -102,6 +129,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator displays <strong>three loan options side by side</strong>: bank loans, SBA loans, and online lender financing. For each option, you see the <strong>monthly payment</strong>, <strong>total interest paid</strong>, <strong>total repayment cost</strong>, and the <strong>APR</strong>. The visual comparison makes it immediately clear how much a difference of even a few percentage points makes over the life of the loan.</p>
+    </div>
+
+    <div class="content-section">
       <h2>How to Use</h2>
       <p>This calculator compares three common business loan types side by side. Enter the <strong>loan amount</strong>, then adjust rates for bank loans, SBA loans, and online lenders. Set the <strong>loan term</strong> in months and click calculate to see your comparison.</p>
       <p>The comparison cards show your monthly payment, total interest, total cost, and APR for each option. The highlighted card shows the balanced option (SBA), which often offers the best combination of rate and accessibility.</p>
@@ -112,6 +144,17 @@ const jsonLd = [
       <p>Monthly payments are calculated using the standard amortization formula:</p>
       <div class="formula-box">M = P &times; [r(1+r)<sup>n</sup>] / [(1+r)<sup>n</sup> &minus; 1]</div>
       <p>Where: <strong>M</strong> = monthly payment, <strong>P</strong> = loan principal, <strong>r</strong> = monthly interest rate (annual rate / 12), and <strong>n</strong> = total number of monthly payments.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Get pre-qualified</strong> with at least one lender from each category to see your actual rates before committing</li>
+        <li><strong>Improve your credit score</strong> before applying — even a 20-point improvement can move you to a lower rate tier</li>
+        <li><strong>Consider the urgency</strong> — if you need funding in days, online lenders are fastest; if you can wait weeks, banks and SBA loans save significantly</li>
+        <li><strong>Read the fine print</strong> — check for origination fees, prepayment penalties, and personal guarantee requirements</li>
+        <li><strong>Use our Business Loan Calculator</strong> for a detailed amortization schedule showing principal vs interest breakdown each year</li>
+      </ul>
     </div>
 
     <FAQ items={[

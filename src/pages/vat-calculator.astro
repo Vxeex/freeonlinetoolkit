@@ -9,6 +9,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "VAT Explained: Rates, Rules & Free Calculator",
+    "description": "Understand Value Added Tax (VAT) rates around the world, how VAT works in the supply chain, and use our free calculator to add or remove VAT from any amount.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate VAT",
     "description": "Add or remove VAT from any amount with customizable VAT rates.",
@@ -22,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="VAT Explained: Rates, Rules & Free Calculator — FreeOnlineToolkit" description="Understand Value Added Tax (VAT) rates around the world, how VAT works, and use our free calculator to add or remove VAT from any amount." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>VAT Explained: Rates, Rules & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Quickly add or remove VAT from any amount. Supports all standard VAT rates for any country — perfect for invoices, receipts, and pricing calculations.</p>
+    <div class="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>VAT (Value Added Tax) is a <strong>consumption tax collected at every stage</strong> of the supply chain, ultimately paid by the end consumer</li>
+        <li>Over <strong>170 countries</strong> use VAT — it is the most common type of consumption tax worldwide, though the US uses sales tax instead</li>
+        <li>Standard VAT rates range from <strong>5% (UAE, Singapore) to 27% (Hungary)</strong>, with most European countries charging 19-25%</li>
+        <li>To add VAT: multiply by (1 + rate). To <strong>reverse-calculate VAT</strong>: divide by (1 + rate) — the formulas are not the same in both directions</li>
+        <li>Businesses can typically <strong>reclaim VAT</strong> on their inputs, making it a tax on value added at each stage rather than a cascading tax</li>
+      </ul>
+    </div>
+
+    <p>Value Added Tax (VAT) is one of the most significant sources of government revenue worldwide. Unlike sales tax, which is collected only at the final point of sale, VAT is collected at every step of the production and distribution chain. When a manufacturer sells raw materials to a factory, VAT is charged. When the factory sells finished goods to a retailer, VAT is charged again — but only on the <em>value added</em> at that stage. This mechanism makes VAT extremely difficult to evade and generates steady revenue for governments across more than 170 countries.</p>
+
+    <p>Understanding how VAT works is essential for anyone running a business, freelancing internationally, or shopping across borders. If you sell goods or services in a VAT country, you must charge VAT on your sales, file regular VAT returns, and remit the tax to the government. On the flip side, you can usually reclaim the VAT you paid on business inputs (raw materials, equipment, services), so the net effect is that you only pay tax on the value your business added. For consumers, VAT is embedded in the sticker price — the amount on the tag already includes the tax.</p>
+
+    <p>VAT rates vary significantly by country and by product category. Most countries have a <strong>standard rate</strong> (applied to most goods and services) and one or more <strong>reduced rates</strong> (applied to essentials like food, children's clothing, books, and medical supplies). The United Kingdom charges 20% standard and 5% reduced. Germany charges 19% standard and 7% reduced. Some items — like education, healthcare, and financial services — are often <strong>VAT-exempt</strong>, meaning no VAT is charged but the supplier cannot reclaim input VAT either.</p>
+
+    <p>The math behind VAT is straightforward but has an important subtlety. When you <strong>add VAT</strong> to a net price, the formula is: Gross = Net × (1 + VAT Rate). When you need to <strong>extract VAT</strong> from a gross price (to find the net amount), the formula reverses: Net = Gross ÷ (1 + VAT Rate). This distinction matters for invoicing, bookkeeping, and pricing — a common mistake is to simply subtract the VAT percentage from the gross price, which gives an incorrect result. The calculator below handles both directions accurately.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -65,6 +92,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This VAT calculator handles both directions: <strong>adding VAT</strong> to a net amount (for pricing and invoicing) and <strong>removing VAT</strong> from a gross amount (for bookkeeping and reclaim calculations). It shows the net amount, VAT amount, and gross amount, so you can see exactly how the tax breaks down for any rate.</p>
+    </div>
+
+    <div class="content-section">
       <h2>How to Use the VAT Calculator</h2>
       <p>Enter an <strong>amount</strong> and the <strong>VAT rate</strong> (default 20%). Choose <strong>Add VAT</strong> to calculate the gross amount including tax, or <strong>Remove VAT</strong> to find the net amount before tax.</p>
       <p>This is useful for businesses creating invoices, checking VAT on receipts, or pricing products and services.</p>
@@ -79,6 +111,17 @@ const jsonLd = [
         <li><strong>Australia (GST):</strong> 10%</li>
         <li><strong>Singapore (GST):</strong> 9%</li>
         <li><strong>UAE:</strong> 5%</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Check your country's current VAT rate</strong> — rates change periodically, and reduced rates vary by product category</li>
+        <li><strong>Register for VAT</strong> if your business turnover exceeds the threshold in your country (e.g., £90,000 in the UK as of 2024)</li>
+        <li><strong>Keep VAT invoices</strong> for every business purchase — you need them to reclaim input VAT on your returns</li>
+        <li><strong>Use accounting software</strong> that automatically calculates and tracks VAT for compliance</li>
+        <li><strong>Consult a tax advisor</strong> if you trade internationally, as cross-border VAT rules can be complex</li>
       </ul>
     </div>
 

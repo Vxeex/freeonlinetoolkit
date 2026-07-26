@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "College Net Price: True Cost After Financial Aid",
+    "description": "College Net Price — comprehensive guide with free online calculator. The published \"sticker price\" of college is almost never what students actually pay — net price (after grants and scholarships) is the number that matters for financial planning. The Expected Family Contribution (EFC) is calculated using parent income, student income, and assets, with weightings that favour lower-income families through income protection allowances.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/college-net-price-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate College Net Price",
     "description": "Calculate the net price of college by entering costs, income, and assets to estimate EFC and grant aid.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="College Net Price: True Cost After Financial Aid | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>College Net Price: True Cost After Financial Aid</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>The published "sticker price" of college is almost never what students actually pay — net price (after grants and scholarships) is the number that matters for financial planning.</li>
+      <li>The Expected Family Contribution (EFC) is calculated using parent income, student income, and assets, with weightings that favour lower-income families through income protection allowances.</li>
+      <li>Public universities offer significantly lower tuition for in-state students — the difference between in-state and out-of-state tuition can be $15,000–$30,000 per year.</li>
+      <li>Federal student loans (subsidised and unsubsidised) should be maximised before considering private loans, as they offer lower rates, income-driven repayment options, and potential forgiveness.</li>
+    </ul>
+  </div>
+
+  <p>College is one of the largest financial investments a family will make, yet many families make decisions based on published tuition figures that bear little resemblance to what they will actually pay. The "net price" — the cost of attendance minus grants and scholarships — is the true number that determines affordability, and it varies dramatically based on family income, assets, and the specific institution.</p>
+
+  <p>Every college that receives federal aid is required to publish a Net Price Calculator on its website, but the results vary widely in accuracy and format. This calculator provides a simplified estimate using the federal methodology to help families plan before they reach the detailed institutional calculators.</p>
+
+  <p>The federal methodology considers parent income, parent assets, student income, and student assets, applying different assessment rates to each. Parent income above the Income Protection Allowance (IPA) is assessed at roughly 22%, while student income is assessed at 50% — reflecting the expectation that students contribute more aggressively from their own earnings.</p>
+
+  <p>The gap between sticker price and net price can be enormous. At many private colleges with published costs of $70,000–$80,000 per year, the average net price for families earning $75,000 might be $25,000–$35,000. Public universities are even more affordable, with average net prices under $15,000 for in-state students from moderate-income families.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Estimate the true cost of college after financial aid. This college net price calculator uses a simplified federal methodology to calculate your Expected Family Contribution (EFC), grant aid, and out-of-pocket net price.</p>
   </fragment>
@@ -158,6 +189,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator estimates your Cost of Attendance (COA), Expected Family Contribution (EFC), grant aid, and out-of-pocket net price. It uses a simplified federal methodology that considers parent and student income and assets. The breakdown table shows how each cost category contributes to your total.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the College Net Price Calculator</h2>
       <p>Start by entering the <strong>total cost of attendance</strong> including tuition, fees, room and board, books, and personal expenses. These figures are typically available on your prospective college's website under "Cost of Attendance."</p>
@@ -180,7 +216,12 @@ const jsonLd = [
       { question: "Does my state of residence affect college costs?", answer: "Yes, state of residence significantly affects tuition at public universities. In-state students pay substantially less than out-of-state students at state schools. Private colleges typically charge the same regardless of residence, though some offer regional tuition discounts." },
       { question: "What if my EFC is higher than the cost of attendance?", answer: "If your EFC exceeds the COA, you are not eligible for need-based financial aid. However, you may still qualify for merit-based scholarships, federal unsubsidized loans, and private education loans. Consider appealing the financial aid offer if your circumstances have changed." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use this estimate as a starting point for college financial planning. Visit each prospective college's website and use their institutional Net Price Calculator for a more accurate figure. Complete the FAFSA as early as possible (opens October 1 each year) to maximise your aid eligibility. Compare net prices across multiple schools before making your final decision.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="college-net-price-calculator" category="education" />

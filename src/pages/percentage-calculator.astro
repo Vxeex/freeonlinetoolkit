@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Percentage Calculator: Tips, Discounts & Everyday Math",
+    "description": "Master percentage calculations for discounts, tips, data analysis, and everyday math. Free percentage calculator with three modes and formula explanations.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/percentage-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Percentages",
     "description": "Find what percent one number is of another, calculate percentage increases and decreases.",
@@ -21,8 +32,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Percentage Calculator: Tips, Discounts & Everyday Math | FreeOnlineToolkit" description="Master percentage calculations for discounts, tips, data analysis, and everyday math. Free percentage calculator with three modes and formula explanations." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Percentage Calculator: Tips, Discounts & Everyday Math</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Percentages are ratios expressed "per hundred" — 20% means 20 out of 100, or 0.20 as a decimal. Mastering this conversion is the key to all percentage calculations.</li>
+      <li>Percentage increase and decrease are not symmetric — a 50% gain followed by a 50% loss doesn't return you to zero (you'd be at 75% of the original).</li>
+      <li>Compound percentage changes multiply rather than add — two 10% increases result in a 21% total increase, not 20%.</li>
+      <li>The most common real-world uses are discounts (shopping), tips (restaurants), interest rates (finance), and data analysis (business metrics).</li>
+      <li>Understanding percentage change is essential for interpreting financial reports, inflation data, and growth metrics accurately.</li>
+    </ul>
+  </div>
+
+  <p>Percentages are everywhere — from the 20% tip you leave at dinner to the 6.5% interest rate on your mortgage, from the 30% off sale at your favourite store to the 3.2% inflation rate in the news. Despite being one of the most fundamental mathematical concepts, percentages trip up surprisingly many people. A 2019 survey found that nearly half of adults struggle with percentage calculations, and even those who can do the math often make mistakes with percentage change — confusing a 50% increase with a 33% decrease (they're not opposites).</p>
+
+  <p>The word "percent" comes from the Latin <em>per centum</em>, meaning "per hundred." So 25% literally means 25 out of 100, or the fraction 25/100, or the decimal 0.25. This simple conversion — percentage to decimal and back — is the foundation of every percentage calculation. To find X% of Y, you multiply Y by X/100. To find what percentage X is of Y, you divide X by Y and multiply by 100.</p>
+
+  <p>Where percentages get tricky is in <strong>percentage change</strong>. The formula is straightforward: ((New − Original) ÷ Original) × 100. But the asymmetry catches people off guard. If a stock price rises from $100 to $150, that's a 50% gain. If it then falls from $150 back to $100, that's only a 33% loss — because the denominator has changed. This is why financial professionals always specify whether they're talking about percentage points vs percentage change, and why understanding the base (denominator) matters.</p>
+
+  <p>In <strong>compound scenarios</strong>, percentages multiply rather than add. Two consecutive 10% increases don't give you 20% — they give you 21% (1.10 × 1.10 = 1.21). This principle drives compound interest, inflation calculations, and investment returns. It's also why a 7% annual return on investments doubles your money in roughly 10 years, not 14 (the "Rule of 72").</p>
+
   <fragment slot="intro">
     <p class="tool-intro">Quickly calculate percentages, percentage changes, and more. Whether you're figuring out discounts, tips, or data analysis, this calculator handles all common percentage problems.</p>
   </fragment>
@@ -94,7 +125,7 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the Percentage Calculator</h2>
+      <h2>What This Calculator Shows</h2>
       <p>Choose the type of calculation you need from the dropdown menu:</p>
       <ul>
         <li><strong>What is X% of Y?</strong> — Find a percentage of a number (e.g., 20% of 200 = 40)</li>
@@ -118,6 +149,11 @@ const jsonLd = [
       { question: "How do I calculate a tip percentage?", answer: 'Use the "What is X% of Y?" mode. Enter 15 or 20 as X and your bill total as Y. The result is the tip amount. For splitting, use our Tip Calculator.' },
       { question: "What is percentage change used for?", answer: "Percentage change measures how much a value has increased or decreased relative to its original value. It's commonly used in finance, business, and data analysis." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use this calculator as a quick reference for everyday math — calculating tips, sale prices, tax amounts, and business metrics. For financial planning, try our <a href="/compound-interest-calculator/">Compound Interest Calculator</a> to see how percentage-based returns grow over time, or our <a href="/mortgage-calculator/">Mortgage Calculator</a> to understand how interest rate percentages affect your monthly payment.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

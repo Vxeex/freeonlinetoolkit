@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Health Insurance Subsidies: ACA Premium Tax Credits & Free Calculator",
+    "description": "Understand how ACA health insurance subsidies work, who qualifies for premium tax credits, and how to estimate your savings. Free ACA subsidy calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/health-subsidy-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Estimate Your ACA Health Insurance Subsidy",
     "description": "Estimate your ACA premium tax credit by entering income, household size, and plan cost.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Health Insurance Subsidies: ACA Premium Tax Credits & Free Calculator | FreeOnlineToolkit" description="Understand how ACA health insurance subsidies work, who qualifies for premium tax credits, and how to estimate your savings. Free ACA subsidy calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Health Insurance Subsidies: ACA Premium Tax Credits & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>ACA premium tax credits are available to individuals and families earning 100–400% of the Federal Poverty Level, capping what you pay for health insurance as a percentage of income.</li>
+      <li>For 2025, the FPL baseline is $15,650 for a single person in the 48 contiguous states, increasing by $5,550 for each additional household member.</li>
+      <li>Silver plans typically offer the best value for subsidy-eligible households because they also qualify for cost-sharing reductions that lower deductibles and copays.</li>
+      <li>Your subsidy is reconciled when you file taxes — report income changes during the year to avoid a surprise tax bill or missed savings.</li>
+      <li>Even households earning above 400% FPL may qualify for subsidies under the enhanced premium caps that have been extended through 2025.</li>
+    </ul>
+  </div>
+
+  <p>Health insurance is one of the largest expenses for American households, but many people don't realise how much financial help is available. The Affordable Care Act (ACA) provides <strong>premium tax credits</strong> — also called subsidies — that can dramatically reduce what you pay for marketplace health insurance. In 2024, over 90% of marketplace enrollees received some form of subsidy, with average monthly savings exceeding $500. Yet millions of eligible Americans still go uninsured because they assume they can't afford coverage.</p>
+
+  <p>The subsidy system works on a sliding scale based on your income relative to the <strong>Federal Poverty Level (FPL)</strong>. If your household income falls between 100% and 150% of FPL, you'll pay essentially nothing for a benchmark Silver plan. At 250–300% FPL, your contribution rises to about 4–6% of income. Above 400% FPL, the enhanced subsidies (extended through 2025) still cap your premium at 8.5% of income. This means a family of four earning $80,000 could save $500–800 per month compared to full-price insurance.</p>
+
+  <p>Choosing the right <strong>metal tier</strong> is just as important as getting the subsidy. Bronze plans have the lowest premiums but highest out-of-pocket costs (deductibles often exceed $7,000). Silver plans offer a middle ground and uniquely qualify for <strong>cost-sharing reductions</strong> (CSRs) if your income is below 250% FPL, which can cut your deductible and copays by 30–70%. Gold and Platinum plans have higher premiums but lower costs when you actually use care. For most subsidy-eligible households, Silver is the sweet spot.</p>
+
+  <p>It's critical to report income changes promptly. The marketplace estimates your annual income to set your subsidy, but if you earn more or less than expected, the difference is settled when you file your federal tax return. Underestimate your income and you'll owe money back; overestimate and you'll get a refund. The IRS Form 8962 reconciles your advance premium tax credit with your actual income.</p>
+
   <fragment slot="intro">
     <p class="tool-intro">Estimate your Affordable Care Act (ACA) premium tax credit and health insurance subsidy based on your income, household size, and plan cost. Use this tool to understand how much financial help you may qualify for when shopping for 2025 marketplace plans.</p>
   </fragment>
@@ -95,7 +126,7 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the ACA Subsidy Calculator</h2>
+      <h2>What This Calculator Shows</h2>
       <p>Enter your <strong>annual household income</strong>, <strong>household size</strong>, <strong>state</strong>, and the <strong>age of the oldest household member</strong>. Choose your <strong>plan type</strong> and enter the <strong>monthly plan premium</strong>. Click Calculate to see your estimated subsidy, net monthly premium, and annual savings.</p>
       <p>The calculator also shows your <strong>FPL percentage</strong> and a <strong>metal tier recommendation</strong> based on your income level. Generally, Silver plans offer the best value for subsidy-eligible households.</p>
     </div>
@@ -116,6 +147,11 @@ const jsonLd = [
       { question: "Which metal tier should I choose?", answer: "If you qualify for subsidies, Silver plans often provide the best overall value because they also offer cost-sharing reductions. Bronze plans have lower premiums but higher out-of-pocket costs." },
       { question: "What happens if my income changes during the year?", answer: "The premium tax credit is reconciled when you file your taxes. Report income changes to the marketplace during the year to adjust your subsidy and avoid a large tax bill at year-end." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use this calculator before open enrollment (November 1 – January 15) to estimate your subsidy and budget for health insurance. Visit <a href="https://www.healthcare.gov" target="_blank" rel="noopener">HealthCare.gov</a> or your state marketplace to shop for plans and apply. If your income changes significantly during the year, update your marketplace application promptly to adjust your subsidy. Consider pairing this with our <a href="/life-insurance-calculator/">Life Insurance Calculator</a> to build a complete financial safety net.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

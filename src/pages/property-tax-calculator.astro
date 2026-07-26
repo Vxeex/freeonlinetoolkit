@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Property Tax: Rates, Deductions & Free Calculator",
+    "description": "Understand how property taxes work, compare rates by state, learn about deductions, and estimate your annual tax bill. Free property tax calculator with multi-year projections.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/property-tax-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Estimate Property Taxes",
     "description": "Estimate annual property taxes based on your home value and local tax rate, with multi-year projections.",
@@ -23,8 +34,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Property Tax: Rates, Deductions & Free Calculator | FreeOnlineToolkit" description="Understand how property taxes work, compare rates by state, learn about deductions, and estimate your annual tax bill. Free property tax calculator with multi-year projections." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Property Tax: Rates, Deductions & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>The average US property tax rate is approximately 1.1% of home value, but rates vary dramatically by state — from 0.18% in Alabama to 2.49% in New Jersey.</li>
+      <li>Property taxes are typically the largest ongoing cost of homeownership after the mortgage itself, adding $300–800+/month to most housing budgets.</li>
+      <li>The SALT deduction allows you to deduct property taxes on your federal return, but it's capped at $10,000 per year under current tax law.</li>
+      <li>Assessed value and market value are often different — many jurisdictions assess at a percentage of market value, and assessment growth may be capped (e.g., California's Prop 13 at 2%/year).</li>
+      <li>Property taxes fund essential local services including schools, fire departments, police, roads, and parks — they're the primary revenue source for most local governments.</li>
+    </ul>
+  </div>
+
+  <p>Property tax is one of the most significant and unavoidable costs of homeownership, yet it's often overlooked when people calculate how much house they can afford. Unlike your mortgage payment, which eventually ends, <strong>property taxes continue for as long as you own the home</strong>. On a $400,000 home at the national average rate of 1.1%, that's $4,400 per year — or about $367/month — added to your housing costs. In high-tax states like New Jersey (2.49%), the same home would cost nearly $10,000 per year in property taxes alone.</p>
+
+  <p>Property taxes are calculated by multiplying your home's <strong>assessed value</strong> by the local <strong>millage rate</strong> (tax rate). But there's a critical distinction: assessed value and market value are often not the same. Many jurisdictions assess properties at a percentage of market value — for example, a state might assess at 80% of market value, so a $400,000 home would have an assessed value of $320,000. Some areas use a fixed assessment ratio; others reassess annually or periodically. Understanding your local assessment methodology is essential for accurate budgeting.</p>
+
+  <p>What your property taxes <strong>fund</strong> makes them worth paying, even if the bill stings. They're the primary revenue source for local governments and typically fund public schools (often 40–60% of the total), fire and police services, road maintenance, parks and libraries, and local infrastructure. In many communities, the quality of these services directly correlates with property tax rates — which is why homes in high-tax areas often command higher prices.</p>
+
+  <p>Property taxes are <strong>partially tax-deductible</strong> on your federal return through the SALT (State and Local Tax) deduction, but this benefit is currently capped at $10,000 per year for combined state income tax and property tax. If you live in a high-tax state and itemise deductions, this cap may limit your benefit. Some states also offer homestead exemptions, senior citizen discounts, or veteran exemptions that can reduce your property tax bill — check with your county assessor's office for local programmes.</p>
+
   <fragment slot="intro">
     <p class="tool-intro">Estimate your annual property taxes based on your home's value and your local tax rate. This calculator also projects how your taxes may change over time with assessment growth, helping you budget for the long term.</p>
   </fragment>
@@ -140,8 +171,9 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the Property Tax Calculator</h2>
+      <h2>What This Calculator Shows</h2>
       <p>Enter your home's current <strong>market value</strong> and your local <strong>property tax rate</strong>. If you don't know your exact rate, use the <strong>state dropdown</strong> to select a state with a preset average effective tax rate. Enter the expected <strong>annual assessment growth rate</strong> and choose how many <strong>years to project forward</strong>.</p>
+      <p>The results show your annual and monthly tax, the effective rate, total projected tax, and a year-by-year breakdown table.</p>
     </div>
 
     <div class="content-section">
@@ -156,6 +188,11 @@ const jsonLd = [
       { question: "Can my property taxes increase each year?", answer: "Yes, property taxes can increase each year as your home's assessed value rises or if local tax rates increase. Many areas have annual assessment growth limits (like California's Prop 13 which caps increases at 2% per year)." },
       { question: "Are property taxes tax deductible?", answer: "Yes, property taxes paid on your primary residence are generally deductible if you itemize. However, the SALT deduction is capped at $10,000 per year." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Check your actual property tax rate on your county assessor's website — rates can vary within a state by city and school district. When budgeting for a home purchase, include property taxes, homeowner's insurance, and HOA fees alongside your mortgage payment. Research whether you qualify for any exemptions (homestead, senior, veteran, disability) that could reduce your bill. If you believe your assessment is too high, most jurisdictions allow you to file an appeal — and successful appeals can save hundreds or thousands per year.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

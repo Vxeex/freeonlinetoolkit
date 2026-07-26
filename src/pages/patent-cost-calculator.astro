@@ -9,27 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Estimate Patent Costs",
-    "description": "Estimate the total cost of filing and maintaining a patent including USPTO fees, attorney costs, and maintenance fees.",
-    "step": [
-      { "@type": "HowToStep", "text": "Select the type of patent application you plan to file" },
-      { "@type": "HowToStep", "text": "Choose your filing method and enter your attorney's hourly rate" },
-      { "@type": "HowToStep", "text": "Select your entity size to determine USPTO fee reductions" },
-      { "@type": "HowToStep", "text": "Specify how many years you plan to maintain the patent" },
-      { "@type": "HowToStep", "text": "Click Calculate to see first-year costs and lifetime patent maintenance expenses" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Patent Cost Calculator: Filing & Maintenance Fees",
+    "description": "Patent Cost Calculator: Filing & Maintenance Fees. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/patent-cost-calculator/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Patent Cost Calculator: Filing & Maintenance Fees | FreeOnlineToolkit" description="Patent Cost Calculator: Filing & Maintenance Fees. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Patent Cost Calculator: Filing & Maintenance Fees</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>A US utility patent costs $5,000-$15,000 to file with an attorney, or $1,000-$3,000 if filing pro se (without an attorney).</li>
+      <li>Micro entities get a 60% discount on USPTO fees, small entities get 50% off - qualifying for these discounts can save thousands of dollars.</li>
+      <li>Patent maintenance fees are due at 3.5, 7.5, and 11.5 years after grant and increase significantly at each stage - failure to pay causes the patent to expire.</li>
+      <li>A provisional patent application ($75-$300 in USPTO fees) gives you 12 months of 'patent pending' status at a fraction of the cost of a non-provisional application.</li>
+      <li>The total 20-year cost of a utility patent (filing + maintenance + attorney) typically ranges from $15,000 to $50,000+ depending on complexity and entity size.</li>
+    </ul>
+  </div>
+
+    <p>Patenting an invention is one of the most important steps an innovator can take to protect their intellectual property, but the costs involved are often misunderstood. The total cost of a patent extends far beyond the initial filing fee - it includes attorney costs, USPTO examination fees, and mandatory maintenance fees that must be paid at specific intervals over the patent's 20-year lifespan. Understanding these costs upfront helps inventors budget appropriately and make strategic decisions about which type of patent to pursue.</p>
+
+    <p>The US Patent and Trademark Office (USPTO) offers three main paths: <strong>provisional patent applications</strong>, <strong>non-provisional utility patents</strong>, and <strong>PCT (Patent Cooperation Treaty) international applications</strong>. A provisional application is the cheapest entry point ($75-$300 in USPTO fees for micro/small entities) and establishes an early filing date plus 12 months of "patent pending" status. However, it is never examined and expires after 12 months - you must file a non-provisional application within that window to continue pursuing patent protection.</p>
+
+    <p>The cost difference between <strong>filing pro se</strong> (representing yourself) and <strong>hiring a patent attorney</strong> is substantial. A non-provisional utility patent filed pro se costs roughly $880-$2,040 in USPTO fees (depending on entity size), while adding an attorney typically adds $8,000-$15,000 in legal fees. Attorneys usually spend 20-60 hours preparing a non-provisional application, including drafting claims, creating technical drawings, and responding to USPTO office actions. While self-filing saves money, patent prosecution is technically demanding - the USPTO rejects over 60% of applications on first review.</p>
+
+    <p><strong>Maintenance fees</strong> are a hidden cost that catches many patent holders off guard. For utility patents, three maintenance fee payments are required at 3.5 years ($400-$2,000), 7.5 years ($900-$3,760), and 11.5 years ($1,380-$7,700) after the patent is granted. These fees escalate dramatically - the final maintenance fee for a large entity is nearly four times the first. Failure to pay any maintenance fee causes the patent to expire, even if years remain on its 20-year term.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Plan your intellectual property budget with confidence. This patent cost calculator estimates USPTO filing fees, attorney costs, and maintenance fees for provisional, non-provisional, and PCT patent applications.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Patent Cost Calculator</h2>
       <div class="form-group">
@@ -94,6 +112,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This patent cost calculator estimates your <strong>total first-year cost</strong> (USPTO filing fees + attorney fees), <strong>5-year cost</strong> (including the first maintenance fee), and <strong>20-year total cost</strong> (all filing, examination, and maintenance fees). It supports provisional, non-provisional, and PCT applications across micro, small, and large entity sizes.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use the Patent Cost Calculator</h2>
       <p>Start by selecting the <strong>type of patent</strong> you want to file. A provisional patent application is cheaper and gives you 12 months to file a non-provisional application. Non-provisional utility patents are the standard patent with full examination. PCT applications are international filings under the Patent Cooperation Treaty.</p>
       <p>Choose your <strong>filing method</strong> &mdash;filing pro se (yourself) saves on attorney fees but requires careful preparation. If using an attorney, enter their <strong>hourly rate</strong> and <strong>estimated hours</strong>. Attorneys typically spend 20-60 hours on a non-provisional application depending on complexity.</p>
@@ -122,12 +145,18 @@ const jsonLd = [
       { question: "When are patent maintenance fees due?", answer: "Maintenance fees for utility patents are due at 3.5 years, 7.5 years, and 11.5 years after the patent grant date. Failure to pay results in patent expiration. Fees increase significantly at each stage. Design and plant patents do not have maintenance fees." },
       { question: "Can I file a patent application without an attorney?", answer: "Yes, you can file a patent application pro se (on your own behalf). The USPTO provides resources and the EFS-Web system for self-filing. However, patent prosecution is complex and technically demanding. Consulting a patent attorney or agent is strongly recommended for valuable inventions." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use the calculator above to estimate your patent costs based on your filing type, entity size, and whether you plan to use an attorney. If you are early in the invention process, consider starting with a provisional application to secure your filing date at minimal cost. For complex or high-value inventions, consult a registered patent attorney.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="patent-cost-calculator" category="legal" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

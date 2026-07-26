@@ -9,26 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Estimate Apache Kafka Infrastructure Costs",
-    "description": "Calculate monthly costs for Apache Kafka clusters across cloud providers and deployment models.",
-    "step": [
-      { "@type": "HowToStep", "text": "Select your cloud provider and cluster type" },
-      { "@type": "HowToStep", "text": "Enter your throughput, storage, and retention requirements" },
-      { "@type": "HowToStep", "text": "Set the replication factor and number of topics" },
-      { "@type": "HowToStep", "text": "View your total monthly cost estimate and breakdown" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Kafka Cost: Compare Cloud vs Self-Hosted & Free Calculator",
+    "description": "Kafka Cost: Compare Cloud vs Self-Hosted & Free Calculator. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/kafka-cost-calculator/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Kafka Cost: Compare Cloud vs Self-Hosted & Free Calculator | FreeOnlineToolkit" description="Kafka Cost: Compare Cloud vs Self-Hosted & Free Calculator. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Kafka Cost: Compare Cloud vs Self-Hosted & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Apache Kafka costs vary 5-10x depending on deployment model: self-managed on EC2 is cheapest in raw dollars but requires dedicated DevOps expertise.</li>
+      <li>Managed services (Confluent Cloud, AWS MSK, Azure Event Hubs) cost more but eliminate the operational burden of broker management, upgrades, and monitoring.</li>
+      <li>Replication factor significantly impacts storage costs - a replication factor of 3 triples storage requirements for self-managed clusters.</li>
+      <li>Data transfer (egress) is often the hidden cost driver at scale - cloud providers charge $0.04-$0.12 per GB transferred.</li>
+      <li>Most production Kafka deployments use 3-7 days of retention and offload older data to cheaper object storage (S3, GCS) to control costs.</li>
+    </ul>
+  </div>
+
+    <p>Apache Kafka has become the backbone of real-time data infrastructure for companies ranging from startups to Fortune 500 enterprises. Originally developed at LinkedIn and open-sourced in 2011, Kafka processes trillions of messages per day across organisations like Netflix, Uber, Airbnb, and Goldman Sachs. But the cost of running Kafka varies enormously depending on your deployment model, throughput requirements, and operational capabilities - making cost estimation essential before committing to a platform.</p>
+
+    <p>The three main deployment models are <strong>fully managed services</strong> (Confluent Cloud, AWS MSK, Azure Event Hubs), <strong>self-managed on cloud VMs</strong> (running your own Kafka brokers on EC2, Azure VMs, or Compute Engine), and <strong>on-premise</strong> (running on your own hardware). Managed services charge a premium but handle broker provisioning, software upgrades, security patches, monitoring, and auto-scaling. Self-managed deployments save 30-60% on raw infrastructure costs but require a dedicated DevOps team with Kafka expertise.</p>
+
+    <p>Understanding the <strong>cost components</strong> is key to accurate budgeting. <strong>Compute</strong> (broker instances) is the largest cost for most deployments. <strong>Storage</strong> depends on throughput, retention period, and replication factor - a cluster ingesting 100 MB/s with 7-day retention and replication factor 3 needs roughly 180 TB of storage. <strong>Data transfer</strong> (network egress) is often the surprise cost: at $0.05-$0.12 per GB, transferring 100 TB/month adds $5,000-$12,000 to your bill.</p>
+
+    <p>For <strong>cost optimisation</strong>, the most impactful levers are retention period (3-7 days instead of 30+), tiered storage (offloading old data to S3/GCS), right-sizing broker instances, and using reserved instances or committed-use discounts. Many teams start with a managed service to get to market quickly, then evaluate self-management once their Kafka expertise and throughput justify the operational investment.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Estimate your monthly Apache Kafka infrastructure costs across cloud providers. Compare Confluent Cloud, AWS MSK, Azure Event Hubs, and self-managed clusters. Plan your streaming data budget with confidence.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Kafka Cluster Cost Estimator</h2>
 
@@ -132,6 +151,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This Kafka cost estimator compares monthly costs across <strong>8 deployment options</strong> including Confluent Cloud (Basic, Standard, Enterprise), AWS MSK, and self-managed clusters on AWS, Azure, and GCP. Results include a breakdown by <strong>compute</strong>, <strong>storage</strong>, and <strong>data transfer</strong>, plus a visual cost comparison bar chart and an automatic comparison with an alternative deployment model.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use This Kafka Cost Calculator</h2>
       <p>Select your <strong>cloud provider</strong> and <strong>cluster type</strong> (Confluent Cloud, AWS MSK, Azure Event Hubs, or self-managed). Enter your expected <strong>throughput</strong> in MB/s, <strong>storage</strong> in TB, and <strong>retention period</strong> in days. Choose a <strong>replication factor</strong> of 2 for development or 3 for production. The calculator shows your total monthly cost broken down by compute, storage, and data transfer.</p>
     </div>
@@ -150,12 +174,18 @@ const jsonLd = [
       { question: "Does replication factor affect cost?", answer: "Yes, significantly. A replication factor of 3 triples your storage costs for self-managed clusters. For managed services, replication costs are built into the storage price. We recommend factor 3 for production and factor 2 for development." },
       { question: "How does retention period impact cost?", answer: "Longer retention increases storage costs because more data remains on the brokers. Most production deployments use 3-7 days of retention and offload older data to cheaper storage like S3 or GCS." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your throughput, storage, and retention requirements above to compare costs across providers. Start with the managed option that fits your team's expertise level, then compare with self-managed to see the potential savings. Factor in the operational cost of managing your own cluster (typically 0.5-2 FTEs for production Kafka) when comparing options.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="kafka-cost-calculator" category="developer" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

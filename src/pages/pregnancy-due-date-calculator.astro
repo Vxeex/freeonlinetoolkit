@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Pregnancy Due Date: Calculate Your Baby's Arrival",
+    "description": "Understand how due dates are calculated using Naegele's rule, what trimesters mean, and how to track your pregnancy week by week. Free due date calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/pregnancy-due-date-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Your Pregnancy Due Date",
     "description": "Calculate your estimated due date using the first day of your last menstrual period.",
@@ -17,12 +28,32 @@ const jsonLd = [
       { "@type": "HowToStep", "text": "Enter your average cycle length (default 28 days)" },
       { "@type": "HowToStep", "text": "Click Calculate to see your estimated due date and pregnancy timeline" },
     ],
-  }
+  },
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Pregnancy Due Date Calculator</h1></fragment>
+<ToolLayout title="Pregnancy Due Date: Calculate Your Baby's Arrival | FreeOnlineToolkit" description="Understand how due dates are calculated using Naegele's rule, what trimesters mean, and how to track your pregnancy week by week. Free due date calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Pregnancy Due Date: Calculate Your Baby's Arrival</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Only about 5% of babies arrive on their exact due date — most are born between 38 and 42 weeks, with the due date marking the midpoint of a normal range.</li>
+      <li>Naegele's rule adds 280 days (40 weeks) to the first day of your last menstrual period, adjusted for cycle length variations.</li>
+      <li>Pregnancy is counted from the first day of your LMP, not from conception — you're already considered "2 weeks pregnant" at the time of fertilisation.</li>
+      <li>Each trimester brings distinct developmental milestones: organ formation (1st), growth and movement (2nd), brain development and weight gain (3rd).</li>
+      <li>For the most accurate dating, a first-trimester ultrasound between 8–13 weeks is considered the gold standard.</li>
+    </ul>
+  </div>
+
+  <p>One of the first questions every expectant parent asks is "when is the baby due?" While it seems like a simple question, calculating a pregnancy due date involves some fascinating biology and a healthy dose of estimation. The standard method, <strong>Naegele's rule</strong>, has been used since the early 1800s: add 280 days (exactly 40 weeks) to the first day of your last menstrual period (LMP). This works because ovulation typically occurs about 14 days after the start of your period, and gestation from conception is approximately 266 days — so 266 + 14 = 280 days from LMP.</p>
+
+  <p>Here's what surprises many first-time parents: pregnancy is <strong>dated from your last period, not from conception</strong>. This means that at the moment of fertilisation, you're already considered "2 weeks pregnant." It also means that during the first two official weeks of pregnancy, you're not actually pregnant yet — your body is preparing for ovulation. This dating convention, while counterintuitive, is standardised across obstetrics worldwide and is how all pregnancy milestones and trimester boundaries are defined.</p>
+
+  <p>The three <strong>trimesters</strong> each span roughly 13 weeks and represent distinct phases of development. The <strong>first trimester</strong> (weeks 1–12) is when all major organs form — the heart starts beating around week 6, and by week 12, the baby has fingers, toes, and functioning organ systems. The <strong>second trimester</strong> (weeks 13–27) is the growth phase — the baby doubles in size, begins moving, and develops senses. The <strong>third trimester</strong> (weeks 28–40) is about final maturation — the brain develops rapidly, the baby gains weight (about half a pound per week), and the lungs prepare for breathing.</p>
+
+  <p>Cycle length significantly affects the due date. If your cycle is longer than 28 days (say, 32), ovulation occurs later, so the due date shifts forward by 4 days. If shorter (say, 25), it shifts back by 3 days. This adjustment is important for accuracy — the standard 28-day assumption can be off by a week or more for women with longer or shorter cycles. The calculator below accounts for this automatically.</p>
+
   <fragment slot="intro">
     <p class="tool-intro">Estimate your due date based on your last menstrual period or conception date. See your current pregnancy week, trimester, and key milestones — fast and free.</p>
   </fragment>
@@ -82,8 +113,9 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use</h2>
+      <h2>What This Calculator Shows</h2>
       <p>Select whether to calculate based on your <strong>LMP</strong> or <strong>conception date</strong>. If using LMP, enter the first day of your last period and your average cycle length. The calculator uses <strong>Naegele's rule</strong>: 280 days from LMP, adjusted for cycle length.</p>
+      <p>The results show your estimated due date, current pregnancy week and trimester, weeks remaining, and estimated conception date.</p>
     </div>
 
     <FAQ items={[
@@ -92,6 +124,11 @@ const jsonLd = [
       { question: "How are trimesters divided?", answer: "First trimester: weeks 1-12. Second trimester: weeks 13-27. Third trimester: week 28 until birth." },
       { question: "Does cycle length affect the due date?", answer: "Yes. If your cycle is longer than 28 days, ovulation happens later, so the due date shifts forward. If shorter, it shifts backward." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Once you know your due date, schedule your first prenatal appointment (typically around 8 weeks). Start taking prenatal vitamins with folic acid if you haven't already. Use our <a href="/ovulation-calculator/">Ovulation Calculator</a> if you're still trying to conceive or want to understand your fertile window. Track your pregnancy milestones weekly — each stage brings important developmental changes worth knowing about.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

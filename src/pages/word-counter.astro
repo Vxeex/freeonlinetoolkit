@@ -9,25 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Count Words",
-    "description": "Count words, characters, and other text statistics in real time.",
-    "step": [
-      { "@type": "HowToStep", "text": "Type or paste your text into the input area" },
-      { "@type": "HowToStep", "text": "View real-time statistics: word count, character count, sentences, and paragraphs" },
-      { "@type": "HowToStep", "text": "Use the Clear button to reset and start over" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Word Counter: Count Words, Characters & Sentences",
+    "description": "Word Counter: Count Words, Characters & Sentences. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/word-counter/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Word Counter: Count Words, Characters & Sentences | FreeOnlineToolkit" description="Word Counter: Count Words, Characters & Sentences. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Word Counter: Count Words, Characters & Sentences</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Word count tools are essential for writers, students, and SEO professionals who need to meet specific length requirements for essays, articles, and social media posts.</li>
+      <li>The average adult reads at 200-250 words per minute - knowing your word count helps estimate reading time for blog posts, presentations, and scripts.</li>
+      <li>Character count matters for meta descriptions (150-160 chars), Twitter/X posts (280 chars), and SMS messages (160 chars per segment).</li>
+      <li>Sentence and paragraph counts help you gauge content structure and readability - shorter sentences and paragraphs improve comprehension.</li>
+      <li>All processing happens in your browser - your text is never sent to any server or stored anywhere.</li>
+    </ul>
+  </div>
+
+    <p>Whether you are writing an academic essay, a blog post, or a social media caption, knowing your word count is more than just a number - it is a fundamental part of effective communication. Different platforms, publications, and audiences expect different lengths, and hitting the right target can be the difference between content that gets read and content that gets skipped. A 500-word blog post may feel thin to an SEO-focused audience that expects 1,500-2,500 words, while a 280-character tweet demands ruthless concision.</p>
+
+    <p>Word count tools have evolved far beyond simple counters. Modern text analysers track characters (with and without spaces), sentences, paragraphs, and estimated reading time - all of which serve different purposes. <strong>Character count</strong> is critical for meta descriptions in search engine results (Google truncates around 155-160 characters), social media bios, and SMS messages. <strong>Sentence count</strong> helps writers maintain variety in sentence length, which directly affects readability scores like the Flesch-Kincaid index.</p>
+
+    <p>The relationship between word count and <strong>reading time</strong> is particularly valuable for content creators. Bloggers display estimated reading times to set reader expectations - a study by Medium found that 7-minute articles (roughly 1,600 words) get the most engagement. Podcasters and video creators use speaking time estimates (typically 130-170 words per minute for natural delivery) to script episodes that fit their target duration. A 30-minute podcast episode typically needs about 4,500-5,100 words of script.</p>
+
+    <p>For <strong>SEO professionals</strong>, word count is a ranking signal - not because longer content inherently ranks higher, but because comprehensive coverage of a topic tends to attract more backlinks and engagement. Studies consistently show that top-ranking pages average 1,400-2,500 words for competitive keywords. However, padding content with filler to hit a word count backfires - search engines increasingly reward depth and usefulness over raw length. The goal should always be to write exactly as many words as the topic demands, and a good word counter helps you know when you have hit that mark.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Count words, characters, sentences, and paragraphs in real time. Perfect for writers, students, SEO professionals, and anyone who needs to track text length.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Word Counter</h2>
       <div class="form-group">
@@ -67,6 +87,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This word counter provides six real-time statistics as you type: <strong>total word count</strong>, <strong>character count</strong> (with spaces), <strong>character count without spaces</strong>, <strong>sentence count</strong>, <strong>paragraph count</strong>, and <strong>estimated reading time</strong> (based on 200 words per minute). All counts update instantly - no button to click - so you can write freely while tracking your progress toward any length target.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use the Word Counter</h2>
       <p>Simply <strong>type</strong> or <strong>paste</strong> your text into the text area, and the statistics update automatically in real time. The tool shows: <strong>word count</strong>, <strong>character count</strong> (with and without spaces), <strong>sentence count</strong>, <strong>paragraph count</strong>, and estimated <strong>reading time</strong>.</p>
     </div>
@@ -86,12 +111,18 @@ const jsonLd = [
       { question: "How is reading time calculated?", answer: "Reading time is calculated by dividing the total word count by 200 (average adult reading speed). The result is rounded to one decimal place." },
       { question: "Is my text saved or stored anywhere?", answer: "No. All text processing happens entirely in your browser. Your text is never sent to any server, stored, or logged." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Paste or type your text above to get an instant word count. If you are writing for a specific platform, keep these targets in mind: blog posts (1,500-2,500 words for SEO), meta descriptions (150-160 characters), and social media (280 chars for Twitter/X, 1,200-1,500 chars for LinkedIn). For reading or speaking time estimates, check out our <a href="/reading-time-calculator">Reading Time Calculator</a>.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="word-counter" category="utility" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 function countWords() {

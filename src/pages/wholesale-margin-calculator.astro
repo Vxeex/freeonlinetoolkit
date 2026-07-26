@@ -9,27 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Calculate Wholesale Pricing",
-    "description": "Calculate wholesale prices, retail prices, and profit margins for B2B wholesale businesses.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter your product cost from the manufacturer or supplier" },
-      { "@type": "HowToStep", "text": "Input your desired wholesale margin percentage" },
-      { "@type": "HowToStep", "text": "Set the retail markup percentage your retailers will use" },
-      { "@type": "HowToStep", "text": "Enter the order quantity to see total revenue and profit" },
-      { "@type": "HowToStep", "text": "Click Calculate to see wholesale price, retail price, and profit breakdown" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Wholesale Margin: Price Products for Profit & Free Calculator",
+    "description": "Wholesale Margin: Price Products for Profit & Free Calculator. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/wholesale-margin-calculator/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Wholesale Margin: Price Products for Profit & Free Calculator | FreeOnlineToolkit" description="Wholesale Margin: Price Products for Profit & Free Calculator. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Wholesale Margin: Price Products for Profit & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Wholesale margin is the profit percentage a wholesaler earns: (Wholesale Price - Cost) / Wholesale Price x 100. Healthy margins range from 20-40%.</li>
+      <li>Keystone pricing (100% markup, doubling the wholesale price) is the standard retail pricing strategy in most industries.</li>
+      <li>The difference between margin and markup is crucial: margin is profit as a percentage of selling price, while markup is profit as a percentage of cost.</li>
+      <li>Setting wholesale prices at 2-3x your production cost is a common starting point, but competitive research and industry norms should guide final pricing.</li>
+      <li>Wholesale pricing must leave room for both the wholesaler's profit AND the retailer's profit - if the retail price exceeds market rates, retailers will not buy.</li>
+    </ul>
+  </div>
+
+    <p>Wholesale pricing is the art of setting prices that work for three parties simultaneously: the manufacturer (who needs to cover production costs), the wholesaler (who needs a profit margin for distribution), and the retailer (who needs markup space to sell at a competitive retail price). Getting this balance right is the foundation of successful B2B commerce.</p>
+
+    <p>The key distinction between <strong>margin and markup</strong> confuses many new wholesalers. Margin is the profit expressed as a percentage of the selling price: (Price - Cost) / Price x 100. Markup is the profit expressed as a percentage of the cost: (Price - Cost) / Cost x 100. A product that costs $10 and sells for $20 has a 50% margin but a 100% markup. Understanding which metric your industry uses is essential for accurate pricing and negotiation.</p>
+
+    <p><strong>Keystone pricing</strong> - setting the retail price at double the wholesale price (100% markup) - is the most common retail pricing convention. This means a product wholesaled at $15 retails for $30. The retailer earns $15 per unit (50% margin), and the wholesaler earns their margin on the $15 wholesale price. This convention is so deeply embedded in retail culture that buyers expect it.</p>
+
+    <p>Setting <strong>optimal wholesale pricing</strong> requires researching your competitive landscape, understanding your target retailers' margin expectations, and accurately accounting for your own costs. A common formula is: Wholesale Price = Total Cost Per Unit / (1 - Desired Margin%). For example, if your total cost is $10 and you want a 30% margin: $10 / 0.70 = $14.29 wholesale price.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Calculate wholesale pricing, bulk discounts, and profit margins with confidence. This tool helps B2B sellers and manufacturers determine optimal wholesale and retail prices based on their costs and desired margins.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Wholesale Margin Calculator</h2>
       <div class="form-group">
@@ -75,6 +93,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This wholesale margin calculator computes your <strong>wholesale price per unit</strong>, <strong>wholesale profit per unit</strong>, <strong>recommended retail price</strong>, <strong>retail profit for your buyers</strong>, <strong>total order revenue and profit</strong>, and the <strong>margin on retail</strong> - ensuring your pricing works for both you and your retail partners.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use</h2>
       <p>This wholesale margin calculator makes B2B pricing straightforward. Start by entering your <strong>product cost</strong> (what you pay the manufacturer). Then set your <strong>desired wholesale margin</strong> &mdash; the profit percentage you want to earn as a wholesaler.</p>
       <p>Enter the <strong>retail markup</strong> your retailers will apply. The default of 100% is keystone pricing, standard in most retail industries. Finally, enter the <strong>order quantity</strong> to see totals for the full order.</p>
@@ -103,12 +126,18 @@ const jsonLd = [
       { question: "What is the difference between margin and markup?", answer: "Margin (profit margin) is the percentage of the selling price that is profit: (Price - Cost) / Price * 100. Markup is the percentage added to the cost to determine the selling price: (Price - Cost) / Cost * 100." },
       { question: "How do I set wholesale pricing?", answer: "To set wholesale pricing, start with your product cost, add operating expenses per unit, then add your desired profit margin. Research competitor pricing and industry standards. A common approach is to set wholesale price at 2-3 times your cost." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your product cost, desired margin, and retail markup above to calculate optimal wholesale pricing. Research your industry's standard margins and check competitor pricing before finalising. Remember: your wholesale price must leave room for retailers to earn their margin while keeping the final retail price competitive in the market.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="wholesale-margin-calculator" category="ecommerce" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

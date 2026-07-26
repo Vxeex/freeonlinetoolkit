@@ -9,26 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Check DNS Propagation",
-    "description": "Check DNS records worldwide using multiple global server locations.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter the domain name you want to check" },
-      { "@type": "HowToStep", "text": "Select the DNS record type (A, AAAA, CNAME, MX, NS, TXT, or SOA)" },
-      { "@type": "HowToStep", "text": "Click Check DNS to start the lookup" },
-      { "@type": "HowToStep", "text": "Review DNS records and propagation status from global servers" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "DNS Checker: Check Propagation & DNS Records",
+    "description": "DNS Checker: Check Propagation & DNS Records. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/dns-checker/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="DNS Checker: Check Propagation & DNS Records | FreeOnlineToolkit" description="DNS Checker: Check Propagation & DNS Records. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>DNS Checker: Check Propagation & DNS Records</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>DNS propagation is the time it takes for DNS record changes to spread across all global DNS servers - typically 24-48 hours, though it can be much faster with low TTL values.</li>
+      <li>TTL (Time To Live) controls how long DNS resolvers cache your records - lower your TTL to 300 seconds (5 minutes) at least 24 hours before making DNS changes.</li>
+      <li>The seven main DNS record types are A, AAAA, CNAME, MX, NS, TXT, and SOA - each serves a specific purpose from routing web traffic to authenticating email.</li>
+      <li>Different ISPs and DNS resolvers may cache records for different durations, which is why DNS changes appear at different times from different locations.</li>
+      <li>Use Google Public DNS (8.8.8.8) or Cloudflare DNS (1.1.1.1) for faster propagation and more accurate results than your ISP's default resolver.</li>
+    </ul>
+  </div>
+
+    <p>The Domain Name System (DNS) is often called the "phone book of the internet" - it translates human-readable domain names like example.com into IP addresses that computers use to route traffic. Every time you visit a website, send an email, or connect to any internet service, a DNS lookup happens behind the scenes. Understanding DNS is essential for anyone managing websites, email, or network infrastructure.</p>
+
+    <p>DNS works through a hierarchy of <strong>authoritative nameservers</strong> and <strong>recursive resolvers</strong>. When you type a URL into your browser, your device asks a recursive resolver to find the answer. The resolver checks its cache first, then queries authoritative nameservers up the hierarchy until it finds the definitive answer. This caching mechanism is what makes DNS fast - but it is also what makes DNS changes slow to propagate globally.</p>
+
+    <p><strong>TTL (Time To Live)</strong> is the most important concept in DNS change management. Every DNS record has a TTL value (in seconds) that tells resolvers how long to cache the answer. A TTL of 3600 (1 hour) means that after you change a record, some resolvers will continue serving the old value for up to an hour. Best practice: lower your TTL to 300 seconds at least 24 hours before making planned changes, then raise it back to a higher value after propagation is complete.</p>
+
+    <p>The seven primary <strong>DNS record types</strong> each serve specific functions. <strong>A records</strong> map domains to IPv4 addresses. <strong>AAAA records</strong> do the same for IPv6. <strong>CNAME records</strong> create aliases. <strong>MX records</strong> direct email to mail servers. <strong>NS records</strong> specify authoritative nameservers. <strong>TXT records</strong> store text data for email authentication (SPF, DKIM, DMARC). <strong>SOA records</strong> contain administrative metadata about the zone.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Check DNS records from multiple locations worldwide. Enter a domain name and select a record type to see how DNS has resolved across global server locations. Useful for verifying DNS changes after migration or updates.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2><i class="fa-solid fa-globe" style="margin-right:10px;color:var(--color-primary);"></i>DNS Lookup</h2>
 
@@ -112,6 +131,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This DNS checker queries your domain from <strong>10 global locations</strong> and displays the resolved records, average latency, propagation status by location, and TTL progress bars. It supports all seven major record types (A, AAAA, CNAME, MX, NS, TXT, SOA) and provides a summary showing total locations checked, how many have propagated, and average response latency.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use the DNS Propagation Checker</h2>
       <ol>
         <li><strong>Enter a domain name</strong> &mdash; type the domain you want to check (e.g. <code>example.com</code>).</li>
@@ -169,12 +193,18 @@ const jsonLd = [
       { question: "Why are my DNS changes not visible everywhere?", answer: "Different ISPs and DNS resolvers cache records for different durations. Some may respect your TTL exactly, while others may enforce minimum caching times. Flushing your local DNS cache may help." },
       { question: "What is the difference between authoritative and recursive DNS?", answer: "Authoritative DNS servers hold the official records for a domain. Recursive DNS servers query authoritative servers on your behalf and cache the results." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your domain name and select a record type above to check DNS propagation. If you are planning DNS changes, lower your TTL to 300 seconds at least 24 hours before making the change, then verify propagation from multiple locations. After full propagation, raise your TTL back to 3600+ seconds for optimal performance.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="dns-checker" category="developer" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Split Tester: A/B Test Statistical Significance",
+    "description": "Split Tester — comprehensive guide with free online calculator. Statistical significance tells you whether the difference between two conversion rates is real or just random chance — the standard threshold is 95% confidence (p < 0.05). For reliable A/B test results, aim for at least 100 conversions per channel — small sample sizes produce unreliable results regardless of the statistical test used.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/marketing-split-tester/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Use the Marketing Split Tester",
     "description": "Compare conversion rates between two marketing channels and determine if the difference is statistically significant.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Marketing Channel Split Tester</h1></fragment>
+<ToolLayout title="Split Tester: A/B Test Statistical Significance | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Split Tester: A/B Test Statistical Significance</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Statistical significance tells you whether the difference between two conversion rates is real or just random chance — the standard threshold is 95% confidence (p < 0.05).</li>
+      <li>For reliable A/B test results, aim for at least 100 conversions per channel — small sample sizes produce unreliable results regardless of the statistical test used.</li>
+      <li>The two-proportion z-test compares conversion rates by calculating whether the observed difference exceeds what random variation would produce.</li>
+      <li>Never call a test early just because one variant is "winning" — wait until you have sufficient sample size to reach statistical significance at your chosen confidence level.</li>
+    </ul>
+  </div>
+
+  <p>A/B testing (also called split testing) is the gold standard for data-driven marketing decisions. Instead of guessing which ad creative, landing page, or marketing channel performs better, you run both simultaneously and let the data decide. But interpreting the results correctly requires understanding statistical significance — the mathematical framework that distinguishes real differences from random noise.</p>
+
+  <p>The core concept is simple: if Channel A has a 2.0% conversion rate and Channel B has a 2.5%, is B actually better, or could the difference be due to random variation? Statistical significance testing answers this question by calculating the probability that the observed difference occurred by chance. At 95% confidence, there is only a 5% chance that a "significant" result is a false positive.</p>
+
+  <p>The two-proportion z-test is the standard method for comparing conversion rates. It calculates a z-score based on the difference between the two rates, the sample sizes, and the pooled conversion rate. If the absolute z-score exceeds the critical value (1.96 for 95% confidence), the difference is statistically significant. The p-value tells you the exact probability of observing this difference by chance.</p>
+
+  <p>Sample size is the most important factor in A/B testing reliability. A test with 50 visitors per channel can produce wildly misleading results, while a test with 5,000 visitors per channel can detect even small differences reliably. As a rule of thumb, you need at least 100 conversions per channel for meaningful results, and more is always better.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Compare two marketing channels and determine if the difference in conversion rates is statistically significant. Make data-driven budget decisions with confidence.</p>
   </fragment>
@@ -93,6 +124,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator performs a two-proportion z-test comparing two marketing channels. Enter visitor counts and conversions for each channel, select your confidence level (90%, 95%, or 99%), and see the conversion rates, difference, z-score, p-value, statistical significance determination, and recommended action.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use</h2>
       <p>Name your two marketing channels and enter the <strong>number of visitors</strong> and <strong>conversions</strong> for each. The calculator uses a two-proportion z-test to compare the conversion rates. Select your desired <strong>confidence level</strong> — 95% is standard for most marketing decisions.</p>
@@ -114,7 +150,12 @@ const jsonLd = [
       { question: "How many visitors do I need for a split test?", answer: "For reliable results, aim for at least 100 conversions per channel. The more traffic and conversions you have, the smaller the difference you can detect. Small sample sizes can lead to false positives or missed opportunities." },
       { question: "What should I do if there is no clear winner?", answer: "If there is no statistically significant winner, continue running both channels and gather more data. You can also try improving your ad creatives, targeting, or landing pages before testing again." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use this calculator before making budget reallocation decisions based on channel performance. If the result is not statistically significant, continue gathering data rather than making premature changes. Aim for at least 100 conversions per channel before drawing conclusions. Run tests for at least 1–2 full business cycles to account for day-of-week and time-of-day variation.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="marketing-split-tester" category="ecommerce" />

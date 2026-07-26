@@ -9,25 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Convert Names to Japanese",
-    "description": "Convert English and Chinese names to Japanese katakana and hiragana using phonetic transliteration.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter an English or Chinese name in the input field" },
-      { "@type": "HowToStep", "text": "Choose the input language type (English or Chinese/Pinyin)" },
-      { "@type": "HowToStep", "text": "Click Convert to see your name in katakana and hiragana" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Name to Japanese: Convert Your Name to Katakana",
+    "description": "Name to Japanese: Convert Your Name to Katakana. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/name-to-japanese/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Name to Japanese: Convert Your Name to Katakana | FreeOnlineToolkit" description="Name to Japanese: Convert Your Name to Katakana. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Name to Japanese: Convert Your Name to Katakana</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Foreign names in Japanese are written in katakana - the script specifically designed for loanwords, foreign names, and onomatopoeia.</li>
+      <li>Japanese has a strict consonant-vowel syllable structure, so English names with consonant clusters (Smith, Chris) become longer in Japanese - this is normal and expected.</li>
+      <li>The sounds 'l' and 'r' are not distinguished in Japanese (both map to the r-row), 'th' becomes 's' or 'z', and 'v' becomes 'b' or the special character.</li>
+      <li>Chinese names can be input as pinyin or Chinese characters - each character maps to its Japanese on'yomi (Chinese-derived) reading from a dictionary of 250+ common name characters.</li>
+      <li>For official documents, passports, or tattoos, always verify your katakana name with a native Japanese speaker, as some names have multiple acceptable transliterations.</li>
+    </ul>
+  </div>
+
+    <p>Converting a name to Japanese is more than a fun exercise - it is a practical skill used daily by the millions of foreigners living in Japan, international businesses operating in the Japanese market, and anyone who needs their name written on a business card, name tag, or official document. Japanese uses three writing systems: <strong>kanji</strong> (Chinese characters for meaning), <strong>hiragana</strong> (native Japanese words and grammar), and <strong>katakana</strong> (foreign words, names, and emphasis). Foreign names are almost always written in katakana.</p>
+
+    <p>The conversion process is based on <strong>phonetic approximation</strong>. Japanese has roughly 100 distinct syllables compared to over 15,000 in English, so many English sounds must be mapped to their closest Japanese equivalent. The letters 'l' and 'r' both become the Japanese r-row because Japanese does not distinguish between these sounds. The 'th' sound becomes 's' or 'z', the 'v' sound uses a special character, and silent letters are dropped entirely. These rules follow standard transliteration conventions used in Japanese media and official documents.</p>
+
+    <p>The biggest structural challenge is that Japanese follows a strict <strong>consonant-vowel (CV) syllable pattern</strong> - every consonant (except 'n') must be followed by a vowel. English consonant clusters like 'st', 'str', 'nd', or 'mp' do not exist in Japanese, so each consonant in a cluster gets its own syllable. The name "Smith" (one syllable in English) becomes three syllables in Japanese. "Christopher" becomes six syllables. This lengthening is not a mistake - it is the natural and expected result of adapting English sounds to Japanese phonology.</p>
+
+    <p>For <strong>Chinese names</strong>, the process is different because Chinese characters already have Japanese readings. Each Chinese character has one or more "on'yomi" - pronunciations borrowed from Chinese centuries ago. Our converter includes a dictionary of over 250 common name characters covering both surnames and given names. For characters not in the dictionary, the converter preserves them in their original form. This on'yomi approach produces the most natural-sounding Japanese version of Chinese names.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">See how your name sounds in Japanese. Enter any English or Chinese name and get instant katakana and hiragana transliteration.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Name to Japanese Converter</h2>
       <div class="form-group">
@@ -93,6 +113,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This converter produces your name in <strong>katakana</strong> (the standard script for foreign names), <strong>hiragana</strong> (the same pronunciation in native script), and <strong>romaji</strong> (Latin-alphabet reading). It supports English names, Chinese pinyin input, and direct Chinese character input. Copy buttons let you quickly grab either script version.</p>
+    </div>
+
+<div class="content-section">
       <h2>How the Name to Japanese Converter Works</h2>
       <p>Japanese uses three writing systems: <strong>katakana</strong> for foreign words and names, <strong>hiragana</strong> for native Japanese words, and <strong>kanji</strong> for Chinese characters. When converting non-Japanese names, katakana is the standard script used — you will see it on business cards, official documents, and name tags throughout Japan.</p>
       <p>The conversion is based on <strong>phonetic approximation</strong>. Each sound in the original name is mapped to the closest equivalent sound in Japanese. Because Japanese has approximately 100 distinct syllables compared to over 15,000 in English, some sounds must be approximated. The letter "l" becomes "r", "th" becomes "s" or "z", and the "v" sound becomes "b" or uses the special character ヴ.</p>
@@ -140,12 +165,18 @@ const jsonLd = [
       { question: "Can I use this for official documents?", answer: "This tool is designed for educational and personal use. For official documents, passports, business registration, or legal purposes, follow the guidelines provided by the relevant Japanese authorities or consult with a professional translator." },
       { question: "How are Chinese characters converted to Japanese?", answer: "Each Chinese character has one or more Japanese on'yomi readings — pronunciations borrowed from Chinese over centuries. The converter uses a dictionary of over 250 common name characters to look up the standard Japanese reading. For example, the character 王 is read as オウ (ou) and 明 is read as メイ (mei) in Japanese." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your name above to see it in Japanese. Try both first and last names together for the most complete result. If you are using this for a tattoo, business card, or official document, verify the output with a native Japanese speaker - some names have multiple acceptable transliterations, and choosing the most natural-sounding one matters.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="name-to-japanese" category="utility" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

@@ -9,25 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Estimate Reading Time",
-    "description": "Calculate how long it takes to read text based on word count and reading speed.",
-    "step": [
-      { "@type": "HowToStep", "text": "Paste or type your text, or enter the word count directly" },
-      { "@type": "HowToStep", "text": "Adjust the reading speed (WPM) for your audience" },
-      { "@type": "HowToStep", "text": "View reading time, speaking time, and content statistics" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Reading Time Calculator: Estimate Read & Speak Time",
+    "description": "Reading Time Calculator: Estimate Read & Speak Time. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/reading-time-calculator/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Reading Time Calculator: Estimate Read & Speak Time | FreeOnlineToolkit" description="Reading Time Calculator: Estimate Read & Speak Time. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Reading Time Calculator: Estimate Read & Speak Time</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>The average adult reads at 200-250 words per minute for general content, but this varies significantly by content complexity and reader skill.</li>
+      <li>Displaying estimated reading time on blog posts increases engagement - Medium's data shows 7-minute articles (~1,600 words) receive the most total reading time.</li>
+      <li>Speaking speed (130-170 WPM) is slower than reading speed - a 30-minute podcast script needs about 4,500-5,100 words.</li>
+      <li>Content complexity matters: technical or academic text reduces reading speed by 30-50% compared to casual blog content.</li>
+      <li>Reading time estimates help content creators set reader expectations, plan presentation lengths, and script video or podcast episodes to target durations.</li>
+    </ul>
+  </div>
+
+    <p>Reading time has become one of the most useful metrics in content strategy. When a reader sees "7 min read" at the top of a blog post, they make an instant decision about whether to commit - and that small label has been shown to significantly increase completion rates. Understanding how long content takes to read (or speak) helps writers, bloggers, podcasters, and presenters plan their work with precision and set accurate expectations for their audiences.</p>
+
+    <p>The science of reading speed is well-studied. Research from eye-tracking studies shows that the average adult reads at <strong>200-250 words per minute</strong> for general web content, with significant variation based on text complexity, reader familiarity with the topic, and reading purpose (scanning vs deep reading). Speed readers can achieve 400-700 WPM, but comprehension typically drops above 300 WPM. Children and language learners read at 100-150 WPM. For most content creators, using 200 WPM as a baseline provides a reliable, conservative estimate.</p>
+
+    <p><strong>Speaking speed</strong> follows different rules. Natural conversational speech runs at about 130-170 words per minute, with formal presentations at the slower end (120-140 WPM) and casual podcast conversation at the faster end (150-175 WPM). This means a 1,500-word blog post takes about 6-7 minutes to read silently but 9-12 minutes to read aloud - a crucial distinction for anyone scripting voiceover, recording a podcast, or preparing a presentation. TED speakers typically script at 130-150 WPM for maximum clarity and impact.</p>
+
+    <p>For <strong>SEO and content marketing</strong>, word count and reading time are closely linked to engagement metrics. Studies by HubSpot, Backlinko, and others consistently find that long-form content (1,500-2,500 words) generates more backlinks, social shares, and organic traffic than shorter pieces. However, the quality of the content matters far more than raw length - a well-structured 1,000-word article that fully answers a reader's question will outperform a padded 3,000-word piece that buries the answer. The reading time calculator helps you find the right balance for your audience and topic.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Estimate exactly how long it takes to read or speak any text. Perfect for bloggers timing their articles, podcasters scripting episodes, and public speakers preparing presentations.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Reading Time Estimator</h2>
       <div class="form-group">
@@ -78,6 +98,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This reading time estimator calculates <strong>reading time</strong> and <strong>speaking time</strong> based on your text and adjustable speed settings. It also shows word count, character count, and sentence count. Choose from preset reading speeds (130-300 WPM) and speaking speeds (120-200 WPM) to match your audience - from children and learners to speed readers and rapid-fire podcasters.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use</h2>
       <p>Paste any text into the box, or enter a word count directly if you know it. Adjust the <strong>reading speed</strong> and <strong>speaking speed</strong> to match your audience. The calculator instantly shows estimated reading time, speaking time, and content statistics.</p>
       <p>Average adult reading speed is about 200-250 words per minute. Conversational speaking speed is around 140-160 words per minute.</p>
@@ -93,12 +118,18 @@ const jsonLd = [
       { question: "How long should a podcast script be?", answer: "A typical 30-minute podcast has about 4,500-5,000 spoken words (at 150 WPM). A 5-minute segment needs roughly 700-800 words." },
       { question: "How long does it take to read a book?", answer: "A typical novel has about 80,000-100,000 words. At average reading speed (200 WPM), a novel takes about 6.5-8.5 hours of total reading time." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Paste your text or enter a word count above to estimate reading and speaking times. For blog content, aim for 7-12 minutes (1,400-2,400 words). For podcast scripts, target 150 WPM and calculate based on your episode length. For presentations, use 130 WPM to account for pauses and audience interaction.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="reading-time-calculator" category="utility" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

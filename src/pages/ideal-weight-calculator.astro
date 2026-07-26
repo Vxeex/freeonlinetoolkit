@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Ideal Weight: Healthy Ranges & Free Calculator",
+    "description": "Understand ideal body weight ranges using four medical formulas. Compare Devine, Robinson, Miller, and Hamwi estimates to find a healthy target weight.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/ideal-weight-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Ideal Weight",
     "description": "Find your ideal weight range using multiple scientific formulas.",
@@ -21,8 +32,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Ideal Weight: Healthy Ranges & Free Calculator | FreeOnlineToolkit" description="Understand ideal body weight ranges using four medical formulas. Compare Devine, Robinson, Miller, and Hamwi estimates to find a healthy target weight." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Ideal Weight: Healthy Ranges & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>No single formula can determine your "perfect" weight — four medical formulas (Devine, Robinson, Miller, Hamwi) each produce slightly different estimates, and the consensus range is most useful.</li>
+      <li>These formulas were originally developed for medical drug dosing, not fitness goals, so treat them as general guidelines rather than absolute targets.</li>
+      <li>Ideal weight doesn't account for muscle mass, bone density, or body composition — a muscular person may healthily exceed any formula's estimate.</li>
+      <li>Frame size (small, medium, large) can shift your healthy weight by 10–15% in either direction from the calculated midpoint.</li>
+      <li>Focus on body fat percentage and overall fitness metrics rather than hitting a specific number on the scale.</li>
+    </ul>
+  </div>
+
+  <p>"What should I weigh?" is one of the most common health questions people ask, and the answer is more nuanced than any single number. <strong>Ideal body weight</strong> formulas provide a starting point — a range of weights associated with the lowest health risks for a given height and gender. But these formulas were developed for specific medical purposes (primarily drug dosing calculations) and don't account for individual differences in muscle mass, bone structure, or body composition.</p>
+
+  <p>This calculator uses four well-established medical formulas to give you a <strong>consensus range</strong> rather than a single target. The <strong>Devine formula</strong> (1974) is the most widely used in clinical settings and remains the standard for medication dosing. The <strong>Robinson formula</strong> (1983) and <strong>Miller formula</strong> (1983) were developed as refinements based on more modern population data. The <strong>Hamwi formula</strong> (1964) is the oldest but still commonly referenced in nutrition and dietetics.</p>
+
+  <p>It's important to understand what these formulas <em>don't</em> capture. They use only height and gender — they can't distinguish between a lean athlete and a sedentary person of the same height. A 180cm man who strength trains might weigh 85kg and be in excellent health, while the Devine formula suggests 74.5kg. Similarly, bone density varies between individuals and ethnic groups, affecting weight independently of body fat. The formulas also don't adjust for age, though healthy weight ranges tend to shift slightly upward with age.</p>
+
+  <p>Rather than fixating on a single number, use the consensus range as a <strong>general guide</strong>. If you fall within 10% of the range, you're likely in a healthy zone. If you're significantly above or below, consider measuring your <strong>body fat percentage</strong> for a more meaningful assessment. Body composition — the ratio of fat to lean mass — is a far better predictor of health outcomes than weight alone.</p>
+
   <fragment slot="intro">
     <p class="tool-intro">Find your ideal weight range based on your height and gender. This calculator uses four scientific formulas (Devine, Robinson, Miller, Hamwi) and shows a consensus range.</p>
   </fragment>
@@ -61,7 +92,7 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use</h2>
+      <h2>What This Calculator Shows</h2>
       <p>Select your <strong>gender</strong> and enter your <strong>height</strong> in centimeters. The calculator shows your ideal weight according to four different medical formulas, plus a consensus range.</p>
       <p>These formulas were developed for medical use to estimate ideal body weight for dosage calculations. They provide a general guideline, not an exact target.</p>
     </div>
@@ -80,6 +111,11 @@ const jsonLd = [
       { question: "What is ideal body weight?", answer: "Ideal body weight is a weight range associated with the lowest health risks. These formulas were originally developed for medical dosing but are commonly used as general health guidelines." },
       { question: "Which formula is most accurate?", answer: "No single formula is universally most accurate. The Devine formula is most commonly used in clinical settings. Your ideal weight depends on your body composition, frame size, and muscle mass." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use the consensus range as a general guide, not a strict target. For a more complete health picture, combine this with our <a href="/bmi-calculator/">BMI Calculator</a> and <a href="/body-fat-calculator/">Body Fat Calculator</a>. If you're working toward a weight goal, focus on sustainable habits — balanced nutrition, regular exercise, and adequate sleep — rather than crash dieting to hit a specific number. Consult a healthcare professional for personalised advice.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "EV Charging Cost: Home vs Public Charging & Free Calculator",
+    "description": "EV Charging Cost — comprehensive guide with free online calculator. Driving an EV costs roughly 4–5 cents per mile in electricity versus 10–12 cents per mile for a gasoline car — a savings of $800–$1,500 per year for the average driver. Home charging at off-peak electricity rates is the cheapest option, while DC fast charging at public stations costs 3–5× more per kWh than residential rates.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/ev-charging-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate EV Charging Costs",
     "description": "Calculate electric vehicle charging costs and compare with gasoline vehicle costs.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="EV Charging Cost: Home vs Public Charging & Free Calculator | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>EV Charging Cost: Home vs Public Charging & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Driving an EV costs roughly 4–5 cents per mile in electricity versus 10–12 cents per mile for a gasoline car — a savings of $800–$1,500 per year for the average driver.</li>
+      <li>Home charging at off-peak electricity rates is the cheapest option, while DC fast charging at public stations costs 3–5× more per kWh than residential rates.</li>
+      <li>Level 2 home chargers (7.2 kW) can fully charge most EVs overnight, while Level 3 DC fast chargers (50+ kW) add 150–200 miles of range in about 30 minutes.</li>
+      <li>The 5-year fuel savings from switching to an EV can exceed $5,000–$8,000, which helps offset the higher purchase price of electric vehicles.</li>
+    </ul>
+  </div>
+
+  <p>Electric vehicles are rapidly moving from niche to mainstream, with EV sales accounting for over 7% of new car purchases in 2023. The primary financial motivation for most buyers is lower operating costs — electricity is significantly cheaper than gasoline per mile driven. But the actual savings depend on several factors including your electricity rate, driving habits, charging method, and the efficiency of your specific EV.</p>
+
+  <p>EV charging costs are straightforward to calculate: energy needed (kWh) multiplied by your electricity rate ($/kWh). A typical EV with a 75 kWh battery going from 20% to 80% charge needs 45 kWh. At the US average residential rate of $0.14/kWh, that costs $6.30 — versus roughly $25–$35 for the equivalent range in a gasoline car.</p>
+
+  <p>The charging method you choose significantly affects cost. Home charging at residential rates ($0.10–$0.20/kWh) is the most economical. Public Level 2 chargers typically cost $0.20–$0.30/kWh. DC fast chargers at highway stations can cost $0.30–$0.60/kWh — roughly the same as gasoline on a per-mile basis. The takeaway: charge at home whenever possible.</p>
+
+  <p>Electricity rates also vary by time of day. Many utilities offer time-of-use (TOU) plans where off-peak electricity (typically overnight) costs 50–70% less than peak rates. Programming your EV to charge between midnight and 6 AM can cut your charging costs nearly in half.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Calculate the cost of charging your electric vehicle and compare it with gasoline costs. See how much you can save per month, per year, and over 5 years by driving electric.</p>
   </fragment>
@@ -101,6 +132,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator determines the cost for a single charging session based on battery capacity, charge levels, electricity rate, and charging speed. It also calculates monthly and annual fuel costs for your EV versus a gasoline car, showing your potential savings per month, per year, and over 5 years.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the EV Charging Calculator</h2>
       <p>Start by entering your EV's <strong>battery capacity</strong> in kWh (typically 40-100 kWh for most electric cars) and your <strong>miles per kWh efficiency</strong> (most EVs average 3-4 miles per kWh). Enter your <strong>current charge percentage</strong> and <strong>target charge percentage</strong> to calculate how much energy you need to add.</p>
@@ -130,7 +166,12 @@ const jsonLd = [
       { question: "What is a good miles per kWh efficiency?", answer: "Most modern EVs achieve between 3.0 and 4.5 miles per kWh in mixed driving. Smaller EVs like the Tesla Model 3 can achieve 4.0-4.5 miles/kWh, while larger EVs like SUVs and trucks typically get 2.5-3.5 miles/kWh." },
       { question: "How much can I save by switching from gas to an EV?", answer: "The average driver saves $800-$1,500 per year on fuel costs by switching from a gas car to an EV. At current average rates, driving 12,000 miles per year in an EV costs about $480 in electricity versus $1,400 in gas for a 30 MPG car." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Use the calculator to estimate your specific savings based on your driving habits and local electricity rates. Check with your utility about time-of-use plans for cheaper overnight charging. If you are considering an EV purchase, factor in federal tax credits (up to $7,500), state incentives, and the fuel savings over your ownership period.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="ev-charging-calculator" category="automotive" />

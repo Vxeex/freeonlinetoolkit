@@ -9,27 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Estimate a Personal Injury Settlement",
-    "description": "Estimate your personal injury settlement value by entering medical expenses, lost wages, pain and suffering, and liability percentage.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter your total medical expenses including hospital bills, doctor visits, and therapy" },
-      { "@type": "HowToStep", "text": "Input your lost wages and any future lost income due to the injury" },
-      { "@type": "HowToStep", "text": "Select a pain and suffering multiplier based on injury severity from 1 to 5" },
-      { "@type": "HowToStep", "text": "Enter your liability percentage to account for comparative fault" },
-      { "@type": "HowToStep", "text": "Add any property damage and click Calculate to see your estimated settlement" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Personal Injury Settlement: Estimate Your Claim Value",
+    "description": "Personal Injury Settlement: Estimate Your Claim Value. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/personal-injury-calculator/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Personal Injury Settlement: Estimate Your Claim Value | FreeOnlineToolkit" description="Personal Injury Settlement: Estimate Your Claim Value. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Personal Injury Settlement: Estimate Your Claim Value</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Personal injury settlements are calculated using two types of damages: economic (medical bills, lost wages) and non-economic (pain and suffering).</li>
+      <li>The multiplier method is the most common way to estimate pain and suffering - your medical expenses are multiplied by 1-5 based on injury severity.</li>
+      <li>Comparative fault reduces your settlement by your percentage of responsibility - if you are 20% at fault, your settlement is reduced by 20%.</li>
+      <li>Most personal injury attorneys work on a contingency fee basis (typically 33%), meaning you pay nothing upfront and only pay if you win.</li>
+      <li>The average personal injury settlement in the US ranges from $10,000 to $75,000, but severe injury cases can reach millions of dollars.</li>
+    </ul>
+  </div>
+
+    <p>If you have been injured in an accident - whether a car crash, slip and fall, workplace incident, or medical malpractice - understanding how settlement values are calculated is essential for protecting your financial interests. Insurance companies use established formulas to evaluate claims, and knowing these formulas helps you recognise a fair offer and avoid accepting a lowball settlement. The two broad categories of damages are <strong>economic</strong> (quantifiable financial losses) and <strong>non-economic</strong> (pain, suffering, and diminished quality of life).</p>
+
+    <p><strong>Economic damages</strong> are straightforward to calculate: they include all medical expenses (emergency care, surgery, hospital stays, physical therapy, medications, and future medical costs), lost wages from time missed at work, lost future earning capacity if the injury affects your ability to work long-term, property damage (such as vehicle repair), and any out-of-pocket expenses related to the injury. Keeping meticulous records of every receipt, bill, and pay stub is critical - the more documentation you have, the stronger your claim.</p>
+
+    <p><strong>Non-economic damages</strong> (pain and suffering) are harder to quantify. The most common method is the <strong>multiplier method</strong>: your total economic damages are multiplied by a number between 1.5 and 5, depending on injury severity. A minor soft-tissue injury with a quick recovery might use a 1.5-2 multiplier, while a permanent spinal cord injury or traumatic brain injury could warrant a 4-5 multiplier. Insurance adjusters, attorneys, and courts all use variations of this method as a starting point for negotiations.</p>
+
+    <p><strong>Comparative fault</strong> (also called contributory negligence) is a critical factor in many states. If you share responsibility for the accident, your settlement is reduced proportionally. In a "pure comparative fault" state, you can recover damages even if you are 99% at fault (though the award is reduced by 99%). In a "modified comparative fault" state, you are barred from recovery if you exceed a threshold - typically 50% or 51% at fault. Understanding your state's rules is essential for setting realistic expectations about your settlement value.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Estimate the potential value of your personal injury claim. This settlement calculator considers medical expenses, lost wages, pain and suffering, and comparative fault to give you a realistic compensation range.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Injury Settlement Calculator</h2>
       <div class="form-group">
@@ -98,6 +116,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This settlement estimator calculates your <strong>economic damages</strong> (medical expenses, lost wages, future income), <strong>non-economic damages</strong> (pain and suffering via the multiplier method), a <strong>realistic settlement range</strong> (plus or minus 30%), and the <strong>estimated amount after a standard 33% attorney contingency fee</strong>. Adjust the liability percentage if you share any fault for the accident.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use the Personal Injury Settlement Estimator</h2>
       <p>Start by entering your <strong>total medical expenses</strong> including hospital stays, surgeries, doctor visits, physical therapy, and medications. Next, add any <strong>lost wages</strong> from time missed at work and <strong>future lost income</strong> if your injury affects your ability to earn in the future.</p>
       <p>Select a <strong>pain and suffering multiplier</strong> from 1 to 5 based on injury severity &mdash;minor injuries with quick recovery use a lower multiplier, while catastrophic or permanent injuries use a higher one. Enter your <strong>liability percentage</strong> if you share any fault for the accident, as comparative fault reduces your settlement proportionally.</p>
@@ -123,12 +146,18 @@ const jsonLd = [
       { question: "What costs are included in economic damages?", answer: "Economic damages cover all quantifiable financial losses: medical bills (emergency care, surgery, hospital stays, medications, physical therapy), lost wages and lost earning capacity, future medical costs, property damage, and out-of-pocket expenses related to the injury. Keep all receipts and documentation to support these claims." },
       { question: "Why is the attorney contingency fee typically 33%?", answer: "A 33% contingency fee means your attorney only gets paid if you win or settle. This fee covers investigation, medical record gathering, demand letters, negotiation with insurance companies, and litigation if needed. The percentage may vary from 25% to 40% depending on the case stage and jurisdiction." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your medical expenses, lost wages, and injury severity above to estimate your settlement value. Remember that this is an estimate - actual settlements depend on many factors including jurisdiction, insurance policy limits, and the quality of your legal representation. Consult with a personal injury attorney for case-specific advice, especially for injuries with long-term or permanent impact.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="personal-injury-calculator" category="legal" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

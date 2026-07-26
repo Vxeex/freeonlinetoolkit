@@ -9,6 +9,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Rent vs Buy: Which Is Right for You? & Free Calculator",
+    "description": "Compare the true total costs of renting versus buying a home over time, including opportunity cost, equity, and break-even analysis.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Compare Renting vs Buying a Home",
     "description": "Compare the total costs of renting versus buying a home over time, including the opportunity cost of your down payment.",
@@ -23,10 +33,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Rent vs Buy: Which Is Right for You? & Free Calculator — FreeOnlineToolkit" description="Compare the true total costs of renting versus buying a home over time. Find your break-even year." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Rent vs Buy: Which Is Right for You? & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Should you rent or buy your next home? This calculator compares the total costs of both options over time, including mortgage payments, taxes, maintenance, rent, and the opportunity cost of your down payment. Find your break-even year and make an informed decision.</p>
+    <div class="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>The rent vs buy decision depends heavily on <strong>how long you plan to stay</strong> — buying typically wins after 5-7 years</li>
+        <li>The <strong>opportunity cost of your down payment</strong> (what it could earn if invested) is a real cost that most buy-vs-rent analyses ignore</li>
+        <li>Homeownership costs include <strong>property taxes, insurance, maintenance (1%/year), and closing costs</strong> — the mortgage is only part of the picture</li>
+        <li>Renters who invest the <strong>difference between buying and renting costs</strong> can build comparable wealth through stock market returns</li>
+        <li>The <strong>break-even year</strong> — when buying becomes cheaper than renting — is the single most important number in this analysis</li>
+      </ul>
+    </div>
+
+    <p>"Should I rent or buy?" is one of the most consequential financial decisions most people will ever make. The conventional wisdom — "renting is throwing money away" — is an oversimplification that ignores the true costs of homeownership and the opportunity cost of tying up your savings in a down payment. The reality is that the right answer depends on your specific financial situation, how long you plan to stay, local market conditions, and what you would do with your money if you didn't buy a home.</p>
+
+    <p>When you buy a home, your costs include far more than the monthly mortgage payment. <strong>Property taxes</strong> typically add 1-2% of the home's value annually. <strong>Homeowner's insurance</strong> adds another 0.3-0.5%. <strong>Maintenance and repairs</strong> average about 1% of the home's value per year (higher for older homes). <strong>Closing costs</strong> of 2-5% are due at purchase, and <strong>selling costs</strong> (agent commissions, typically 5-6%) are due when you sell. These costs add up: on a $350,000 home, you might spend $2,500/month on mortgage payments but $3,500+/month in total ownership costs.</p>
+
+    <p>When you rent, your costs are more predictable — just the monthly rent, which typically rises 2-4% per year. The key advantage of renting is <strong>flexibility</strong>: you can relocate for a job, upsize or downsize, or respond to life changes without the friction and cost of selling a home. The key disadvantage is that you build no equity and are exposed to rent increases. However, renters who invest their down payment and the monthly savings (the difference between total buying cost and rent) in the stock market can build substantial wealth — often comparable to homeowners over long periods.</p>
+
+    <p>The <strong>break-even year</strong> is when the total cost of buying (including all expenses minus equity built) drops below the total cost of renting (including the opportunity cost of not investing your down payment). In most markets, this occurs between years 5 and 7. If you plan to stay less than 5 years, renting is almost always better. If you plan to stay 10+ years, buying almost always wins. The calculator below models all these variables to find your personal break-even point and project your net worth under both scenarios.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -115,6 +142,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator compares <strong>total cost of buying</strong> vs <strong>total cost of renting</strong> over your chosen timeframe. It shows the <strong>break-even year</strong> (when buying becomes cheaper), <strong>net worth under both scenarios</strong>, and a <strong>year-by-year comparison table</strong> showing cost, equity, and net worth. The rental scenario assumes your down payment is invested at the expected return rate.</p>
+    </div>
+
+    <div class="content-section">
       <h2>How to Use the Rent vs Buy Calculator</h2>
       <p>Enter the <strong>home price</strong>, <strong>down payment percentage</strong>, <strong>mortgage interest rate</strong>, and <strong>property tax rate</strong>. Add <strong>closing costs</strong>, <strong>monthly rent</strong>, expected <strong>rent growth</strong>, and <strong>investment return rate</strong>. Specify the number of <strong>years to compare</strong>.</p>
       <p>Buying typically becomes more favorable the longer you stay. If you plan to move within 3-5 years, renting is often better. If you plan to stay 7+ years, buying usually wins.</p>
@@ -129,6 +161,17 @@ const jsonLd = [
         Rent Net Worth = Down Payment + Savings (invested at return rate)
       </div>
       <p>The <strong>opportunity cost</strong> is calculated by assuming your down payment could be invested at the expected return rate.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Check local market conditions</strong> — price-to-rent ratios vary enormously between cities; some markets strongly favor renting</li>
+        <li><strong>Factor in your lifestyle</strong> — if you value flexibility, hate yard work, or might relocate, renting has non-financial advantages</li>
+        <li><strong>Get mortgage pre-approval</strong> to know your actual rate and monthly payment before making a decision</li>
+        <li><strong>Build an emergency fund</strong> separate from your down payment — homeowners face unexpected repair costs that renters don't</li>
+        <li><strong>Consider house hacking</strong> — buying a multi-unit property and renting out units can make buying financially superior even in expensive markets</li>
+      </ul>
     </div>
 
     <FAQ items={[

@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Ride Sharing Fare Estimator: Uber & Lyft Costs",
+    "description": "Ride Sharing Fare Estimator — comprehensive guide with free online calculator. Ride-sharing fares are calculated as: (Base Fare + Distance Charge + Time Charge + Wait Charge) × Surge Multiplier + Booking Fee + Tip. Surge pricing during high-demand periods can multiply fares by 1.2× to 3× or more — the same trip can cost very different amounts depending on when you book.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/ride-sharing-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Estimate Ride-Sharing Fares",
     "description": "Estimate Uber and Lyft fares by entering distance, time, and service type.",
@@ -23,8 +34,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Ride Sharing Fare Estimator: Uber & Lyft Costs | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Ride Sharing Fare Estimator: Uber & Lyft Costs</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Ride-sharing fares are calculated as: (Base Fare + Distance Charge + Time Charge + Wait Charge) × Surge Multiplier + Booking Fee + Tip.</li>
+      <li>Surge pricing during high-demand periods can multiply fares by 1.2× to 3× or more — the same trip can cost very different amounts depending on when you book.</li>
+      <li>Economy services (UberX, Lyft Standard) offer the best value for 1–2 riders, while XL services become cost-effective for groups of 4–5 splitting the fare.</li>
+      <li>Ride-sharing is typically cheaper than car ownership if you drive fewer than 5,000–7,000 miles per year; above that threshold, owning a car becomes more economical.</li>
+    </ul>
+  </div>
+
+  <p>Ride-sharing services like Uber and Lyft have transformed urban transportation, offering convenience and flexibility that traditional taxis cannot match. But the dynamic pricing model — where fares change based on demand, time of day, and service type — makes it difficult to predict what you will pay. Understanding how fares are calculated helps you budget for trips and make smarter choices about when and how to ride.</p>
+
+  <p>Every ride-sharing fare is built from the same components: a base fare (a fixed amount per trip), a per-mile charge, a per-minute charge, and a booking fee. The subtotal is then multiplied by a surge multiplier during high-demand periods (after concerts, during rush hour, in bad weather) before adding your tip. Economy, Comfort, Premium, and XL services each have different rates for every component.</p>
+
+  <p>Surge pricing is the most controversial aspect of ride-sharing. While it feels like price gouging, the economic purpose is to attract more drivers to high-demand areas, reducing wait times. The key insight for consumers is that surge pricing is temporary — waiting 10–15 minutes or walking a few blocks to a less busy area can significantly reduce your fare.</p>
+
+  <p>For frequent riders, comparing ride-sharing costs against car ownership is worthwhile. Car ownership costs include monthly payments ($400–$700), insurance ($100–$200), fuel ($100–$200), maintenance ($50–$100), and parking ($0–$300), totalling $650–$1,500/month. If your ride-sharing spending is below this range, going carless may be more economical.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Estimate your Uber or Lyft fare based on distance, time, and service type. Adjust for surge pricing and tip percentage to get a complete cost picture for your trip.</p>
   </fragment>
@@ -88,6 +119,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator estimates your ride fare based on distance, duration, service type, surge multiplier, wait time, and tip percentage. A comparison table shows what the same trip would cost across all four service types (Economy, Comfort, Premium, XL), helping you choose the best option for your budget and needs.</p>
+    </div>
     <div class="content-section" id="comparisonSection" style="display:none;">
       <h2>Service Type Comparison</h2>
       <div class="table-wrap">
@@ -132,7 +168,12 @@ const jsonLd = [
       { question: "How does surge pricing work?", answer: "Surge pricing multiplies the standard fare by a factor (typically 1.2x to 2.5x, sometimes higher) during periods of high demand. The app shows the surge multiplier before you confirm your ride. You can avoid surge pricing by waiting a few minutes for demand to decrease, walking to a less busy area, or choosing a different service type." },
       { question: "Is ride-sharing cheaper than owning a car?", answer: "For most people, ride-sharing is cheaper than car ownership if you drive less than about 5,000-7,000 miles per year. Car ownership costs include the monthly payment, insurance, fuel, maintenance, parking, and depreciation, which average around $700-1,000 per month. If you spend less than that on ride-sharing, it may be more economical." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Before booking your next ride, check both Uber and Lyft apps for the best price — rates can differ by 10–20% for the same route. If you see surge pricing, try waiting a few minutes or walking to a less congested area. For regular commutes, compare ride-sharing costs against public transit and car ownership to find the most economical option.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="ride-sharing-calculator" category="automotive" />

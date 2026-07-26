@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Long Term Care Costs: Plan Your Future & Free Calculator",
+    "description": "Understand long-term care costs, inflation impacts, and planning strategies. Estimate your future care expenses with our free LTC cost calculator.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/long-term-care-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Estimate Long-Term Care Costs",
     "description": "Estimate future long-term care costs based on current age, care type, and inflation.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Long Term Care Costs: Plan Your Future & Free Calculator | FreeOnlineToolkit" description="Understand long-term care costs, inflation impacts, and planning strategies. Estimate your future care expenses with our free LTC cost calculator." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Long Term Care Costs: Plan Your Future & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>About 70% of people turning 65 will need some form of long-term care, with average costs exceeding $100,000 per year for nursing home care.</li>
+      <li>Long-term care costs have been rising at 3–5% annually — outpacing general inflation — making early planning essential.</li>
+      <li>Medicare does NOT cover long-term custodial care; it only covers short-term skilled nursing (up to 100 days) after a qualifying hospital stay.</li>
+      <li>The ideal window to purchase long-term care insurance is ages 55–65, when premiums are still affordable and you're likely to qualify medically.</li>
+      <li>Planning strategies include LTC insurance, hybrid life/LTC policies, health savings accounts (HSAs), and dedicated investment accounts.</li>
+    </ul>
+  </div>
+
+  <p>Long-term care is one of the most significant and unpredictable expenses in retirement planning. Unlike medical bills, which are largely covered by Medicare and supplemental insurance, <strong>long-term custodial care</strong> — help with daily activities like bathing, dressing, eating, and mobility — is almost entirely self-funded. A private nursing home room now averages over $109,000 per year nationally, and in high-cost states like New York or California, that figure can exceed $150,000. Assisted living facilities average around $54,000 per year, while home health aide services cost $200+ per day for 8 hours of daily care.</p>
+
+  <p>What makes long-term care planning particularly challenging is the <strong>compounding effect of inflation</strong>. At 3% annual inflation, today's $300/day nursing home cost will be $400/day in just 10 years and $540/day in 20 years. If you're 55 today and may need care at 80, that's 25 years of potential cost inflation. A 3-year nursing home stay that costs $327,000 today could cost over $680,000 by the time you need it. This is why starting your planning early — even with modest monthly savings — can make a dramatic difference.</p>
+
+  <p>Many people assume <strong>Medicare</strong> will cover their long-term care needs. It won't. Medicare only covers short-term skilled nursing care (up to 100 days) after a qualifying hospital stay of at least 3 days. <strong>Medicaid</strong> does cover long-term care, but only after you've spent down virtually all your assets — typically to $2,000 or less in most states. This means middle-class families are often caught in a gap: too wealthy for Medicaid, too poor to pay out of pocket indefinitely.</p>
+
+  <p>Long-term care insurance is one solution, but it's become increasingly expensive and harder to qualify for as you age. <strong>Hybrid policies</strong> that combine life insurance with long-term care benefits have become popular alternatives — they provide a death benefit if you don't need care, and accelerate that benefit to pay for care if you do. Other strategies include dedicated savings accounts, reverse mortgages, and annuities with long-term care riders.</p>
+
   <fragment slot="intro">
     <p class="tool-intro">Plan for future long-term care expenses by estimating costs based on your age, care type, and inflation. Use this free tool to set a realistic savings target for your long-term care needs.</p>
   </fragment>
@@ -101,8 +132,9 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
-      <h2>How to Use the LTC Cost Calculator</h2>
+      <h2>What This Calculator Shows</h2>
       <p>Enter your <strong>current age</strong> and the <strong>age you expect to begin needing care</strong>. Select the <strong>type of care</strong> — the calculator automatically fills in a typical daily cost based on national averages, or choose "Custom" to enter your own amount. Set the <strong>annual inflation rate</strong> and <strong>years of care</strong> expected.</p>
+      <p>The results show your projected total cost adjusted for inflation, the future daily and monthly costs, and a year-by-year breakdown table.</p>
     </div>
 
     <div class="content-section">
@@ -117,6 +149,11 @@ const jsonLd = [
       { question: "When should I buy long-term care insurance?", answer: "The ideal time to purchase long-term care insurance is typically between ages 55 and 65. Premiums are lower when you are younger and healthier, and you are more likely to qualify medically." },
       { question: "How long do most people need long-term care?", answer: "About 70% of people turning age 65 will need some form of long-term care. The average duration is approximately 3 years, but about 20% will need care for more than 5 years." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Start planning now, regardless of your age. If you're 50–65, research long-term care insurance and hybrid policies — get quotes from at least 3 providers. If insurance isn't feasible, consider setting up a dedicated savings or investment account earmarked for care costs. Explore whether your state offers partnership programmes that let you protect some assets while qualifying for Medicaid. Discuss your care preferences with your family now, before a crisis forces the decision.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">

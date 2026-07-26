@@ -9,27 +9,45 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Calculate Amazon FBA Profit",
-    "description": "Estimate your Amazon FBA profit by calculating referral fees, fulfillment costs, and net margins.",
-    "step": [
-      { "@type": "HowToStep", "text": "Enter your product selling price on Amazon" },
-      { "@type": "HowToStep", "text": "Input your product cost from your supplier" },
-      { "@type": "HowToStep", "text": "Enter the Amazon referral fee percentage for your category" },
-      { "@type": "HowToStep", "text": "Add FBA fulfillment fee, monthly storage fee, and estimated monthly sales" },
-      { "@type": "HowToStep", "text": "Click Calculate to see your per-unit and monthly profit estimates" },
-    ],
-  },
+    "@type": "Article",
+    "headline": "Amazon FBA Profit: Calculate Fees & Free Calculator",
+    "description": "Amazon FBA Profit: Calculate Fees & Free Calculator. Free online calculator included.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/amazon-fba-calculator/" }
+  }
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Amazon FBA Profit: Calculate Fees & Free Calculator | FreeOnlineToolkit" description="Amazon FBA Profit: Calculate Fees & Free Calculator. Free online calculator included." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Amazon FBA Profit: Calculate Fees & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>Amazon charges three main fees: referral fees (8-20% of sale price, typically 15%), FBA fulfillment fees ($3-$10+ per unit based on size/weight), and monthly storage fees.</li>
+      <li>A good net profit margin for Amazon FBA is 15-25% after all fees and product costs - margins below 10% leave little room for advertising and unexpected costs.</li>
+      <li>Product research is the most critical step - use this calculator before sourcing inventory to verify that a product can be profitable after all Amazon fees.</li>
+      <li>FBA fulfillment fees depend on product size tier and weight - standard small items cost about $4.50-$5.50 per unit.</li>
+      <li>Seasonal storage fee surcharges (Oct-Dec) can double your storage costs - plan inventory levels carefully to avoid long-term storage fees.</li>
+    </ul>
+  </div>
+
+    <p>Amazon's Fulfillment by Amazon (FBA) program has enabled millions of sellers to build e-commerce businesses without managing warehouses, shipping, or customer service. Amazon stores your products, picks, packs, and ships them to customers, handles returns, and provides customer support - all for a set of fees that vary by product size, weight, and category. Understanding these fees is the difference between a profitable FBA business and one that bleeds money on every sale.</p>
+
+    <p>The three main fee categories are <strong>referral fees</strong>, <strong>FBA fulfillment fees</strong>, and <strong>storage fees</strong>. Referral fees are Amazon's commission on each sale, calculated as a percentage of the total sale price. Most categories charge 15%, but rates range from 8% to 20%. FBA fulfillment fees cover picking, packing, shipping, and customer service - they are charged per unit and depend on the product's size tier and weight.</p>
+
+    <p><strong>Storage fees</strong> are charged monthly based on the cubic volume of your inventory. Standard-size products cost $0.87 per cubic foot from January-September and $2.40 per cubic foot from October-December. Products that sit for more than 365 days incur long-term storage fees that can quickly erode margins on slow-moving inventory.</p>
+
+    <p>The most successful FBA sellers treat product selection as a data-driven process. Before committing to a product, they calculate the <strong>all-in cost</strong> (product cost + shipping + referral fee + FBA fee + storage fee) and verify that the resulting profit margin supports their business goals. A product that looks profitable at $29.99 can easily become unprofitable once all fees are accounted for - which is exactly why tools like this calculator exist.</p>
+
   <fragment slot="intro">
-    <p class="tool-intro">Estimate your true Amazon FBA profit after referral fees, fulfillment costs, and storage fees. This calculator helps Amazon sellers evaluate product profitability before sourcing inventory.</p>
+    <p class="tool-intro">Use the free calculator below to get instant results. Read on for a full guide to the topic, key formulas, and expert tips.</p>
   </fragment>
 
-  <fragment slot="calculator">
+<fragment slot="calculator">
     <div class="calc-card">
       <h2>Amazon FBA Profit Calculator</h2>
       <div class="form-group">
@@ -94,6 +112,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This FBA calculator shows your <strong>net profit per unit</strong>, <strong>Amazon fees per unit</strong> (referral + fulfillment + storage), <strong>net profit margin</strong>, <strong>monthly revenue</strong>, <strong>monthly profit</strong>, and <strong>annual profit projection</strong> based on your estimated monthly sales volume. Adjust all inputs to model different pricing, cost, and volume scenarios.</p>
+    </div>
+
+<div class="content-section">
       <h2>How to Use</h2>
       <p>This Amazon FBA calculator gives you a complete profit picture. Start by entering your <strong>product price</strong> and <strong>product cost</strong> (what you pay your supplier). Then input the <strong>Amazon referral fee</strong> for your specific product category &mdash; most categories charge 15%.</p>
       <p>Add your <strong>FBA fulfillment fee</strong> based on your product's size tier and the <strong>monthly storage fee</strong> per unit. Finally, enter your <strong>estimated monthly sales</strong> to see total revenue and profit projections.</p>
@@ -122,12 +145,18 @@ const jsonLd = [
       { question: "What are Amazon referral fees?", answer: "Amazon referral fees are a percentage of each sale that Amazon charges as a commission. Referral fees vary by category, typically ranging from 8% to 20%. Most categories charge 15%, which is the default used in this calculator." },
       { question: "How much does Amazon FBA fulfillment cost?", answer: "FBA fulfillment fees depend on product size and weight. Standard small items typically cost $4.50-$5.50 per unit, standard large items $5.50-$8.50, and oversized items can cost significantly more." },
     ]} />
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Enter your product price, cost, and Amazon fees above to verify profitability before sourcing inventory. Research your product's size tier on Amazon's FBA fee schedule to get accurate fulfillment fee estimates. Aim for a net margin above 20% to leave room for PPC advertising (typically 10-15% of revenue) and unexpected cost increases.</p>
+    </div>
   </fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="amazon-fba-calculator" category="ecommerce" />
   </fragment>
 </ToolLayout>
+
 
 <script>
 import { showResult, hideResult } from '../utils/calculator-utils';

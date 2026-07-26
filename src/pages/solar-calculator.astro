@@ -9,6 +9,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Solar Panel ROI: Is Solar Worth It? & Free Calculator",
+    "description": "Calculate your solar panel payback period, 25-year savings, and ROI based on your location, electricity usage, and system cost. Includes federal tax credit.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Estimate Solar Panel Savings",
     "description": "Calculate solar panel payback period and savings based on your location, electricity usage, and system size.",
@@ -22,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Solar Panel ROI: Is Solar Worth It? & Free Calculator — FreeOnlineToolkit" description="Calculate your solar panel payback period, 25-year savings, and ROI based on your location and electricity usage." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Solar Panel ROI: Is Solar Worth It? & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Estimate your solar panel payback period, total savings, and return on investment. Enter your electricity usage and location for a personalized solar savings analysis.</p>
+    <div class="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>The <strong>30% federal tax credit</strong> (ITC) significantly reduces solar costs — a $24,000 system costs just $16,800 after the credit</li>
+        <li>Solar payback periods range from <strong>5-8 years in sunny states</strong> (AZ, CA, TX) to 10-15 years in less sunny regions (WA, OR)</li>
+        <li>Over 25 years, a typical 8kW system can save <strong>$30,000-$80,000+</strong> depending on location and electricity rates</li>
+        <li>Panels degrade at about <strong>0.5% per year</strong> but still produce 85-90% of rated capacity after 25 years</li>
+        <li>Higher electricity rates mean <strong>faster payback</strong> — states like CA, MA, HI, and NY have the best solar economics</li>
+      </ul>
+    </div>
+
+    <p>Solar panels have gone from a niche technology for eco-conscious homeowners to a mainstream financial investment. The cost of solar has dropped by more than 70% over the past decade, while electricity prices continue to climb. Combined with the 30% federal Investment Tax Credit (ITC), the economics of residential solar have never been more favorable. But whether solar makes financial sense for <em>your</em> home depends on several factors: where you live, how much electricity you use, your roof orientation, and the cost of installation.</p>
+
+    <p>The key metric for evaluating solar is the <strong>payback period</strong> — how many years it takes for your electricity savings to equal the net cost of the system (after the tax credit). In sunny states with high electricity rates (like California, Arizona, and Hawaii), payback periods can be as short as 5-7 years. In less sunny regions with lower rates (like the Pacific Northwest), payback may take 10-15 years. After the payback period, all additional savings are pure profit — and with panels lasting 25-30+ years, the long-term returns can be substantial.</p>
+
+    <p>Solar savings are driven by three main variables. <strong>Sun hours</strong> (also called peak sun hours) measure how much direct sunlight your location receives — ranging from 4 hours/day in Seattle to 7+ hours/day in Arizona. <strong>System size</strong> (measured in kilowatts) determines how much electricity you generate — a typical home uses a 6-10 kW system with 15-30 panels. <strong>Electricity rate</strong> determines the value of each kilowatt-hour you generate — the higher your rate, the more each kWh of solar generation is worth. A 0.75 real-world efficiency factor accounts for panel angle, shading, inverter losses, and weather variability.</p>
+
+    <p>Two important factors affect long-term savings: <strong>panel degradation</strong> and <strong>electricity inflation</strong>. Solar panels lose about 0.5% of their efficiency each year, so a system producing 10,000 kWh in year 1 will produce about 8,800 kWh in year 25. However, electricity rates typically rise 2-4% annually, which more than offsets the degradation. The net effect is that your savings actually <em>increase</em> over time as the value of each kWh you generate goes up. The calculator below models both factors to give you a realistic 25-year savings projection.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -100,6 +127,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This solar calculator estimates your <strong>total 25-year savings</strong>, <strong>system cost</strong> (before and after the federal tax credit), <strong>annual electricity offset</strong>, <strong>payback period</strong>, and <strong>cumulative savings</strong> at 5, 10, and 25 years. It models panel degradation (0.5%/year) and electricity rate inflation (3%/year) for a realistic long-term projection.</p>
+    </div>
+
+    <div class="content-section">
       <h2>How Solar Savings Are Calculated</h2>
       <p>This calculator estimates solar savings based on:</p>
       <ul>
@@ -116,6 +148,17 @@ const jsonLd = [
       <h2>Key Solar Formulas</h2>
       <div class="formula-box">Annual Generation (kWh) = System Size (kW) &times; Sun Hours &times; 365 &times; 0.75<br><br>Annual Savings = kWh Generated &times; Electric Rate<br><br>Payback Period = Net Cost &divide; Annual Savings</div>
       <p>The 0.75 factor accounts for real-world conditions: panel angle, shading, inverter efficiency, and weather variability.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Get 3+ quotes</strong> from local installers — prices vary significantly, and competition drives better deals</li>
+        <li><strong>Check your roof condition</strong> — if your roof needs replacing within 5-10 years, replace it before installing panels</li>
+        <li><strong>Research state incentives</strong> — many states offer additional tax credits, rebates, or SREC payments on top of the federal 30% ITC</li>
+        <li><strong>Understand net metering</strong> in your state — this determines how much you're credited for excess power sent to the grid</li>
+        <li><strong>Consider battery storage</strong> if your utility has time-of-use rates or if you want backup power during outages</li>
+      </ul>
     </div>
 
     <FAQ items={[

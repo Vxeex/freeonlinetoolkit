@@ -9,6 +9,17 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Wedding Budget: Plan Your Day & Free Calculator",
+    "description": "Wedding Budget — comprehensive guide with free online calculator. The average US wedding costs $30,000–$35,000, but costs vary dramatically by location — a city wedding can easily exceed $50,000 while a backyard celebration may cost under $10,000. Venue and catering typically consume 45–55% of the total budget, making it the single most important decision in wedding planning.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2026-07-26",
+    "dateModified": "2026-07-26",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://freeonlinetoolkit.org/wedding-budget-calculator/" }
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Plan a Wedding Budget",
     "description": "Create a detailed wedding budget with category-by-category allocation and cost breakdown.",
@@ -22,8 +33,28 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Wedding Budget: Plan Your Day & Free Calculator | FreeOnlineToolkit" description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Wedding Budget: Plan Your Day & Free Calculator</h1></fragment>
+
+  <div class="key-takeaways" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:1.25rem;margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;color:#1e40af;">Key Takeaways</h3>
+    <ul style="margin-bottom:0;">
+      <li>The average US wedding costs $30,000–$35,000, but costs vary dramatically by location — a city wedding can easily exceed $50,000 while a backyard celebration may cost under $10,000.</li>
+      <li>Venue and catering typically consume 45–55% of the total budget, making it the single most important decision in wedding planning.</li>
+      <li>Always keep a 5–10% contingency buffer — weddings almost always have surprise expenses, from weather-related adjustments to vendor overtime charges.</li>
+      <li>Cost per guest is the key metric for managing your budget — every additional guest adds $150–$400+ depending on your venue and catering choices.</li>
+    </ul>
+  </div>
+
+  <p>Planning a wedding is one of the most exciting — and expensive — projects most couples undertake. With the average US wedding costing over $30,000, having a clear budget breakdown is essential for making informed decisions and avoiding the financial stress that can overshadow the joy of the occasion.</p>
+
+  <p>The biggest budget decision is your guest count. Every additional guest affects not just catering costs but also venue size requirements, number of centerpieces, invitations, favours, and even cake size. A $30,000 wedding for 100 guests ($300/guest) becomes a $45,000 wedding for 150 guests at the same per-guest cost — and venues that accommodate larger groups often charge more.</p>
+
+  <p>Industry data shows consistent patterns in how couples allocate their budgets. Venue and catering dominate at 45–55% combined. Photography and video (10–12%) capture memories that last a lifetime. Flowers and decor (8–10%) set the visual tone. Entertainment (5–10%) keeps guests engaged. The remaining budget covers attire, stationery, planner fees, and a contingency buffer.</p>
+
+  <p>The most effective budgeting strategy is to set your total number first, then allocate percentages to each category based on your priorities. If photography matters most to you, increase that percentage and reduce something less important. The key is that all percentages should total 100% — this forces trade-off decisions and prevents overspending.</p>
+
+
   <fragment slot="intro">
     <p class="tool-intro">Plan your dream wedding without financial stress. This wedding budget calculator breaks down your total budget by category, highlights overages, and helps you allocate funds wisely based on your guest count and priorities.</p>
   </fragment>
@@ -143,6 +174,11 @@ const jsonLd = [
   </fragment>
 
   <fragment slot="content">
+
+    <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator breaks down your total wedding budget by category using customisable percentages. It shows the amount allocated to each category (venue, catering, photography, attire, flowers, entertainment, planner, stationery, favours, and contingency), your cost per guest, and any over-budget warnings.</p>
+    </div>
     <div class="content-section">
       <h2>How to Use the Wedding Budget Calculator</h2>
       <p>Start by entering your <strong>total wedding budget</strong> and <strong>estimated guest count</strong>. If you already know your venue cost, enter it as an override. The default <strong>category percentages</strong> reflect typical wedding industry averages. Adjust each percentage to match your personal priorities.</p>
@@ -162,7 +198,12 @@ const jsonLd = [
       { question: "Should I hire a wedding planner?", answer: "A wedding planner typically costs 5-15% of your total budget but can often save you money through vendor relationships. If your budget is over $20,000 or you have limited time, a planner is generally worth the investment." },
       { question: "What is a realistic contingency for unexpected costs?", answer: "Industry experts recommend setting aside 5-10% of your total budget as a contingency fund for last-minute changes, vendor overtime, and weather-related adjustments." },
     ]} />
-  </fragment>
+  
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <p>Start with your total budget and guest count, then adjust category percentages to reflect your priorities. Research average costs in your specific area — wedding costs vary significantly by region. Get quotes from multiple vendors in each category before committing. Consider a wedding planner if your budget exceeds $20,000 — they often save money through vendor relationships.</p>
+    </div>
+</fragment>
 
   <fragment slot="sidebar">
     <RelatedTools currentSlug="wedding-budget-calculator" category="lifestyle" />

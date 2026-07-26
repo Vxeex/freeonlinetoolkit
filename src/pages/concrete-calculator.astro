@@ -9,6 +9,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Concrete & Gravel Calculator: Material Estimates",
+    "description": "Calculate how much concrete or gravel you need for slabs, driveways, patios, and walkways. Get estimates in cubic yards, bags, and tons.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Concrete Volume",
     "description": "Calculate how much concrete or gravel you need for slabs, driveways, and patios.",
@@ -22,10 +32,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free Concrete & Gravel Calculator</h1></fragment>
+<ToolLayout title="Concrete & Gravel Calculator: Material Estimates — FreeOnlineToolkit" description="Calculate how much concrete or gravel you need for slabs, driveways, patios, and walkways." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Concrete & Gravel Calculator: Material Estimates</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">Get precise estimates for concrete, gravel, or other materials. Enter your slab dimensions and we'll calculate cubic yards, cubic feet, and how many bags to order.</p>
+    <div class="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>One cubic yard of concrete covers <strong>81 square feet at 4 inches thick</strong> or 54 sq ft at 6 inches thick</li>
+        <li>For projects under 2 cubic yards, <strong>bagged concrete</strong> is cost-effective; for larger pours, order <strong>ready-mix delivery</strong></li>
+        <li>Always add a <strong>5-15% wastage factor</strong> — uneven ground, spillage, and over-excavation are inevitable</li>
+        <li>A standard ready-mix truck holds <strong>10-12 cubic yards</strong> with a typical minimum order of 3-4 yards</li>
+        <li>Gravel is sold by the ton — approximately <strong>1.4 tons per cubic yard</strong>, varying by stone type and compaction</li>
+      </ul>
+    </div>
+
+    <p>Whether you're pouring a patio, building a driveway, setting fence posts, or laying a gravel path, knowing how much material to order is critical. Ordering too little means a costly second delivery or an incomplete project. Ordering too much wastes money and leaves you with piles of material to dispose of. The math is straightforward volume calculation, but there are practical considerations — like wastage, compaction, and bag coverage — that turn a simple formula into a real-world estimate.</p>
+
+    <p>Concrete volume is calculated as <strong>Length × Width × Depth</strong>, converted to cubic yards (since that's how ready-mix is sold). The formula simplifies to: <strong>Cubic Yards = (Length ft × Width ft × Depth inches) ÷ 324</strong>. This 324 divisor comes from converting feet and inches to cubic yards (27 cubic feet per cubic yard, 12 inches per foot). For example, a 10' × 10' slab at 6" thick: (10 × 10 × 6) ÷ 324 = 1.85 cubic yards.</p>
+
+    <p>The choice between <strong>bagged concrete</strong> and <strong>ready-mix delivery</strong> depends on project size. Bagged concrete (typically 60 lb or 80 lb bags) is sold at hardware stores and mixed on-site with water. An 80 lb bag yields about 0.60 cubic feet of concrete. For small projects like setting posts or patching, bags are convenient and cost-effective. For anything larger than about 2 cubic yards, ready-mix delivery is far more practical and often cheaper per cubic yard. A standard truck carries 10-12 yards, and most companies have a 3-4 yard minimum.</p>
+
+    <p>For gravel projects, the calculation is similar but the material is measured differently. Gravel depth for a driveway is typically 4-6 inches for the base layer. Gravel is sold by the ton, with an approximate conversion of <strong>1.4 tons per cubic yard</strong> (this varies by stone type — crushed stone is heavier than pea gravel). Like concrete, you should add a wastage factor of 5-15% depending on how level your ground is and how precisely you can grade the surface.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -110,6 +137,11 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This calculator estimates material quantities for <strong>concrete slabs</strong> (in cubic yards and bags) and <strong>gravel areas</strong> (in cubic yards and tons). It includes a wastage factor so you order enough material. For concrete, it also shows the ready-mix truck equivalent — helpful for deciding between bags and delivery.</p>
+    </div>
+
+    <div class="content-section">
       <h2>How to Use the Concrete Calculator</h2>
       <p>Enter the length, width, and thickness of your slab. The calculator handles both concrete (in bags) and gravel (in tons). It includes a wastage factor so you order enough material.</p>
       <ul>
@@ -123,6 +155,17 @@ const jsonLd = [
       <h2>Concrete Volume Formula</h2>
       <div class="formula-box">Volume (cu yd) = Length (ft) &times; Width (ft) &times; Depth (in) &divide; 324</div>
       <p>One cubic yard of concrete covers 81 sq ft at 4 inches thick. Standard ready-mix trucks hold 10-12 cubic yards.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Call ready-mix suppliers</strong> for quotes — prices vary by region and quantity, and delivery fees can be significant</li>
+        <li><strong>Prepare the site</strong> before ordering — forms, gravel base, and rebar/mesh should be ready before the concrete arrives</li>
+        <li><strong>Order for a weekday</strong> if possible — weekend and holiday deliveries often cost more</li>
+        <li><strong>Have help on hand</strong> — concrete sets quickly, and you need enough people to spread, level, and finish it before it hardens</li>
+        <li><strong>Check local building codes</strong> — some areas require specific slab thicknesses, reinforcement, or permits for concrete work</li>
+      </ul>
     </div>
 
     <FAQ items={[

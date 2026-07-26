@@ -9,6 +9,16 @@ const breadcrumbItems = [{ label: 'Home', href: '/' }, { label: tool.title }];
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Mortgage Prepayment: Save Thousands in Interest & Free Calculator",
+    "description": "Learn how extra mortgage payments save thousands in interest. Compare monthly prepayments vs lump sums, find the best payoff strategy, and use our free calculator.",
+    "author": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "publisher": { "@type": "Organization", "name": "FreeOnlineToolkit" },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-01",
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "How to Calculate Home Loan Prepayment Savings",
     "description": "Calculate how much interest you save by making extra payments on your home loan.",
@@ -23,10 +33,27 @@ const jsonLd = [
 ];
 ---
 
-<ToolLayout title={`${tool.title} - FreeOnlineToolkit`} description={tool.description} breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
-  <fragment slot="heading"><h1>Free {tool.title}</h1></fragment>
+<ToolLayout title="Mortgage Prepayment: Save Thousands in Interest & Free Calculator — FreeOnlineToolkit" description="Learn how extra mortgage payments save thousands in interest. Compare monthly prepayments vs lump sums and use our free calculator." breadcrumbItems={breadcrumbItems} jsonLd={jsonLd}>
+  <fragment slot="heading"><h1>Mortgage Prepayment: Save Thousands in Interest & Free Calculator</h1></fragment>
   <fragment slot="intro">
-    <p class="tool-intro">See how extra payments on your home loan save you thousands in interest. Compare monthly prepayments and lump sum payments to find the best payoff strategy for your mortgage.</p>
+    <div class="key-takeaways">
+      <h2>Key Takeaways</h2>
+      <ul>
+        <li>Making just $200 extra per month on a $250,000 mortgage at 6.5% can save over <strong>$90,000 in interest</strong> and cut years off your loan</li>
+        <li>Extra payments early in the loan term have the <strong>greatest impact</strong> because that's when interest makes up the largest share of your payment</li>
+        <li>The bi-weekly payment method (half your monthly payment every two weeks) results in <strong>one extra full payment per year</strong> without feeling the pinch</li>
+        <li>Always check for <strong>prepayment penalties</strong> before making extra payments — some lenders charge 1-3% of the remaining balance</li>
+        <li>Build an <strong>emergency fund of 3-6 months</strong> expenses before committing extra cash to mortgage prepayment</li>
+      </ul>
+    </div>
+
+    <p>For most homeowners, the mortgage is the single largest debt they will ever carry. A typical 30-year fixed-rate mortgage on a $350,000 home at 6.5% interest results in roughly $440,000 in total interest payments over the life of the loan — meaning you pay more in interest than the original house price. This staggering cost is why mortgage prepayment has become one of the most popular personal finance strategies for building wealth and achieving financial freedom.</p>
+
+    <p>Mortgage prepayment simply means making extra payments toward your loan principal beyond what is required. These additional payments reduce your outstanding balance faster, which means less interest accrues each month. The math is powerful: because mortgage interest is calculated on the remaining balance, every extra dollar you pay today eliminates interest that would have compounded for years or even decades. Even modest extra payments — an additional $100 or $200 per month — can shave years off your mortgage and save tens of thousands of dollars.</p>
+
+    <p>There are two primary prepayment strategies. <strong>Monthly prepayments</strong> involve adding a fixed extra amount to each monthly payment. This approach is predictable, easy to budget for, and creates a consistent acceleration of your payoff timeline. <strong>Lump sum prepayments</strong> involve making a one-time large payment — perhaps from a bonus, tax refund, inheritance, or savings — applied directly to your principal. Some homeowners combine both approaches for maximum savings. Another popular technique is the <strong>bi-weekly payment plan</strong>, where you make half your monthly payment every two weeks, resulting in 26 half-payments (equivalent to 13 full payments) per year instead of 12.</p>
+
+    <p>However, prepayment is not always the optimal financial move. If your mortgage rate is relatively low (under 4-5%), the money you would use for extra payments might earn a higher return if invested in the stock market, which historically averages 7-10% annual returns. The decision also depends on your tax situation — mortgage interest is tax-deductible for those who itemize — and your overall financial health. The calculator below helps you model different scenarios so you can make an informed decision based on your specific numbers.</p>
   </fragment>
 
   <fragment slot="calculator">
@@ -74,6 +101,12 @@ const jsonLd = [
 
   <fragment slot="content">
     <div class="content-section">
+      <h2>What This Calculator Shows</h2>
+      <p>This prepayment calculator compares your mortgage costs with and without extra payments. It calculates your <strong>total interest without prepayment</strong> versus <strong>total interest with prepayments</strong>, shows the <strong>exact dollar amount saved</strong>, your <strong>new payoff date</strong>, and how many <strong>years you shave off</strong> your mortgage. You can model both monthly extra payments and one-time lump sums — or combine them for maximum impact.</p>
+      <p>The results are based on standard amortization math: each month, interest accrues on your remaining balance, and any amount above that interest reduces your principal. Extra payments go entirely toward principal (after interest), accelerating the payoff curve.</p>
+    </div>
+
+    <div class="content-section">
       <h2>How to Use the Prepayment Calculator</h2>
       <p>This calculator shows you how making extra payments on your home loan can save thousands in interest. Enter your <strong>current loan balance</strong>, <strong>annual interest rate</strong>, and <strong>remaining term</strong>. You can use either or both prepayment options: a <strong>monthly prepayment</strong> or a <strong>lump sum prepayment</strong>.</p>
       <p>The results show a comparison: total interest without prepayment versus with prepayments, total interest saved, and how much faster you'll pay off your loan.</p>
@@ -86,6 +119,17 @@ const jsonLd = [
         <li><strong>Bi-weekly payments:</strong> Making half your payment every two weeks results in one extra full payment per year</li>
         <li><strong>Check for penalties:</strong> Some lenders charge prepayment penalties</li>
         <li><strong>Emergency fund first:</strong> Save 3-6 months of expenses before prepaying</li>
+      </ul>
+    </div>
+
+    <div class="content-section">
+      <h2>Next Steps</h2>
+      <ul>
+        <li><strong>Contact your lender</strong> to confirm there are no prepayment penalties on your loan and ask how to direct extra payments to principal (not escrow)</li>
+        <li><strong>Set up automatic extra payments</strong> — even $50 or $100 extra per month makes a meaningful difference over time when automated</li>
+        <li><strong>Consider refinancing first</strong> — if your rate is above 7%, refinancing to a lower rate may save more than prepaying at the current rate</li>
+        <li><strong>Balance priorities</strong> — pay off higher-interest debt (credit cards, personal loans) before accelerating your mortgage</li>
+        <li><strong>Track your progress</strong> — request an updated amortization schedule from your lender annually to see how much principal you have paid down</li>
       </ul>
     </div>
 
